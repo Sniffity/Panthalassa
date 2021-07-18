@@ -1,0 +1,1 @@
+gradlew genIntelliJRuns --refresh-dependencies
