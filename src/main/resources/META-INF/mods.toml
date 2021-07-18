@@ -1,7 +1,7 @@
 modLoader="javafml" 
 loaderVersion="[36,)" 
 license="custom"
-issueTrackerURL=https://github.com/Sniffity/Panthalassa/issues"
+issueTrackerURL="https://github.com/Sniffity/Panthalassa/issues"
 
 [[mods]]
 modId="panthalassa"
