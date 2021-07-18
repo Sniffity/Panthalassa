@@ -24,7 +24,7 @@ import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 //*****Also, why MODID in caps? Camel case? Pascal case?
 
 
-@Mod(Panthalassa.MODID)
+@Mod(Panthalassa.MOD_ID)
 
 //Start of the Panthalassa class
 //Should this class be declared as final?
@@ -40,7 +40,7 @@ public final class Panthalassa {
 		//public because this variable will be accessed by other classes.
 		//static because the field MOD ID must exist idependently from all instances of the class, even if no instances exist.
 		//final because this variable is constant, it will not change. 
-	public static final String MODID = "panthalassa";
+	public static final String MOD_ID = "panthalassa";
 	
 	/*Accesses and stores an existing logger to the LOGGER *field*, created by invoking the method getLogger,
 	 *  getLogger is invoked in the LogManager class
@@ -60,9 +60,11 @@ public final class Panthalassa {
 	
 	public Panthalassa() {
 		//Field bus must be declared, read https://mcforge.readthedocs.io/en/latest/events/intro/
+		//REVIEW THIS!
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		//Invoking the registry so things actually register
-		PanthalassaItems.REGISTRY.register(bus);
+		//bus.addListener(this::setup);
+		PanthalassaItems.ITEMS.register(bus);
 		
 		
 	}
