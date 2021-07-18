@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.github.sniffity.panthalassa;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("examplemod")
-public class ExampleMod
+public class Panthalassa
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ExampleMod() {
+    public Panthalassa() {
         // Register the setup method for modloading 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
