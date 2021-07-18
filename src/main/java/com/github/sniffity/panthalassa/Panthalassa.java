@@ -2,11 +2,13 @@ package com.github.sniffity.panthalassa;
 
 //imports for @Mod
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 //imports for Logger
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraftforge.common.MinecraftForge;
 //Imports for invoking Registries
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -62,12 +64,20 @@ public final class Panthalassa {
 		//Field bus must be declared, read https://mcforge.readthedocs.io/en/latest/events/intro/
 		//REVIEW THIS!
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		
+		
+		//bus.addListener(this::setup);
+
 		//Invoking the registry so things actually register
 		//bus.addListener(this::setup);
 		PanthalassaItems.ITEMS.register(bus);
 		
 		
+		//MinecraftForge.EVENT_BUS.register(this);
+	
 	}
 	
+	//Following line was required for launch
+    //private void setup(final FMLCommonSetupEvent event) {}
 	
 }

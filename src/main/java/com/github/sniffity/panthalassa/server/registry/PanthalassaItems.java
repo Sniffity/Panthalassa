@@ -6,8 +6,6 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.Properties;
-import net.minecraft.item.ItemGroup;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
