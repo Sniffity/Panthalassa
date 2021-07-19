@@ -5,10 +5,10 @@ import net.minecraftforge.fml.common.Mod;
 
 //imports for Logger
 
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-//import net.minecraftforge.common.MinecraftForge;
 //Imports for invoking Registries
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -50,17 +50,28 @@ public final class Panthalassa {
 	 *  final, because the logger itself will not be modified
 	 */
 	public static final Logger LOGGER = LogManager.getLogger();
+
+	//ADDED PROXY, FIGURE OUT WHY:
+	//public static ServerProxy PROXY;
+
 	
 	//IMPORTANT:
-	//public static final ServerProxy PROXY;
+	//public static ServerProxy PROXY;
 	//public static final SimpleChannel NETWORK;
+	//public static SimpleChannel NETWORK;
+
 	//What do each of these do?
 	
 	
 	public Panthalassa() {
 		//Field bus must be declared, read https://mcforge.readthedocs.io/en/latest/events/intro/
 		//REVIEW THIS!
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+		//final?
+		//PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+		// PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+
+		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		
 		
 		//bus.addListener(this::setup);
@@ -68,16 +79,16 @@ public final class Panthalassa {
 		//Invoking the registry so things actually register
 		//bus.addListener(this::setup);
 		PanthalassaItems.ITEMS.register(bus);
+		PanthalassaEntities.register();
 
-		// FIX
-		// PanthalassaEntities.ENTITY_TYPES.register(bus);
-		
-		//MinecraftForge.EVENT_BUS.register(this);
-	
+
 	}
 
 
-	//Following line was required for launch
-    //private void setup(final FMLCommonSetupEvent event) {}
-	
+
+//HERE HERE HERE HERE HERE HERE HERE
+	private void init(FMLLoadCompleteEvent event) {
+		PanthalassaEntities.initializeAttributes();
+		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+	}
 }

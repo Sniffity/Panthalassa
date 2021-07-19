@@ -28,11 +28,17 @@ public enum PanthalassaEntities {
         return (EntityType<T>) builder.build(name).setRegistryName(regName);
     }
 
+    //REVIEW!
 
+    @SuppressWarnings("deprecation")
     public static void initializeAttributes() {
         GlobalEntityTypeAttributes.put(KRONOSAURUS, KronosaurusEntity.createMobAttributes().build());
 
     }
+
+    //REVIEW!
+
+
 }
 
 
