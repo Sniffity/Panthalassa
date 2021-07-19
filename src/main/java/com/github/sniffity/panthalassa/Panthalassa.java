@@ -68,12 +68,15 @@ public final class Panthalassa {
 		//Invoking the registry so things actually register
 		//bus.addListener(this::setup);
 		PanthalassaItems.ITEMS.register(bus);
-		PanthalassaEntities.ENTITY_TYPES.register(bus);
+
+		// FIX
+		// PanthalassaEntities.ENTITY_TYPES.register(bus);
 		
 		//MinecraftForge.EVENT_BUS.register(this);
 	
 	}
-	
+
+
 	//Following line was required for launch
     //private void setup(final FMLCommonSetupEvent event) {}
 	
