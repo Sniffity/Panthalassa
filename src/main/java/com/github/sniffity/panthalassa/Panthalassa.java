@@ -2,9 +2,9 @@ package com.github.sniffity.panthalassa;
 
 //imports for @Mod
 import net.minecraftforge.fml.common.Mod;
-//import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 //imports for Logger
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,14 +16,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 //Imports for invoking ItemRegistries
 import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 
+//Imports for invoking EntityTypeRegistries
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEntities;
 
 
 
-//*******The @Mod annotation tells Java that Panthalassa.panthalass is the main mod class.
-	//But: Panthalassa (capital P)is the class. What this works out to is Panthalassa.panthalassa
-		//In Mowzie's Mobs case, it works out to MowziesMobs.mowziesmobs
-			//Isn't the correct path panthalassa.Panthalassa?
-//*****Also, why MODID in caps? Camel case? Pascal case?
 
 
 @Mod(Panthalassa.MOD_ID)
@@ -36,14 +33,14 @@ import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 
 
 public final class Panthalassa {
-	
-	
+
+
 	//The MODID variable is **declared** as a **string** type variable
 		//public because this variable will be accessed by other classes.
 		//static because the field MOD ID must exist idependently from all instances of the class, even if no instances exist.
-		//final because this variable is constant, it will not change. 
+		//final because this variable is constant, it will not change.
 	public static final String MOD_ID = "panthalassa";
-	
+
 	/*Accesses and stores an existing logger to the LOGGER *field*, created by invoking the method getLogger,
 	 *  getLogger is invoked in the LogManager class
 	 * declaration is as follows:
@@ -71,7 +68,7 @@ public final class Panthalassa {
 		//Invoking the registry so things actually register
 		//bus.addListener(this::setup);
 		PanthalassaItems.ITEMS.register(bus);
-		
+		PanthalassaEntities.ENTITY_TYPES.register(bus);
 		
 		//MinecraftForge.EVENT_BUS.register(this);
 	
