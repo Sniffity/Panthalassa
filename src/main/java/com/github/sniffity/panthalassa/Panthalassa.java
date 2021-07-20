@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaItems;
+import software.bernie.geckolib3.GeckoLib;
 
 
 @Mod(Panthalassa.MODID)
@@ -25,6 +26,9 @@ public final class Panthalassa {
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		PanthalassaItems.ITEMS.register(bus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(bus);
+
+		GeckoLib.initialize();
+
 	}
 
 @SuppressWarnings("deprecated")
