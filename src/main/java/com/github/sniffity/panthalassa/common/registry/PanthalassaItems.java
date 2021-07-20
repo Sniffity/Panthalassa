@@ -1,12 +1,11 @@
 //CONFIRM ALL HERE
 //Order of imports?
 
-package com.github.sniffity.panthalassa.server.registry;
+package com.github.sniffity.panthalassa.common.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,7 +19,7 @@ public class PanthalassaItems {
 //This is PUBLIC because the DeferredRegister called ITEMS  will  be called upon outside this class, in main class  specifically.
 // Static because even if no items exist and are registered, the ITEMS must still be referenced
 //Final because the ITEMS will not be changed.
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Panthalassa.MOD_ID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Panthalassa.MODID);
 	
 //	The METHODs to create Individual Items are registered here
 
