@@ -1,5 +1,13 @@
 package com.github.sniffity.panthalassa;
+import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
+import net.minecraft.client.world.DimensionRenderInfo;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -20,21 +28,28 @@ public final class Panthalassa {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 
+
 	public Panthalassa() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		PanthalassaItems.ITEMS.register(bus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(bus);
+
+		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
+		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
+
+
+
 
 		GeckoLib.initialize();
 
 	}
 
-@SuppressWarnings("deprecated")
+	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
-		DeferredWorkQueue.runLater(() -> {
-			PanthalassaEntityTypes.setupEntityTypeAttributes();
+		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();
+
+
 		//Taken from Dungeon Mobs
 		//	BiomeSpawnEntries.initBiomeSpawnEntries();
 		//	EntitySpawnPlacements.initSpawnPlacements();

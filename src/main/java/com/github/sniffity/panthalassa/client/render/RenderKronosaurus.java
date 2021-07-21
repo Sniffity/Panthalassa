@@ -16,8 +16,9 @@ public class RenderKronosaurus extends MobRenderer<EntityKronosaurus, ModelKrono
         super(mgr, new ModelKronosaurus<>(), 1.0F);
     }
 
+
     @Override
-    public ResourceLocation getTextureLocation(EntityKronosaurus p_110775_1_) {
+    public ResourceLocation getEntityTexture(EntityKronosaurus entity) {
         return TEXTURE;
     }
 }

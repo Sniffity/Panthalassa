@@ -1,0 +1,43 @@
+{
+  "depth": 0.5,
+  "scale": 30,
+  "precipitation": "none",
+  "category": "ocean",
+  "temperature": 0.1,
+  "temperature_modifier": "none",
+  "downfall": 0.1,
+  "player_spawn_friendly": false,
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2
+    },
+    "sky_color": 7254527,
+    "foliage_color": 10387789,
+    "grass_color": 9470285,
+    "fog_color": 12638463,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "surface_builder": "minecraft:mountain",
+  "carvers": {
+    "air": [
+      "minecraft:canyon"
+    ]
+  },
+  "features": [],
+  "starts":[],
+  "spawners": {
+    "creature": [
+      {
+        "type": "panthalassa:kronosaurus",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      }
+    ]
+  },
+  "spawn_costs": {}
+}

@@ -1,0 +1,92 @@
+{
+  "type": "panthalassa:panthalassa",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 3,
+    "settings": {
+      "bedrock_roof_position": 0,
+      "bedrock_floor_position": 0,
+      "sea_level": 120,
+      "min_surface_level": 10,
+      "disable_mob_generation": true,
+      "noise_caves_enabled": false,
+      "noodle_caves_enabled": false,
+      "deepslate_enabled": true,
+      "ore_veins_enabled": false,
+      "aquifers_enabled": false,
+      "default_block": {
+        "Name": "minecraft:stone"
+      },
+      "default_fluid": {
+        "Name": "minecraft:water",
+        "Properties": {
+          "level": "0"
+        }
+      },
+      "structures": {
+        "stronghold": {},
+        "structures": {}
+      },
+      "noise": {
+        "min_y": 0,
+        "height": 128,
+        "size_horizontal": 1,
+        "size_vertical": 1,
+        "density_factor": 0,
+        "density_offset": 0,
+        "simplex_surface_noise": true,
+        "random_density_offset": false,
+        "island_noise_override": false,
+        "amplified": true,
+        "sampling": {
+          "xz_scale": 0.9999999814507745,
+          "xz_factor": 3,
+          "y_scale": 0.9999999814507745,
+          "y_factor": 160
+        },
+        "top_slide": {
+          "target": -10,
+          "size": 3,
+          "offset": 0
+        },
+        "bottom_slide": {
+          "target": -30,
+          "size": 0,
+          "offset": 0
+        }
+      }
+    },
+    "biome_source": {
+      "seed": 10,
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "panthalassa:panthalassa_depths",
+          "parameters": {
+            "altitude": 0.1,
+            "weirdness": 0.1,
+            "offset": 0.1,
+            "temperature": 0.1,
+            "humidity": 0.1
+          }
+        }
+      ],
+      "altitude_noise":{
+        "firstOctave": 0.1,
+        "amplitudes": []
+      },
+      "weirdness_noise":{
+        "firstOctave": 0.1,
+        "amplitudes": []
+      },
+      "temperature_noise":{
+        "firstOctave": 0.1,
+        "amplitudes": []
+      },
+      "humidity_noise":{
+        "firstOctave": 0.1,
+        "amplitudes": []
+      }
+    }
+  }
+}
