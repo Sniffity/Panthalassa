@@ -1,43 +1,83 @@
 {
-  "depth": 0.5,
-  "scale": 30,
-  "precipitation": "none",
-  "category": "ocean",
-  "temperature": 0.1,
-  "temperature_modifier": "none",
-  "downfall": 0.1,
-  "player_spawn_friendly": false,
+  "scale": 0.2,
   "effects": {
     "mood_sound": {
-      "sound": "minecraft:ambient.cave",
+      "sound": "minecraft:ambient.basalt_deltas.mood",
       "tick_delay": 6000,
       "block_search_extent": 8,
-      "offset": 2
+      "offset": 2.0
     },
-    "sky_color": 7254527,
-    "foliage_color": 10387789,
-    "grass_color": 9470285,
+    "additions_sound": {
+      "sound": "minecraft:ambient.basalt_deltas.additions",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "minecraft:music.nether.basalt_deltas",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
+    "particle": {
+      "options": {},
+      "probability": 0
+    },
+    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
+    "sky_color": 8103167,
     "fog_color": 12638463,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
-  "surface_builder": "minecraft:mountain",
+  "surface_builder": "minecraft:basalt_deltas",
   "carvers": {
     "air": [
-      "minecraft:canyon"
+      "minecraft:nether_cave"
     ]
   },
-  "features": [],
-  "starts":[],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:delta",
+      "minecraft:small_basalt_columns",
+      "minecraft:large_basalt_columns"
+    ],
+    [],
+    [],
+    [
+      "minecraft:basalt_blobs",
+      "minecraft:blackstone_blobs",
+      "minecraft:spring_delta",
+      "minecraft:brown_mushroom_nether",
+      "minecraft:red_mushroom_nether",
+      "minecraft:spring_closed_double"
+    ],
+    [
+    ]
+  ],
+  "starts": [
+  ],
   "spawners": {
+    "monster": [],
     "creature": [
       {
         "type": "panthalassa:kronosaurus",
-        "weight": 100,
-        "minCount": 4,
-        "maxCount": 4
+        "weight": 5000,
+        "minCount": 100,
+        "maxCount": 100
       }
-    ]
+    ],
+    "ambient": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
   },
-  "spawn_costs": {}
+  "spawn_costs": {},
+  "player_spawn_friendly": false,
+  "precipitation": "none",
+  "temperature": 2.0,
+  "downfall": 0.0,
+  "category": "nether",
+  "depth": 0.1
 }

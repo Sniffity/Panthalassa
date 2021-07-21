@@ -1,0 +1,14 @@
+{
+  "type": "default",
+  "config": {
+    "top_material": {
+      "Name": "minecraft:andesite"
+    },
+    "under_material": {
+      "Name": "minecraft:granite"
+    },
+    "underwater_material": {
+      "Name": "minecraft:diorite"
+    }
+  }
+}
