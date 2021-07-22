@@ -1,6 +1,3 @@
-//CONFIRM ALL HERE
-//Order of imports?
-
 package com.github.sniffity.panthalassa.common.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;

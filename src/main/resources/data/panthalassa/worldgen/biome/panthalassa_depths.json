@@ -2,30 +2,15 @@
   "scale": 0.2,
   "effects": {
     "mood_sound": {
-      "sound": "minecraft:ambient.basalt_deltas.mood",
+      "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "additions_sound": {
-      "sound": "minecraft:ambient.basalt_deltas.additions",
-      "tick_chance": 0.0111
-    },
-    "music": {
-      "sound": "minecraft:music.nether.basalt_deltas",
-      "min_delay": 12000,
-      "max_delay": 24000,
-      "replace_current_music": false
-    },
-    "particle": {
-      "options": {},
-      "probability": 0
-    },
-    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
     "sky_color": 8103167,
     "fog_color": 12638463,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": 4445678,
+    "water_fog_color": 270131
   },
   "surface_builder": "minecraft:basalt_deltas",
   "carvers": {
@@ -49,8 +34,6 @@
       "minecraft:basalt_blobs",
       "minecraft:blackstone_blobs",
       "minecraft:spring_delta",
-      "minecraft:brown_mushroom_nether",
-      "minecraft:red_mushroom_nether",
       "minecraft:spring_closed_double"
     ],
     [

@@ -1,12 +1,6 @@
 package com.github.sniffity.panthalassa;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
@@ -38,24 +32,14 @@ public final class Panthalassa {
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
 
-
-
-
 		GeckoLib.initialize();
 
 	}
 
+
 	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
 		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();
-
-
-		//Taken from Dungeon Mobs
-		//	BiomeSpawnEntries.initBiomeSpawnEntries();
-		//	EntitySpawnPlacements.initSpawnPlacements();
-		//	RaidEntries.initWaveMemberEntries();
-		//	SensorMapModifier.replaceSensorMaps();
-		//	CapabilityManager.INSTANCE.register(ICloneable.class, new CloneableStorage(), Cloneable::new);
 		});
 	}
 }
