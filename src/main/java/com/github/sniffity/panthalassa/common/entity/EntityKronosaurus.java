@@ -69,7 +69,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)1.2F);
     }
 
-    public void travel(Vector3d travelVector) {
         if (this.isServerWorld() && this.isInWater()) {
             this.moveRelative(this.getAIMoveSpeed(), travelVector);
             this.move(MoverType.SELF, this.getMotion());

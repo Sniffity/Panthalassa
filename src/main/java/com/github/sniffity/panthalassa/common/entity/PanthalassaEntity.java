@@ -4,6 +4,7 @@ package com.github.sniffity.panthalassa.common.entity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -96,4 +97,19 @@ public class PanthalassaEntity extends WaterMobEntity {
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 12.0D, 70));
     }
+    
+    public void travel(Vector3d travelVector) {
+        if (this.isServerWorld() && this.isInWater()) {
+            this.moveRelative(this.getAIMoveSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getMotion());
+            this.setMotion(this.getMotion().scale(0.9D));
+            if (this.getAttackTarget() == null) {
+                this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
+            }
+        } else {
+            super.travel(travelVector);
+        }
+
+    }
+
 }
