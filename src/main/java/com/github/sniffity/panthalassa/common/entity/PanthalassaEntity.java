@@ -1,7 +1,5 @@
 package com.github.sniffity.panthalassa.common.entity;
 
-//import com.github.sniffity.panthalassa.common.entity.ai.PanthalassaSwimmingHelper;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
@@ -9,30 +7,27 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.entity.monster.ElderGuardianEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.entity.monster.GuardianEntity;
+import net.minecraft.entity.passive.DolphinEntity;
+
+import java.util.EnumSet;
 
 public class PanthalassaEntity extends WaterMobEntity {
 
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
-        //this.moveController = new PanthalassaSwimmingHelper(this);
         this.setPathPriority(PathNodeType.WATER, 3.0F);
         this.lookController = new DolphinLookController(this, 10);
+        this.moveController = new PanthalassaEntity.PanthalassaSwimmingHelper(this);
     }
 
     public PathNavigator createNavigator(World worldIn) {
@@ -84,7 +79,7 @@ public class PanthalassaEntity extends WaterMobEntity {
                 this.entityPanthalassa.setAIMoveSpeed(0.0F);
                 this.entityPanthalassa.setMoveStrafing(0.0F);
                 this.entityPanthalassa.setMoveVertical(0.0F);
-                this.entityPanthalassa.setMoveForward(0.0F);
+                this.entityPanthalassa.setMoveForward(0.5F);
             }
         }
     }
@@ -92,12 +87,10 @@ public class PanthalassaEntity extends WaterMobEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
-        this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 12.0D, 70));
         this.goalSelector.addGoal(3, new LookAtGoal(this, LivingEntity.class, 12.0F));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 12.0D, 70));
-    }
-    
+        }
+
     public void travel(Vector3d travelVector) {
         if (this.isServerWorld() && this.isInWater()) {
             this.moveRelative(this.getAIMoveSpeed(), travelVector);
