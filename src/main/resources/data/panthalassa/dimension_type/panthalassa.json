@@ -9,8 +9,8 @@
   "has_skylight": false,
   "has_ceiling": true,
   "fixed_time": 12000,
-  "ambient_light": 0.5,
+  "ambient_light": 4.0,
   "logical_height": 128,
   "infiniburn": "minecraft:infiniburn_overworld",
-  "effects": "minecraft:the_end"
+  "effects": "minecraft:overworld"
 }

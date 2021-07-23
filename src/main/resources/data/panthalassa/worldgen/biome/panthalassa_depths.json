@@ -5,18 +5,16 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
       "block_search_extent": 8,
-      "offset": 2.0
+      "offset": 2
     },
     "sky_color": 8103167,
     "fog_color": 12638463,
     "water_color": 4445678,
     "water_fog_color": 270131
   },
-  "surface_builder": "minecraft:basalt_deltas",
+  "surface_builder": "panthalassa:panthalassa_depths",
   "carvers": {
-    "air": [
-      "minecraft:nether_cave"
-    ]
+    "air": []
   },
   "features": [
     [],
@@ -27,13 +25,7 @@
     [],
     [],
     [],
-    [
-      "minecraft:spring_water",
-      "minecraft:spring_lava",
-      "minecraft:warm_ocean_vegetation",
-      "minecraft:seagrass_warm",
-      "minecraft:sea_pickle"
-    ],
+    [],
     []
   ],
 
@@ -44,9 +36,9 @@
     "creature": [
       {
         "type": "panthalassa:kronosaurus",
-        "weight": 5000,
-        "minCount": 100,
-        "maxCount": 100
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 3
       }
     ],
     "ambient": [],

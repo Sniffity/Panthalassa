@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:the_nether",
+  "type": "panthalassa:panthalassa",
   "generator": {
     "biome_source": {
       "humidity_noise": {
@@ -49,10 +49,10 @@
     "settings": {
       "bedrock_roof_position": 0,
       "bedrock_floor_position": 0,
-      "sea_level": 64,
+      "sea_level": 63,
       "disable_mob_generation": false,
       "default_block": {
-        "Name": "minecraft:netherrack"
+        "Name": "minecraft:magma_block"
       },
       "default_fluid": {
         "Name": "minecraft:water",

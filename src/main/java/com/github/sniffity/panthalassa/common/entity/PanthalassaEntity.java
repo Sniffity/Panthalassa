@@ -15,10 +15,6 @@ import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.entity.monster.GuardianEntity;
-import net.minecraft.entity.passive.DolphinEntity;
-
-import java.util.EnumSet;
 
 public class PanthalassaEntity extends WaterMobEntity {
 
