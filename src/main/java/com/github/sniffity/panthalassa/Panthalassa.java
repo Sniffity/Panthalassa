@@ -1,17 +1,19 @@
 package com.github.sniffity.panthalassa;
-import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
-import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
-import com.github.sniffity.panthalassa.common.registry.PanthalassaSurfaceBuilders;
+import com.github.sniffity.panthalassa.common.registry.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import com.github.sniffity.panthalassa.common.registry.PanthalassaItems;
 import software.bernie.geckolib3.GeckoLib;
 
 
@@ -26,6 +28,7 @@ public final class Panthalassa {
 	public Panthalassa() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		PanthalassaBlocks.BLOCKS.register(bus);
 		PanthalassaItems.ITEMS.register(bus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(bus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(bus);
@@ -35,11 +38,21 @@ public final class Panthalassa {
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
 
 		GeckoLib.initialize();
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
 		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();
+		});
+	}
+
+
+	@SubscribeEvent
+	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
+		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
+			event.getRegistry().register(new BlockItem(block, new Item.Properties().group(ItemGroup.MISC))
+					.setRegistryName(block.getRegistryName()));
 		});
 	}
 }

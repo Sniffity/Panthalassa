@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.common.world.gen.surfacebuilders;
 
+import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
@@ -7,12 +8,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.ValleySurfaceBuilder;
 
-
 public class PanthalassaDepthsSurfaceBuilder extends ValleySurfaceBuilder {
     private static final BlockState ROOF_BLOCK_1 = Blocks.LAPIS_BLOCK.getDefaultState();
     private static final BlockState ROOF_BLOCK_2 = Blocks.REDSTONE_BLOCK.getDefaultState();
     private static final BlockState ROOF_BLOCK_3 = Blocks.COAL_BLOCK.getDefaultState();
-    private static final BlockState FLOOR_BLOCK_1 = Blocks.DIAMOND_BLOCK.getDefaultState();
+    private static final BlockState FLOOR_BLOCK_1 = PanthalassaBlocks.PANTHALASSA_SOIL.get().getDefaultState();
     private static final BlockState FLOOR_BLOCK_2 = Blocks.EMERALD_BLOCK.getDefaultState();
     private static final BlockState FLOOR_BLOCK_3 = Blocks.GOLD_BLOCK.getDefaultState();
 
