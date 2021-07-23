@@ -23,23 +23,21 @@
     [],
     [],
     [],
-    [
-      "minecraft:delta",
-      "minecraft:small_basalt_columns",
-      "minecraft:large_basalt_columns"
-    ],
+    [],
+    [],
     [],
     [],
     [
-      "minecraft:basalt_blobs",
-      "minecraft:blackstone_blobs",
-      "minecraft:spring_delta",
-      "minecraft:spring_closed_double"
+      "minecraft:spring_water",
+      "minecraft:spring_lava",
+      "minecraft:warm_ocean_vegetation",
+      "minecraft:seagrass_warm",
+      "minecraft:sea_pickle"
     ],
-    [
-    ]
+    []
   ],
-  "starts": [
+
+"starts": [
   ],
   "spawners": {
     "monster": [],
