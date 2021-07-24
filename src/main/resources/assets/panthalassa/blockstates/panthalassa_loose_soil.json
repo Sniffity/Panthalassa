@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "panthalassa:block/panthalassa_coarse_soil" }
+    "": { "model": "panthalassa:block/panthalassa_loose_soil" }
   }
 }

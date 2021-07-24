@@ -19,7 +19,7 @@ public class PanthalassaKelp extends Feature<NoFeatureConfig> {
     @Override
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         int i = 0;
-        int kelp_limit = 64;
+        int kelp_limit = 128;
         BlockPos blockpos = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         if ((reader.getBlockState(blockpos).getBlock()== Blocks.WATER)&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.getDefaultState();

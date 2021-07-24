@@ -29,7 +29,7 @@ public class PanthalassaFeatures {
     }
 
     public static void registerConfiguredFeatures() {
-        register("panthalassa_kelp", ConfiguredFeatures.PANTHALASSA_KELP.range(5).square().func_242731_b(100));
+        register("panthalassa_kelp", ConfiguredFeatures.PANTHALASSA_KELP.range(16).square().func_242731_b(100));
     }
 
     private static <FeatureConfig extends IFeatureConfig> void register(String name, ConfiguredFeature<FeatureConfig, ?> feature) {
