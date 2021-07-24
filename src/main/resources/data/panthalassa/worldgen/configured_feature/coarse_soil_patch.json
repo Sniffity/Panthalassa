@@ -1,0 +1,46 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "target": {
+                  "block": "panthalassa:panthalassa_soil",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "state": {
+                  "Name": "panthalassa:panthalassa_coarse_soil"
+                },
+                "size": 64
+              },
+              "type": "minecraft:ore"
+            },
+            "decorator": {
+              "config": {
+                "bottom_offset": 10,
+                "top_offset": 20,
+                "maximum": 128
+              },
+              "type": "minecraft:range"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 10
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}

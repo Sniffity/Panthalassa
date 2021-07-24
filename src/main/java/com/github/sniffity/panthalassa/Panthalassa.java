@@ -1,15 +1,18 @@
 package com.github.sniffity.panthalassa;
 import com.github.sniffity.panthalassa.common.registry.*;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,7 +33,10 @@ public final class Panthalassa {
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		PanthalassaBlocks.BLOCKS.register(bus);
 		PanthalassaItems.ITEMS.register(bus);
+
 		PanthalassaEntityTypes.ENTITY_TYPES.register(bus);
+
+		PanthalassaFeatures.FEATURES.register(bus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(bus);
 
 
@@ -55,5 +61,6 @@ public final class Panthalassa {
 					.setRegistryName(block.getRegistryName()));
 		});
 	}
+
 }
 

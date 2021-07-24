@@ -33,9 +33,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         if ((this.isSwimming()) || (event.isMoving() && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.swim", true));
             return PlayState.CONTINUE;
-        } else if ((this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
-            return PlayState.CONTINUE;
         }
 
         //If it's out of the water, play bounce
@@ -56,6 +53,9 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             return PlayState.CONTINUE;
             }
 
+        //IF it's just in water, play float
+        if (this.isInWater())
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
         return PlayState.CONTINUE;
         }
 
