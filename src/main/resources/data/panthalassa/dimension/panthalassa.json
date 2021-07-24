@@ -52,7 +52,7 @@
       "sea_level": 127,
       "disable_mob_generation": false,
       "default_block": {
-        "Name": "minecraft:magma_block"
+        "Name": "panthalassa:stone"
       },
       "default_fluid": {
         "Name": "minecraft:water",

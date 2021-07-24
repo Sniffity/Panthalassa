@@ -1,10 +1,13 @@
 {
     "item.panthalassa.hpr_glass_sphere": "HPR Glass Sphere",
+
     "block.panthalassa.panthalassa_soil": "Panthalassa Soil",
     "block.panthalassa.panthalassa_coarse_soil": "Panthalassa Coarse Soil",
     "block.panthalassa.panthalassa_loose_soil": "Panthalassa Loose Soil",
+
     "block.panthalassa.panthalassa_rocks": "Panthalassa Rocks",
     "block.panthalassa.panthalassa_coarse_rocks": "Panthalassa Coarse Rocks",
     "block.panthalassa.panthalassa_loose_rocks": "Panthalassa Loose Rocks",
+
     "entity.panthalassa.kronosaurus": "Kronosaurus"
 }

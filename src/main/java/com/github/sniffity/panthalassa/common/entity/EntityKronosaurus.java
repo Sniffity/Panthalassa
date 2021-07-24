@@ -68,6 +68,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public AnimationFactory getFactory() {
         return this.factory;
     }
+
 /*
     @Override
     protected SoundEvent getDeathSound() {

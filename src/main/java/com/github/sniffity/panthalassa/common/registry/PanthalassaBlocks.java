@@ -33,7 +33,17 @@ public class PanthalassaBlocks {
                     .hardnessAndResistance(2f, 6f).harvestTool(ToolType.SHOVEL).harvestLevel(2)
                     .sound(SoundType.GROUND)));
 
-    public static final RegistryObject<Block> PANTHALASSA_ROCKS = BLOCKS.register("panthalassa_rocks",
+    public static final RegistryObject<Block> PANTHALASSA_STONE = BLOCKS.register("panthalassa_stone",
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+                    .hardnessAndResistance(2f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
+                    .sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> PANTHALASSA_COARSE_STONE = BLOCKS.register("panthalassa_coarse_stone",
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+                    .hardnessAndResistance(2f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
+                    .sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> PANTHALASSA_LOOSE_STONE = BLOCKS.register("panthalassa_loose_stone",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
                     .hardnessAndResistance(2f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
                     .sound(SoundType.STONE)));
