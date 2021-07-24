@@ -11,8 +11,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-public class PanthalassaKelp extends Feature<NoFeatureConfig> {
-    public PanthalassaKelp(Codec<NoFeatureConfig> p_i231967_1_) {
+public class FeaturePanthalassaKelp extends Feature<NoFeatureConfig> {
+    public FeaturePanthalassaKelp(Codec<NoFeatureConfig> p_i231967_1_) {
         super(p_i231967_1_);
     }
 

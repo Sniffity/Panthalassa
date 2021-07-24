@@ -88,10 +88,12 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public void registerGoals() {
         Float speedGoals = 1.3F;
         super.registerGoals();
-        this.goalSelector.addGoal(2, new RandomWalkingGoal(this, speedGoals, 70));
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, speedGoals, false));
+        this.goalSelector.addGoal(2, new RandomWalkingGoal(this, speedGoals, 70));
+        this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, speedGoals, 70));
+
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, speedGoals, 70));
+
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, true, entity -> (entity instanceof PlayerEntity && !(this.world.getDifficulty() == Difficulty.PEACEFUL))));
     }

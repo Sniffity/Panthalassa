@@ -22,5 +22,5 @@ public class PanthalassaEntityTypes {
 @SuppressWarnings("deprecated")
     public static void setupEntityTypeAttributes (){
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().create());
-    }
+}
 }

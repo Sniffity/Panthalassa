@@ -17,7 +17,9 @@
     "air": []
   },
   "features": [
-    [],
+    [
+      "panthalassa:panthalassa_rocks"
+    ],
     [],
     [],
     [],

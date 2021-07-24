@@ -47,4 +47,10 @@ public class PanthalassaBlocks {
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
                     .hardnessAndResistance(2f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
                     .sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> PANTHALASSA_ROCK = BLOCKS.register("panthalassa_rock",
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+                    .hardnessAndResistance(3f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
+                    .sound(SoundType.STONE)));
+
 }
