@@ -11,5 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class PanthalassaSurfaceBuilders {
 
     public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = DeferredRegister.create(ForgeRegistries.SURFACE_BUILDERS, Panthalassa.MODID);
-    public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> PANTHALASSA_DEPTHS = SURFACE_BUILDERS.register("panthalassa_depths", () -> new PanthalassaDepths(SurfaceBuilderConfig.field_237203_a_));
+
+    public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> PANTHALASSA_DEPTHS = SURFACE_BUILDERS.register("panthalassa_depths",
+            () -> new PanthalassaDepths(SurfaceBuilderConfig.field_237203_a_));
 }

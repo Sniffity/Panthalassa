@@ -51,6 +51,8 @@ public final class Panthalassa {
 	private void setup(final FMLCommonSetupEvent event){
 		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();
 		});
+		DeferredWorkQueue.runLater(() -> {PanthalassaFeatures.registerConfiguredFeatures();
+		});
 	}
 
 

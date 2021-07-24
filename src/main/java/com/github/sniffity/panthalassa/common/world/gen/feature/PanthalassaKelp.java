@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.common.world.gen.features;
+package com.github.sniffity.panthalassa.common.world.gen.feature;
 
 import com.mojang.serialization.Codec;
 import java.util.Random;
@@ -16,9 +16,10 @@ public class PanthalassaKelp extends Feature<NoFeatureConfig> {
         super(p_i231967_1_);
     }
 
+    @Override
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         int i = 0;
-        int kelp_limit = 32;
+        int kelp_limit = 64;
         BlockPos blockpos = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         if ((reader.getBlockState(blockpos).getBlock()== Blocks.WATER)&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.getDefaultState();
@@ -41,11 +42,9 @@ public class PanthalassaKelp extends Feature<NoFeatureConfig> {
                     }
                     break;
                 }
-
                 blockpos = blockpos.up();
             }
         }
-
         return i > 0;
     }
 }

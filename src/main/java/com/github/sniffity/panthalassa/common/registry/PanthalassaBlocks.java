@@ -27,4 +27,9 @@ public class PanthalassaBlocks {
             () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
                     .hardnessAndResistance(2f, 6f).harvestTool(ToolType.SHOVEL).harvestLevel(2)
                     .sound(SoundType.GROUND)));
+
+    public static final RegistryObject<Block> PANTHALASSA_LOOSE_SOIL = BLOCKS.register("panthalassa_loose_soil",
+            () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
+                    .hardnessAndResistance(2f, 6f).harvestTool(ToolType.SHOVEL).harvestLevel(2)
+                    .sound(SoundType.GROUND)));
 }
