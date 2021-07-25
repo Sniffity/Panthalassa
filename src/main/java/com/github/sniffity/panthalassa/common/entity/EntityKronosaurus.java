@@ -1,14 +1,16 @@
 package com.github.sniffity.panthalassa.common.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import com.github.sniffity.panthalassa.common.entity.ai.PanthalssaRandomSwimmingGoal;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -17,6 +19,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import javax.annotation.Nullable;
 
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob {
@@ -75,6 +79,13 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         return SoundEvents.ENTITY_HOGLIN_DEATH;
     }
 */
+@Nullable
+@Override
+    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
+    return super.onInitialSpawn(world, difficulty, reason, livingdata, compound);
+}
+
+
     public static AttributeModifierMap.MutableAttribute kronosaurusAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 25)
@@ -89,11 +100,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         Float speedGoals = 1.3F;
         super.registerGoals();
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, speedGoals, false));
-        this.goalSelector.addGoal(2, new RandomWalkingGoal(this, speedGoals, 70));
-        this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, speedGoals, 70));
+//        this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, speedGoals, 5));
 
+        this.goalSelector.addGoal(0, new PanthalssaRandomSwimmingGoal(this, 0.7, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, true, entity -> (entity instanceof PlayerEntity && !(this.world.getDifficulty() == Difficulty.PEACEFUL))));
     }

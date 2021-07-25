@@ -38,14 +38,7 @@
   ],
   "spawners": {
     "monster": [],
-    "creature": [
-      {
-        "type": "panthalassa:kronosaurus",
-        "weight": 20,
-        "minCount": 1,
-        "maxCount": 3
-      }
-    ],
+    "creature": [],
     "ambient": [],
     "water_creature": [],
     "water_ambient": [],

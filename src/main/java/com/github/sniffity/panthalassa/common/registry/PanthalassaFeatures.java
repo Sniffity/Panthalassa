@@ -45,7 +45,7 @@ public class PanthalassaFeatures {
             register("panthalassa_rocks",ConfiguredFeatures.PANTHALASSA_ROCKS
                     .square()
                     .range(128)
-                    .func_242731_b(200));
+                    .func_242731_b(120));
         }
 
         private static <FeatureConfig extends IFeatureConfig> void register(String name, ConfiguredFeature<FeatureConfig, ?> feature) {
