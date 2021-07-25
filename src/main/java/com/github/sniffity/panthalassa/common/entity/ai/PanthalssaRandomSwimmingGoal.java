@@ -66,23 +66,19 @@ public class PanthalssaRandomSwimmingGoal extends Goal {
 
     @Nullable
     protected Vector3d getPosition() {
-        Vector3d vector = RandomPositionGenerator.findRandomTarget(this.creature, 60, 20);
+        Vector3d vector = RandomPositionGenerator.findRandomTarget(this.creature, 30, 20);
 
         for(int i = 0; vector != null && !this.creature.world.getBlockState(new BlockPos(vector)).allowsMovement(this.creature.world, new BlockPos(vector), PathType.WATER) && i++ < 15; vector = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
         }
         if(vector != null){
-            if(!this.creature.world.getFluidState(new BlockPos(vector).up()).isTagged(FluidTags.WATER)){
+            if(!this.creature.world.getFluidState(new BlockPos(vector).up(1)).isTagged(FluidTags.WATER)){
                 vector = vector.add(0, -2, 0);
-            }else if(!this.creature.world.getFluidState(new BlockPos(vector).up(1)).isTagged(FluidTags.WATER)){
-                vector = vector.add(0, -3, 0);
-            }else if(!this.creature.world.getFluidState(new BlockPos(vector).up(2)).isTagged(FluidTags.WATER)){
-                vector = vector.add(0, -4, 0);
-            }else if(!this.creature.world.getFluidState(new BlockPos(vector).down()).isTagged(FluidTags.WATER)){
-                vector = vector.add(0, +2, 0);
+            }else if(!this.creature.world.getFluidState(new BlockPos(vector).up(2)).isTagged(FluidTags.WATER)) {
+                vector = vector.add(0, -1, 0);
             }else if(!this.creature.world.getFluidState(new BlockPos(vector).down(1)).isTagged(FluidTags.WATER)){
-                vector = vector.add(0, +3, 0);
+                vector = vector.add(0, +2, 0);
             }else if(!this.creature.world.getFluidState(new BlockPos(vector).down(2)).isTagged(FluidTags.WATER)){
-                vector = vector.add(0, +4, 0);
+                vector = vector.add(0, +1, 0);
             }
         }
         return vector;

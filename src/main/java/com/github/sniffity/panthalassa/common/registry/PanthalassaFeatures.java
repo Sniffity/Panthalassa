@@ -37,15 +37,17 @@ public class PanthalassaFeatures {
 
         public static void registerConfiguredFeatures() {
             register("panthalassa_kelp", ConfiguredFeatures.PANTHALASSA_KELP
+                    .chance(1)
                     .square()
                     .range(128)
                     .func_242731_b(100));
 
 
             register("panthalassa_rocks",ConfiguredFeatures.PANTHALASSA_ROCKS
+                    .chance(20)
                     .square()
                     .range(128)
-                    .func_242731_b(120));
+                    .func_242731_b(20));
         }
 
         private static <FeatureConfig extends IFeatureConfig> void register(String name, ConfiguredFeature<FeatureConfig, ?> feature) {

@@ -14,12 +14,12 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class PanthalassaEntity extends WaterMobEntity {
-
 
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
@@ -48,8 +48,6 @@ public class PanthalassaEntity extends WaterMobEntity {
 
     }
 
-
-//Proper Attack Behavior
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
@@ -69,7 +67,7 @@ public class PanthalassaEntity extends WaterMobEntity {
 
             int j = EnchantmentHelper.getFireAspectModifier(this);
 
-            if(j > 0) {
+            if (j > 0) {
                 entityIn.setFire(j * 4);
             }
 
@@ -78,10 +76,10 @@ public class PanthalassaEntity extends WaterMobEntity {
                 ItemStack itemstack = this.getHeldItemMainhand();
                 ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
-                if(!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
+                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
                     float f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
-                    if(this.rand.nextFloat() < f1) {
+                    if (this.rand.nextFloat() < f1) {
                         entityplayer.getCooldownTracker().setCooldown(itemstack1.getItem(), 100);
                         this.world.setEntityState(entityplayer, (byte) 30);
                     }
@@ -93,8 +91,6 @@ public class PanthalassaEntity extends WaterMobEntity {
 
         return flag;
     }
-
-
 
 
     static class PanthalassaSwimmingHelper extends MovementController {
@@ -139,41 +135,44 @@ public class PanthalassaEntity extends WaterMobEntity {
 
                 }
 
-            } else {
+            } else if (this.entityPanthalassa.areEyesInFluid(FluidTags.WATER)) {
 
                 if (entityPanthalassa.world.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
-                    this.entityPanthalassa.setAIMoveSpeed(0.5F);
+                    this.entityPanthalassa.setAIMoveSpeed(1.0F);
                     this.entityPanthalassa.setMoveStrafing(0.0F);
                     this.entityPanthalassa.setMoveVertical(0.05F);
-                    this.entityPanthalassa.setMoveForward(0.5F);
+                    this.entityPanthalassa.setMoveForward(0.05F);
                 }
 
                 if (entityPanthalassa.world.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
-                    this.entityPanthalassa.setAIMoveSpeed(0.01F);
+                    this.entityPanthalassa.setAIMoveSpeed(1.0F);
                     this.entityPanthalassa.setMoveStrafing(0.0F);
                     this.entityPanthalassa.setMoveVertical(0.01F);
                     this.entityPanthalassa.setMoveForward(0.01F);
-
-
                 }
+
+            } else {
+                this.entityPanthalassa.setAIMoveSpeed(0.0F);
+            }
+
+            if (!this.entityPanthalassa.world.getFluidState(new BlockPos(entityPanthalassa.getPosition()).up(1)).isTagged(FluidTags.WATER)) {
+                this.entityPanthalassa.setMotion(this.entityPanthalassa.getMotion().add(0.0D, -0.05D, 0.0D));
+            } else if (!this.entityPanthalassa.world.getFluidState(new BlockPos(entityPanthalassa.getPosition()).up(2)).isTagged(FluidTags.WATER)) {
+                this.entityPanthalassa.setMotion(this.entityPanthalassa.getMotion().add(0.0D, -0.05D, 0.0D));
+            } else if (!this.entityPanthalassa.world.getFluidState(new BlockPos(entityPanthalassa.getPosition()).down(1)).isTagged(FluidTags.WATER)) {
+                this.entityPanthalassa.setMotion(this.entityPanthalassa.getMotion().add(0.0D, +0.05D, 0.0D));
             }
         }
     }
 
 
-
-
-
-
     protected void registerGoals() {
         super.registerGoals();
-        //Custom coded in goals, RandomSwimming (AM), efficientMoveTowardsTarget (BAP), etc.
-        this.goalSelector.addGoal(0, new MoveTowardsTargetGoal(this, 1.0, 16.0F));
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
         this.goalSelector.addGoal(3, new LookAtGoal(this, LivingEntity.class, 12.0F));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        }
-
+    }
 
 
 }
+

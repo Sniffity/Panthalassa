@@ -41,9 +41,9 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateFeatureConfig> {
                 }
 
                 for(int l = 0; l < 3; ++l) {
-                    int i = rand.nextInt(2);
-                    int j = rand.nextInt(2);
-                    int k = rand.nextInt(2);
+                    int i = rand.nextInt(5);
+                    int j = rand.nextInt(5);
+                    int k = rand.nextInt(5);
                     float f = (float)(i + j + k) * 0.333F + 0.5F;
 
                     for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-i, -j, -k), pos.add(i, j, k))) {
