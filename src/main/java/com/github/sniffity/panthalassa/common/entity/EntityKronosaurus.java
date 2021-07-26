@@ -1,6 +1,6 @@
 package com.github.sniffity.panthalassa.common.entity;
 
-import com.github.sniffity.panthalassa.common.entity.ai.PanthalssaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.common.entity.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -8,10 +8,8 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -79,6 +77,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         return SoundEvents.ENTITY_HOGLIN_DEATH;
     }
 */
+
 @Nullable
 @Override
     public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
@@ -97,11 +96,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public void registerGoals() {
-        Float speedGoals = 1.3F;
-        super.registerGoals();
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.5, false));
-        this.goalSelector.addGoal(0, new MoveTowardsTargetGoal(this, 1.5, 16.0F));
-        this.goalSelector.addGoal(0, new PanthalssaRandomSwimmingGoal(this, 0.7, 10));
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.7, false));
+        this.goalSelector.addGoal(0, new MoveTowardsTargetGoal(this, 1.7, 16.0F));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10));
+
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, true, entity -> (entity instanceof PlayerEntity && !(this.world.getDifficulty() == Difficulty.PEACEFUL))));

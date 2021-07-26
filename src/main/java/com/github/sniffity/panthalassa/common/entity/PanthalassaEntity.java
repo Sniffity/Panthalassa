@@ -1,12 +1,12 @@
 package com.github.sniffity.panthalassa.common.entity;
 
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
+import com.sun.xml.internal.bind.v2.TODO;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -93,7 +93,7 @@ public class PanthalassaEntity extends WaterMobEntity {
     }
 
 
-    static class PanthalassaSwimmingHelper extends MovementController {
+    public static class PanthalassaSwimmingHelper extends MovementController {
 
         private final PanthalassaEntity entityPanthalassa;
 
@@ -111,6 +111,7 @@ public class PanthalassaEntity extends WaterMobEntity {
                 double d0 = this.posX - this.entityPanthalassa.getPosX();
                 double d1 = this.posY - this.entityPanthalassa.getPosY();
                 double d2 = this.posZ - this.entityPanthalassa.getPosZ();
+
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 if (d3 < (double) 2.5000003E-7F) {
                     this.mob.setMoveForward(0.0F);
@@ -136,23 +137,24 @@ public class PanthalassaEntity extends WaterMobEntity {
                 }
 
             } else if (this.entityPanthalassa.areEyesInFluid(FluidTags.WATER)) {
-
                 if (entityPanthalassa.world.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
-                    this.entityPanthalassa.setAIMoveSpeed(1.0F);
-                    this.entityPanthalassa.setMoveStrafing(0.0F);
-                    this.entityPanthalassa.setMoveVertical(0.05F);
-                    this.entityPanthalassa.setMoveForward(0.05F);
-                }
-
-                if (entityPanthalassa.world.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
                     this.entityPanthalassa.setAIMoveSpeed(1.0F);
                     this.entityPanthalassa.setMoveStrafing(0.0F);
                     this.entityPanthalassa.setMoveVertical(0.01F);
                     this.entityPanthalassa.setMoveForward(0.01F);
                 }
 
-            } else {
-                this.entityPanthalassa.setAIMoveSpeed(0.0F);
+                if (entityPanthalassa.world.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
+                    System.out.println("DRIFTING");
+                    this.entityPanthalassa.setAIMoveSpeed(1.0F);
+                    this.entityPanthalassa.setMoveStrafing(0.0F);
+                    this.entityPanthalassa.setMoveVertical(0.01F);
+                    this.entityPanthalassa.setMoveForward(0.01F);
+                    //if (this.entityPanthalssa.getPos(X)-this.entityPanthalassa.lastTickPosX < ##) {this.entityPanthalassa.setMoveForward(0.00F).
+                    //What if it's moving only alongX? Alternatively, what if it's stuck moving along X on a wall?
+
+                }
+            } else {this.entityPanthalassa.setAIMoveSpeed(0.0F);
             }
 
             if (!this.entityPanthalassa.world.getFluidState(new BlockPos(entityPanthalassa.getPosition()).up(1)).isTagged(FluidTags.WATER)) {
@@ -168,9 +170,9 @@ public class PanthalassaEntity extends WaterMobEntity {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new FindWaterGoal(this));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, LivingEntity.class, 12.0F));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
+//        this.goalSelector.addGoal(1, new FindWaterGoal(this));
+//        this.goalSelector.addGoal(3, new LookAtGoal(this, LivingEntity.class, 12.0F));
+//        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
     }
 
 
