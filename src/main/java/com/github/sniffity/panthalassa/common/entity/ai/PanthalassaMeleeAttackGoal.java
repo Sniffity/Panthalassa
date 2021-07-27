@@ -23,7 +23,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     private final int attackInterval = 20;
     private long lastCanUseCheck;
     private int failedPathFindingPenalty = 0;
-    private boolean canPenalize = false;
+//    private boolean canPenalize = false;
 
     public PanthalassaMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory) {
         this.attacker = creature;
@@ -32,6 +32,8 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
+
+    //Remove penalization for faster updates.
     public boolean shouldExecute() {
         long i = this.attacker.world.getGameTime();
         //If less than 20 ticks have passed, do NOT execute.
@@ -52,7 +54,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
                 //Hence, if on tick 0 I executed and on if on tick 20 I did not execute, it would still impede execution until tick 40. 40 ticks without execution.
                     //Each failed execution (due to target checks) means execution will be blocked for 20 ticks.
             } else {
-                if (canPenalize) {
+               /*if (canPenalize) {
                     if (--this.delayCounter <= 0) {
                         this.path = this.attacker.getNavigator().getPathToEntity(livingentity, 0);
                         this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
@@ -60,7 +62,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
                     } else {
                         return true;
                     }
-                }
+                }*/
                 this.path = this.attacker.getNavigator().getPathToEntity(livingentity, 0);
                 if (this.path != null) {
                     return true;
@@ -70,6 +72,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
             }
         }
     }
+
 
     public boolean shouldContinueExecuting() {
         //Here: It has a target, and the target is valid, and the target is alive.
@@ -103,6 +106,9 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         //Set the delay counter to 0.
         this.delayCounter = 0;
         //Set the ticks until next attack to 0, it's attacking now.
+
+
+        //VERIFY:
         this.ticksUntilNextAttack = 0;
     }
 
@@ -119,6 +125,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         this.attacker.getNavigator().clearPath();
     }
 
+    @Override
     public void tick() {
         //Once it's executing....
             //each tick, this batch will run.
@@ -156,7 +163,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
             this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
             //If canPenalize is true
             //ADD to the delay counter the failedPathFindingPenalty, hence delaying new attacks even further.
-            if (this.canPenalize) {
+            /*if (this.canPenalize) {
                 this.delayCounter += failedPathFindingPenalty;
                 //PathFinding penalty will now be computed....
                 //If the path to the target is null, do not attempt to execute another attack for 10 ticks.
@@ -177,7 +184,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
                     failedPathFindingPenalty += 10;
                 }
             }
-
+*/
             //Analyze distance. Based on distance, set the delays for further attacks. If it's far, add a delay so it can reach it.
             //If it's closer, add another shorter delay so it can reach it.
             if (d0 > 1024.0D) {

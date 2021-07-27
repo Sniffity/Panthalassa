@@ -31,11 +31,9 @@ public class PanthalassaSwimmingHelper extends MovementController {
                 this.mob.setMoveForward(0.0F);
             } else {
                 float f = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                if (this.entityPanthalassa.isAggressive()) {
-                    System.out.println("Condition 1 met");
-                    this.entityPanthalassa.rotationYaw = this.limitAngle(this.entityPanthalassa.rotationYaw, f, 6.0F);
+                if ((this.entityPanthalassa.getAttackTarget() != null)) {
+                    this.entityPanthalassa.rotationYaw = this.limitAngle(this.entityPanthalassa.rotationYaw, f, 5.0F);
                 } else {
-                    System.out.println("Condition 2 met");
                     this.entityPanthalassa.rotationYaw = this.limitAngle(this.entityPanthalassa.rotationYaw, f, 1.0F);
                 }
                 this.entityPanthalassa.renderYawOffset = this.entityPanthalassa.rotationYaw;

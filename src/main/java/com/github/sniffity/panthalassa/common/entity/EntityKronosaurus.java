@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.common.entity;
 
+import com.github.sniffity.panthalassa.common.entity.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.common.entity.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -95,12 +96,13 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.7, false));
-        this.goalSelector.addGoal(0, new MoveTowardsTargetGoal(this, 1.7, 32.0F));
+        this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 1.7, false));
+//        this.goalSelector.addGoal(0, new MoveTowardsTargetGoal(this, 1.7, 32.0F));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10));
 
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.world.getDifficulty() == Difficulty.PEACEFUL))));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
+
     }
 }
