@@ -45,7 +45,6 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                     return false;
                 }
                 if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
-                    System.out.println("Execution BLOCKED. condition 3");
                     return false;
                 }
             }
