@@ -79,24 +79,23 @@ public class PanthalassaPortalBlock extends Block {
             check.placePortalBlocks();
             //world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 0.7F, 1.0F);
             return true;
-        } else {
+        } /*else {
             PanthalassaPortalBlock.MatchShapeSize check1 = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
 
             if (check1.match) {
                 check1.placePortalBlocks();
                 world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 return true;
-            } else {
+            } */else {
                 return false;
             }
         }
-    }
 
 
     @Override
     public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
         PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
-        if (neighborBlock == this || check.isPanthalssaPortalFrame(neighborBlock.getDefaultState())) {
+        if (neighborBlock == this || check.isPanthalassaPortalFrame(neighborBlock.getDefaultState())) {
             if (!check.match) {
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
             }
@@ -168,7 +167,7 @@ public class PanthalassaPortalBlock extends Block {
         private final IWorld world;
         BlockPos centerPosition;
 
-        boolean isPanthalssaPortalFrame(BlockState state) {
+        boolean isPanthalassaPortalFrame(BlockState state) {
             return state == PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
         }
 
@@ -187,18 +186,20 @@ public class PanthalassaPortalBlock extends Block {
 
             this.world = world;
 
-            int offsetNS = centerPortal(pos, Direction.NORTH);
-            int offsetEW = centerPortal(pos, Direction.EAST);
+            int offsetN = centerPortal(pos, Direction.NORTH);
+            int offsetS = centerPortal(pos, Direction.SOUTH);
+            int offsetE = centerPortal(pos, Direction.EAST);
+            int offsetW = centerPortal(pos, Direction.WEST);
 
-            //Once the center position is found, it will declared to the BlockPos field named centerPosition with that value.
-            centerPosition = new BlockPos(pos.getX() + offsetNS, pos.getY(), pos.getZ() + offsetEW);
+            //Once the center position is found, it will be declared to the BlockPos field named centerPosition with that value.
+            centerPosition = new BlockPos(pos.getX()+((offsetE-offsetW)/2), pos.getY(), pos.getZ()-((offsetN-offsetS)/2));
 
             //Then, it will carry out several checks starting on the BlockPos field, to verify an exact shape match.
 
             //This series of loops of IF statements only continues if all the blocks match the Portal Frame condition.
             //A single block not matching and the whole sequence stops, declaring a false match.
             for (int z = -2; z < 3; z++) {
-                if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
+                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
                     match = false;
                     break;
                 }
@@ -208,7 +209,7 @@ public class PanthalassaPortalBlock extends Block {
             //A failed match skips this series of checks.
             if (match) {
                 for (int z = -2; z < 3; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -217,7 +218,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -2; z < 3; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(7, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(7, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -227,7 +228,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -4; z < -1; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-6, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-6, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -235,7 +236,7 @@ public class PanthalassaPortalBlock extends Block {
             }
             if (match) {
                 for (int z = 2; z < 5; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-6, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-6, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -244,7 +245,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -4; z < -1; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(6, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(6, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -252,7 +253,7 @@ public class PanthalassaPortalBlock extends Block {
             }
             if (match) {
                 for (int z = 2; z < 5; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(6, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(6, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -261,7 +262,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -5; z < -3; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-5, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-5, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -269,7 +270,7 @@ public class PanthalassaPortalBlock extends Block {
             }
             if (match) {
                 for (int z = 4; z < 6; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-5, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-5, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -278,7 +279,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -5; z < -3; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(5, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(5, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -286,7 +287,7 @@ public class PanthalassaPortalBlock extends Block {
             }
             if (match) {
                 for (int z = 4; z < 6; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(5, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(5, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -296,7 +297,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -6; z < -4; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-4, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-4, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -304,7 +305,7 @@ public class PanthalassaPortalBlock extends Block {
             }
             if (match) {
                 for (int z = 5; z < 7; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-4, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-4, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -313,7 +314,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = -6; z < -4; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(4, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(4, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -322,7 +323,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int z = 5; z < 7; z++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(4, 0, z)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(4, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -331,29 +332,29 @@ public class PanthalassaPortalBlock extends Block {
 
 
             if (match) {
-                if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-3, 0, -6)))) {
+                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-3, 0, -6)))) {
                     match = false;
                 }
             }
             if (match) {
-                if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(-3, 0, 6)))) {
+                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-3, 0, 6)))) {
                     match = false;
                 }
             }
             if (match) {
-                if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(3, 0, -6)))) {
+                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(3, 0, -6)))) {
                     match = false;
                 }
             }
             if (match) {
-                if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(3, 0, 6)))) {
+                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(3, 0, 6)))) {
                     match = false;
                 }
             }
 
             if (match) {
                 for (int x = -2; x < 3; x++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(x, 0, -7)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(x, 0, -7)))) {
                         match = false;
                         break;
                     }
@@ -362,7 +363,7 @@ public class PanthalassaPortalBlock extends Block {
 
             if (match) {
                 for (int x = -2; x < 3; x++) {
-                    if (!isPanthalssaPortalFrame(world.getBlockState(centerPosition.add(x, 0, 7)))) {
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(x, 0, 7)))) {
                         match = false;
                         break;
                     }
@@ -378,36 +379,59 @@ public class PanthalassaPortalBlock extends Block {
         //Find the center of the portal frame.
         int centerPortal(BlockPos pos, Direction direction) {
             int distance;
-            for (distance = 0; distance < 16; ++distance) {
+            for (distance = 1; distance < 16; ++distance) {
                 BlockPos blockpos = pos.offset(direction, distance);
-                if (!isPanthalssaPortalFrame(world.getBlockState(blockpos))) {
+                if (isPanthalassaPortalFrame(world.getBlockState(blockpos))) {
+                    break;
+                }
+                if (distance == 15){
                     break;
                 }
             }
-            int centerOffset;
-            if (distance == 0) {
-                centerOffset = 7;
-            /*
-           NEED TO NULL IF IT'S OUTSIDE.
-        } else if (distance == 15) {
-            centerOffset = null;
-            */
-            } else {
-                centerOffset = MathHelper.floor(distance / 2);
-            }
-            return centerOffset;
+
+            return distance;
         }
 
         void placePortalBlocks() {
             for (int x = -4; x < 5; x++) {
                 for (int z = -4; z < 5; z++) {
                     this.world.setBlockState(centerPosition.add(x, 0, z), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
-
+                }
+                for (int z = -3; z < 4; z++) {
+                    this.world.setBlockState(centerPosition.add(-5, 0, z), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+                }
+                for (int z = -3; z < 4; z++) {
+                    this.world.setBlockState(centerPosition.add(5, 0, z), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+                }
+                for (int z = -1; z < 2; z++) {
+                    this.world.setBlockState(centerPosition.add(-6, 0, z), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+                }
+                for (int z = -1; z < 2; z++) {
+                    this.world.setBlockState(centerPosition.add(6, 0, z), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
                 }
             }
+            for (int x = -3; x < 4; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, -5), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+                }
+
+            for (int x = -3; x < 4; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, 5), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+            }
+
+            for (int x = -1; x < 2; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, -6), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+            }
+
+            for (int x = -1; x < 2; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, 6), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+            }
         }
+
     }
+
 }
+
+
 
 
 
