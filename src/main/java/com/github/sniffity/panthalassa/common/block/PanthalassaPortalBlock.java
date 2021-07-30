@@ -169,7 +169,6 @@ public class PanthalassaPortalBlock extends Block {
         BlockPos centerPosition;
 
         boolean isPanthalssaPortalFrame(BlockState state) {
-
             return state == PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
         }
 
@@ -186,11 +185,10 @@ public class PanthalassaPortalBlock extends Block {
             //Given a random position within the circular portal frame, this will attempt to find the center position.
             //It does so by calling the centerPortal method.
 
-            int offsetNS = centerPortal(pos, Direction.NORTH);
-
-            int offsetEW = centerPortal(pos, Direction.EAST);
-
             this.world = world;
+
+            int offsetNS = centerPortal(pos, Direction.NORTH);
+            int offsetEW = centerPortal(pos, Direction.EAST);
 
             //Once the center position is found, it will declared to the BlockPos field named centerPosition with that value.
             centerPosition = new BlockPos(pos.getX() + offsetNS, pos.getY(), pos.getZ() + offsetEW);
@@ -382,7 +380,7 @@ public class PanthalassaPortalBlock extends Block {
             int distance;
             for (distance = 0; distance < 16; ++distance) {
                 BlockPos blockpos = pos.offset(direction, distance);
-                if (!isPanthalssaPortalFrame(this.world.getBlockState(blockpos))) {
+                if (!isPanthalssaPortalFrame(world.getBlockState(blockpos))) {
                     break;
                 }
             }

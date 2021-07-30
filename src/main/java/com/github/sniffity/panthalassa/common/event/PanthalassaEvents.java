@@ -28,9 +28,10 @@ public class PanthalassaEvents {
                     if (entityItem.getItem().getItem() == PanthalassaItems.PORTAL_KEY.get()
                             && (state.getBlock() == Blocks.WATER
                             || state == PanthalassaBlocks.PORTAL.get().getDefaultState())) {
-                        if (((PanthalassaPortalBlock) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(world, entityItem.getPosition()))
+                        if (((PanthalassaPortalBlock) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(world, entityItem.getPosition())) {
                             entityItem.remove();
                             return;
+                        }
                     }
                 }
             }
