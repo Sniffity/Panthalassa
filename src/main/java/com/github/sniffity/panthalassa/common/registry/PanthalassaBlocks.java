@@ -22,7 +22,7 @@ public class PanthalassaBlocks {
     public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
             PanthalassaPortalBlock::new);
 
-    public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("portal frame",
+    public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("portal_frame",
             () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
                     .hardnessAndResistance(2f, 6f).harvestTool(ToolType.SHOVEL).harvestLevel(2)
                     .sound(SoundType.GROUND)));
