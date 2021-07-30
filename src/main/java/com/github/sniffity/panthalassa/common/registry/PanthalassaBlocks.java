@@ -23,9 +23,9 @@ public class PanthalassaBlocks {
             PanthalassaPortalBlock::new);
 
     public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("portal_frame",
-            () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
-                    .hardnessAndResistance(2f, 6f).harvestTool(ToolType.SHOVEL).harvestLevel(2)
-                    .sound(SoundType.GROUND)));
+            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+                    .hardnessAndResistance(-1.0F, -1.0F)
+                    .sound(SoundType.METAL)));
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
             () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
