@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.common.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
+import com.github.sniffity.panthalassa.common.block.PanthalassaPortalBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -19,9 +20,7 @@ public class PanthalassaBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Panthalassa.MODID);
 
     public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
-            () -> new  //BLOCK HERE
-            )
-
+            PanthalassaPortalBlock::new);
 
     public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("portal frame",
             () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)

@@ -102,6 +102,7 @@ public class PanthalassaTeleporter implements ITeleporter {
 */
 
 
+/*
         for (int z = -2; z < 3; z++) {
             world.setBlockState(entityPos.add(-7, 1, z), portalFrame, 2);
         }
@@ -178,54 +179,6 @@ public class PanthalassaTeleporter implements ITeleporter {
         return Optional.of(new TeleportationRepositioner.Result(entityPos.toImmutable(), 13, 1));
     }
 }
-
-
-
-
-        if (d0 == -1.0D && d1 != -1.0D) {
-            blockpos = blockpos1;
-            d0 = d1;
-        }
-
-        if (d0 == -1.0D) {
-            blockpos = (new BlockPos(pos.getX(), MathHelper.clamp(pos.getY(), 70, this.world.func_234938_ad_() - 10), pos.getZ())).toImmutable();
-            Direction direction1 = direction.rotateY();
-            if (!worldborder.contains(blockpos)) {
-                return Optional.empty();
-            }
-
-            for(int l1 = -1; l1 < 2; ++l1) {
-                for(int k2 = 0; k2 < 2; ++k2) {
-                    for(int i3 = -1; i3 < 3; ++i3) {
-                        BlockState blockstate1 = i3 < 0 ? Blocks.OBSIDIAN.getDefaultState() : Blocks.AIR.getDefaultState();
-                        blockpos$mutable.setAndOffset(blockpos, k2 * direction.getXOffset() + l1 * direction1.getXOffset(), i3, k2 * direction.getZOffset() + l1 * direction1.getZOffset());
-                        this.world.setBlockState(blockpos$mutable, blockstate1);
-                    }
-                }
-            }
-        }
-
-        for(int k1 = -1; k1 < 3; ++k1) {
-            for(int i2 = -1; i2 < 4; ++i2) {
-                if (k1 == -1 || k1 == 2 || i2 == -1 || i2 == 3) {
-                    blockpos$mutable.setAndOffset(blockpos, k1 * direction.getXOffset(), i2, k1 * direction.getZOffset());
-                    this.world.setBlockState(blockpos$mutable, Blocks.OBSIDIAN.getDefaultState(), 3);
-                }
-            }
-        }
-
-        BlockState blockstate = Blocks.NETHER_PORTAL.getDefaultState().with(NetherportalFrame.AXIS, axis);
-
-        for(int j2 = 0; j2 < 2; ++j2) {
-            for(int l2 = 0; l2 < 3; ++l2) {
-                blockpos$mutable.setAndOffset(blockpos, j2 * direction.getXOffset(), l2, j2 * direction.getZOffset());
-                this.world.setBlockState(blockpos$mutable, blockstate, 18);
-            }
-        }
-
-        return Optional.of(new TeleportationRepositioner.Result(blockpos.toImmutable(), 2, 3));
-    }
-}
-
+*/
     //Make a new portal if it doesn't find one.
     //NULL IF NOT IN OVERWORLD.
