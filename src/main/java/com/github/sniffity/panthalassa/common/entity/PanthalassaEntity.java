@@ -14,7 +14,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.entity.passive.DolphinEntity;
 
 public class PanthalassaEntity extends WaterMobEntity {
 
