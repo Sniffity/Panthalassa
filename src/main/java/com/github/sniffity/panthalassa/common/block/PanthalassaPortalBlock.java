@@ -1,38 +1,23 @@
 package com.github.sniffity.panthalassa.common.block;
 
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
-import com.google.common.cache.LoadingCache;
+import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
+import com.github.sniffity.panthalassa.common.world.teleporter.PanthalassaTeleporter;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.ITeleporter;
 
@@ -79,6 +64,8 @@ public class PanthalassaPortalBlock extends Block {
             check.placePortalBlocks();
             //world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 0.7F, 1.0F);
             return true;
+
+
         } /*else {
             PanthalassaPortalBlock.MatchShapeSize check1 = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
 
@@ -86,12 +73,13 @@ public class PanthalassaPortalBlock extends Block {
                 check1.placePortalBlocks();
                 world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 return true;
-            } */else {
-                return false;
-            }
+            } */ else {
+            return false;
         }
+    }
 
 
+    //FIX!
     @Override
     public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
         PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
@@ -102,33 +90,31 @@ public class PanthalassaPortalBlock extends Block {
         }
     }
 
-    /*
+
     @Override
     public void onEntityCollision(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity entity) {
         if (world instanceof ServerWorld) {
             changeDimension((ServerWorld) world, entity, new PanthalassaTeleporter());
         }
     }
-    */
 
-    /*
     public static void changeDimension(ServerWorld serverWorld, Entity entity, ITeleporter teleporter) {
-            ServerPlayerEntity player = (ServerPlayerEntity) entity;
-            RegistryKey<World> key = serverWorld.getDimensionKey() == Atum.ATUM ? World.OVERWORLD : Atum.ATUM;
-            ServerWorld destWorld = serverWorld.getServer().getWorld(key);
-            if (destWorld == null) {
+        if (!entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss() && entity instanceof ServerPlayerEntity) {
+            Entity targetEntity = entity;
+            RegistryKey<World> targetWorldKey = serverWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
+            ServerWorld targetWorld = serverWorld.getServer().getWorld(targetWorldKey);
+            if (targetWorld == null) {
                 return;
             }
-            if (player.field_242273_aw <= 0) {
-                player.world.getProfiler().startSection("portal");
-                player.changeDimension(destWorld, teleporter);
-                player.field_242273_aw = 300; //Set portal cooldown
-                player.world.getProfiler().endSection();
+            if (targetEntity.getPortalCooldown() <= 0) {
+                targetEntity.world.getProfiler().startSection("portal");
+                targetEntity.changeDimension(targetWorld, teleporter);
+                targetEntit
+                targetEntity.world.getProfiler().endSection();
             }
         }
+    }
 
-
-     */
 
     /*
     @Override
@@ -159,9 +145,8 @@ public class PanthalassaPortalBlock extends Block {
             return new BlockPattern.PatternHelper(pos, Direction.NORTH, Direction.EAST, cache, size.width, 4, size.length);
         }
 
+
 */
-
-
     public static class MatchShapeSize {
 
         private final IWorld world;
@@ -192,7 +177,7 @@ public class PanthalassaPortalBlock extends Block {
             int offsetW = centerPortal(pos, Direction.WEST);
 
             //Once the center position is found, it will be declared to the BlockPos field named centerPosition with that value.
-            centerPosition = new BlockPos(pos.getX()+((offsetE-offsetW)/2), pos.getY(), pos.getZ()-((offsetN-offsetS)/2));
+            centerPosition = new BlockPos(pos.getX() + ((offsetE - offsetW) / 2), pos.getY(), pos.getZ() - ((offsetN - offsetS) / 2));
 
             //Then, it will carry out several checks starting on the BlockPos field, to verify an exact shape match.
 
@@ -371,12 +356,13 @@ public class PanthalassaPortalBlock extends Block {
             }
         }
 
+        /*
         boolean matchIsPositive() {
             return this.match;
         }
 
+         */
 
-        //Find the center of the portal frame.
         int centerPortal(BlockPos pos, Direction direction) {
             int distance;
             for (distance = 1; distance < 16; ++distance) {
@@ -384,7 +370,7 @@ public class PanthalassaPortalBlock extends Block {
                 if (isPanthalassaPortalFrame(world.getBlockState(blockpos))) {
                     break;
                 }
-                if (distance == 15){
+                if (distance == 15) {
                     break;
                 }
             }
@@ -412,7 +398,7 @@ public class PanthalassaPortalBlock extends Block {
             }
             for (int x = -3; x < 4; x++) {
                 this.world.setBlockState(centerPosition.add(x, 0, -5), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
-                }
+            }
 
             for (int x = -3; x < 4; x++) {
                 this.world.setBlockState(centerPosition.add(x, 0, 5), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
@@ -426,10 +412,16 @@ public class PanthalassaPortalBlock extends Block {
                 this.world.setBlockState(centerPosition.add(x, 0, 6), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
             }
         }
-
     }
-
 }
+
+
+
+
+
+
+
+
 
 
 

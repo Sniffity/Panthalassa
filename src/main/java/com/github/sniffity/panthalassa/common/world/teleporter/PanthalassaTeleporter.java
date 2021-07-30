@@ -1,10 +1,9 @@
 package com.github.sniffity.panthalassa.common.world.teleporter;
-/*
+
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaPOI;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.NetherportalFrame;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -72,20 +71,18 @@ public class PanthalassaTeleporter implements ITeleporter {
         BlockPos entityPos = new BlockPos(MathHelper.floor(entity.getPosX()), MathHelper.floor(entity.getPosY()), MathHelper.floor(entity.getPosZ()));
         BlockState portalCenter;
 
+
+        /*
         if (world.getDimensionKey() == World.OVERWORLD) {
             portalFrame = PanthalassaBlocks.PANTHALASSA_ROCK.get().getDefaultState();
         } else {
             portalFrame = PanthalassaBlocks.PANTHALASSA_SOIL.get().getDefaultState();
         }
+*/
+
+        BlockState portalBlock  = PanthalassaBlocks.PORTAL.get().getDefaultState();
 
 
-
-
-        BlockState portalFrame  = PanthalassaBlocks.PORTAL.get().getDefaultState();
-
-
-        //????
-        /*
         while (entityPos.getY() > 1 && world.isAirBlock(entityPos)) {
             entityPos = entityPos.down();
         }
@@ -99,10 +96,7 @@ public class PanthalassaTeleporter implements ITeleporter {
         } else {
             sandState = AtumBlocks.LIMESTONE_BRICK_LARGE.getDefaultState();
         }
-*/
 
-
-/*
         for (int z = -2; z < 3; z++) {
             world.setBlockState(entityPos.add(-7, 1, z), portalFrame, 2);
         }
@@ -179,6 +173,6 @@ public class PanthalassaTeleporter implements ITeleporter {
         return Optional.of(new TeleportationRepositioner.Result(entityPos.toImmutable(), 13, 1));
     }
 }
-*/
+
     //Make a new portal if it doesn't find one.
     //NULL IF NOT IN OVERWORLD.
