@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.common.world.teleporter;
 
 
+import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaPOI;
 import net.minecraft.block.BlockState;
@@ -15,6 +16,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.village.PointOfInterest;
 import net.minecraft.village.PointOfInterestManager;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.TicketType;
 import net.minecraftforge.common.util.ITeleporter;
@@ -51,11 +53,6 @@ public class PanthalassaTeleporter implements ITeleporter {
         if (optional.isPresent()) {
             return optional;
         } else {
-            /*            if (!optional1.isPresent()) {
-                Atum.LOG.error("Unable to create a portal, likely target out of worldborder");
-            }
-
- */
             return makePortalFromPos(serverWorld, pos);
         }
     }
@@ -66,7 +63,7 @@ public class PanthalassaTeleporter implements ITeleporter {
         int i = 128;
         pointofinterestmanager.ensureLoadedAndValid(serverWorld, pos, i);
         Optional<PointOfInterest> optional = pointofinterestmanager.getInSquare((poiType) -> {
-            return poiType == PanthalassaPOI.PANTHALASSA_PORTAL.get();
+            return poiType == PanthalassaPOI.PANTHALASSA_POI_PORTAL.get();
         }, pos, i, PointOfInterestManager.Status.ANY).sorted(Comparator.<PointOfInterest>comparingDouble((poi) -> {
             return poi.getPos().distanceSq(pos);
         }).thenComparingInt((poi) -> {
@@ -95,16 +92,23 @@ public class PanthalassaTeleporter implements ITeleporter {
         BlockState portalFrame = PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
         BlockPos pos1 = new BlockPos(pos.getX(),60, pos.getZ());
 
-            while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
+            while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER) &&  (!(world.getDimensionKey() == World.OVERWORLD))) {
                 pos1 = pos1.up();
             }
-            while (!world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER))
-            //        && (world.getBlockState(pos).getBlockState() != PanthalassaBlocks.PANTHALASSA_LOOSE_STONE.get().getDefaultState())
-            //        || (world.getBlockState(pos).getBlockState() != PanthalassaBlocks.PANTHALASSA_STONE.get().getDefaultState())
-            //        || (world.getBlockState(pos).getBlockState() != PanthalassaBlocks.PANTHALASSA_COARSE_STONE.get().getDefaultState()))
-        {
+            while (!world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER) && pos1.getY()>-1 &&  (!(world.getDimensionKey() == World.OVERWORLD)))
+            {
             pos1 = pos1.down();
-        }
+            }
+
+            if (world.getDimensionKey() == World.OVERWORLD) {
+                Panthalassa.LOGGER.error("Corresponding Overworld Portal not found");
+                Panthalassa.LOGGER.error("Panthalassa Portal was probably built manually without a corresponding Overworld Portal");
+                Panthalassa.LOGGER.error("Teleporting to spawn");
+                BlockPos spawnPoint = new BlockPos(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+                return Optional.of(new TeleportationRepositioner.Result(spawnPoint.toImmutable(), 1, 1));
+            }
+
+            else{
 
             for (int z = -2; z < 3; z++) {
                 world.setBlockState(pos1.add(-7, -1, z), portalFrame, 2);
@@ -177,6 +181,7 @@ public class PanthalassaTeleporter implements ITeleporter {
             }
             return Optional.of(new TeleportationRepositioner.Result(pos1.toImmutable(), 15, 1));
 
+        }
     }
 
 }

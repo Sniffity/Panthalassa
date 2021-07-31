@@ -121,7 +121,7 @@ public class PanthalassaPortalBlock extends Block {
                 }
 
                 boolean isWater(BlockState state) {
-                    return state.getFluidState().isTagged(FluidTags.WATER);
+                    return state.getBlockState() == Blocks.WATER.getDefaultState();
                 }
 
                 boolean match = true;
