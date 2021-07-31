@@ -25,6 +25,9 @@ import javax.annotation.Nonnull;
 
 
 public class PanthalassaPortalBlock extends Block {
+    private static int tickCounter;
+
+
 
     private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.8, 1.0D);
 
@@ -64,7 +67,7 @@ public class PanthalassaPortalBlock extends Block {
             //world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 0.7F, 1.0F);
             return true;
 
-
+//Double check?
         } /*else {
             PanthalassaPortalBlock.MatchShapeSize check1 = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
 
@@ -84,6 +87,7 @@ public class PanthalassaPortalBlock extends Block {
         PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
         if (neighborBlock == this || check.isPanthalassaPortalFrame(neighborBlock.getDefaultState())) {
             if (!check.match) {
+                //WATER
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
             }
         }
@@ -98,20 +102,27 @@ public class PanthalassaPortalBlock extends Block {
     }
 
     public static void changeDimension(ServerWorld serverWorld, Entity entity, ITeleporter teleporter) {
+
         RegistryKey<World> targetWorldKey = serverWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
         ServerWorld targetWorld = serverWorld.getServer().getWorld(targetWorldKey);
+
         if (targetWorld == null) {
             return;
         }
 
-        //if (targetEntity.getPortalCooldown() <= 0) {
+        if (tickCounter < 0) {
             entity.world.getProfiler().startSection("panthalassa_portal");
             entity.changeDimension(targetWorld, teleporter);
-//            entity.getPortalCooldown();
             entity.world.getProfiler().endSection();
+            tickCounter = 300;
+        } else if (tickCounter == 0) {
+            tickCounter = -1;
+        } else  {
+            tickCounter = --tickCounter;
+        }
     }
 
-            public static class MatchShapeSize {
+    public static class MatchShapeSize {
 
                 private final IWorld world;
                 BlockPos centerPosition;
@@ -145,18 +156,6 @@ public class PanthalassaPortalBlock extends Block {
                             break;
                         }
                     }
-
-                    /*
-                    if (match) {
-                        for (int z = -2; z < 3; z++) {
-                            if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
-                                match = false;
-                                break;
-                            }
-                        }
-                    }
-*/
-
 
                     if (match) {
                         for (int z = -2; z < 3; z++) {
