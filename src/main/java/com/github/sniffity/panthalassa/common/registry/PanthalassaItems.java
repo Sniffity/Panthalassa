@@ -25,7 +25,7 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> HPR_VEHICLE = ITEMS.register("hpr_vehicle", () -> new Item(new Item.Properties()));
 	//public static final RegistryObject<Item> PORTAL_KEY = ITEMS.register("portal_key",()-> new Item(new Item.Properties()));
 	//spawn eggs
-	public static final RegistryObject<Item> PORTAL_KEY = ITEMS.register("portal_key", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> PORTAL_KEY = ITEMS.register("panthalassa_portal_key", () -> new Item(new Item.Properties()));
 }
 
 

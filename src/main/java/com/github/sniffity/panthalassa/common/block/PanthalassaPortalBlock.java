@@ -7,7 +7,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -22,12 +21,11 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.ITeleporter;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
 
 
 public class PanthalassaPortalBlock extends Block {
 
-    private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.8, 1.0D);
 
     public PanthalassaPortalBlock() {
         super(Properties.create(
@@ -40,7 +38,7 @@ public class PanthalassaPortalBlock extends Block {
                 .tickRandomly());
     }
 
-    @Override
+   @Override
     @Nonnull
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return portalShape;
@@ -99,7 +97,6 @@ public class PanthalassaPortalBlock extends Block {
     }
 
     public static void changeDimension(ServerWorld serverWorld, Entity entity, ITeleporter teleporter) {
-        Entity targetEntity = entity;
         RegistryKey<World> targetWorldKey = serverWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
         ServerWorld targetWorld = serverWorld.getServer().getWorld(targetWorldKey);
         if (targetWorld == null) {
@@ -107,10 +104,10 @@ public class PanthalassaPortalBlock extends Block {
         }
 
         //if (targetEntity.getPortalCooldown() <= 0) {
-            targetEntity.world.getProfiler().startSection("portal");
-            targetEntity.changeDimension(targetWorld, teleporter);
-            targetEntity.getPortalCooldown();
-            targetEntity.world.getProfiler().endSection();
+            entity.world.getProfiler().startSection("portal");
+            entity.changeDimension(targetWorld, teleporter);
+//            entity.getPortalCooldown();
+            entity.world.getProfiler().endSection();
         //}
     }
 
