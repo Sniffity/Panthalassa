@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -120,7 +121,7 @@ public class PanthalassaPortalBlock extends Block {
                 }
 
                 boolean isWater(BlockState state) {
-                    return state == net.minecraft.block.Blocks.WATER.getDefaultState();
+                    return state.getFluidState().isTagged(FluidTags.WATER);
                 }
 
                 boolean match = true;
@@ -154,8 +155,8 @@ public class PanthalassaPortalBlock extends Block {
                             }
                         }
                     }
+*/
 
-                     */
 
                     if (match) {
                         for (int z = -2; z < 3; z++) {
@@ -361,17 +362,47 @@ public class PanthalassaPortalBlock extends Block {
                         }
                     }
 
+                    if (match) {
+                        for (int x = -1; x < 2; x++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(x, 0, -6)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
 
+                    if (match) {
+                        for (int x = -1; x < 2; x++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(x, 0, 6)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
 
+                    if (match) {
+                        for (int x = -3; x < 4; x++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(x, 0, -5)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (match) {
+                        for (int x = -3; x < 4; x++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(x, 0, 5)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
 
                 }
 
-
-
-
-
-                    int centerPortal(BlockPos pos, Direction direction) {
+                int centerPortal(BlockPos pos, Direction direction) {
                     int distance;
+
                     for (distance = 1; distance < 16; ++distance) {
                         BlockPos blockpos = pos.offset(direction, distance);
                         if (isPanthalassaPortalFrame(world.getBlockState(blockpos))) {
@@ -381,7 +412,6 @@ public class PanthalassaPortalBlock extends Block {
                             break;
                         }
                     }
-
                     return distance;
                 }
 
@@ -421,17 +451,3 @@ public class PanthalassaPortalBlock extends Block {
                 }
             }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
