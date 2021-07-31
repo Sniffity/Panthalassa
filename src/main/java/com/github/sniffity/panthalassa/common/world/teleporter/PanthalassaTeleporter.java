@@ -81,34 +81,27 @@ public class PanthalassaTeleporter implements ITeleporter {
         });
     }
 
-/*
-    public Optional<TeleportationRepositioner.Result> makePortalFromEntity(ServerWorld world, @Nonnull Entity entity) {
-        return makePortalFromPos(world, new BlockPos(MathHelper.floor(entity.getPosX()), MathHelper.floor(entity.getPosY()), MathHelper.floor(entity.getPosZ())));
-    }
-*/
-
     public Optional<TeleportationRepositioner.Result> makePortalFromPos(ServerWorld world, @Nonnull BlockPos pos) {
-        BlockState portalCenter = PanthalassaBlocks.PANTHALASSA_ROCK.get().getDefaultState();
+        BlockState portalCenter = PanthalassaBlocks.PORTAL.get().getDefaultState();
         BlockState portalFrame = PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
         BlockPos pos1 = new BlockPos(pos.getX(),60, pos.getZ());
 
-            while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER) &&  (!(world.getDimensionKey() == World.OVERWORLD))) {
+
+        if (world.getDimensionKey() == World.OVERWORLD) {
+            Panthalassa.LOGGER.error("Corresponding Overworld Portal not found");
+            Panthalassa.LOGGER.error("Panthalassa Portal was probably built manually without a corresponding Overworld Portal");
+            Panthalassa.LOGGER.error("Teleporting to spawn");
+            BlockPos spawnPoint = new BlockPos(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
+            return Optional.of(new TeleportationRepositioner.Result(spawnPoint.toImmutable(), 1, 1));
+        }
+
+        while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
                 pos1 = pos1.up();
-            }
-            while (!world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER) && pos1.getY()>-1 &&  (!(world.getDimensionKey() == World.OVERWORLD)))
-            {
+        }
+
+        while (pos1.getY()>-1 &&!world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER)) {
             pos1 = pos1.down();
-            }
-
-            if (world.getDimensionKey() == World.OVERWORLD) {
-                Panthalassa.LOGGER.error("Corresponding Overworld Portal not found");
-                Panthalassa.LOGGER.error("Panthalassa Portal was probably built manually without a corresponding Overworld Portal");
-                Panthalassa.LOGGER.error("Teleporting to spawn");
-                BlockPos spawnPoint = new BlockPos(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
-                return Optional.of(new TeleportationRepositioner.Result(spawnPoint.toImmutable(), 1, 1));
-            }
-
-            else{
+        }
 
             for (int z = -2; z < 3; z++) {
                 world.setBlockState(pos1.add(-7, -1, z), portalFrame, 2);
@@ -116,18 +109,20 @@ public class PanthalassaTeleporter implements ITeleporter {
             for (int z = -2; z < 3; z++) {
                 world.setBlockState(pos1.add(7, -1, z), portalFrame, 2);
             }
+
             for (int z = -4; z < -1; z++) {
                 world.setBlockState(pos1.add(-6, -1, z), portalFrame, 2);
             }
             for (int z = 2; z < 5; z++) {
                 world.setBlockState(pos1.add(-6, -1, z), portalFrame, 2);
             }
-            for (int z = -2; z < -1; z++) {
+            for (int z = -4; z < -1; z++) {
                 world.setBlockState(pos1.add(6, -1, z), portalFrame, 2);
             }
             for (int z = 2; z < 5; z++) {
                 world.setBlockState(pos1.add(6, -1, z), portalFrame, 2);
             }
+
             for (int z = -5; z < -3; z++) {
                 world.setBlockState(pos1.add(-5, -1, z), portalFrame, 2);
             }
@@ -176,12 +171,51 @@ public class PanthalassaTeleporter implements ITeleporter {
             for (int x = -2; x < 3; x++) {
                 world.setBlockState(pos1.add(x, -1, -7), portalFrame, 2);
             }
+
             for (int x = -2; x < 3; x++) {
                 world.setBlockState(pos1.add(x, -1, 7), portalFrame, 2);
             }
-            return Optional.of(new TeleportationRepositioner.Result(pos1.toImmutable(), 15, 1));
 
-        }
+            for (int x = -4; x < 5; x++) {
+                for (int z = -4; z < 5; z++) {
+                    world.setBlockState(pos1.add(x, 0, z), portalCenter, 2);
+                }
+
+                for (int z = -3; z < 4; z++) {
+                        world.setBlockState(pos1.add(-5, 0, z), portalCenter, 2);
+                    }
+
+                for (int z = -3; z < 4; z++) {
+                        world.setBlockState(pos1.add(5, 0, z), portalCenter, 2);
+                    }
+
+                for (int z = -1; z < 2; z++) {
+                        world.setBlockState(pos1.add(-6, 0, z), portalCenter, 2);
+                    }
+
+                for (int z = -1; z < 2; z++) {
+                        world.setBlockState(pos1.add(6, 0, z), portalCenter, 2);
+                    }
+                }
+
+            for (int x = -3; x < 4; x++) {
+                    world.setBlockState(pos1.add(x, 0, -5), portalCenter, 2);
+                }
+
+            for (int x = -3; x < 4; x++) {
+                    world.setBlockState(pos1.add(x, 0, 5), portalCenter, 2);
+                }
+
+            for (int x = -1; x < 2; x++) {
+                    world.setBlockState(pos1.add(x, 0, -6), portalCenter, 2);
+                }
+
+            for (int x = -1; x < 2; x++) {
+                    world.setBlockState(pos1.add(x, 0, 6), portalCenter, 2);
+                }
+
+
+            return Optional.of(new TeleportationRepositioner.Result(pos1.toImmutable(), 15, 1));
     }
 
 }
