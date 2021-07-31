@@ -9,7 +9,8 @@
     "block.panthalassa.panthalassa_coarse_rocks": "Panthalassa Coarse Rocks",
     "block.panthalassa.panthalassa_loose_rocks": "Panthalassa Loose Rocks",
 
-    "block.panthalassa.portal_frame": "Portal Frame",
+    "block.panthalassa.panthalassa_portal_frame": "Panthalassa Portal Frame",
+    "block.panthalassa.panthalassa_portal": "Panthalassa Portal",
 
 
     "entity.panthalassa.kronosaurus": "Kronosaurus"

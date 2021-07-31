@@ -22,7 +22,7 @@ public class PanthalassaBlocks {
     public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
             PanthalassaPortalBlock::new);
 
-    public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("portal_frame",
+    public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("panthalassa_portal_frame",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
                     .hardnessAndResistance(-1.0F, -1.0F)
                     .sound(SoundType.METAL)));
