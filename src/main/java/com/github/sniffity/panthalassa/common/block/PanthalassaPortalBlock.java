@@ -104,45 +104,12 @@ public class PanthalassaPortalBlock extends Block {
         }
 
         //if (targetEntity.getPortalCooldown() <= 0) {
-            entity.world.getProfiler().startSection("portal");
+            entity.world.getProfiler().startSection("panthalassa_portal");
             entity.changeDimension(targetWorld, teleporter);
 //            entity.getPortalCooldown();
             entity.world.getProfiler().endSection();
-        //}
     }
 
-/*
-
-    }
-*/
-
-    /*
-    @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-        return ItemStack.EMPTY;
-    }
-*/
-    /*
-    public static BlockPattern.PatternHelper createPatternHelper(IWorld world, BlockPos pos) {
-        PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
-        LoadingCache<BlockPos, CachedBlockInfo> cache = BlockPattern.createLoadingCache(world, true);
-
-        if (!check.match) {
-            check = new MatchShapeSize(world, pos);
-        }
-        if (!check.match) {
-            return new BlockPattern.PatternHelper(pos, Direction.NORTH, Direction.SOUTH, cache, 1, 1, 1);
-        } else {
-            return new BlockPattern.PatternHelper(pos, Direction.NORTH, Direction.EAST, cache, size.width, 4, size.length);
-        }
-
-        if (!size.isValid()) {
-            return new BlockPattern.PatternHelper(pos, Direction.NORTH, Direction.SOUTH, cache, 1, 1, 1);
-        } else {
-            return new BlockPattern.PatternHelper(pos, Direction.NORTH, Direction.EAST, cache, size.width, 4, size.length);
-        }
-
-*/
             public static class MatchShapeSize {
 
                 private final IWorld world;
@@ -152,18 +119,14 @@ public class PanthalassaPortalBlock extends Block {
                     return state == PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
                 }
 
+                boolean isWater(BlockState state) {
+                    return state == net.minecraft.block.Blocks.WATER.getDefaultState();
+                }
 
                 boolean match = true;
 
 
-                //Verify that there is an exact match for the expected shape, a circle of diameter 15.
-                //Exact is here: https://donatstudios.com/PixelCircleGenerator, width and height = 15.
-
                 public MatchShapeSize(IWorld world, BlockPos pos) {
-
-
-                    //Given a random position within the circular portal frame, this will attempt to find the center position.
-                    //It does so by calling the centerPortal method.
 
                     this.world = world;
 
@@ -172,13 +135,9 @@ public class PanthalassaPortalBlock extends Block {
                     int offsetE = centerPortal(pos, Direction.EAST);
                     int offsetW = centerPortal(pos, Direction.WEST);
 
-                    //Once the center position is found, it will be declared to the BlockPos field named centerPosition with that value.
                     centerPosition = new BlockPos(pos.getX() + ((offsetE - offsetW) / 2), pos.getY(), pos.getZ() - ((offsetN - offsetS) / 2));
 
-                    //Then, it will carry out several checks starting on the BlockPos field, to verify an exact shape match.
 
-                    //This series of loops of IF statements only continues if all the blocks match the Portal Frame condition.
-                    //A single block not matching and the whole sequence stops, declaring a false match.
                     for (int z = -2; z < 3; z++) {
                         if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
                             match = false;
@@ -186,8 +145,7 @@ public class PanthalassaPortalBlock extends Block {
                         }
                     }
 
-                    //An initial check has been carried above. This sequence will only continue if the match has not failed.
-                    //A failed match skips this series of checks.
+                    /*
                     if (match) {
                         for (int z = -2; z < 3; z++) {
                             if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
@@ -196,6 +154,8 @@ public class PanthalassaPortalBlock extends Block {
                             }
                         }
                     }
+
+                     */
 
                     if (match) {
                         for (int z = -2; z < 3; z++) {
@@ -350,16 +310,67 @@ public class PanthalassaPortalBlock extends Block {
                             }
                         }
                     }
+
+                    if (match) {
+                        for (int z = -4; z < 4; z++) {
+                            for (int x = -4; x < 4; x++) {
+                                if (!isWater(world.getBlockState(centerPosition.add(x, 0, z)))) {
+                                    match = false;
+                                    break;
+
+                                }
+                            }
+                        }
+                    }
+
+                    if (match) {
+                        for (int z = -3; z < 4; z++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(-5, 0, z)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
+
+
+
+                    if (match) {
+                        for (int z = -3; z < 4; z++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(5, 0, z)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (match) {
+                        for (int z = -1; z < 2; z++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(-6, 0, z)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (match) {
+                        for (int z = -1; z < 2; z++) {
+                            if (!isWater(world.getBlockState(centerPosition.add(6, 0, z)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                    }
+
+
+
+
                 }
 
-        /*
-        boolean matchIsPositive() {
-            return this.match;
-        }
 
-         */
 
-                int centerPortal(BlockPos pos, Direction direction) {
+
+
+                    int centerPortal(BlockPos pos, Direction direction) {
                     int distance;
                     for (distance = 1; distance < 16; ++distance) {
                         BlockPos blockpos = pos.offset(direction, distance);

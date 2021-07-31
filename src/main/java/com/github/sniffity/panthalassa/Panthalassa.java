@@ -36,6 +36,8 @@ public final class Panthalassa {
 		PanthalassaFeatures.FEATURES.register(bus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(bus);
 
+		PanthalassaPOI.POI.register(bus);
+
 
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
