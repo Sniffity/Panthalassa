@@ -80,9 +80,14 @@ public class PanthalassaTeleporter implements ITeleporter {
                     //Set the location to which we will teleport the entity to the portal's location.
                     //Adjust the entity's position slightly:
                     //The portal in the dimension will be on the roof, hence move the entity down.
+                    //destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    //TODO: SEND TO TELEPORT QUEUE HERE
+
                 } else {
                     // The portal in the overworld will be on the floor, hence move the entity up.
+                    destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
+                    //TODO: SEND TO TELEPORT QUEUE HERE
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 }
             }
@@ -92,8 +97,11 @@ public class PanthalassaTeleporter implements ITeleporter {
             else {
 
                 if (destWorld.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
+                    //TODO: SEND TO TELEPORT QUEUE HERE
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 } else {
+                    //TODO: SEND TO TELEPORT QUEUE HERE
+
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 }
 
@@ -187,7 +195,7 @@ public class PanthalassaTeleporter implements ITeleporter {
                                     Direction.Axis.Z,
                                     //And a maximum distance of 9 on that axis...
                                     9,
-                                    //WAnd only select blocks that have the same blockstate as our poi.
+                                    //And only select blocks that have the same blockstate as our poi.
                                     //Our poi was a portal block, it will basically only select portal blocks
                                     (posIn) -> this.world.getBlockState(posIn) == blockstate);
                     //We now know where to teleport to, if there's an existing portal.
@@ -206,9 +214,6 @@ public class PanthalassaTeleporter implements ITeleporter {
             for (j = -1; j > -5; --j) {
                 for (k = -8; k < 9; ++k) {
                     check = new BlockPos(potentialPos.getX() + i, potentialPos.getY() + j, potentialPos.getZ() + k);
-                    BlockState check2 = world.getBlockState(check);
-                    FluidState check3 = world.getFluidState(check);
-                    Boolean check4 = (world.getFluidState(check).isTagged(FluidTags.WATER));
 
                     if (!(world.getBlockState(check) == Blocks.WATER.getDefaultState())) {
                         return false;
@@ -287,7 +292,8 @@ public class PanthalassaTeleporter implements ITeleporter {
         }
 
         //We then proceed to build the portal. The following conditions specify a circle of diameter 15.
-            for (int z = -2; z < 3; z++) {
+
+        for (int z = -2; z < 3; z++) {
                 world.setBlockState(pos1.add(-7, 0, z), portalFrame, 2);
             }
             for (int z = -2; z < 3; z++) {
