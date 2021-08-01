@@ -7,8 +7,9 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -25,11 +26,13 @@ import javax.annotation.Nonnull;
 
 
 public class PanthalassaPortalBlock extends Block {
-    private static int tickCounter;
+    private long gameTimeDifference;
+    private static long gameTimeSuccess;
 
 
 
     private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.8, 1.0D);
+
 
     public PanthalassaPortalBlock() {
         super(Properties.create(
@@ -81,7 +84,7 @@ public class PanthalassaPortalBlock extends Block {
     }
 
 
-    //FIX!
+    //VERIFY!
     @Override
     public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
         PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
@@ -101,6 +104,8 @@ public class PanthalassaPortalBlock extends Block {
         }
     }
 
+
+
     public static void changeDimension(ServerWorld serverWorld, Entity entity, ITeleporter teleporter) {
 
         RegistryKey<World> targetWorldKey = serverWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
@@ -110,17 +115,16 @@ public class PanthalassaPortalBlock extends Block {
             return;
         }
 
-        if (tickCounter < 0) {
+        if (!entity.func_242280_ah()) {
             entity.world.getProfiler().startSection("panthalassa_portal");
             entity.changeDimension(targetWorld, teleporter);
+            entity.func_242279_ag();
             entity.world.getProfiler().endSection();
-            tickCounter = 300;
-        } else if (tickCounter == 0) {
-            tickCounter = -1;
-        } else  {
-            tickCounter = --tickCounter;
         }
+
     }
+
+
 
     public static class MatchShapeSize {
 

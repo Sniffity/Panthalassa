@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.common.world.teleporter;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
+import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaPOI;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PortalInfo;
@@ -24,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Function;
 
 public class PanthalassaTeleporter implements ITeleporter {
@@ -36,17 +38,34 @@ public class PanthalassaTeleporter implements ITeleporter {
 
 
 
+
+
     @Nullable
     @Override
     public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
         Optional<TeleportationRepositioner.Result> result = teleporterResult(destWorld, entity.getPosition());
+
         if (result.isPresent()) {
             BlockPos startPos = result.get().startPos;
-            return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY(), startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
-        } else {
-            return new PortalInfo(entity.getPositionVec(), Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch);
+            if (destWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
+                return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() -50, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+            } else  {
+                return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() +50, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+            }
+        }
+        else{
+
+            Vector3d positionVectorIn = new Vector3d(entity.getPosX(),entity.getPosY()-50,entity.getPosZ());
+            Vector3d positionVectorOut = new Vector3d(entity.getPosX(),entity.getPosY()+50,entity.getPosZ());
+
+            if (destWorld.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
+                return new PortalInfo(positionVectorIn, Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch);
+            } else  {
+                return new PortalInfo(positionVectorOut, Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch);
+            }
         }
     }
+
 
     protected Optional<TeleportationRepositioner.Result> teleporterResult(ServerWorld serverWorld, BlockPos pos) {
         Optional<TeleportationRepositioner.Result> optional = getExistingPortal(serverWorld, pos);
@@ -84,23 +103,35 @@ public class PanthalassaTeleporter implements ITeleporter {
     public Optional<TeleportationRepositioner.Result> makePortalFromPos(ServerWorld world, @Nonnull BlockPos pos) {
         BlockState portalCenter = PanthalassaBlocks.PORTAL.get().getDefaultState();
         BlockState portalFrame = PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
-        BlockPos pos1 = new BlockPos(pos.getX(),60, pos.getZ());
+        BlockPos pos1 = new BlockPos(pos.getX(),64, pos.getZ());
 
 
         if (world.getDimensionKey() == World.OVERWORLD) {
-            Panthalassa.LOGGER.error("Corresponding Overworld Portal not found");
-            Panthalassa.LOGGER.error("Panthalassa Portal was probably built manually without a corresponding Overworld Portal");
+            Panthalassa.LOGGER.error("Corresponding Overworld Portal not found!");
             Panthalassa.LOGGER.error("Teleporting to spawn");
             BlockPos spawnPoint = new BlockPos(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
             return Optional.of(new TeleportationRepositioner.Result(spawnPoint.toImmutable(), 1, 1));
         }
 
-        while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
-                pos1 = pos1.up();
-        }
 
-        while (pos1.getY()>-1 &&!world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER)) {
-            pos1 = pos1.down();
+        int i;
+        i=1;
+
+        while (i!=1) {
+            while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
+                pos1 = pos1.up();
+            }
+
+            while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER)) {
+                pos1 = pos1.down();
+            }
+            if (pos1.getY() < 10 || pos1.getY() > 118) {
+                pos1 = new BlockPos(pos1.getX()+(int)Math.floor((Math.random())*(20))-20,64,pos1.getZ()+(int)Math.floor((Math.random())*(20))-20);
+
+            } else {
+                i=1;
+            }
+
         }
 
             for (int z = -2; z < 3; z++) {
