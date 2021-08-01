@@ -6,8 +6,10 @@ import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaPOI;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.TeleportationRepositioner;
@@ -20,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.TicketType;
 import net.minecraftforge.common.util.ITeleporter;
+import org.apache.maven.artifact.versioning.OverConstrainedVersionException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -69,34 +73,34 @@ public class PanthalassaTeleporter implements ITeleporter {
          */
         Optional<TeleportationRepositioner.Result> result = teleporterResult(destWorld, entity.getPosition());
 
-
-        if (result.isPresent()) {
             BlockPos startPos = result.get().startPos;
-            if (destWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
-                //If we got an existing portal...
+            if (result.isPresent()) {
+                if (destWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
+                    //If we got an existing portal...
                     //Set the location to which we will teleport the entity to the portal's location.
-                //Adjust the entity's position slightly:
-                //The portal in the dimension will be on the roof, hence move the entity down.
-                return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() -5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
-            } else  {
-                // The portal in the overworld will be on the floor, hence move the entity up.
-                return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() +5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    //Adjust the entity's position slightly:
+                    //The portal in the dimension will be on the roof, hence move the entity down.
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                } else {
+                    // The portal in the overworld will be on the floor, hence move the entity up.
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                }
             }
-        }
-        //If we did not get an existing portal...
-        //Set the location to which we will teleport the entity to the entity's location in the overworld.
 
-        else{
-            Vector3d positionVectorIn = new Vector3d(entity.getPosX(),entity.getPosY()-5,entity.getPosZ());
-            Vector3d positionVectorOut = new Vector3d(entity.getPosX(),entity.getPosY()+5,entity.getPosZ());
+            //If we did not get an existing portal...
+            //Set the location to which we will teleport the entity to the entity's location in the overworld.
+            else {
 
-            if (destWorld.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
-                return new PortalInfo(positionVectorIn, Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch);
-            } else  {
-                return new PortalInfo(positionVectorOut, Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch);
+                if (destWorld.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                } else {
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                }
+
             }
-        }
+
     }
+
 
 
     protected Optional<TeleportationRepositioner.Result> teleporterResult(ServerWorld serverWorld, BlockPos pos) {
@@ -132,7 +136,7 @@ public class PanthalassaTeleporter implements ITeleporter {
         PointOfInterestManager pointofinterestmanager = serverWorld.getPointOfInterestManager();
         //This is the coordinate offset we will use for the following check...
         //Larger numbers mean that the section checked for an existing portal will be larger.
-        int i = 64;
+        int i = 256;
         //Which verifies whether the chunks being targeted have their POI manager loaded and whether it's valid.
         pointofinterestmanager.ensureLoadedAndValid(serverWorld, pos, i);
         /*
@@ -158,7 +162,6 @@ public class PanthalassaTeleporter implements ITeleporter {
                                 .thenComparingInt((poi) -> {return -poi.getPos().getY();}))
                 //Finally, get the first poi from the "list", the one at the top.
                 .findFirst();
-
 
         return optional.map(
                 (poi) -> {
@@ -192,6 +195,30 @@ public class PanthalassaTeleporter implements ITeleporter {
         });
     }
 
+    private boolean checkRegionForPlacement(BlockPos potentialPos, World world) {
+        //Checks region for placement.
+        // Basically, checks for a 16*5*16 box below the portal.
+        BlockPos check;
+        int i;
+        int j;
+        int k;
+        for (i = -8; i < 9; ++i) {
+            for (j = -1; j > -5; --j) {
+                for (k = -8; k < 9; ++k) {
+                    check = new BlockPos(potentialPos.getX() + i, potentialPos.getY() + j, potentialPos.getZ() + k);
+                    BlockState check2 = world.getBlockState(check);
+                    FluidState check3 = world.getFluidState(check);
+                    Boolean check4 = (world.getFluidState(check).isTagged(FluidTags.WATER));
+
+                    if (!(world.getBlockState(check) == Blocks.WATER.getDefaultState())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public Optional<TeleportationRepositioner.Result> makePortalFromPos(ServerWorld world, @Nonnull BlockPos pos) {
         //This method is only called if the check for an existing portal fails.
         //Here, we will specify how we want to build our portal.
@@ -213,8 +240,8 @@ public class PanthalassaTeleporter implements ITeleporter {
             //Output an erorr message: Do not build one.
             //This is because our overworld portals will spawn in structures, we only want a teleport if there's a matching structure.
             //So, basically, all entry portals into our dimension and exit portals from our dimension should be located at strucutre coordinates.
-            Panthalassa.LOGGER.error("Corresponding Overworld Portal not found!");
-            Panthalassa.LOGGER.error("Teleporting to spawn");
+            Panthalassa.LOGGER.warn("Corresponding Overworld Portal not found!");
+            Panthalassa.LOGGER.warn("Teleporting to spawn");
             BlockPos spawnPoint = new BlockPos(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
             return Optional.of(new TeleportationRepositioner.Result(spawnPoint.toImmutable(), 1, 1));
         }
@@ -226,11 +253,14 @@ public class PanthalassaTeleporter implements ITeleporter {
         //So long as the location is still marked as invalid, keep performing these checks.
         while (!validLocation) {
             //If our Y position is less than 128, and we are in water, we go up, we increase Y.
-            //This is becaue our dimension is underwater, hence, water is equivalent to air.
+            //This is because our dimension is underwater, hence, water is equivalent to air.
             //We go up because I want to place the portal on a "roof" within the dimension.
             //We are going up. As soon as we hit a block that is not water, this loop will stop.
             //This has a check to avoid it going up infinitely.
-            while (pos1.getY() < 128 && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
+            while (pos1.getY() < 128
+                    && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)
+                    || world.getBlockState(pos1) == Blocks.KELP.getDefaultState()
+                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().getDefaultState())  {
                 pos1 = pos1.up();
             }
 
@@ -240,14 +270,15 @@ public class PanthalassaTeleporter implements ITeleporter {
             //So, if the dimension is filled with water, and we find a solid block on a roof, it is likely that we will have water beneath us.
             //We don't want the portal inserted into the roof itself, but rather coming out from the roof.
             //Hence, one block down.
-            while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1.down())).isTagged(FluidTags.WATER)) {
+            while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
                 pos1 = pos1.down();
             }
 
-            //However, if we got too low or too high... we want to do this again, at another random position close by.
+
+
+            //However, if we got too low or too high... or the region for placement is in valid, we want to do this again, at another random position close by.
             //The position will be within +/- 20 X and +/- 20 Z.
-            //Usually, if we hit this condition it is because we found ourselves within a solid columns going all the way up.
-            if (pos1.getY() < 10 || pos1.getY() > 118) {
+            if (pos1.getY() < 10 || pos1.getY() > 118 || !checkRegionForPlacement(pos1, world )) {
                 pos1 = new BlockPos(pos1.getX()+(int)Math.floor((Math.random())*(20))-20,64,pos1.getZ()+(int)Math.floor((Math.random())*(20))-20);
             } else {
                 //If we are not below 10, or above 110, we mark the location as valid. This stops the whole loop.
@@ -257,76 +288,76 @@ public class PanthalassaTeleporter implements ITeleporter {
 
         //We then proceed to build the portal. The following conditions specify a circle of diameter 15.
             for (int z = -2; z < 3; z++) {
-                world.setBlockState(pos1.add(-7, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-7, 0, z), portalFrame, 2);
             }
             for (int z = -2; z < 3; z++) {
-                world.setBlockState(pos1.add(7, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(7, 0, z), portalFrame, 2);
             }
 
             for (int z = -4; z < -1; z++) {
-                world.setBlockState(pos1.add(-6, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-6, 0, z), portalFrame, 2);
             }
             for (int z = 2; z < 5; z++) {
-                world.setBlockState(pos1.add(-6, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-6, 0, z), portalFrame, 2);
             }
             for (int z = -4; z < -1; z++) {
-                world.setBlockState(pos1.add(6, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(6, 0, z), portalFrame, 2);
             }
             for (int z = 2; z < 5; z++) {
-                world.setBlockState(pos1.add(6, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(6, 0, z), portalFrame, 2);
             }
 
             for (int z = -5; z < -3; z++) {
-                world.setBlockState(pos1.add(-5, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-5, 0, z), portalFrame, 2);
             }
             for (int z = 4; z < 6; z++) {
-                world.setBlockState(pos1.add(-5, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-5, 0, z), portalFrame, 2);
             }
             for (int z = -5; z < -3; z++) {
-                world.setBlockState(pos1.add(5, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(5, 0, z), portalFrame, 2);
             }
             for (int z = 4; z < 6; z++) {
-                world.setBlockState(pos1.add(5, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(5, 0, z), portalFrame, 2);
             }
 
 
             for (int z = -6; z < -4; z++) {
-                world.setBlockState(pos1.add(-4, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-4, 0, z), portalFrame, 2);
             }
             for (int z = 5; z < 7; z++) {
-                world.setBlockState(pos1.add(-4, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-4, 0, z), portalFrame, 2);
             }
             for (int z = -6; z < -4; z++) {
-                world.setBlockState(pos1.add(4, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(4, 0, z), portalFrame, 2);
             }
             for (int z = 5; z < 7; z++) {
-                world.setBlockState(pos1.add(4, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(4, 0, z), portalFrame, 2);
             }
 
-            world.setBlockState(pos1.add(-3, -1, -6), portalFrame, 2);
-            world.setBlockState(pos1.add(-3, -1, 6), portalFrame, 2);
-            world.setBlockState(pos1.add(3, -1, -6), portalFrame, 2);
-            world.setBlockState(pos1.add(3, -1, 6), portalFrame, 2);
+            world.setBlockState(pos1.add(-3, 0, -6), portalFrame, 2);
+            world.setBlockState(pos1.add(-3, 0, 6), portalFrame, 2);
+            world.setBlockState(pos1.add(3, 0, -6), portalFrame, 2);
+            world.setBlockState(pos1.add(3, 0, 6), portalFrame, 2);
 
             for (int z = -7; z < -5; z++) {
-                world.setBlockState(pos1.add(-2, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-2, 0, z), portalFrame, 2);
             }
             for (int z = 6; z < 8; z++) {
-                world.setBlockState(pos1.add(-2, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(-2, 0, z), portalFrame, 2);
             }
             for (int z = -7; z < -5; z++) {
-                world.setBlockState(pos1.add(2, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(2, 0, z), portalFrame, 2);
             }
             for (int z = 6; z < 8; z++) {
-                world.setBlockState(pos1.add(2, -1, z), portalFrame, 2);
+                world.setBlockState(pos1.add(2, 0, z), portalFrame, 2);
             }
 
             for (int x = -2; x < 3; x++) {
-                world.setBlockState(pos1.add(x, -1, -7), portalFrame, 2);
+                world.setBlockState(pos1.add(x, 0, -7), portalFrame, 2);
             }
 
             for (int x = -2; x < 3; x++) {
-                world.setBlockState(pos1.add(x, -1, 7), portalFrame, 2);
+                world.setBlockState(pos1.add(x, 0, 7), portalFrame, 2);
             }
 
             for (int x = -4; x < 5; x++) {
@@ -366,12 +397,8 @@ public class PanthalassaTeleporter implements ITeleporter {
             for (int x = -1; x < 2; x++) {
                     world.setBlockState(pos1.add(x, 0, 6), portalCenter, 2);
                 }
-
             //We return our position to the teleporterResult method...
-            return Optional.of(new TeleportationRepositioner.Result(pos1.toImmutable(), 15, 1));
+        return Optional.of(new TeleportationRepositioner.Result(pos1.toImmutable(), 15, 1));
     }
 
 }
-
-
-

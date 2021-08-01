@@ -21,14 +21,7 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.ITeleporter;
 import javax.annotation.Nonnull;
 
-
-
-
 public class PanthalassaPortalBlock extends Block {
-    private long gameTimeDifference;
-    private static long gameTimeSuccess;
-
-
 
     private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.8, 1.0D);
 
