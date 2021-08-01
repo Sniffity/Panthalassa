@@ -7,8 +7,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -21,8 +19,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.ITeleporter;
-
 import javax.annotation.Nonnull;
+
+
 
 
 public class PanthalassaPortalBlock extends Block {
@@ -107,7 +106,6 @@ public class PanthalassaPortalBlock extends Block {
 
 
     public static void changeDimension(ServerWorld serverWorld, Entity entity, ITeleporter teleporter) {
-
         RegistryKey<World> targetWorldKey = serverWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
         ServerWorld targetWorld = serverWorld.getServer().getWorld(targetWorldKey);
 
@@ -121,7 +119,6 @@ public class PanthalassaPortalBlock extends Block {
             entity.func_242279_ag();
             entity.world.getProfiler().endSection();
         }
-
     }
 
 
