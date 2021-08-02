@@ -4,13 +4,20 @@ import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.world.teleporter.PanthalassaTeleporter;
 import com.github.sniffity.panthalassa.common.world.teleporter.TeleportExecute;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -19,7 +26,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
-
 import javax.annotation.Nonnull;
 
 public class BlockPortal extends Block {
@@ -36,6 +42,14 @@ public class BlockPortal extends Block {
                 .notSolid()
                 .setLightLevel((state) -> 10)
                 .tickRandomly());
+    }
+
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (trySpawnPortal(worldIn, pos)) {
+            return ActionResultType.SUCCESS;
+        } else {
+            return ActionResultType.FAIL;
+        }
     }
 
    @Override
@@ -102,48 +116,6 @@ public class BlockPortal extends Block {
             entity.world.getProfiler().endSection();
         }
 
-
-        /*
-        if (!entity.func_242280_ah() && ((entity.getPassengers().size() !=0 ))) {
-            List<Entity> passenger = entity.getPassengers();
-
-            Entity teleportPassenger = passenger.get(0);
-
-            teleportPassenger.dismount();
-
-            teleportPassenger.world.getProfiler().startSection("panthalassa_portal");
-            teleportPassenger.changeDimension(targetWorld, teleporter);
-            teleportPassenger.world.getProfiler().endSection();
-
-            Entity entity2 = entity.getType().create(targetWorld);
-
-            if (entity2 != null) {
-                entity2.copyDataFromOld(entity);
-                entity2.moveToBlockPosAndAngles(new BlockPos(teleportPassenger.getPosX(),teleportPassenger.getPosY(),teleportPassenger.getPosZ()), entity.rotationYaw, entity.rotationPitch);
-                entity2.setMotion(entity.getMotion());
-                targetWorld.addFromAnotherDimension(entity2);
-            }
-
-            entity.remove();
-
-
-            assert entity.world != null;
-            entity.world.getProfiler().endSection();
-            serverWorld.resetUpdateEntityTick();
-            targetWorld.resetUpdateEntityTick();
-            entity.world.getProfiler().endSection();
-
-            teleportPassenger.startRiding(entity);
-        }
-
-        else if (!entity.func_242280_ah() && (!entity.isPassenger())) {
-            entity.world.getProfiler().startSection("panthalassa_portal");
-            entity.changeDimension(targetWorld, teleporter);
-            entity.func_242279_ag();
-            entity.world.getProfiler().endSection();
-
-        }
-*/
     }
 
 
@@ -426,6 +398,12 @@ public class BlockPortal extends Block {
                     break;
                 }
                 if (distance == 15) {
+                    distance = 0;
+                    blockpos = pos.offset(direction, distance);
+                    if (!isPanthalassaPortalFrame(world.getBlockState(blockpos))) {
+                        distance = 15;
+                        break;
+                    }
                     break;
                 }
             }
