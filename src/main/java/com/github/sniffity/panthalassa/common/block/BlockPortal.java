@@ -19,16 +19,15 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.util.ITeleporter;
-import javax.annotation.Nonnull;
-import java.util.List;
 
-public class PanthalassaPortalBlock extends Block {
+import javax.annotation.Nonnull;
+
+public class BlockPortal extends Block {
 
     private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.8, 1.0D);
 
 
-    public PanthalassaPortalBlock() {
+    public BlockPortal() {
         super(Properties.create(
                 Material.PORTAL,
                 MaterialColor.CYAN)
@@ -57,7 +56,7 @@ public class PanthalassaPortalBlock extends Block {
     }
 
     public boolean trySpawnPortal(World world, BlockPos pos) {
-        PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
+        BlockPortal.MatchShapeSize check = new BlockPortal.MatchShapeSize(world, pos);
 
         if (check.match) {
             check.placePortalBlocks();
@@ -71,7 +70,7 @@ public class PanthalassaPortalBlock extends Block {
 
     @Override
     public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
-        PanthalassaPortalBlock.MatchShapeSize check = new PanthalassaPortalBlock.MatchShapeSize(world, pos);
+        BlockPortal.MatchShapeSize check = new BlockPortal.MatchShapeSize(world, pos);
         if (neighborBlock == this || check.isPanthalassaPortalFrame(neighborBlock.getDefaultState())) {
             if (!check.match) {
                 world.setBlockState(pos, Blocks.WATER.getDefaultState());

@@ -2,10 +2,9 @@ package com.github.sniffity.panthalassa.common.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
-import com.github.sniffity.panthalassa.common.block.PanthalassaPortalBlock;
+import com.github.sniffity.panthalassa.common.block.BlockPortal;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -17,15 +16,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class PanthalassaBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Panthalassa.MODID);
 
-    public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
-            PanthalassaPortalBlock::new);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Panthalassa.MODID);
 
     public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("panthalassa_portal_frame",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
                     .hardnessAndResistance(-1.0F, -1.0F)
                     .sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
+            BlockPortal::new);
+
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
             () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)

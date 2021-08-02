@@ -41,7 +41,6 @@ public final class Panthalassa {
 
 		PanthalassaPOI.POI.register(bus);
 
-
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
 
@@ -49,7 +48,6 @@ public final class Panthalassa {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
-
 	}
 
 	@SuppressWarnings("deprecated")
@@ -63,10 +61,8 @@ public final class Panthalassa {
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
 		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
-			event.getRegistry().register(new BlockItem(block, new Item.Properties().group(ItemGroup.MISC))
+			event.getRegistry().register(new BlockItem(block, new Item.Properties().group(PanthalassaItemGroup.GROUP))
 					.setRegistryName(block.getRegistryName()));
 		});
 	}
-
 }
-

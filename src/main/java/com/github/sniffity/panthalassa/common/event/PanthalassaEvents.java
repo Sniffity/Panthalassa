@@ -1,7 +1,7 @@
 package com.github.sniffity.panthalassa.common.event;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.common.block.PanthalassaPortalBlock;
+import com.github.sniffity.panthalassa.common.block.BlockPortal;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaItems;
 import net.minecraft.block.BlockState;
@@ -28,7 +28,7 @@ public class PanthalassaEvents {
                     if (entityItem.getItem().getItem() == PanthalassaItems.PORTAL_KEY.get()
                             && (state.getBlock() == Blocks.WATER
                             || state == PanthalassaBlocks.PORTAL.get().getDefaultState())) {
-                        if (((PanthalassaPortalBlock) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(world, entityItem.getPosition())) {
+                        if (((BlockPortal) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(world, entityItem.getPosition())) {
                             entityItem.remove();
                             return;
                         }

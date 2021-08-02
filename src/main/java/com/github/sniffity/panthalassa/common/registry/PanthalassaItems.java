@@ -2,8 +2,17 @@ package com.github.sniffity.panthalassa.common.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
+import com.github.sniffity.panthalassa.common.block.BlockPortal;
+import com.github.sniffity.panthalassa.common.item.ItemPortalKey;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -15,17 +24,22 @@ public class PanthalassaItems {
 
 	//vehicle
 	public static final RegistryObject<Item> HPR_GLASS_SPHERE = ITEMS.register("hpr_glass_sphere",
-			() -> new Item(new Item.Properties().group(ItemGroup.MISC)));
-	public static final RegistryObject<Item> HPR_VEHICLE_SEATS = ITEMS.register("hpr_vehicle_seats", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> HPR_VEHICLE_COCKPIT = ITEMS.register("hpr_vehicle_cockpit", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> HPR_VEHICLE_CHASSIS = ITEMS.register("hpr_vehicle_chassis", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> HPR_VEHICLE_WING = ITEMS.register("hpr_vehicle_wing", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> HPR_VEHICLE_PROPELLER = ITEMS.register("hpr_vehicle_propeller", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> HPR_VEHICLE_TAIL = ITEMS.register("hpr_vehicle_tail", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> HPR_VEHICLE = ITEMS.register("hpr_vehicle", () -> new Item(new Item.Properties()));
-	//public static final RegistryObject<Item> PORTAL_KEY = ITEMS.register("portal_key",()-> new Item(new Item.Properties()));
-	//spawn eggs
-	public static final RegistryObject<Item> PORTAL_KEY = ITEMS.register("panthalassa_portal_key", () -> new Item(new Item.Properties()));
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_SEATS = ITEMS.register("hpr_vehicle_seats",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_COCKPIT = ITEMS.register("hpr_vehicle_cockpit",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_CHASSIS = ITEMS.register("hpr_vehicle_chassis",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_WING = ITEMS.register("hpr_vehicle_wing",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_PROPELLER = ITEMS.register("hpr_vehicle_propeller",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_TAIL = ITEMS.register("hpr_vehicle_tail",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE = ITEMS.register("hpr_vehicle",
+			() -> new Item(new Item.Properties().group(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> PORTAL_KEY = ITEMS.register("panthalassa_portal_key",
+			ItemPortalKey::new);
+
 }
-
-
