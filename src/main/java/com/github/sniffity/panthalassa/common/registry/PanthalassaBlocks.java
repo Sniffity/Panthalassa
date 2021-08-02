@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.common.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.common.block.BlockPortal;
+import com.github.sniffity.panthalassa.common.block.BlockPortalFrame;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -20,9 +21,7 @@ public class PanthalassaBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Panthalassa.MODID);
 
     public static final RegistryObject<Block> PORTAL_FRAME = BLOCKS.register("panthalassa_portal_frame",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
-                    .hardnessAndResistance(-1.0F, -1.0F)
-                    .sound(SoundType.METAL)));
+            BlockPortalFrame::new);
 
     public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
             BlockPortal::new);
@@ -63,6 +62,5 @@ public class PanthalassaBlocks {
                     .hardnessAndResistance(3f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
                     .sound(SoundType.STONE)));
 
-
-
 }
+
