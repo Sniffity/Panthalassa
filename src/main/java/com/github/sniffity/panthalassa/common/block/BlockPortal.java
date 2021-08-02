@@ -22,14 +22,11 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
-
 import javax.annotation.Nonnull;
-
 
 public class BlockPortal extends Block {
 
     private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0, 0.0D, 1.0D, 1.0D, 1.0D);
-
 
     public BlockPortal() {
         super(Properties.create(
