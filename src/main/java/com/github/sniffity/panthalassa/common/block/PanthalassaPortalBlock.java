@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.common.block;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.world.teleporter.PanthalassaTeleporter;
+import com.github.sniffity.panthalassa.common.world.teleporter.TeleportExecute;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -88,14 +89,22 @@ public class PanthalassaPortalBlock extends Block {
 
 
 
-    public static void changeDimension(ServerWorld serverWorld, Entity entity, ITeleporter teleporter) {
-        RegistryKey<World> targetWorldKey = serverWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
-        ServerWorld targetWorld = serverWorld.getServer().getWorld(targetWorldKey);
+    public static void changeDimension(ServerWorld initialWorld, Entity entity, PanthalassaTeleporter teleporter) {
+        RegistryKey<World> targetWorldKey = initialWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
+        ServerWorld targetWorld = initialWorld.getServer().getWorld(targetWorldKey);
 
         if (targetWorld == null) {
             return;
         }
+        if (!entity.func_242280_ah()) {
+            entity.world.getProfiler().startSection("panthalassa_portal");
+            new TeleportExecute(entity, targetWorld, initialWorld, teleporter);
+            entity.func_242279_ag();
+            entity.world.getProfiler().endSection();
+        }
 
+
+        /*
         if (!entity.func_242280_ah() && ((entity.getPassengers().size() !=0 ))) {
             List<Entity> passenger = entity.getPassengers();
 
@@ -135,6 +144,7 @@ public class PanthalassaPortalBlock extends Block {
             entity.world.getProfiler().endSection();
 
         }
+*/
     }
 
 

@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.RegistryObject;
@@ -28,6 +29,8 @@ public final class Panthalassa {
 	public Panthalassa() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+
 		PanthalassaBlocks.BLOCKS.register(bus);
 		PanthalassaItems.ITEMS.register(bus);
 
@@ -44,6 +47,9 @@ public final class Panthalassa {
 
 		GeckoLib.initialize();
 		MinecraftForge.EVENT_BUS.register(this);
+
+		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
+
 	}
 
 	@SuppressWarnings("deprecated")

@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.TeleportationRepositioner;
@@ -22,13 +21,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.TicketType;
 import net.minecraftforge.common.util.ITeleporter;
-import org.apache.maven.artifact.versioning.OverConstrainedVersionException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.function.Function;
 
 
 public class PanthalassaTeleporter implements ITeleporter {
@@ -57,14 +53,13 @@ public class PanthalassaTeleporter implements ITeleporter {
      We override the ITeleporter method getPortalInfo was we want more complex behavior.
      */
     @Nullable
-    @Override
     /*
     In this context, getPortalInfo will be called with the following arguments:
     -entity: The entity which collided with the portal.
     -destWorld: The world where the entity will be teleported to.
     -defaultPortalInfO: A reference to the vanilla method for getting portal info.
      */
-    public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
+    public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld) {
 
         /*
         getPortalInfo first calls the TeleportationRepositioner.
@@ -82,12 +77,10 @@ public class PanthalassaTeleporter implements ITeleporter {
                     //The portal in the dimension will be on the roof, hence move the entity down.
                     //destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
-                    //TODO: SEND TO TELEPORT QUEUE HERE
 
                 } else {
                     // The portal in the overworld will be on the floor, hence move the entity up.
                     destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
-                    //TODO: SEND TO TELEPORT QUEUE HERE
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 }
             }
