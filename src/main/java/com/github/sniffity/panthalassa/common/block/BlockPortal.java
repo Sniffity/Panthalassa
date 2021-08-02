@@ -36,7 +36,6 @@ public class BlockPortal extends Block {
                 .sound(SoundType.GLASS)
                 .setLightLevel((state) -> 10)
                 .tickRandomly());
-
     }
 
     @Override
