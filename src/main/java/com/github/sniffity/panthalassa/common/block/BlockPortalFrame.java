@@ -17,7 +17,7 @@ public class BlockPortalFrame extends Block {
             super(Properties.create(
                     Material.IRON,
                     MaterialColor.GRAY)
-                    .hardnessAndResistance(-1.0F)
+                    .hardnessAndResistance(-1.0F,3600000.0F)
                     .sound(SoundType.METAL));
         }
 

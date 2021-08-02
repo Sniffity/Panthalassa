@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -34,12 +35,18 @@ public class BlockPortal extends Block {
         super(Properties.create(
                 Material.PORTAL,
                 MaterialColor.CYAN)
-                .hardnessAndResistance(-1.0F)
+                .hardnessAndResistance(-1.0F,3600000.0F)
                 .sound(SoundType.GLASS)
-//                .notSolid()
                 .setLightLevel((state) -> 10)
                 .tickRandomly());
+
     }
+
+    @Override
+        public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
+        return 5.0F;    }
+
+
 
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (trySpawnPortal(worldIn, pos)) {
@@ -48,6 +55,9 @@ public class BlockPortal extends Block {
             return ActionResultType.FAIL;
         }
     }
+
+
+
 
     @Override
     @Nonnull
