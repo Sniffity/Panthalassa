@@ -4,17 +4,12 @@ import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.world.teleporter.PanthalassaTeleporter;
 import com.github.sniffity.panthalassa.common.world.teleporter.TeleportExecute;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -26,11 +21,13 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
+
 import javax.annotation.Nonnull;
+
 
 public class BlockPortal extends Block {
 
-    private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.8, 1.0D);
+    private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0, 0.0D, 1.0D, 1.0D, 1.0D);
 
 
     public BlockPortal() {
@@ -39,7 +36,7 @@ public class BlockPortal extends Block {
                 MaterialColor.CYAN)
                 .hardnessAndResistance(-1.0F)
                 .sound(SoundType.GLASS)
-                .notSolid()
+//                .notSolid()
                 .setLightLevel((state) -> 10)
                 .tickRandomly());
     }
@@ -52,7 +49,7 @@ public class BlockPortal extends Block {
         }
     }
 
-   @Override
+    @Override
     @Nonnull
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return portalShape;
@@ -87,7 +84,7 @@ public class BlockPortal extends Block {
         BlockPortal.MatchShapeSize check = new BlockPortal.MatchShapeSize(world, pos);
         if (neighborBlock == this || check.isPanthalassaPortalFrame(neighborBlock.getDefaultState())) {
             if (!check.match) {
-                world.setBlockState(pos, Blocks.WATER.getDefaultState());
+                world.setBlockState(pos, Blocks.AIR.getDefaultState());
             }
         }
     }
@@ -96,10 +93,9 @@ public class BlockPortal extends Block {
     @Override
     public void onEntityCollision(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity entity) {
         if (world instanceof ServerWorld) {
-            changeDimension((ServerWorld) world, entity, new PanthalassaTeleporter((ServerWorld)world));
+            changeDimension((ServerWorld) world, entity, new PanthalassaTeleporter((ServerWorld) world));
         }
     }
-
 
 
     public static void changeDimension(ServerWorld initialWorld, Entity entity, PanthalassaTeleporter teleporter) {
@@ -128,9 +124,10 @@ public class BlockPortal extends Block {
         }
 
         boolean isWater(BlockState state) {
-                    return state.getBlockState() == Blocks.WATER.getDefaultState();
-                }
-                boolean match = true;
+            return state.getBlockState() == Blocks.WATER.getDefaultState();
+        }
+
+        boolean match = true;
 
 
         public MatchShapeSize(IWorld world, BlockPos pos) {
@@ -145,8 +142,6 @@ public class BlockPortal extends Block {
             centerPosition = new BlockPos(pos.getX() + ((offsetE - offsetW) / 2), pos.getY(), pos.getZ() - ((offsetN - offsetS) / 2));
 
 
-
-
             for (int z = -2; z < 3; z++) {
                 if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-7, 0, z)))) {
                     match = false;
@@ -158,7 +153,7 @@ public class BlockPortal extends Block {
                 for (int z = -2; z < 3; z++) {
                     if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(7, 0, z)))) {
                         match = false;
-                                break;
+                        break;
                     }
                 }
             }
@@ -201,7 +196,8 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int z = -5; z < -3; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-5, 0, z)))) { match = false;
+                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.add(-5, 0, z)))) {
+                        match = false;
                         break;
                     }
                 }
@@ -307,14 +303,15 @@ public class BlockPortal extends Block {
                 }
             }
 
-            if (match) { for (int z = -4; z < 4; z++) {
-                for (int x = -4; x < 4; x++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(x, 0, z)))) {
-                        match = false;
-                        break;
+            if (match) {
+                for (int z = -4; z < 4; z++) {
+                    for (int x = -4; x < 4; x++) {
+                        if (!isWater(world.getBlockState(centerPosition.add(x, 0, z)))) {
+                            match = false;
+                            break;
+                        }
                     }
                 }
-            }
             }
 
             if (match) {

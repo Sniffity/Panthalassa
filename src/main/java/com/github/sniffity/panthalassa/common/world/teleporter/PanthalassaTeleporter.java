@@ -81,7 +81,7 @@ public class PanthalassaTeleporter implements ITeleporter {
                 } else {
                     // The portal in the overworld will be on the floor, hence move the entity up.
                     destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 }
             }
 
@@ -90,12 +90,10 @@ public class PanthalassaTeleporter implements ITeleporter {
             else {
 
                 if (destWorld.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
-                    //TODO: SEND TO TELEPORT QUEUE HERE
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 } else {
-                    //TODO: SEND TO TELEPORT QUEUE HERE
 
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-7), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
                 }
 
             }
