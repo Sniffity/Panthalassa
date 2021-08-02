@@ -10,6 +10,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -73,11 +74,21 @@ public class BlockPortal extends Block {
     }
 
     public boolean trySpawnPortal(World world, BlockPos pos) {
-        BlockPortal.MatchShapeSize check = new BlockPortal.MatchShapeSize(world, pos);
+        BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
 
         if (check.match) {
             check.placePortalBlocks();
-            //world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 0.7F, 1.0F);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public boolean tryDestoyPortal(World world, BlockPos pos) {
+        BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
+        if (check.match) {
+            check.destroyPortalBlocks();
             return true;
         } else {
             return false;
@@ -87,7 +98,7 @@ public class BlockPortal extends Block {
 
     @Override
     public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
-        BlockPortal.MatchShapeSize check = new BlockPortal.MatchShapeSize(world, pos);
+        BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
         if (neighborBlock == this || check.isPanthalassaPortalFrame(neighborBlock.getDefaultState())) {
             if (!check.match) {
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -121,7 +132,7 @@ public class BlockPortal extends Block {
     }
 
 
-    public static class MatchShapeSize {
+    public static class matchShapeSize {
         private final IWorld world;
         BlockPos centerPosition;
 
@@ -129,14 +140,14 @@ public class BlockPortal extends Block {
             return state == PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
         }
 
-        boolean isWater(BlockState state) {
-            return state.getBlockState() == Blocks.WATER.getDefaultState();
+        boolean isWaterOrPortal(BlockState state) {
+            return (state.getFluidState().isTagged(FluidTags.WATER) || state.getBlockState() == PanthalassaBlocks.PORTAL.get().getDefaultState());
         }
 
         boolean match = true;
 
 
-        public MatchShapeSize(IWorld world, BlockPos pos) {
+        public matchShapeSize(IWorld world, BlockPos pos) {
 
             this.world = world;
 
@@ -312,7 +323,7 @@ public class BlockPortal extends Block {
             if (match) {
                 for (int z = -4; z < 4; z++) {
                     for (int x = -4; x < 4; x++) {
-                        if (!isWater(world.getBlockState(centerPosition.add(x, 0, z)))) {
+                        if (!isWaterOrPortal(world.getBlockState(centerPosition.add(x, 0, z)))) {
                             match = false;
                             break;
                         }
@@ -322,7 +333,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int z = -3; z < 4; z++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(-5, 0, z)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(-5, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -331,7 +342,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int z = -3; z < 4; z++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(5, 0, z)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(5, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -340,7 +351,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int z = -1; z < 2; z++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(-6, 0, z)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(-6, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -349,7 +360,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int z = -1; z < 2; z++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(6, 0, z)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(6, 0, z)))) {
                         match = false;
                         break;
                     }
@@ -358,7 +369,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int x = -1; x < 2; x++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(x, 0, -6)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(x, 0, -6)))) {
                         match = false;
                         break;
                     }
@@ -367,7 +378,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int x = -1; x < 2; x++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(x, 0, 6)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(x, 0, 6)))) {
                         match = false;
                         break;
                     }
@@ -376,7 +387,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int x = -3; x < 4; x++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(x, 0, -5)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(x, 0, -5)))) {
                         match = false;
                         break;
                     }
@@ -385,7 +396,7 @@ public class BlockPortal extends Block {
 
             if (match) {
                 for (int x = -3; x < 4; x++) {
-                    if (!isWater(world.getBlockState(centerPosition.add(x, 0, 5)))) {
+                    if (!isWaterOrPortal(world.getBlockState(centerPosition.add(x, 0, 5)))) {
                         match = false;
                         break;
                     }
@@ -442,6 +453,37 @@ public class BlockPortal extends Block {
             }
             for (int x = -1; x < 2; x++) {
                 this.world.setBlockState(centerPosition.add(x, 0, 6), PanthalassaBlocks.PORTAL.get().getDefaultState(), 2);
+            }
+        }
+        void destroyPortalBlocks() {
+            for (int x = -4; x < 5; x++) {
+                for (int z = -4; z < 5; z++) {
+                    this.world.setBlockState(centerPosition.add(x, 0, z), Blocks.WATER.getDefaultState(), 2);
+                }
+                for (int z = -3; z < 4; z++) {
+                    this.world.setBlockState(centerPosition.add(-5, 0, z), Blocks.WATER.getDefaultState(), 2);
+                }
+                for (int z = -3; z < 4; z++) {
+                    this.world.setBlockState(centerPosition.add(5, 0, z), Blocks.WATER.getDefaultState(), 2);
+                }
+                for (int z = -1; z < 2; z++) {
+                    this.world.setBlockState(centerPosition.add(-6, 0, z), Blocks.WATER.getDefaultState(), 2);
+                }
+                for (int z = -1; z < 2; z++) {
+                    this.world.setBlockState(centerPosition.add(6, 0, z), Blocks.WATER.getDefaultState(), 2);
+                }
+            }
+            for (int x = -3; x < 4; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, -5), Blocks.WATER.getDefaultState(), 2);
+            }
+            for (int x = -3; x < 4; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, 5), Blocks.WATER.getDefaultState(), 2);
+            }
+            for (int x = -1; x < 2; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, -6), Blocks.WATER.getDefaultState(), 2);
+            }
+            for (int x = -1; x < 2; x++) {
+                this.world.setBlockState(centerPosition.add(x, 0, 6), Blocks.WATER.getDefaultState(), 2);
             }
         }
     }
