@@ -3,7 +3,7 @@ package com.github.sniffity.panthalassa.common.block;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.common.world.teleporter.PanthalassaTeleporter;
-import com.github.sniffity.panthalassa.common.world.teleporter.TeleportExecute;
+import com.github.sniffity.panthalassa.common.world.teleporter.TeleporterLogic;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -25,6 +25,15 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
 import javax.annotation.Nonnull;
 
+/**
+ * Panthalassa Mod - Class: BlockPortal <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Atum 2, the Undergarden,
+ * UltraAmplifiedDiemsnion and The Twilight Forest mods implement their own respective teleportation systems.
+*/
+
 public class BlockPortal extends Block {
 
     private static final VoxelShape portalShape = VoxelShapes.create(0.0D, 0.0, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -43,8 +52,6 @@ public class BlockPortal extends Block {
         public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
         return 5.0F;    }
 
-
-
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (trySpawnPortal(worldIn, pos)) {
             return ActionResultType.SUCCESS;
@@ -52,9 +59,6 @@ public class BlockPortal extends Block {
             return ActionResultType.FAIL;
         }
     }
-
-
-
 
     @Override
     @Nonnull
@@ -84,7 +88,6 @@ public class BlockPortal extends Block {
         }
     }
 
-
     public boolean tryDestoyPortal(World world, BlockPos pos) {
         BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
         if (check.match) {
@@ -94,7 +97,6 @@ public class BlockPortal extends Block {
             return false;
         }
     }
-
 
     @Override
     public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
@@ -106,14 +108,12 @@ public class BlockPortal extends Block {
         }
     }
 
-
     @Override
     public void onEntityCollision(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity entity) {
         if (world instanceof ServerWorld) {
             changeDimension((ServerWorld) world, entity, new PanthalassaTeleporter((ServerWorld) world));
         }
     }
-
 
     public static void changeDimension(ServerWorld initialWorld, Entity entity, PanthalassaTeleporter teleporter) {
         RegistryKey<World> targetWorldKey = initialWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
@@ -124,13 +124,11 @@ public class BlockPortal extends Block {
         }
         if (!entity.func_242280_ah()) {
             entity.world.getProfiler().startSection("panthalassa_portal");
-            new TeleportExecute(entity, targetWorld, initialWorld, teleporter);
+            new TeleporterLogic(entity, targetWorld, initialWorld, teleporter);
             entity.func_242279_ag();
             entity.world.getProfiler().endSection();
         }
-
     }
-
 
     public static class matchShapeSize {
         private final IWorld world;
@@ -145,7 +143,6 @@ public class BlockPortal extends Block {
         }
 
         boolean match = true;
-
 
         public matchShapeSize(IWorld world, BlockPos pos) {
 

@@ -6,15 +6,19 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * Panthalassa Mod - Class: BlockPortalFrame <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Atum 2, the Undergarden,
+ * UltraAmplifiedDiemsnion and The Twilight Forest mods implement their own respective teleportation systems.
+ */
+
 public class BlockPortalFrame extends Block {
-
-
-    int i = 0;
 
     public BlockPortalFrame() {
         super(Properties.create(
@@ -28,21 +32,17 @@ public class BlockPortalFrame extends Block {
         return state == PanthalassaBlocks.PORTAL.get().getDefaultState();
     }
 
+    @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-//        if (i <= 0) {
         if (worldIn.isBlockPowered(pos)) {
             if (isPanthalassaPortal(worldIn.getBlockState(pos.add(1, 0, 0))) ||
                     isPanthalassaPortal(worldIn.getBlockState(pos.add(-1, 0, 0))) ||
                     isPanthalassaPortal(worldIn.getBlockState(pos.add(0, 0, -1))) ||
                     isPanthalassaPortal(worldIn.getBlockState(pos.add(0, 0, 1)))) {
-                if (((BlockPortal) PanthalassaBlocks.PORTAL.get()).tryDestoyPortal(worldIn, pos)) {
-                    //  i = 200;
-                }
-            } else if (((BlockPortal) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(worldIn, pos)) {
-//            i = 200;
+                ((BlockPortal) PanthalassaBlocks.PORTAL.get()).tryDestoyPortal(worldIn, pos);
+            } else {
+                ((BlockPortal) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(worldIn, pos);
             }
         }
     }
 }
-//        i--;
-//    }

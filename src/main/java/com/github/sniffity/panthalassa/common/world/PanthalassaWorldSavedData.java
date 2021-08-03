@@ -14,12 +14,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.TicketType;
 import net.minecraft.world.storage.WorldSavedData;
-
-import javax.print.attribute.standard.Severity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.Vector;
+
+/**
+ * Panthalassa Mod - Class: TeleporterLogic <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Atum 2, the Undergarden,
+ * UltraAmplifiedDiemsnion and The Twilight Forest mods implement their own respective teleportation systems.
+ */
 
 public class PanthalassaWorldSavedData extends WorldSavedData {
 
