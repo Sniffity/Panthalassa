@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Panthalassa Mod - Class: TeleporterLogic <br></br?>
+ * Panthalassa Mod - Class: PanthalassaWorldSavedData <br></br?>
  *
  * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
  *
