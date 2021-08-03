@@ -1,8 +1,11 @@
 package com.github.sniffity.panthalassa.client;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.client.render.RenderKronosaurus;
+import com.github.sniffity.panthalassa.client.model.vehicle.ModelMSRV;
+import com.github.sniffity.panthalassa.client.render.entity.RenderKronosaurus;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderMSRV;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,9 +18,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientEventBusSubscriber {
 
     @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
+        @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.KRONOSAURUS.get(),
                 manager -> new RenderKronosaurus(manager));
-        }
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MSRV.get(),
+                manager -> new RenderMSRV(manager));
+    }
 }

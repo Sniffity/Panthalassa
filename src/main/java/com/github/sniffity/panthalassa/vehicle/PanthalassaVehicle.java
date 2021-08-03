@@ -18,7 +18,7 @@ import java.util.List;
 
 public abstract class PanthalassaVehicle extends Entity {
 
-    private PanthalassaVehicle2.Status status;
+    private Status status;
 
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
@@ -165,7 +165,7 @@ public abstract class PanthalassaVehicle extends Entity {
     }
 
 
-    private BoatEntity.Status getBoatStatus() {
+    private BoatEntity.Status getVehicleStatus() {
         BoatEntity.Status boatentity$status = this.getUnderwaterStatus();
         if (boatentity$status != null) {
             this.waterLevel = this.getBoundingBox().maxY;
