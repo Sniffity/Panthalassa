@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.common.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.common.entity.EntityKronosaurus;
+import com.github.sniffity.panthalassa.vehicle.VehicleMantaRaySubmersible;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -19,8 +20,14 @@ public class PanthalassaEntityTypes {
                     .size(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
-@SuppressWarnings("deprecated")
+    public static final RegistryObject<EntityType<VehicleMantaRaySubmersible>> MSRV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
+            EntityType.Builder.create(VehicleMantaRaySubmersible::new,EntityClassification.CREATURE)
+                    .size(2.0F, 1.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "manta_ray_submersible_vehicle").toString()));
+
+
+    @SuppressWarnings("deprecated")
     public static void setupEntityTypeAttributes (){
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().create());
-}
+    }
 }
