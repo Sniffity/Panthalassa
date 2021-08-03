@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class PanthalassaEntity extends WaterMobEntity {
+public abstract class PanthalassaEntity extends WaterMobEntity {
 
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
