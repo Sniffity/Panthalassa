@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.common.entity;
 
 import com.github.sniffity.panthalassa.common.entity.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.common.entity.ai.PanthalassaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
