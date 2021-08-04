@@ -247,9 +247,11 @@ public class PanthalassaVehicle extends Entity {
     }
 
 
+    @Override
     public double getMountedYOffset() {
         return 0.0D;
     }
+
 
     @Nullable
     @Override
@@ -283,22 +285,6 @@ public class PanthalassaVehicle extends Entity {
             this.newPosRotationIncrements = 0;
             this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
         }
-
-        /*
-        if (this.newPosRotationIncrements > 0) {
-            double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / (double) this.newPosRotationIncrements;
-            double d2 = this.getPosY() + (this.interpTargetY - this.getPosY()) / (double) this.newPosRotationIncrements;
-            double d4 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / (double) this.newPosRotationIncrements;
-            double d6 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
-            this.rotationYaw = (float) ((double) this.rotationYaw + d6 / (double) this.newPosRotationIncrements);
-            this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
-            --this.newPosRotationIncrements;
-            this.setPosition(d0, d2, d4);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-        } else if (!this.isServerWorld()) {
-            this.setMotion(this.getMotion().scale(0.98D));
-        }
-*/
 
         Vector3d vector3d = this.getMotion();
         double d1 = vector3d.x;
@@ -420,7 +406,7 @@ public class PanthalassaVehicle extends Entity {
                 double moveZ = entity.moveForward;
 
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch * 0.65f;
+                rotationPitch = entity.rotationPitch*0.4F;
 
                 double lookY = entity.getLookVec().y;
 
@@ -460,6 +446,12 @@ public class PanthalassaVehicle extends Entity {
                 setMotion(getMotion().add(0, -0.003d, 0));
             }
         } else if (!isOnGround()) {
+            if (getControllingPassenger() instanceof LivingEntity) {
+                LivingEntity entity = (LivingEntity) getControllingPassenger();
+                rotationYaw = entity.rotationYaw;
+                rotationPitch = entity.rotationPitch*0.4F;
+
+            }
             double d0 = 0.08D;
             BlockPos blockpos = this.getPositionUnderneath();
             float f3 = this.world.getBlockState(this.getPositionUnderneath()).getSlipperiness(world, this.getPositionUnderneath(), this);
@@ -491,15 +483,6 @@ public class PanthalassaVehicle extends Entity {
 
 
 
-    public double getY (Vector3d vec, double d1){
-        if (this.status == PanthalassaVehicle.Status.IN_AIR || this.status == Status.ON_LAND) {
-            return vec.y + d1;
-        }
-        else {
-            return vec.y - 0.005;
-            }
-
-        }
 
     public float getWaterLevelAbove() {
         AxisAlignedBB axisalignedbb = this.getBoundingBox();
@@ -550,16 +533,6 @@ public class PanthalassaVehicle extends Entity {
                     this.onLivingFall(this.fallDistance, 1.0F);
                     if (!this.world.isRemote && !this.removed) {
                         this.remove();
-                        /*if (this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-                            for (int i = 0; i < 3; ++i) {
-                                this.entityDropItem(this.getBoatType().asPlank());
-                            }
-
-                            for (int j = 0; j < 2; ++j) {
-                                this.entityDropItem(Items.STICK);
-                            }
-
-                         */
                     }
                 }
             }
