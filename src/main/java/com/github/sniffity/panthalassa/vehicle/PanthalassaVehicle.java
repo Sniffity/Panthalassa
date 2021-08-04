@@ -1,18 +1,26 @@
 package com.github.sniffity.panthalassa.vehicle;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import net.minecraft.entity.item.BoatEntity;
+
 
 public class PanthalassaVehicle extends Entity {
 
@@ -112,10 +120,10 @@ public class PanthalassaVehicle extends Entity {
                 double moveX = vec3d.x;
                 double moveZ = entity.moveForward;
 
-                rotationYaw = -entity.rotationYaw;
+                rotationYaw = entity.rotationYaw;
 
-                //if (!isJumpingOutOfWater())
-                rotationPitch = entity.rotationPitch * 0.5f;
+                //if (!isJumpingOutOfWater()) rotationPitch = entity.rotationPitch * 0.5f;
+
                 double lookY = entity.getLookVec().y;
                 if (entity.moveForward != 0 && (canSwim() || lookY < 0)) moveY = lookY;
 
@@ -147,4 +155,36 @@ public class PanthalassaVehicle extends Entity {
         }
     }
 
+    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+        if (!this.isInWater()) {
+            this.updateWaterState();
+        }
+
+        if (!this.world.isRemote && this.fallDistance > 3.0F && onGroundIn) {
+            float f = (float)MathHelper.ceil(this.fallDistance - 3.0F);
+            if (!state.isAir(world, pos)) {
+                double d0 = Math.min((double)(0.2F + f / 15.0F), 2.5D);
+                int i = (int)(150.0D * d0);
+            }
+        }
+        super.updateFallState(y, onGroundIn, state, pos);
+    }
+
+
+    void updateWaterState() {
+        if (this.getRidingEntity() instanceof BoatEntity) {
+            this.inWater = false;
+        } else if (this.handleFluidAcceleration(FluidTags.WATER, 0.014D)) {
+            if (!this.inWater && !this.firstUpdate) {
+                this.doWaterSplashEffect();
+            }
+
+            this.fallDistance = 0.0F;
+            this.inWater = true;
+            this.extinguish();
+        } else {
+            this.inWater = false;
+        }
+
+    }
 }
