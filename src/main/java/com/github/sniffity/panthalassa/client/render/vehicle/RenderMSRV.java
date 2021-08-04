@@ -6,11 +6,9 @@ import com.github.sniffity.panthalassa.client.render.PanthalassaVehicleRenderer;
 import com.github.sniffity.panthalassa.vehicle.VehicleMSRV;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
-import software.bernie.geckolib3.renderers.geo.GeoProjectilesRenderer;
 
 
-public class RenderMSRV extends GeoProjectilesRenderer<VehicleMSRV> {
+public class RenderMSRV extends PanthalassaVehicleRenderer<VehicleMSRV> {
 
     public RenderMSRV(EntityRendererManager renderManager) {
         super(renderManager, new ModelMSRV());

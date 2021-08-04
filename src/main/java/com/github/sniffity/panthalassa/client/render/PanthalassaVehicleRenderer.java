@@ -36,8 +36,10 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelLocation(entityIn));
         matrixStackIn.push();
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw)+180));
-        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
+        matrixStackIn.rotate(Vector3f.YP.rotationDegrees((-entityIn.rotationYaw)+180));
+        //matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw)+90));
+        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(-entityIn.rotationPitch));
+        //matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
         Minecraft.getInstance().textureManager.bindTexture(this.getEntityTexture(entityIn));
         Color renderColor = this.getRenderColor(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn);
         RenderType renderType = this.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, this.getEntityTexture(entityIn));
