@@ -19,14 +19,17 @@ public class TeleporterLogic {
 
     public TeleporterLogic(Entity entity, ServerWorld targetWorld, ServerWorld initialWorld, PanthalassaTeleporter teleporter) {
 
-
         PortalInfo portalinfo = teleporter.getPortalInfo(entity, targetWorld);
 
         if (portalinfo !=null) {
             if (!entity.getPassengers().isEmpty()) {
                 PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity, targetWorld.getDimensionKey(), initialWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
             } else if (entity instanceof PlayerEntity) {
-                PanthalassaWorldSavedData.get(targetWorld).addPlayerTP((PlayerEntity) entity,targetWorld.getDimensionKey(),portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                if(entity.getRidingEntity() != null) {
+                    PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity.getRidingEntity(), targetWorld.getDimensionKey(), initialWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                } else {
+                    PanthalassaWorldSavedData.get(targetWorld).addPlayerTP((PlayerEntity) entity, targetWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                }
             } else {
                 PanthalassaWorldSavedData.get(targetWorld).addEntityTP(entity, targetWorld.getDimensionKey(), initialWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
             }
