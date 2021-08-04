@@ -22,7 +22,8 @@ public class PanthalassaEntityTypes {
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
     public static final RegistryObject<EntityType<VehicleMSRV>> MSRV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
-            EntityType.Builder.create(VehicleMSRV::new,EntityClassification.MISC)
+            EntityType.Builder
+                    .create(VehicleMSRV::new,EntityClassification.MISC)
                     .size(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "manta_ray_submersible_vehicle").toString()));
 

@@ -3,14 +3,17 @@ package com.github.sniffity.panthalassa.vehicle;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LilyPadBlock;
 import net.minecraft.entity.*;
+import net.minecraft.entity.LivingEntity;
+
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.play.client.CSteerBoatPacket;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -21,16 +24,18 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import net.minecraft.entity.item.BoatEntity;
 
 
 public class PanthalassaVehicle extends Entity {
     private PanthalassaVehicle.Status status;
     private PanthalassaVehicle.Status previousStatus;
+
     public float waterSpeed;
     public float landSpeed;
     public float aiMoveSpeed;
@@ -40,6 +45,31 @@ public class PanthalassaVehicle extends Entity {
     private double lastYd;
     private float momentum;
     private float deltaRotation;
+    private int lerpSteps;
+    private double lerpX;
+    private double lerpY;
+    private double lerpZ;
+    private double lerpYaw;
+
+    private double lerpPitch;
+    protected int newPosRotationIncrements;
+    protected double interpTargetX;
+    protected double interpTargetY;
+    protected double interpTargetZ;
+    protected double interpTargetYaw;
+    protected double interpTargetPitch;
+    protected double interpTargetHeadYaw;
+    protected int interpTicksHead;
+    public float moveStrafing;
+    public float moveVertical;
+    public float moveForward;
+    public float renderYawOffset;
+    public float jumpMovementFactor = 0.02F;
+
+
+    protected float prevOnGroundSpeedFactor;
+    protected float onGroundSpeedFactor;
+
 
 
 
@@ -221,7 +251,6 @@ public class PanthalassaVehicle extends Entity {
         return 0.0D;
     }
 
-
     @Nullable
     @Override
     public Entity getControllingPassenger() {
@@ -241,103 +270,236 @@ public class PanthalassaVehicle extends Entity {
         this.aiMoveSpeed = speedIn;
     }
 
+
     @Override
     public void tick() {
-        vehicleTravel(travelVec);
         super.tick();
+        this.vehicleTick();
+    }
 
+
+    public void vehicleTick() {
         if (this.canPassengerSteer()) {
-            this.updateMotion();
-            vehicleTravel(travelVec);
+            this.newPosRotationIncrements = 0;
+            this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
+        }
+
+        /*
+        if (this.newPosRotationIncrements > 0) {
+            double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / (double) this.newPosRotationIncrements;
+            double d2 = this.getPosY() + (this.interpTargetY - this.getPosY()) / (double) this.newPosRotationIncrements;
+            double d4 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / (double) this.newPosRotationIncrements;
+            double d6 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
+            this.rotationYaw = (float) ((double) this.rotationYaw + d6 / (double) this.newPosRotationIncrements);
+            this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
+            --this.newPosRotationIncrements;
+            this.setPosition(d0, d2, d4);
+            this.setRotation(this.rotationYaw, this.rotationPitch);
+        } else if (!this.isServerWorld()) {
+            this.setMotion(this.getMotion().scale(0.98D));
+        }
+*/
+
+        Vector3d vector3d = this.getMotion();
+        double d1 = vector3d.x;
+        double d3 = vector3d.y;
+        double d5 = vector3d.z;
+
+        if (Math.abs(vector3d.x) < 0.003D) {
+            d1 = 0.0D;
+        }
+
+        if (Math.abs(vector3d.y) < 0.003D) {
+            d3 = 0.0D;
+        }
+
+        if (Math.abs(vector3d.z) < 0.003D) {
+            d5 = 0.0D;
+        }
+
+
+        this.setMotion(d1, d3, d5);
+        this.world.getProfiler().startSection("ai");
+        if (this.isServerWorld()) {
+            this.world.getProfiler().startSection("newAi");
+            this.updateEntityActionState();
+            this.world.getProfiler().endSection();
+        }
+
+        this.world.getProfiler().endSection();
+
+        this.world.getProfiler().startSection("travel");
+        this.moveStrafing *= 0.98F;
+        this.moveForward *= 0.98F;
+        AxisAlignedBB axisalignedbb = this.getBoundingBox();
+        this.vehicleTravel(new Vector3d((double) this.moveStrafing, (double) this.moveVertical, (double) this.moveForward));
+        this.world.getProfiler().endSection();
+
+        this.world.getProfiler().startSection("push");
+        this.collideWithNearbyEntities();
+        this.world.getProfiler().endSection();
+    }
+
+    public void setMoveVertical(float amount) {
+        this.moveVertical = amount;
+    }
+
+    protected void collideWithNearbyEntities() {
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox(), EntityPredicates.pushableBy(this));
+        if (!list.isEmpty()) {
+            int i = this.world.getGameRules().getInt(GameRules.MAX_ENTITY_CRAMMING);
+            if (i > 0 && list.size() > i - 1 && this.rand.nextInt(4) == 0) {
+                int j = 0;
+
+                for (Entity entity : list) {
+                    if (!entity.isPassenger()) {
+                        ++j;
+                    }
+                }
+
+                if (j > i - 1) {
+                    this.attackEntityFrom(DamageSource.CRAMMING, 6.0F);
+                }
+            }
+
+            for (Entity entity : list) {
+                this.collideWithEntity(entity);
+            }
+        }
+
+    }
+
+    protected void collideWithEntity(Entity entityIn) {
+        entityIn.applyEntityCollision(this);
+    }
+
+    protected void updateEntityActionState() {
+    }
+
+
+    @OnlyIn(Dist.CLIENT)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+        this.interpTargetX = x;
+        this.interpTargetY = y;
+        this.interpTargetZ = z;
+        this.interpTargetYaw = (double)yaw;
+        this.interpTargetPitch = (double)pitch;
+        this.newPosRotationIncrements = posRotationIncrements;
+    }
+
+    public boolean isServerWorld() {
+        return !this.world.isRemote;
+    }
+
+    private void tickLerp() {
+        if (this.canPassengerSteer()) {
+            this.lerpSteps = 0;
+            this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
+        }
+
+        if (this.lerpSteps > 0) {
+            double d0 = this.getPosX() + (this.lerpX - this.getPosX()) / (double)this.lerpSteps;
+            double d1 = this.getPosY() + (this.lerpY - this.getPosY()) / (double)this.lerpSteps;
+            double d2 = this.getPosZ() + (this.lerpZ - this.getPosZ()) / (double)this.lerpSteps;
+            double d3 = MathHelper.wrapDegrees(this.lerpYaw - (double)this.rotationYaw);
+            this.rotationYaw = (float)((double)this.rotationYaw + d3 / (double)this.lerpSteps);
+            this.rotationPitch = (float)((double)this.rotationPitch + (this.lerpPitch - (double)this.rotationPitch) / (double)this.lerpSteps);
+            --this.lerpSteps;
+            this.setPosition(d0, d1, d2);
+            this.setRotation(this.rotationYaw, this.rotationPitch);
         }
     }
 
     public void vehicleTravel(Vector3d vec3d) {
-        if (getControllingPassenger() instanceof LivingEntity) {
-            float speed = getTravelSpeed() * 0.225f;
-            LivingEntity entity = (LivingEntity) getControllingPassenger();
-            double moveY = vec3d.y;
-            double moveX = vec3d.x;
-            double moveZ = entity.moveForward;
+        if (isInWater()) {
+            if (getControllingPassenger() instanceof LivingEntity) {
+                float speed = getTravelSpeed() * 0.225f;
+                LivingEntity entity = (LivingEntity) getControllingPassenger();
+                double moveY = vec3d.y;
+                double moveX = vec3d.x;
+                double moveZ = entity.moveForward;
 
-            rotationYaw = entity.rotationYaw;
+                rotationYaw = entity.rotationYaw;
+                rotationPitch = entity.rotationPitch * 0.65f;
 
-            //if (!isJumpingOutOfWater()) rotationPitch = entity.rotationPitch * 0.5f;
+                double lookY = entity.getLookVec().y;
 
-            double lookY = entity.getLookVec().y;
-            if (entity.moveForward != 0 && (canSwim() || lookY < 0)) moveY = lookY;
+                if (entity.moveForward != 0 && (canSwim() || lookY < 0)) moveY = lookY;
 
-            setAIMoveSpeed(speed);
-            vec3d = new Vector3d(moveX, moveY, moveZ);
-        }
-/*
-            // add motion if were coming out of water fast; jump out of water like a dolphin
-            if (getDeltaMovement().y > 0.25 && level.getBlockState(new BlockPos(getEyePosition(1)).above()).getFluidState().isEmpty())
-                setDeltaMovement(getDeltaMovement().multiply(1.2, 1.5f, 1.2d));
-*/
-        moveRelative(getAIMoveSpeed(), vec3d);
-        move(MoverType.SELF, getMotion());
-        setMotion(getMotion().scale(0.9d));
-
-//            animationSpeedOld = animationSpeed;
-        double xDiff = getPosX() - prevPosX;
-        double yDiff = getPosY() - prevPosY;
-        double zDiff = getPosZ() - prevPosZ;
-        if (yDiff < 0.2) yDiff = 0;
-        float amount = MathHelper.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff) * 4f;
-        if (amount > 1f) amount = 1f;
-
-//            animationSpeed += (amount - animationSpeed) * 0.4f;
-//            animationPosition += animationSpeed;
-
-//            if (vec3d.z == 0 && getTarget() == null && !isInSittingPose())
-        setMotion(getMotion().add(0, -0.003d, 0));
-    }
+                setAIMoveSpeed(speed);
+                vec3d = new Vector3d(moveX, moveY, moveZ);
 
 
-    private void updateMotion() {
-        double d0 = (double) -0.04F;
-        double d1 = this.hasNoGravity() ? 0.0D : (double) -0.04F;
-        double d2 = 0.0D;
-        this.momentum = 0.05F;
-        //If it's falling into water, from the air....
-        if (this.previousStatus == PanthalassaVehicle.Status.IN_AIR && this.status != PanthalassaVehicle.Status.IN_AIR && this.status != PanthalassaVehicle.Status.ON_LAND) {
-            this.waterLevel = this.getPosYHeight(1.0D);
-            //Set its position: Maintain X and Z, set Y to water level.
-            this.setPosition(this.getPosX(), (double) (this.getWaterLevelAbove() - this.getHeight()) + 0.101D, this.getPosZ());
-            //Set its Y motion to 0, leave its current X and Z motions..
-            this.setMotion(this.getMotion().mul(1.0D, 0.0D, 1.0D));
-            this.lastYd = 0.0D;
-            this.status = PanthalassaVehicle.Status.IN_WATER;
-        } else {
-            if (this.status == PanthalassaVehicle.Status.IN_WATER) {
-                d2 = (this.waterLevel - this.getPosY()) / (double) this.getHeight();
-                this.momentum = 0.9F;
-            } else if (this.status == PanthalassaVehicle.Status.UNDER_FLOWING_WATER) {
-                d1 = -7.0E-4D;
-                this.momentum = 0.9F;
-            } else if (this.status == PanthalassaVehicle.Status.UNDER_WATER) {
-                d2 = (double) 0.01F;
-                this.momentum = 0.45F;
-            } else if (this.status == PanthalassaVehicle.Status.IN_AIR) {
-                this.momentum = 0.9F;
-            } else if (this.status == PanthalassaVehicle.Status.ON_LAND) {
-                this.momentum = this.boatGlide;
-                if (this.getControllingPassenger() instanceof PlayerEntity) {
-                    this.boatGlide /= 2.0F;
+            }
+            moveRelative(getAIMoveSpeed(), vec3d);
+            move(MoverType.SELF, getMotion());
+            setMotion(getMotion().scale(0.9d));
+
+            if (vec3d.z == 0) {
+                setMotion(getMotion().add(0, -0.003d, 0));
+            }
+        } else if (isOnGround()) {
+            if (getControllingPassenger() instanceof LivingEntity) {
+                float speed = getTravelSpeed() * 0.225f;
+                LivingEntity entity = (LivingEntity) getControllingPassenger();
+                double moveY = vec3d.y;
+                double moveX = vec3d.x;
+                double moveZ = entity.moveForward;
+
+                rotationYaw = entity.rotationYaw;
+
+                setAIMoveSpeed(speed);
+                vec3d = new Vector3d(moveX, moveY, moveZ);
+
+            }
+            moveRelative(getAIMoveSpeed(), vec3d);
+            move(MoverType.SELF, getMotion());
+            setMotion(getMotion().scale(0.9d));
+
+            if (vec3d.z == 0) {
+                setMotion(getMotion().add(0, -0.003d, 0));
+            }
+        } else if (!isOnGround()) {
+            double d0 = 0.08D;
+            BlockPos blockpos = this.getPositionUnderneath();
+            float f3 = this.world.getBlockState(this.getPositionUnderneath()).getSlipperiness(world, this.getPositionUnderneath(), this);
+            Vector3d vec5 = handleRelativeFrictionAndCalculateMovement(vec3d, f3);
+            double d2 = vec5.y;
+            if (this.world.isRemote && !this.world.isBlockLoaded(blockpos)) {
+                if (this.getPosY() > 0.0D) {
+                    d2 = -0.1D;
+                } else {
+                    d2 = 0.0D;
                 }
+            } else if (!this.hasNoGravity()) {
+                d2 -= d0;
             }
-
-            Vector3d vector3d = this.getMotion();
-            this.setMotion(vector3d.x * (double) this.momentum, vector3d.y + d1, vector3d.z * (double) this.momentum);
-            this.deltaRotation *= this.momentum;
-            if (d2 > 0.0D) {
-                Vector3d vector3d1 = this.getMotion();
-                this.setMotion(vector3d1.x, (vector3d1.y + d2 * 0.06153846016296973D) * 0.75D, vector3d1.z);
-            }
+            this.setMotion(getMotion().getX(), d2 * (double) 0.98F, getMotion().getZ());
         }
-
     }
+
+    public Vector3d handleRelativeFrictionAndCalculateMovement(Vector3d vec3d, float d3) {
+        this.moveRelative(this.getRelevantMoveFactor(d3), vec3d);
+        this.setMotion(this.getMotion());
+        this.move(MoverType.SELF, this.getMotion());
+        return this.getMotion();
+    }
+
+    private float getRelevantMoveFactor(float p_213335_1_) {
+        return this.onGround ? this.getAIMoveSpeed() * (0.21600002F / (p_213335_1_ * p_213335_1_ * p_213335_1_)) : this.jumpMovementFactor;
+    }
+
+
+
+    public double getY (Vector3d vec, double d1){
+        if (this.status == PanthalassaVehicle.Status.IN_AIR || this.status == Status.ON_LAND) {
+            return vec.y + d1;
+        }
+        else {
+            return vec.y - 0.005;
+            }
+
+        }
 
     public float getWaterLevelAbove() {
         AxisAlignedBB axisalignedbb = this.getBoundingBox();
