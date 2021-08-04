@@ -6,6 +6,7 @@ import com.github.sniffity.panthalassa.client.render.vehicle.RenderMSRV;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +19,8 @@ public class ClientEventBusSubscriber {
     @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
+
+        MinecraftForge.EVENT_BUS.register(new VehicleOverlay());
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.KRONOSAURUS.get(),
                 manager -> new RenderKronosaurus(manager));
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MSRV.get(),

@@ -22,6 +22,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     private int ticksUntilNextAttack;
     private long lastCanUseCheck;
 
+
     public PanthalassaMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory) {
         this.attacker = creature;
         this.speedTowardsTarget = speedIn;
