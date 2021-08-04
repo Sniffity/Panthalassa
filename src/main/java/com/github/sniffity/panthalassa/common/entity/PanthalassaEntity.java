@@ -34,6 +34,7 @@ public abstract class PanthalassaEntity extends WaterMobEntity {
         return new SwimmerPathNavigator(this, worldIn);
     }
 
+
     public void travel(Vector3d travelVector) {
         if (this.isServerWorld() && this.isInWater()) {
             this.moveRelative(this.getAIMoveSpeed(), travelVector);
