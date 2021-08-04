@@ -19,8 +19,6 @@ public class VehicleMSRV extends PanthalassaVehicle  implements IAnimatable {
         super(type, world);
         this.waterSpeed= 1.0F;
         this.landSpeed = 0.4F;
-//        this.aiMoveSpeed = 1.0F;
-
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -39,6 +37,11 @@ public class VehicleMSRV extends PanthalassaVehicle  implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public double getMountedYOffset() {
+        return 0.0D;
     }
 
 }
