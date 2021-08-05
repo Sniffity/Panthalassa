@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.client;
+package com.github.sniffity.panthalassa.client.vehicle;
 
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.vehicle.PanthalassaVehicle;
@@ -12,6 +12,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.awt.*;
 import java.text.DecimalFormat;
+
 
 public class VehicleOverlay {
 
@@ -78,3 +79,4 @@ public class VehicleOverlay {
         game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.DARK_PURPLE + "Depth: " + TextFormatting.AQUA + depth, 10, 220, Color.WHITE.getRGB());
     }
 }
+

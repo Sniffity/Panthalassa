@@ -1,21 +1,15 @@
 package com.github.sniffity.panthalassa.vehicle;
 
-import com.github.sniffity.panthalassa.common.registry.PanthalassaBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.LilyPadBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -578,4 +572,13 @@ public class PanthalassaVehicle extends Entity {
             this.fallDistance = (float) ((double) this.fallDistance - y);
         }
     }
+/*
+    public void setMountCameraAngles(boolean backView, EntityViewRenderEvent.CameraSetup event)
+    {
+        if (backView)
+            event.getInfo().move(ClientEvents.getViewCollision(-10, this), 1, 0);
+        else
+            event.getInfo().move(ClientEvents.getViewCollision(-5, this), -0.75, 0);
+    }*/
 }
+
