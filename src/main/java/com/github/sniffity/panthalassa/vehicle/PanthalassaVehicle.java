@@ -8,6 +8,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -30,6 +33,10 @@ import java.util.List;
 public class PanthalassaVehicle extends Entity {
     private PanthalassaVehicle.Status status;
     private PanthalassaVehicle.Status previousStatus;
+
+    protected static final DataParameter<Float> MAX_HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> ARMOR = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
 
     public float waterSpeed;
     public float landSpeed;
@@ -75,13 +82,14 @@ public class PanthalassaVehicle extends Entity {
         IN_AIR;
     }
 
+    @Override
+    protected void registerData()
+    {}
+
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
     }
 
-    @Override
-    protected void registerData() {
-    }
 
     @Override
     protected void readAdditional(CompoundNBT compound) {
