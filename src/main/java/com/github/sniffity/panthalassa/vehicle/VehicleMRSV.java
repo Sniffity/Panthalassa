@@ -11,11 +11,11 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class VehicleMSRV extends PanthalassaVehicle  implements IAnimatable {
+public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public VehicleMSRV(EntityType<? extends PanthalassaVehicle> type, World world) {
+    public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
         this.waterSpeed= 0.8F;
         this.landSpeed = 0.2F;
@@ -23,7 +23,7 @@ public class VehicleMSRV extends PanthalassaVehicle  implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if ((this.isSwimming()) || (event.isMoving() && this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.msrv.roll", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mrsv.roll", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;

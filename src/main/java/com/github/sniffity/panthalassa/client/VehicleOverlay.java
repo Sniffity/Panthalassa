@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.client;
 
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.vehicle.PanthalassaVehicle;
-import com.github.sniffity.panthalassa.vehicle.VehicleMSRV;
+import com.github.sniffity.panthalassa.vehicle.VehicleMRSV;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -37,7 +37,7 @@ public class VehicleOverlay {
 
         String vehicleText;
 
-        if (vehicle instanceof VehicleMSRV) {
+        if (vehicle instanceof VehicleMRSV) {
             vehicleText = "MANTA RAY SUBMERSIBLE VEHICLE";
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
         }

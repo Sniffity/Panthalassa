@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.client;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.render.entity.RenderKronosaurus;
-import com.github.sniffity.panthalassa.client.render.vehicle.RenderMSRV;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,7 +23,7 @@ public class ClientEventBusSubscriber {
         MinecraftForge.EVENT_BUS.register(new VehicleOverlay());
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.KRONOSAURUS.get(),
                 manager -> new RenderKronosaurus(manager));
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MSRV.get(),
-                manager -> new RenderMSRV(manager));
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.mrsv.get(),
+                manager -> new RenderMRSV(manager));
     }
 }

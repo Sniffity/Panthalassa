@@ -4,7 +4,7 @@
 		"animation.model.new": {
 			"loop": true
 		},
-		"animation.msrv.roll": {
+		"animation.mrsv.roll": {
 			"animation_length": 1.08,
 			"bones": {
 				"cockpit": {
