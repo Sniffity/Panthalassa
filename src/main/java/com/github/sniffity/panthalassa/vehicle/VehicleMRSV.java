@@ -17,8 +17,8 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
-        this.waterSpeed= 0.2F;
-        this.landSpeed = 0.2F;
+        this.waterSpeed= 0.05F;
+        this.landSpeed = 0.02F;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -27,8 +27,8 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
-
     }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));

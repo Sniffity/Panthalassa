@@ -22,10 +22,6 @@ public class VehicleCamera {
         if (view == PointOfView.THIRD_PERSON_BACK) {
             event.getInfo().movePosition(-calcCameraDistance(8.0,vehicle), 1, 0);
         }
-
-        if (view == PointOfView.FIRST_PERSON) {
-            event.getInfo().movePosition(1, 0, 0);
-        }
     }
 
     public static double calcCameraDistance(double startingDistance, Entity vehicle) {
