@@ -15,6 +15,7 @@ public class RenderMSRV extends PanthalassaVehicleRenderer<VehicleMSRV> {
         this.shadowSize = 1.0F;
     }
 
+
     @Override
     public ResourceLocation getEntityTexture(VehicleMSRV entity) {
         return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/msrv/msrv.png");    }

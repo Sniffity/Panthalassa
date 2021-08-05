@@ -70,10 +70,8 @@ public class PanthalassaVehicle extends Entity {
     public double nlfDistance;
     public double floorLastCheck;
     public int floorDistance;
-
     protected float prevOnGroundSpeedFactor;
     protected float onGroundSpeedFactor;
-
 
     public static enum Status {
         IN_WATER,
@@ -82,7 +80,6 @@ public class PanthalassaVehicle extends Entity {
         ON_LAND,
         IN_AIR;
     }
-
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
@@ -228,7 +225,6 @@ public class PanthalassaVehicle extends Entity {
         return f / (float) k1;
     }
 
-
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -245,7 +241,6 @@ public class PanthalassaVehicle extends Entity {
     protected boolean canFitPassenger(Entity passenger) {
         return this.getPassengers().size() < 1;
     }
-
 
     @Override
     public double getMountedYOffset() {
@@ -391,7 +386,6 @@ public class PanthalassaVehicle extends Entity {
     protected void updateEntityActionState() {
     }
 
-
     @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
         this.interpTargetX = x;
@@ -443,7 +437,6 @@ public class PanthalassaVehicle extends Entity {
         return this.floorDistance;
     }
 
-
     public void vehicleTravel(Vector3d vec3d) {
         if (isInWater()) {
             if (getControllingPassenger() instanceof LivingEntity) {
@@ -454,7 +447,7 @@ public class PanthalassaVehicle extends Entity {
                 double moveZ = entity.moveForward;
 
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch*0.1F;
+                rotationPitch = entity.rotationPitch*0.2F;
 
                 double lookY = entity.getLookVec().y;
 
@@ -497,7 +490,7 @@ public class PanthalassaVehicle extends Entity {
             if (getControllingPassenger() instanceof LivingEntity) {
                 LivingEntity entity = (LivingEntity) getControllingPassenger();
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch*0.1F;
+                rotationPitch = entity.rotationPitch*0.2F;
             }
             double d0 = 0.08D;
             BlockPos blockpos = this.getPositionUnderneath();
@@ -585,6 +578,4 @@ public class PanthalassaVehicle extends Entity {
             this.fallDistance = (float) ((double) this.fallDistance - y);
         }
     }
-
-
 }
