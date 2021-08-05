@@ -29,18 +29,18 @@ public final class Panthalassa {
 
 	public Panthalassa() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
-		PanthalassaBlocks.BLOCKS.register(bus);
-		PanthalassaItems.ITEMS.register(bus);
+		PanthalassaBlocks.BLOCKS.register(modBus);
+		PanthalassaItems.ITEMS.register(modBus);
 
-		PanthalassaEntityTypes.ENTITY_TYPES.register(bus);
+		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
 
-		PanthalassaFeatures.FEATURES.register(bus);
-		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(bus);
+		PanthalassaFeatures.FEATURES.register(modBus);
+		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 
-		PanthalassaPOI.POI.register(bus);
+		PanthalassaPOI.POI.register(modBus);
 
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);

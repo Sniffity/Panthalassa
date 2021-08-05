@@ -434,14 +434,14 @@ public class PanthalassaVehicle extends Entity {
     public void vehicleTravel(Vector3d vec3d) {
         if (isInWater()) {
             if (getControllingPassenger() instanceof LivingEntity) {
-                float speed = getTravelSpeed() * 0.225f;
+                float speed = getTravelSpeed();
                 LivingEntity entity = (LivingEntity) getControllingPassenger();
                 double moveY = vec3d.y;
                 double moveX = vec3d.x;
                 double moveZ = entity.moveForward;
 
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch*0.2F;
+                rotationPitch = entity.rotationPitch*0.5F;
 
                 double lookY = entity.getLookVec().y;
 
@@ -484,7 +484,7 @@ public class PanthalassaVehicle extends Entity {
             if (getControllingPassenger() instanceof LivingEntity) {
                 LivingEntity entity = (LivingEntity) getControllingPassenger();
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch*0.2F;
+                rotationPitch = entity.rotationPitch*0.5F;
             }
             double d0 = 0.08D;
             BlockPos blockpos = this.getPositionUnderneath();
