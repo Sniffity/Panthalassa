@@ -1,38 +1,29 @@
 package com.github.sniffity.panthalassa.vehicle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LilyPadBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 
+
 public class PanthalassaVehicle extends Entity {
-    private PanthalassaVehicle.Status status;
-    private PanthalassaVehicle.Status previousStatus;
 
     protected static final DataParameter<Float> MAX_HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
@@ -41,62 +32,53 @@ public class PanthalassaVehicle extends Entity {
     public float waterSpeed;
     public float landSpeed;
     public float aiMoveSpeed;
-    public Vector3d travelVec = new Vector3d(0, 0, 0);
-    private double waterLevel;
-    private float boatGlide;
-    private double lastYd;
-    private float momentum;
-    private float deltaRotation;
-    private int lerpSteps;
-    private double lerpX;
-    private double lerpY;
-    private double lerpZ;
-    private double lerpYaw;
-
-    private double lerpPitch;
     protected int newPosRotationIncrements;
     protected double interpTargetX;
     protected double interpTargetY;
     protected double interpTargetZ;
     protected double interpTargetYaw;
     protected double interpTargetPitch;
-    protected double interpTargetHeadYaw;
-    protected int interpTicksHead;
     public float moveStrafing;
     public float moveVertical;
     public float moveForward;
-    public float renderYawOffset;
     public float jumpMovementFactor = 0.02F;
     public double nlfLastCheck = 0;
     public double nlfDistance;
     public double floorLastCheck;
     public int floorDistance;
-    protected float prevOnGroundSpeedFactor;
-    protected float onGroundSpeedFactor;
-
-    public static enum Status {
-        IN_WATER,
-        UNDER_WATER,
-        UNDER_FLOWING_WATER,
-        ON_LAND,
-        IN_AIR;
-    }
-
-    @Override
-    protected void registerData()
-    {}
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
     }
 
+    @Override
+    protected void registerData() {
+    }
 
     @Override
     protected void readAdditional(CompoundNBT compound) {
+        if(compound.contains("MaxHealth", Constants.NBT.TAG_FLOAT))
+        {
+            this.setMaxHealth(compound.getFloat("MaxHealth"));
+        }
+        if(compound.contains("Health", Constants.NBT.TAG_FLOAT))
+        {
+            this.setHealth(compound.getFloat("Health"));
+        }
+        if(compound.contains("Armor", Constants.NBT.TAG_FLOAT))
+        {
+            this.setArmor(compound.getFloat("Armor"));
+        }
+
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
+        {
+            compound.putFloat("MaxHealth", this.getMaxHealth());
+            compound.putFloat("Health", this.getHealth());
+            compound.putFloat("Armor", this.getArmor());
+        }
     }
 
     public static boolean func_242378_a(Entity p_242378_0_, Entity entity) {
@@ -113,118 +95,6 @@ public class PanthalassaVehicle extends Entity {
 
     public boolean canCollide(Entity entity) {
         return func_242378_a(this, entity);
-    }
-
-    private PanthalassaVehicle.Status getVehicleStatus() {
-        PanthalassaVehicle.Status vehicleStatus = this.getUnderwaterStatus();
-        if (vehicleStatus != null) {
-            this.waterLevel = this.getBoundingBox().maxY;
-            return vehicleStatus;
-        } else if (this.checkInWater()) {
-            return PanthalassaVehicle.Status.IN_WATER;
-        } else {
-            float f = this.getBoatGlide();
-            if (f > 0.0F) {
-                this.boatGlide = f;
-                return PanthalassaVehicle.Status.ON_LAND;
-            } else {
-                return PanthalassaVehicle.Status.IN_AIR;
-            }
-        }
-    }
-
-    @Nullable
-    private PanthalassaVehicle.Status getUnderwaterStatus() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        double d0 = axisalignedbb.maxY + 0.001D;
-        int i = MathHelper.floor(axisalignedbb.minX);
-        int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.maxY);
-        int l = MathHelper.ceil(d0);
-        int i1 = MathHelper.floor(axisalignedbb.minZ);
-        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
-        boolean flag = false;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-
-        for (int k1 = i; k1 < j; ++k1) {
-            for (int l1 = k; l1 < l; ++l1) {
-                for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.setPos(k1, l1, i2);
-                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
-                    if (fluidstate.isTagged(FluidTags.WATER) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getActualHeight(this.world, blockpos$mutable))) {
-                        if (!fluidstate.isSource()) {
-                            return PanthalassaVehicle.Status.UNDER_FLOWING_WATER;
-                        }
-
-                        flag = true;
-                    }
-                }
-            }
-        }
-
-        return flag ? PanthalassaVehicle.Status.UNDER_WATER : null;
-    }
-
-    private boolean checkInWater() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        int i = MathHelper.floor(axisalignedbb.minX);
-        int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.minY);
-        int l = MathHelper.ceil(axisalignedbb.minY + 0.001D);
-        int i1 = MathHelper.floor(axisalignedbb.minZ);
-        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
-        boolean flag = false;
-        this.waterLevel = Double.MIN_VALUE;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-
-        for (int k1 = i; k1 < j; ++k1) {
-            for (int l1 = k; l1 < l; ++l1) {
-                for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.setPos(k1, l1, i2);
-                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
-                    if (fluidstate.isTagged(FluidTags.WATER)) {
-                        float f = (float) l1 + fluidstate.getActualHeight(this.world, blockpos$mutable);
-                        this.waterLevel = Math.max((double) f, this.waterLevel);
-                        flag |= axisalignedbb.minY < (double) f;
-                    }
-                }
-            }
-        }
-        return flag;
-    }
-
-    public float getBoatGlide() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        AxisAlignedBB axisalignedbb1 = new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY - 0.001D, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-        int i = MathHelper.floor(axisalignedbb1.minX) - 1;
-        int j = MathHelper.ceil(axisalignedbb1.maxX) + 1;
-        int k = MathHelper.floor(axisalignedbb1.minY) - 1;
-        int l = MathHelper.ceil(axisalignedbb1.maxY) + 1;
-        int i1 = MathHelper.floor(axisalignedbb1.minZ) - 1;
-        int j1 = MathHelper.ceil(axisalignedbb1.maxZ) + 1;
-        VoxelShape voxelshape = VoxelShapes.create(axisalignedbb1);
-        float f = 0.0F;
-        int k1 = 0;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-
-        for (int l1 = i; l1 < j; ++l1) {
-            for (int i2 = i1; i2 < j1; ++i2) {
-                int j2 = (l1 != i && l1 != j - 1 ? 0 : 1) + (i2 != i1 && i2 != j1 - 1 ? 0 : 1);
-                if (j2 != 2) {
-                    for (int k2 = k; k2 < l; ++k2) {
-                        if (j2 <= 0 || k2 != k && k2 != l - 1) {
-                            blockpos$mutable.setPos(l1, k2, i2);
-                            BlockState blockstate = this.world.getBlockState(blockpos$mutable);
-                            if (!(blockstate.getBlock() instanceof LilyPadBlock) && VoxelShapes.compare(blockstate.getCollisionShape(this.world, blockpos$mutable).withOffset((double) l1, (double) k2, (double) i2), voxelshape, IBooleanFunction.AND)) {
-                                f += blockstate.getSlipperiness(this.world, blockpos$mutable, this);
-                                ++k1;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return f / (float) k1;
     }
 
     @Override
@@ -255,12 +125,11 @@ public class PanthalassaVehicle extends Entity {
             if (!(world.getBlockState(pos).isSolid())) {
                 pos = pos.down();
             } else {
-                return (vehicle.getPosition().getY()-pos.getY());
+                return (vehicle.getPosition().getY() - pos.getY());
             }
         }
         return 0;
     }
-
 
     @Nullable
     @Override
@@ -288,7 +157,6 @@ public class PanthalassaVehicle extends Entity {
         this.vehicleTick();
     }
 
-
     public void vehicleTick() {
         if (this.canPassengerSteer()) {
             this.newPosRotationIncrements = 0;
@@ -301,7 +169,7 @@ public class PanthalassaVehicle extends Entity {
                 Double nlfDistance = testNLFDistance(this);
                 if (nlfDistance != null) {
                     setNLFDistance(nlfDistance);
-                } else  {
+                } else {
                     setNLFDistance(-1);
                 }
             }
@@ -310,8 +178,8 @@ public class PanthalassaVehicle extends Entity {
         if (this.world.getGameTime() - floorLastCheck > 10) {
             floorLastCheck = this.world.getGameTime();
             int floorDistance = testFloorDistance(this, this.world);
-            if (floorDistance >=0) {
-                    setFloorDistance(floorDistance);
+            if (floorDistance >= 0) {
+                setFloorDistance(floorDistance);
             }
         }
 
@@ -346,44 +214,13 @@ public class PanthalassaVehicle extends Entity {
         this.world.getProfiler().startSection("travel");
         this.moveStrafing *= 0.98F;
         this.moveForward *= 0.98F;
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
         this.vehicleTravel(new Vector3d((double) this.moveStrafing, (double) this.moveVertical, (double) this.moveForward));
         this.world.getProfiler().endSection();
 
         this.world.getProfiler().startSection("push");
-        this.collideWithNearbyEntities();
         this.world.getProfiler().endSection();
     }
 
-    public void setMoveVertical(float amount) {
-        this.moveVertical = amount;
-    }
-
-    protected void collideWithNearbyEntities() {
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox(), EntityPredicates.pushableBy(this));
-        if (!list.isEmpty()) {
-            int i = this.world.getGameRules().getInt(GameRules.MAX_ENTITY_CRAMMING);
-            if (i > 0 && list.size() > i - 1 && this.rand.nextInt(4) == 0) {
-                int j = 0;
-                for (Entity entity : list) {
-                    if (!entity.isPassenger()) {
-                        ++j;
-                    }
-                }
-                if (j > i - 1) {
-                    this.attackEntityFrom(DamageSource.CRAMMING, 6.0F);
-                }
-            }
-            for (Entity entity : list) {
-                this.collideWithEntity(entity);
-            }
-        }
-
-    }
-
-    protected void collideWithEntity(Entity entityIn) {
-        entityIn.applyEntityCollision(this);
-    }
 
     protected void updateEntityActionState() {
     }
@@ -402,43 +239,6 @@ public class PanthalassaVehicle extends Entity {
         return !this.world.isRemote;
     }
 
-    public Double testNLFDistance(PanthalassaVehicle vehicle) {
-        List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(vehicle, new AxisAlignedBB(vehicle.getPosX() - 10, vehicle.getPosY() - 10, vehicle.getPosZ() - 10, vehicle.getPosX() + 10, vehicle.getPosY() + 10, vehicle.getPosZ() + 10));
-        double closestDistance = 100;
-        if (entities.size() != 0) {
-            for (int i = 0; i < entities.size(); i++) {
-                Entity testEntity = entities.get(i);
-                if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity)) {
-                    float distance = getDistance(testEntity);
-                    if (distance < closestDistance) {
-                        closestDistance = distance;
-                    }
-                }
-            }
-            if (closestDistance < 20) {
-                return closestDistance;
-            }
-        }
-
-        return null;
-    }
-
-    public void setNLFDistance(double nlfDistance) {
-       this.nlfDistance = nlfDistance;
-    }
-
-    public Double getNLFDistance() {
-        return this.nlfDistance;
-    }
-
-    public void setFloorDistance(int floorDistance) {
-        this.floorDistance = floorDistance;
-    }
-
-    public int getFloorDistance() {
-        return this.floorDistance;
-    }
-
     public void vehicleTravel(Vector3d vec3d) {
         if (isInWater()) {
             if (getControllingPassenger() instanceof LivingEntity) {
@@ -449,7 +249,7 @@ public class PanthalassaVehicle extends Entity {
                 double moveZ = entity.moveForward;
 
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch*0.5F;
+                rotationPitch = entity.rotationPitch * 0.5F;
 
                 double lookY = entity.getLookVec().y;
 
@@ -492,7 +292,7 @@ public class PanthalassaVehicle extends Entity {
             if (getControllingPassenger() instanceof LivingEntity) {
                 LivingEntity entity = (LivingEntity) getControllingPassenger();
                 rotationYaw = entity.rotationYaw;
-                rotationPitch = entity.rotationPitch*0.5F;
+                rotationPitch = entity.rotationPitch * 0.5F;
             }
             double d0 = 0.08D;
             BlockPos blockpos = this.getPositionUnderneath();
@@ -523,70 +323,99 @@ public class PanthalassaVehicle extends Entity {
         return this.onGround ? this.getAIMoveSpeed() * (0.21600002F / (p_213335_1_ * p_213335_1_ * p_213335_1_)) : this.jumpMovementFactor;
     }
 
-    public float getWaterLevelAbove() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        int i = MathHelper.floor(axisalignedbb.minX);
-        int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.maxY);
-        int l = MathHelper.ceil(axisalignedbb.maxY - this.lastYd);
-        int i1 = MathHelper.floor(axisalignedbb.minZ);
-        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else if (!this.world.isRemote && this.isAlive()) {
+            Entity trueSource = source.getTrueSource();
+            if (source instanceof IndirectEntityDamageSource && trueSource != null && this.isPassenger(trueSource)) {
+                return false;
+            } else {
+                float adjustedAmount = (((100-this.getArmor())/100)>0) ? amount*(((100-this.getArmor())/100)) : 0;
+                this.setHealth(this.getHealth() - adjustedAmount);
 
-        label39:
-        for(int k1 = k; k1 < l; ++k1) {
-            float f = 0.0F;
-
-            for(int l1 = i; l1 < j; ++l1) {
-                for(int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.setPos(l1, k1, i2);
-                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
-                    if (fluidstate.isTagged(FluidTags.WATER)) {
-                        f = Math.max(f, fluidstate.getActualHeight(this.world, blockpos$mutable));
-                    }
-
-                    if (f >= 1.0F) {
-                        continue label39;
-                    }
+                boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
+                if (isCreativeMode || this.getHealth() < 0.0F) {
+                    this.remove();
                 }
+                return true;
             }
-
-            if (f < 1.0F) {
-                return (float)blockpos$mutable.getY() + f;
-            }
-        }
-
-        return (float)(l + 1);
-    }
-
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-        this.lastYd = this.getMotion().y;
-        if (!this.isPassenger()) {
-            if (onGroundIn) {
-                if (this.fallDistance > 3.0F) {
-                    if (this.status != PanthalassaVehicle.Status.ON_LAND) {
-                        this.fallDistance = 0.0F;
-                        return;
-                    }
-
-                    this.onLivingFall(this.fallDistance, 1.0F);
-                    if (!this.world.isRemote && !this.removed) {
-                        this.remove();
-                    }
-                }
-            }
-            this.fallDistance = 0.0F;
-        } else if (!this.world.getFluidState(this.getPosition().down()).isTagged(FluidTags.WATER) && y < 0.0D) {
-            this.fallDistance = (float) ((double) this.fallDistance - y);
+        } else {
+            return true;
         }
     }
-/*
-    public void setMountCameraAngles(boolean backView, EntityViewRenderEvent.CameraSetup event)
+
+
+
+    public void setHealth(float health)
     {
-        if (backView)
-            event.getInfo().move(ClientEvents.getViewCollision(-10, this), 1, 0);
-        else
-            event.getInfo().move(ClientEvents.getViewCollision(-5, this), -0.75, 0);
-    }*/
-}
+        this.dataManager.set(HEALTH, Math.min(this.getMaxHealth(), health));
+    }
 
+    public float getHealth()
+    {
+        return this.dataManager.get(HEALTH);
+    }
+
+
+
+    public float getMaxHealth()
+    {
+        return this.dataManager.get(MAX_HEALTH);
+    }
+
+
+    public void setMaxHealth(float maxHealth)
+    {
+        this.dataManager.set(MAX_HEALTH, maxHealth);
+    }
+
+
+    public void setArmor(float armor)
+    {
+        this.dataManager.set(ARMOR, armor);
+
+    }
+    public float getArmor()
+    {
+        return this.dataManager.get(ARMOR);
+    }
+
+    public Double testNLFDistance(PanthalassaVehicle vehicle) {
+        List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(vehicle, new AxisAlignedBB(vehicle.getPosX() - 10, vehicle.getPosY() - 10, vehicle.getPosZ() - 10, vehicle.getPosX() + 10, vehicle.getPosY() + 10, vehicle.getPosZ() + 10));
+        double closestDistance = 100;
+        if (entities.size() != 0) {
+            for (int i = 0; i < entities.size(); i++) {
+                Entity testEntity = entities.get(i);
+                if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity)) {
+                    float distance = getDistance(testEntity);
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                    }
+                }
+            }
+            if (closestDistance < 20) {
+                return closestDistance;
+            }
+        }
+
+        return null;
+    }
+
+    public void setNLFDistance(double nlfDistance) {
+        this.nlfDistance = nlfDistance;
+    }
+
+    public Double getNLFDistance() {
+        return this.nlfDistance;
+    }
+
+    public void setFloorDistance(int floorDistance) {
+        this.floorDistance = floorDistance;
+    }
+
+    public int getFloorDistance() {
+        return this.floorDistance;
+    }
+}
