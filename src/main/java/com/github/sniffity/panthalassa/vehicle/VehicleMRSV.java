@@ -2,9 +2,11 @@ package com.github.sniffity.panthalassa.vehicle;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -61,4 +63,12 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         return this.factory;
     }
 
+    @Override
+    protected void writeAdditional(CompoundNBT compound) {
+        {
+            //Write boost
+            //Write lights
+            super.writeAdditional(compound);
+        }
+    }
 }
