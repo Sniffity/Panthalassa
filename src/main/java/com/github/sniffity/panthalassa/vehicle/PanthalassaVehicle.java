@@ -69,7 +69,6 @@ public class PanthalassaVehicle extends Entity {
         {
             this.setArmor(compound.getFloat("Armor"));
         }
-
     }
 
     @Override
@@ -269,7 +268,7 @@ public class PanthalassaVehicle extends Entity {
             }
         } else if (isOnGround()) {
             if (getControllingPassenger() instanceof LivingEntity) {
-                float speed = getTravelSpeed() * 0.225f;
+                float speed = getTravelSpeed();
                 LivingEntity entity = (LivingEntity) getControllingPassenger();
                 double moveY = vec3d.y;
                 double moveX = vec3d.x;
@@ -375,8 +374,8 @@ public class PanthalassaVehicle extends Entity {
     public void setArmor(float armor)
     {
         this.dataManager.set(ARMOR, armor);
-
     }
+
     public float getArmor()
     {
         return this.dataManager.get(ARMOR);
@@ -418,4 +417,7 @@ public class PanthalassaVehicle extends Entity {
     public int getFloorDistance() {
         return this.floorDistance;
     }
+
+    public void getDriverKeybinds(int key, boolean pressed)
+    {}
 }
