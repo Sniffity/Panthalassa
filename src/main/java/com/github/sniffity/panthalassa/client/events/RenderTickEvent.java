@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.client.vehicle;
+package com.github.sniffity.panthalassa.client.events;
 
 import com.github.sniffity.panthalassa.common.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.vehicle.PanthalassaVehicle;
@@ -14,7 +14,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 
 
-public class VehicleOverlay {
+public class RenderTickEvent {
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {

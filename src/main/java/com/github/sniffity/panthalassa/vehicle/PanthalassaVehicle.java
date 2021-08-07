@@ -418,6 +418,11 @@ public class PanthalassaVehicle extends Entity {
         return this.floorDistance;
     }
 
-    public void getDriverKeybinds(int key, boolean pressed)
+    public void respondKeybindSpecial()
     {}
+
+    public void respondKeybindLight() {
+        //turn on Lights!
+    }
+
 }

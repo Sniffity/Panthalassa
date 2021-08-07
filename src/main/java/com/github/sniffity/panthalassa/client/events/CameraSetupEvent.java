@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.client.vehicle;
+package com.github.sniffity.panthalassa.client.events;
 
 import com.github.sniffity.panthalassa.vehicle.PanthalassaVehicle;
 import net.minecraft.client.Minecraft;
@@ -10,10 +10,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class VehicleCamera {
+public class CameraSetupEvent {
 
-    public static void setupVehicleCamera(EntityViewRenderEvent.CameraSetup event) {
+    @SubscribeEvent
+    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
         Minecraft mc = Minecraft.getInstance();
         Entity vehicle = mc.player.getRidingEntity();
         if (!(vehicle instanceof PanthalassaVehicle)) return;

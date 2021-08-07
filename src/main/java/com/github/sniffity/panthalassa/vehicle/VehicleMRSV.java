@@ -22,7 +22,6 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
     protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
 
-
     public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
         this.waterSpeed = 0.05F;
@@ -91,9 +90,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         return this.factory;
     }
 
-
     private final AnimationFactory factory = new AnimationFactory(this);
-
 
     @Override
     public void tick() {
@@ -108,20 +105,15 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         super.tick();
     }
 
-/*
     @Override
-    public void getDriverKeybinds(int key, boolean pressed) {
-        if (pressed) {
-            if (key == KeybindsHandler.VEHICLE_KEY_LIGHTS) {
-                //Lights on!
-
-            } else if (key == KeybindsHandler.VEHICLE_KEY_SPECIAL && !world.isRemote && this.getBoostCooldown() < 0) {
-                setIsBoosting(true);
-                setBoostCooldown(500);
-            }
+    public void respondKeybindSpecial() {
+        if (!world.isRemote && this.getBoostCooldown() < 0) {
+            setIsBoosting(true);
+            setBoostCooldown(500);
         }
     }
-*/
+
+
     @Override
     public float getTravelSpeed() {
         if (this.getIsBoosting()) {
@@ -132,8 +124,6 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
             return this.landSpeed;
         }
     }
-
-
 
     public void setBoostingTimer(float cooldown)
     {
@@ -154,7 +144,6 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
     {
         return this.dataManager.get(IS_BOOSTING);
     }
-
 
     public void setBoostCooldown(float cooldown)
     {
