@@ -247,14 +247,16 @@ public class PanthalassaVehicle extends Entity {
                 vec3d = new Vector3d(moveX, moveY, moveZ);
 
 
+            } else{
+                setMotion(getMotion().add(0, -0.003, 0));
             }
+
+
             moveRelative(getAIMoveSpeed(), vec3d);
             move(MoverType.SELF, getMotion());
             setMotion(getMotion().scale(0.9d));
 
-            if (vec3d.z == 0) {
-                setMotion(getMotion().add(0, 0, 0));
-            }
+
         } else if (isOnGround()) {
             if (getControllingPassenger() instanceof LivingEntity) {
                 float speed = getTravelSpeed();
@@ -365,7 +367,7 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public Double testNLFDistance(PanthalassaVehicle vehicle) {
-        List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(vehicle, new AxisAlignedBB(vehicle.getPosX() - 10, vehicle.getPosY() - 10, vehicle.getPosZ() - 10, vehicle.getPosX() + 10, vehicle.getPosY() + 10, vehicle.getPosZ() + 10));
+        List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(vehicle, new AxisAlignedBB(vehicle.getPosX() - 20, vehicle.getPosY() - 20, vehicle.getPosZ() - 20, vehicle.getPosX() + 20, vehicle.getPosY() + 20, vehicle.getPosZ() + 20));
         double closestDistance = 100;
         if (entities.size() != 0) {
             for (int i = 0; i < entities.size(); i++) {
