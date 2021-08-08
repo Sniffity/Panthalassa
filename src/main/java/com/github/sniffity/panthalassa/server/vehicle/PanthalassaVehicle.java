@@ -383,7 +383,6 @@ public class PanthalassaVehicle extends Entity {
                 return closestDistance;
             }
         }
-
         return null;
     }
 
