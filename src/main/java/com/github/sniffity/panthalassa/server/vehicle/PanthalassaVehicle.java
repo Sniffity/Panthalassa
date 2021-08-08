@@ -3,11 +3,15 @@ package com.github.sniffity.panthalassa.server.vehicle;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -42,10 +46,12 @@ public class PanthalassaVehicle extends Entity {
     public float moveVertical;
     public float moveForward;
     public float jumpMovementFactor = 0.02F;
-    public double nlfLastCheck = 0;
-    public double nlfDistance;
-    public double floorLastCheck;
-    public int floorDistance;
+    public double sonarLastCheck = 0;
+    public static double nlfDistance;
+    public Double checkedNLFDistance;
+    public static int floorDistance;
+    public int checkedFloorDistance;
+
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
@@ -118,18 +124,6 @@ public class PanthalassaVehicle extends Entity {
         return 0.0D;
     }
 
-    public int testFloorDistance(PanthalassaVehicle vehicle, World world) {
-        BlockPos pos = vehicle.getPosition();
-        while (pos.getY() > 0) {
-            if (!(world.getBlockState(pos).isSolid())) {
-                pos = pos.down();
-            } else {
-                return (vehicle.getPosition().getY() - pos.getY());
-            }
-        }
-        return 0;
-    }
-
     @Nullable
     @Override
     public Entity getControllingPassenger() {
@@ -153,6 +147,14 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public void tick() {
         super.tick();
+        List<Entity> passengers = this.getPassengers();
+        if (!passengers.isEmpty()){
+            for (int i = 0; i < passengers.size(); i++){
+                LivingEntity currentPassenger = (LivingEntity)passengers.get(i);
+                currentPassenger.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 10, 0));
+
+            }
+        }
         this.vehicleTick();
     }
 
@@ -160,26 +162,6 @@ public class PanthalassaVehicle extends Entity {
         if (this.canPassengerSteer()) {
             this.newPosRotationIncrements = 0;
             this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
-        }
-
-        if (!this.getPassengers().isEmpty()) {
-            if (this.world.getGameTime() - nlfLastCheck > 10) {
-                nlfLastCheck = this.world.getGameTime();
-                Double nlfDistance = testNLFDistance(this);
-                if (nlfDistance != null) {
-                    setNLFDistance(nlfDistance);
-                } else {
-                    setNLFDistance(-1);
-                }
-            }
-        }
-
-        if (this.world.getGameTime() - floorLastCheck > 10) {
-            floorLastCheck = this.world.getGameTime();
-            int floorDistance = testFloorDistance(this, this.world);
-            if (floorDistance >= 0) {
-                setFloorDistance(floorDistance);
-            }
         }
 
         Vector3d vector3d = this.getMotion();
@@ -198,7 +180,6 @@ public class PanthalassaVehicle extends Entity {
         if (Math.abs(vector3d.z) < 0.003D) {
             d5 = 0.0D;
         }
-
 
         this.setMotion(d1, d3, d5);
         this.world.getProfiler().startSection("ai");
@@ -264,7 +245,7 @@ public class PanthalassaVehicle extends Entity {
             setMotion(getMotion().scale(0.9d));
 
             if (vec3d.z == 0) {
-                setMotion(getMotion().add(0, -0.003d, 0));
+                setMotion(getMotion().add(0, 0, 0));
             }
         } else if (isOnGround()) {
             if (getControllingPassenger() instanceof LivingEntity) {
@@ -345,8 +326,6 @@ public class PanthalassaVehicle extends Entity {
         }
     }
 
-
-
     public void setHealth(float health)
     {
         this.dataManager.set(HEALTH, Math.min(this.getMaxHealth(), health));
@@ -357,19 +336,15 @@ public class PanthalassaVehicle extends Entity {
         return this.dataManager.get(HEALTH);
     }
 
-
-
     public float getMaxHealth()
     {
         return this.dataManager.get(MAX_HEALTH);
     }
 
-
     public void setMaxHealth(float maxHealth)
     {
         this.dataManager.set(MAX_HEALTH, maxHealth);
     }
-
 
     public void setArmor(float armor)
     {
@@ -410,18 +385,47 @@ public class PanthalassaVehicle extends Entity {
         return this.nlfDistance;
     }
 
+    public int testFloorDistance(PanthalassaVehicle vehicle, World world) {
+        BlockPos pos = vehicle.getPosition();
+        while (pos.getY() > 0) {
+            if (!(world.getBlockState(pos).isSolid())) {
+                pos = pos.down();
+            } else {
+                return (vehicle.getPosition().getY() - pos.getY());
+            }
+        }
+        return -1;
+    }
+
     public void setFloorDistance(int floorDistance) {
         this.floorDistance = floorDistance;
+        int localvariable = getFloorDistance();
     }
 
     public int getFloorDistance() {
         return this.floorDistance;
     }
 
-
-
     public void respondKeybindSpecial()
     {
+    }
+
+    public void respondKeybindSonar()
+    {
+        if (!this.getPassengers().isEmpty()) {
+            if (this.world.getGameTime() - sonarLastCheck > 10) {
+                sonarLastCheck = this.world.getGameTime();
+
+                this.checkedNLFDistance = testNLFDistance(this);
+                if (checkedNLFDistance != -1) {
+                    setNLFDistance(checkedNLFDistance);
+                }
+                this.checkedFloorDistance = testFloorDistance(this, this.world);
+                if (checkedFloorDistance != -1) {
+                    setFloorDistance(checkedFloorDistance);
+                }
+            }
+        }
     }
 
     public void respondKeybindLight() {
