@@ -80,15 +80,18 @@ public class RenderTickEvent {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Speed: " + TextFormatting.GOLD + speedText, 10, 45, Color.WHITE.getRGB());
         }
 
-        String nlfDistance;
+        double nlfDistance;
+        String nlfDistanceText;
+        nlfDistance = vehicle.getNLFDistance();
+        nlfDistanceText = new DecimalFormat("0").format(nlfDistance);
+
         if (vehicle.getNLFDistance() != null) {
-            nlfDistance = new DecimalFormat("0").format(vehicle.getNLFDistance());
-            if (vehicle.getNLFDistance()>10) {
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistance, 10, 220, Color.WHITE.getRGB());
-            } else if (vehicle.getNLFDistance()>5){
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.YELLOW + nlfDistance, 10, 220, Color.WHITE.getRGB());
-            } else if (vehicle.getNLFDistance()>=0) {
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistance, 10, 220, Color.WHITE.getRGB());
+            if (nlfDistance>10) {
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
+            } else if (nlfDistance>5){
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.YELLOW + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
+            } else if (nlfDistance>=0) {
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
             } else {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 220, Color.WHITE.getRGB());
             }
