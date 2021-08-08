@@ -1,14 +1,13 @@
 package com.github.sniffity.panthalassa;
-import com.github.sniffity.panthalassa.common.registry.*;
+import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
+import com.github.sniffity.panthalassa.server.registry.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -54,6 +53,7 @@ public final class Panthalassa {
 
 	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
+		PanthalassaPacketHandler.register();
 		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();
 		});
 		DeferredWorkQueue.runLater(() -> {PanthalassaFeatures.registerConfiguredFeatures();});

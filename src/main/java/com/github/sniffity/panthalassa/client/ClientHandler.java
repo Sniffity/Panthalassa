@@ -6,7 +6,7 @@ import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
 import com.github.sniffity.panthalassa.client.render.entity.RenderKronosaurus;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
-import com.github.sniffity.panthalassa.common.registry.PanthalassaEntityTypes;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;

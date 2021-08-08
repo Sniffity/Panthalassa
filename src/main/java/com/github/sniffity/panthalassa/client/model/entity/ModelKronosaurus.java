@@ -1,10 +1,9 @@
 package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.common.entity.EntityKronosaurus;
+import com.github.sniffity.panthalassa.server.entity.EntityKronosaurus;
 
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.GeckoLib;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
