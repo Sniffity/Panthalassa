@@ -57,36 +57,43 @@ public class RenderTickEvent {
             }
         }
 
-        String nlfDistance;
-        if (vehicle.getNLFDistance() != 0 && vehicle.getNLFDistance() != null) {
-            nlfDistance = new DecimalFormat("00.00").format(vehicle.getNLFDistance());
-            if (vehicle.getNLFDistance()>10) {
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistance, 10, 35, Color.WHITE.getRGB());
-            } else if (vehicle.getNLFDistance()>5){
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.YELLOW + nlfDistance, 10, 35, Color.WHITE.getRGB());
-            } else if (vehicle.getNLFDistance()<5 && vehicle.getNLFDistance()>0) {
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistance, 10, 35, Color.WHITE.getRGB());
-            } else {
-                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 35, Color.WHITE.getRGB());
-            }
-        }
-
         String depth;
         if (vehicle.world.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
             depth = new DecimalFormat("0").format(vehicle.getPosition().getY()-20000);
         } else {
             depth = new DecimalFormat("0").format(vehicle.getPosition().getY());
         }
-        game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Depth: " + TextFormatting.YELLOW + depth, 10, 220, Color.WHITE.getRGB());
+        game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Depth: " + TextFormatting.YELLOW + depth, 10, 35, Color.WHITE.getRGB());
 
-        String floorDistance;
-        floorDistance = new DecimalFormat("0").format(vehicle.getFloorDistance());
-        if (vehicle.getFloorDistance()>20) {
-            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.GREEN + floorDistance, 10, 230, Color.WHITE.getRGB());
-        } else if (vehicle.getFloorDistance()>10) {
-            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.YELLOW + floorDistance, 10, 230, Color.WHITE.getRGB());
-        } else if (vehicle.getFloorDistance()>0) {
-            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.RED + floorDistance, 10, 230, Color.WHITE.getRGB());
+        String speed;
+        speed = new DecimalFormat("0").format(vehicle.getAIMoveSpeed());
+        game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Speed: " + TextFormatting.GOLD + speed, 10, 45, Color.WHITE.getRGB());
+
+        String nlfDistance;
+        if (vehicle.getNLFDistance() != null) {
+            nlfDistance = new DecimalFormat("00.00").format(vehicle.getNLFDistance());
+            if (vehicle.getNLFDistance()>10) {
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistance, 10, 220, Color.WHITE.getRGB());
+            } else if (vehicle.getNLFDistance()>5){
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.YELLOW + nlfDistance, 10, 220, Color.WHITE.getRGB());
+            } else if (vehicle.getNLFDistance()>0) {
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistance, 10, 220, Color.WHITE.getRGB());
+            } else {
+                game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 220, Color.WHITE.getRGB());
+            }
+        }
+
+        int floorDistance;
+        String floorDistanceText;
+        floorDistance = vehicle.getFloorDistance();
+        floorDistanceText = new DecimalFormat("00.00").format(floorDistance);
+
+        if (floorDistance>20) {
+            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.GREEN + floorDistanceText, 10, 230, Color.WHITE.getRGB());
+        } else if (floorDistance>10) {
+            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.YELLOW + floorDistanceText, 10, 230, Color.WHITE.getRGB());
+        } else if (floorDistance>0) {
+            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.RED + floorDistanceText, 10, 230, Color.WHITE.getRGB());
         } else {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 230, Color.WHITE.getRGB());
         }

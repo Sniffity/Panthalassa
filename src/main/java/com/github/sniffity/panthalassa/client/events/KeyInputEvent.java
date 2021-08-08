@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.client.events;
 import com.github.sniffity.panthalassa.client.ClientHandler;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleLights;
+import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSonar;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
 import com.github.sniffity.panthalassa.server.vehicle.PanthalassaVehicle;
 import net.minecraft.client.Minecraft;
@@ -24,9 +25,13 @@ public class KeyInputEvent {
                 if (ClientHandler.KEY_VEHICLE_LIGHTS.isPressed()) {
                     PanthalassaPacketHandler.INSTANCE.sendToServer(new PacketVehicleLights());
                 }
+                if (ClientHandler.KEY_VEHICLE_SONAR.isPressed()) {
+                    PanthalassaPacketHandler.INSTANCE.sendToServer(new PacketVehicleSonar());
+                }
             }
         }
     }
+
     public static Entity getVehicle(Entity player) {
         return player.getRidingEntity();
     }

@@ -42,10 +42,13 @@ public class ClientHandler {
 
     public static final KeyBinding KEY_VEHICLE_LIGHTS = new KeyBinding("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
     public static final KeyBinding KEY_VEHICLE_SPECIAL = new KeyBinding("key.vehicle.special", GLFW.GLFW_KEY_Y, "key.panthalassa.category");
+    public static final KeyBinding KEY_VEHICLE_SONAR = new KeyBinding("key.vehicle.sonar", GLFW.GLFW_KEY_N, "key.panthalassa.category");
 
     public static void registerKeybinds() {
         ClientRegistry.registerKeyBinding(KEY_VEHICLE_LIGHTS);
         ClientRegistry.registerKeyBinding(KEY_VEHICLE_SPECIAL);
+        ClientRegistry.registerKeyBinding(KEY_VEHICLE_SONAR);
+
     }
 }
 

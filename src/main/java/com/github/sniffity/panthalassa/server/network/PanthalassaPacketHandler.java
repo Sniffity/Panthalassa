@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.network;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleLights;
+import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSonar;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -21,5 +22,7 @@ public class PanthalassaPacketHandler {
     public static void register() {
         INSTANCE.registerMessage(messageId++, PacketVehicleSpecial.class, PacketVehicleSpecial::encode, PacketVehicleSpecial::decode, PacketVehicleSpecial::handle);
         INSTANCE.registerMessage(messageId++, PacketVehicleLights.class, PacketVehicleLights::encode, PacketVehicleLights::decode, PacketVehicleLights::handle);
+        INSTANCE.registerMessage(messageId++, PacketVehicleSonar.class, PacketVehicleSonar::encode, PacketVehicleSonar::decode, PacketVehicleSonar::handle);
+
     }
 }
