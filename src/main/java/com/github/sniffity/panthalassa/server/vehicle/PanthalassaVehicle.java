@@ -25,7 +25,15 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-
+/**
+ * Panthalassa Mod - Class: PanthalassaVehicle <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Wyrmroost
+ * and Mr. Crayfish's Vehicle Mod handle their own respective vehicles. Additionally,
+ * Vanilla Minecraft's BoatEntity class was also studied.
+ */
 
 public class PanthalassaVehicle extends Entity {
 

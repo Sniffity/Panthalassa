@@ -18,7 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
  *
  * Acknowledgements: The following class was developed after studying how Wyrmroost
- * handles its mounted camera, as well as referencing Vanilla Minecraft's third person
+ * handles its mounted camera, as well as studying Vanilla Minecraft's third person
  * camera methods.
  */
 
