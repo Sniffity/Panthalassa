@@ -40,6 +40,7 @@ public class PanthalassaVehicle extends Entity {
     protected static final DataParameter<Float> MAX_HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> ARMOR = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
 
     public float waterSpeed;
     public float landSpeed;
@@ -59,6 +60,8 @@ public class PanthalassaVehicle extends Entity {
     public Double checkedNLFDistance;
     public static int floorDistance = -1;
     public int checkedFloorDistance;
+    public static boolean lightsOn = false;
+
 
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
@@ -83,6 +86,10 @@ public class PanthalassaVehicle extends Entity {
         {
             this.setArmor(compound.getFloat("Armor"));
         }
+        if(compound.contains("LightsOn", Constants.NBT.TAG_FLOAT))
+        {
+            this.setArmor(compound.getFloat("LightsOn"));
+        }
     }
 
     @Override
@@ -91,6 +98,7 @@ public class PanthalassaVehicle extends Entity {
             compound.putFloat("MaxHealth", this.getMaxHealth());
             compound.putFloat("Health", this.getHealth());
             compound.putFloat("Armor", this.getArmor());
+            compound.putBoolean("LightsOn", this.getLightState());
         }
     }
 
@@ -414,6 +422,15 @@ public class PanthalassaVehicle extends Entity {
         return this.floorDistance;
     }
 
+    public void setLightState(boolean lightState) {
+        this.lightsOn = lightState;
+    }
+
+    public boolean getLightState() {
+        return this.lightsOn;
+    }
+
+
     public void respondKeybindSpecial()
     {
     }
@@ -437,6 +454,7 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public void respondKeybindLight() {
+        setLightState(!getLightState());
     }
 
 }

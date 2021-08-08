@@ -23,6 +23,5 @@ public class PanthalassaPacketHandler {
         INSTANCE.registerMessage(messageId++, PacketVehicleSpecial.class, PacketVehicleSpecial::encode, PacketVehicleSpecial::decode, PacketVehicleSpecial::handle);
         INSTANCE.registerMessage(messageId++, PacketVehicleLights.class, PacketVehicleLights::encode, PacketVehicleLights::decode, PacketVehicleLights::handle);
         INSTANCE.registerMessage(messageId++, PacketVehicleSonar.class, PacketVehicleSonar::encode, PacketVehicleSonar::decode, PacketVehicleSonar::handle);
-
     }
 }
