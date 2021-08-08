@@ -162,10 +162,10 @@ public class PanthalassaVehicle extends Entity {
             for (Entity passenger : passengers) {
                 LivingEntity currentPassenger = (LivingEntity) passenger;
                 currentPassenger.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 10, 0));
-
             }
         }
         this.vehicleTick();
+        System.out.println(getAIMoveSpeed());
     }
 
     public void vehicleTick() {

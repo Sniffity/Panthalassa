@@ -71,15 +71,7 @@ public class RenderTickEvent {
             depth = new DecimalFormat("0").format(vehicle.getPosition().getY());
         }
         game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Depth: " + TextFormatting.YELLOW + depth, 10, 35, Color.WHITE.getRGB());
-
-        Float speed;
-        String speedText;
-        speed = vehicle.getAIMoveSpeed();
-        speedText = new DecimalFormat("0").format(speed);
-        if (speed !=null) {
-            game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Speed: " + TextFormatting.GOLD + speedText, 10, 45, Color.WHITE.getRGB());
-        }
-
+        
         double nlfDistance;
         String nlfDistanceText;
         nlfDistance = vehicle.getNLFDistance();
