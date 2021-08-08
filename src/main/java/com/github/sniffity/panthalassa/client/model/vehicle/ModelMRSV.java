@@ -12,9 +12,13 @@ public class ModelMRSV extends AnimatedGeoModel<VehicleMRSV>
         return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/mrsv/mrsv.geo.json");
     }
 
+    public ResourceLocation texture_lightsOff = new ResourceLocation(Panthalassa.MODID,"textures/vehicle/mrsv/mrsv.png");
+
+    public ResourceLocation texture_lightsOn = new ResourceLocation(Panthalassa.MODID,"textures/vehicle/mrsv/mrsv_lon.png");
+
     @Override
     public ResourceLocation getTextureLocation(VehicleMRSV object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/mrsv/mrsv.png");
+        return object.getLightState() ? texture_lightsOn : texture_lightsOff;
     }
 
     @Override

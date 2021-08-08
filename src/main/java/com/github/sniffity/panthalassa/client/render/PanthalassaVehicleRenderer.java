@@ -12,8 +12,10 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.LightType;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimatableModel;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -75,5 +77,9 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
         AnimationController.addModelFetcher((object) -> {
             return object instanceof Entity ? (IAnimatableModel)AnimationUtils.getGeoModelForEntity((Entity)object) : null;
         });
+    }
+    @Override
+    protected int getBlockLight(T entityIn, BlockPos partialTicks) {
+        return 0;
     }
 }
