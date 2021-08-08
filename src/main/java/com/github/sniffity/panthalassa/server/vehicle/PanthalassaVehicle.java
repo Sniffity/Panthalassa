@@ -47,9 +47,9 @@ public class PanthalassaVehicle extends Entity {
     public float moveForward;
     public float jumpMovementFactor = 0.02F;
     public double sonarLastCheck = 0;
-    public static double nlfDistance;
+    public static double nlfDistance = -1;
     public Double checkedNLFDistance;
-    public static int floorDistance;
+    public static int floorDistance = -1;
     public int checkedFloorDistance;
 
 
@@ -399,7 +399,6 @@ public class PanthalassaVehicle extends Entity {
 
     public void setFloorDistance(int floorDistance) {
         this.floorDistance = floorDistance;
-        int localvariable = getFloorDistance();
     }
 
     public int getFloorDistance() {
@@ -410,26 +409,25 @@ public class PanthalassaVehicle extends Entity {
     {
     }
 
-    public void respondKeybindSonar()
-    {
+    public void respondKeybindSonar() {
         if (!this.getPassengers().isEmpty()) {
             if (this.world.getGameTime() - sonarLastCheck > 10) {
                 sonarLastCheck = this.world.getGameTime();
 
                 this.checkedNLFDistance = testNLFDistance(this);
-                if (checkedNLFDistance != -1) {
+                if (checkedNLFDistance != null) {
                     setNLFDistance(checkedNLFDistance);
+                } else {
+                    setNLFDistance(-1);
                 }
+
                 this.checkedFloorDistance = testFloorDistance(this, this.world);
-                if (checkedFloorDistance != -1) {
-                    setFloorDistance(checkedFloorDistance);
-                }
+                setFloorDistance(checkedFloorDistance);
             }
         }
     }
 
     public void respondKeybindLight() {
-        //turn on Lights!
     }
 
 }

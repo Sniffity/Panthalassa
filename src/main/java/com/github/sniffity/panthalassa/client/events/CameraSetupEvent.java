@@ -12,6 +12,16 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+/**
+ * Panthalassa Mod - Class: CameraSetupEvent <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Wyrmroost
+ * handles its mounted camera, as well as referencing Vanilla Minecraft's third person
+ * camera methods.
+ */
+
 public class CameraSetupEvent {
 
     @SubscribeEvent

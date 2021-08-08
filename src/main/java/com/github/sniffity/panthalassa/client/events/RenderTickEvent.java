@@ -13,6 +13,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+/**
+ * Panthalassa Mod - Class: RenderTickEvent <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Mr. Crayfish's Vehicle Mod
+ * implements its own Vehicle Overlay.
+ */
 
 public class RenderTickEvent {
 
@@ -49,11 +57,10 @@ public class RenderTickEvent {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.GREEN + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
             } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>20){
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.YELLOW + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
-            } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)<20){
+            } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>0){
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.RED + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
             } else {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.DARK_PURPLE + "processing...", 10, 25, Color.WHITE.getRGB());
-
             }
         }
 
@@ -71,12 +78,12 @@ public class RenderTickEvent {
 
         String nlfDistance;
         if (vehicle.getNLFDistance() != null) {
-            nlfDistance = new DecimalFormat("00.00").format(vehicle.getNLFDistance());
+            nlfDistance = new DecimalFormat("0").format(vehicle.getNLFDistance());
             if (vehicle.getNLFDistance()>10) {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistance, 10, 220, Color.WHITE.getRGB());
             } else if (vehicle.getNLFDistance()>5){
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.YELLOW + nlfDistance, 10, 220, Color.WHITE.getRGB());
-            } else if (vehicle.getNLFDistance()>0) {
+            } else if (vehicle.getNLFDistance()>=0) {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistance, 10, 220, Color.WHITE.getRGB());
             } else {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 220, Color.WHITE.getRGB());
@@ -86,13 +93,13 @@ public class RenderTickEvent {
         int floorDistance;
         String floorDistanceText;
         floorDistance = vehicle.getFloorDistance();
-        floorDistanceText = new DecimalFormat("00.00").format(floorDistance);
+        floorDistanceText = new DecimalFormat("0").format(floorDistance);
 
         if (floorDistance>20) {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.GREEN + floorDistanceText, 10, 230, Color.WHITE.getRGB());
         } else if (floorDistance>10) {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.YELLOW + floorDistanceText, 10, 230, Color.WHITE.getRGB());
-        } else if (floorDistance>0) {
+        } else if (floorDistance>=0) {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.RED + floorDistanceText, 10, 230, Color.WHITE.getRGB());
         } else {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 230, Color.WHITE.getRGB());

@@ -11,6 +11,15 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+/**
+ * Panthalassa Mod - Class: KeyInputEvent <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Mr. Crayfish's Vehicle Mod
+ * and Wyrmroost implement their own Keybindings.
+ */
+
 public class KeyInputEvent {
 
     @SubscribeEvent
