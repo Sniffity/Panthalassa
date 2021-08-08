@@ -3,7 +3,6 @@ package com.github.sniffity.panthalassa.server.vehicle;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -11,7 +10,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,11 +38,10 @@ public class PanthalassaVehicle extends Entity {
     protected static final DataParameter<Float> MAX_HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> ARMOR = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
 
     public float waterSpeed;
     public float landSpeed;
-    public float aiMoveSpeed;
+    public static float aiMoveSpeed;
     protected int newPosRotationIncrements;
     protected double interpTargetX;
     protected double interpTargetY;
@@ -86,10 +83,6 @@ public class PanthalassaVehicle extends Entity {
         {
             this.setArmor(compound.getFloat("Armor"));
         }
-        if(compound.contains("LightsOn", Constants.NBT.TAG_FLOAT))
-        {
-            this.setArmor(compound.getFloat("LightsOn"));
-        }
     }
 
     @Override
@@ -98,7 +91,6 @@ public class PanthalassaVehicle extends Entity {
             compound.putFloat("MaxHealth", this.getMaxHealth());
             compound.putFloat("Health", this.getHealth());
             compound.putFloat("Armor", this.getArmor());
-            compound.putBoolean("LightsOn", this.getLightState());
         }
     }
 
@@ -123,6 +115,7 @@ public class PanthalassaVehicle extends Entity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    @Override
     public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (!this.world.isRemote) {
             return player.startRiding(this) ? ActionResultType.CONSUME : ActionResultType.PASS;
@@ -131,6 +124,7 @@ public class PanthalassaVehicle extends Entity {
         }
     }
 
+    @Override
     protected boolean canFitPassenger(Entity passenger) {
         return this.getPassengers().size() < 1;
     }
@@ -165,8 +159,8 @@ public class PanthalassaVehicle extends Entity {
         super.tick();
         List<Entity> passengers = this.getPassengers();
         if (!passengers.isEmpty()){
-            for (int i = 0; i < passengers.size(); i++){
-                LivingEntity currentPassenger = (LivingEntity)passengers.get(i);
+            for (Entity passenger : passengers) {
+                LivingEntity currentPassenger = (LivingEntity) passenger;
                 currentPassenger.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 10, 0));
 
             }
@@ -210,7 +204,7 @@ public class PanthalassaVehicle extends Entity {
         this.world.getProfiler().startSection("travel");
         this.moveStrafing *= 0.98F;
         this.moveForward *= 0.98F;
-        this.vehicleTravel(new Vector3d((double) this.moveStrafing, (double) this.moveVertical, (double) this.moveForward));
+        this.vehicleTravel(new Vector3d(this.moveStrafing, this.moveVertical, this.moveForward));
         this.world.getProfiler().endSection();
 
         this.world.getProfiler().startSection("push");
@@ -226,8 +220,8 @@ public class PanthalassaVehicle extends Entity {
         this.interpTargetX = x;
         this.interpTargetY = y;
         this.interpTargetZ = z;
-        this.interpTargetYaw = (double) yaw;
-        this.interpTargetPitch = (double) pitch;
+        this.interpTargetYaw = yaw;
+        this.interpTargetPitch = pitch;
         this.newPosRotationIncrements = posRotationIncrements;
     }
 
@@ -322,26 +316,26 @@ public class PanthalassaVehicle extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-            return false;
-        } else if (!this.world.isRemote && this.isAlive()) {
-            Entity trueSource = source.getTrueSource();
-            if (source instanceof IndirectEntityDamageSource && trueSource != null && this.isPassenger(trueSource)) {
+    public boolean attackEntityFrom(@Nullable DamageSource source, float amount) {
+            if (this.isInvulnerableTo(source)) {
                 return false;
-            } else {
-                float adjustedAmount = (((100-this.getArmor())/100)>0) ? amount*(((100-this.getArmor())/100)) : 0;
-                this.setHealth(this.getHealth() - adjustedAmount);
+            } else if (!this.world.isRemote && this.isAlive()) {
+                Entity trueSource = source.getTrueSource();
+                if (source instanceof IndirectEntityDamageSource && trueSource != null && this.isPassenger(trueSource)) {
+                    return false;
+                } else {
+                    float adjustedAmount = (((100 - this.getArmor()) / 100) > 0) ? amount * (((100 - this.getArmor()) / 100)) : 0;
+                    this.setHealth(this.getHealth() - adjustedAmount);
 
-                boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
-                if (isCreativeMode || this.getHealth() < 0.0F) {
-                    this.remove();
+                    boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
+                    if (isCreativeMode || this.getHealth() < 0.0F) {
+                        this.remove();
+                    }
+                    return true;
                 }
+            } else {
                 return true;
             }
-        } else {
-            return true;
-        }
     }
 
     public void setHealth(float health)
@@ -378,8 +372,7 @@ public class PanthalassaVehicle extends Entity {
         List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(vehicle, new AxisAlignedBB(vehicle.getPosX() - 20, vehicle.getPosY() - 20, vehicle.getPosZ() - 20, vehicle.getPosX() + 20, vehicle.getPosY() + 20, vehicle.getPosZ() + 20));
         double closestDistance = 100;
         if (entities.size() != 0) {
-            for (int i = 0; i < entities.size(); i++) {
-                Entity testEntity = entities.get(i);
+            for (Entity testEntity : entities) {
                 if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity)) {
                     float distance = getDistance(testEntity);
                     if (distance < closestDistance) {
@@ -395,11 +388,11 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public void setNLFDistance(double nlfDistance) {
-        this.nlfDistance = nlfDistance;
+        PanthalassaVehicle.nlfDistance = nlfDistance;
     }
 
     public Double getNLFDistance() {
-        return this.nlfDistance;
+        return nlfDistance;
     }
 
     public int testFloorDistance(PanthalassaVehicle vehicle, World world) {
@@ -415,19 +408,19 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public void setFloorDistance(int floorDistance) {
-        this.floorDistance = floorDistance;
+        PanthalassaVehicle.floorDistance = floorDistance;
     }
 
     public int getFloorDistance() {
-        return this.floorDistance;
+        return floorDistance;
     }
 
     public void setLightState(boolean lightState) {
-        this.lightsOn = lightState;
+        lightsOn = lightState;
     }
 
     public boolean getLightState() {
-        return this.lightsOn;
+        return lightsOn;
     }
 
 

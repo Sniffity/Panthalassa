@@ -74,7 +74,7 @@ public class RenderTickEvent {
 
         Float speed;
         String speedText;
-        speed = vehicle.getTravelSpeed();
+        speed = vehicle.getAIMoveSpeed();
         speedText = new DecimalFormat("0").format(speed);
         if (speed !=null) {
             game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Speed: " + TextFormatting.GOLD + speedText, 10, 45, Color.WHITE.getRGB());
