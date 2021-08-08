@@ -17,10 +17,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
-    protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.FLOAT);
 
 
     public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
