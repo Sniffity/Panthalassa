@@ -1,5 +1,5 @@
 package com.github.sniffity.panthalassa.server.block;
-
+/*
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FluidState;
@@ -8,6 +8,8 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +25,6 @@ public class BlockLight extends Block implements IWaterLoggable {
                 .setAir()
                 .setLightLevel((state) -> 15));
     }
-
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
@@ -39,3 +40,4 @@ public class BlockLight extends Block implements IWaterLoggable {
         builder.add(WATERLOGGED);
     }
  }
+*/

@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +22,11 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Panthalassa Mod - Class: PanthalassaVehicle <br></br?>
@@ -60,9 +65,6 @@ public class PanthalassaVehicle extends Entity {
     public float checkedNLFDistance;
     public int checkedFloorDistance;
     public int lightTick;
-    public final BlockState lightBlock = PanthalassaBlocks.LIGHT.get().getDefaultState();
-
-
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
@@ -180,6 +182,7 @@ public class PanthalassaVehicle extends Entity {
     public void tick() {
         super.tick();
         List<Entity> passengers = this.getPassengers();
+
         if (!passengers.isEmpty()) {
             for (Entity passenger : passengers) {
                 LivingEntity currentPassenger = (LivingEntity) passenger;
@@ -187,29 +190,44 @@ public class PanthalassaVehicle extends Entity {
             }
         }
 
+        if (lightTick>20) {
+            AxisAlignedBB searchArea = new AxisAlignedBB(this.getPosX()-10,this.getPosY()-10,this.getPosZ()-10,this.getPosX()+10,this.getPosY()+10,this.getPosZ()+10);
+            Set<BlockPos> set = BlockPos.getAllInBox(searchArea)
+                    .map(pos -> new BlockPos(pos))
+                    .filter(state -> (world.getBlockState(state) == PanthalassaBlocks.LIGHT_WATER.get().getDefaultState() || world.getBlockState(state) == PanthalassaBlocks.LIGHT_AIR.get().getDefaultState()))
+                    .collect(Collectors.toSet());
+            Iterator<BlockPos> it = set.iterator();
+
+            while (it.hasNext()){
+                BlockPos pos = it.next();
+                if (world.getBlockState(pos) == PanthalassaBlocks.LIGHT_WATER.get().getDefaultState())
+                {
+                    world.setBlockState(pos, Blocks.WATER.getDefaultState(), 2);
+                }
+                if (world.getBlockState(pos) == PanthalassaBlocks.LIGHT_AIR.get().getDefaultState())
+                {
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                }
+            }
+            lightTick = 0;
+        }
+
         lightTick = ++lightTick;
 
         if (getLightsOn()) {
             BlockPos vehiclePos = this.getPosition();
-            world.setBlockState(vehiclePos, lightBlock, 2);
+            if (this.isInWater()) {
+                world.setBlockState(vehiclePos, PanthalassaBlocks.LIGHT_WATER.get().getDefaultState(), 2);
+            }
+            if (this.isOnGround()){
+                world.setBlockState(vehiclePos, PanthalassaBlocks.LIGHT_AIR.get().getDefaultState(), 2);
+            }
         }
-/*
-        if (lightTick>1){
-            final Stream<BlockPos> searchArea = BlockPos.betweenClosedStream(
-                    WorldHelper.getAABBInDirectionWithOffset(
-                            itemUseContext.getClickedPos(),
-                            itemUseContext.getClickedFace(),
-                            0,
-                            1,
-                            1
-                    )
-            );
-
-        }
-*/
 
         this.vehicleTick();
     }
+
+
 
     public void vehicleTick() {
         if (this.canPassengerSteer()) {
@@ -289,11 +307,9 @@ public class PanthalassaVehicle extends Entity {
 
                 vec3d = new Vector3d(moveX, moveY, moveZ);
 
-
             } else {
                 setMotion(getMotion().add(0, -0.003, 0));
             }
-
 
             moveRelative(getAIMoveSpeed(), vec3d);
             move(MoverType.SELF, getMotion());
