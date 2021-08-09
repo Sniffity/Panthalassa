@@ -16,7 +16,7 @@ public class RenderMRSV extends PanthalassaVehicleRenderer<VehicleMRSV>{
 
         @Override
         protected int getBlockLight(VehicleMRSV entityIn, BlockPos partialTicks) {
-        return entityIn.getLightState() ? 15 : 1;
+        return entityIn.getLightsOn() ? 15 : 1;
     }
 
 } 

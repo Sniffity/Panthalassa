@@ -18,7 +18,7 @@ public class ModelMRSV extends AnimatedGeoModel<VehicleMRSV>
 
     @Override
     public ResourceLocation getTextureLocation(VehicleMRSV object) {
-        return object.getLightState() ? texture_lightsOn : texture_lightsOff;
+        return object.getLightsOn() ? texture_lightsOn : texture_lightsOff;
     }
 
     @Override
