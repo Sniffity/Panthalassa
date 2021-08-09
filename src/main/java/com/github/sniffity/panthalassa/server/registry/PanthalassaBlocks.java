@@ -2,14 +2,16 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
+import com.github.sniffity.panthalassa.server.block.BlockLight;
 import com.github.sniffity.panthalassa.server.block.BlockPortal;
 import com.github.sniffity.panthalassa.server.block.BlockPortalFrame;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,6 +27,9 @@ public class PanthalassaBlocks {
 
     public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
             BlockPortal::new);
+
+    public static final RegistryObject<Block> LIGHT = BLOCKS.register("light",
+            BlockLight::new);
 
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
@@ -62,5 +67,13 @@ public class PanthalassaBlocks {
                     .hardnessAndResistance(3f, 6f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
                     .sound(SoundType.STONE)));
 
-}
 
+/*
+
+   public static final Block AIR = register("air", new AirBlock(AbstractBlock.Properties.create(Material.AIR).doesNotBlockMovement().noDrops().setAir()));
+
+    public static final RegistryObject<Block> LIGHT_WATER = BLOCKS.register("light_water",
+            () -> new ForgeFlowingFluid(Fluids.WATER, AbstractBlock.Properties.create(Material.WATER).doesNotBlockMovement().noDrops()
+                    .setLightLevel((n) -> 15)));
+*/
+}
