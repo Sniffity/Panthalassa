@@ -1,0 +1,42 @@
+{
+  "bedrock_roof_position": 0,
+  "bedrock_floor_position": 0,
+  "sea_level": 0,
+  "disable_mob_generation": false,
+  "default_block": {
+    "Name": "panthalassa:panthalassa_stone"
+  },
+  "default_fluid": {
+    "Name": "minecraft:water",
+    "Properties": {
+      "level": "0"
+    }
+  },
+  "structures": {
+    "structures": {}
+  },
+  "noise": {
+    "density_factor": 0,
+    "density_offset": 0,
+    "simplex_surface_noise": true,
+    "size_horizontal": 1,
+    "size_vertical": 4,
+    "height": 128,
+    "sampling": {
+      "xz_scale": 1.0,
+      "y_scale": 3.0,
+      "xz_factor": 80.0,
+      "y_factor": 60.0
+    },
+    "bottom_slide": {
+      "target": 320,
+      "size": 4,
+      "offset": -1
+    },
+    "top_slide": {
+      "target": 120,
+      "size": 3,
+      "offset": 0
+    }
+  }
+}
