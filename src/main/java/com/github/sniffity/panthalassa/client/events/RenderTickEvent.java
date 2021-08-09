@@ -66,18 +66,17 @@ public class RenderTickEvent {
 
         String depth;
         if (vehicle.world.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
-            depth = new DecimalFormat("0").format(vehicle.getPosition().getY()-20000);
+            depth = new DecimalFormat("0").format(vehicle.getPosition().getY()-20100);
         } else {
             depth = new DecimalFormat("0").format(vehicle.getPosition().getY());
         }
         game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "Depth: " + TextFormatting.YELLOW + depth, 10, 35, Color.WHITE.getRGB());
-        
+
         double nlfDistance;
         String nlfDistanceText;
         nlfDistance = vehicle.getNLFDistance();
         nlfDistanceText = new DecimalFormat("0").format(nlfDistance);
 
-        if (vehicle.getNLFDistance() != null) {
             if (nlfDistance>10) {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
             } else if (nlfDistance>5){
@@ -86,7 +85,6 @@ public class RenderTickEvent {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
             } else {
                 game.fontRenderer.drawStringWithShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 220, Color.WHITE.getRGB());
-            }
         }
 
         int floorDistance;

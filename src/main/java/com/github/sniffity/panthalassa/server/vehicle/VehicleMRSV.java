@@ -20,7 +20,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.FLOAT);
 
@@ -37,9 +36,9 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         this.dataManager.register(HEALTH, 100F);
         this.dataManager.register(ARMOR, 20F);
         this.dataManager.register(IS_BOOSTING, Boolean.FALSE);
-        this.dataManager.register(LIGHTS_ON, Boolean.FALSE);
         this.dataManager.register(BOOST_COOLDOWN, 20F);
         this.dataManager.register(BOOSTING_TIMER, 0F);
+        super.registerData();
     }
 
     @Override
@@ -126,13 +125,6 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
             return this.landSpeed;
         }
     }
-/*
-    public void addLight(){
-        BlockPos vehiclePos = new BlockPos(this.getPosX(),this.getPosY(),this.getPosZ());
-        BlockState vehiclePosBlockState = new BlockState
-        //SetBlockState(pos) light level 15?
-    }
-*/
 
     public void setBoostingTimer(float cooldown)
     {

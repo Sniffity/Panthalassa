@@ -1,5 +1,7 @@
 package com.github.sniffity.panthalassa.server.vehicle;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,8 +17,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -38,6 +38,11 @@ public class PanthalassaVehicle extends Entity {
     protected static final DataParameter<Float> MAX_HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> HEALTH = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> ARMOR = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> NLF_DISTANCE = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Integer> FLOOR_DISTANCE = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.VARINT);
+    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> SONAR_LAST_CHECK = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
+
 
     public float waterSpeed;
     public float landSpeed;
@@ -52,12 +57,10 @@ public class PanthalassaVehicle extends Entity {
     public float moveVertical;
     public float moveForward;
     public float jumpMovementFactor = 0.02F;
-    public double sonarLastCheck = 0;
-    public static double nlfDistance = -1;
-    public Double checkedNLFDistance;
-    public static int floorDistance = -1;
+    public float checkedNLFDistance;
     public int checkedFloorDistance;
-    public static boolean lightsOn = false;
+    public int lightTick;
+    public final BlockState lightBlock = PanthalassaBlocks.LIGHT.get().getDefaultState();
 
 
 
@@ -67,21 +70,37 @@ public class PanthalassaVehicle extends Entity {
 
     @Override
     protected void registerData() {
+
+        this.dataManager.register(NLF_DISTANCE, 0.00F);
+        this.dataManager.register(FLOOR_DISTANCE, -1);
+        this.dataManager.register(LIGHTS_ON, Boolean.FALSE);
+        this.dataManager.register(SONAR_LAST_CHECK, 0.00F);
+
+
     }
 
     @Override
     protected void readAdditional(CompoundNBT compound) {
-        if(compound.contains("MaxHealth", Constants.NBT.TAG_FLOAT))
-        {
+        if (compound.contains("MaxHealth", Constants.NBT.TAG_FLOAT)) {
             this.setMaxHealth(compound.getFloat("MaxHealth"));
         }
-        if(compound.contains("Health", Constants.NBT.TAG_FLOAT))
-        {
+        if (compound.contains("Health", Constants.NBT.TAG_FLOAT)) {
             this.setHealth(compound.getFloat("Health"));
         }
-        if(compound.contains("Armor", Constants.NBT.TAG_FLOAT))
-        {
+        if (compound.contains("Armor", Constants.NBT.TAG_FLOAT)) {
             this.setArmor(compound.getFloat("Armor"));
+        }
+        if (compound.contains("NLFDistance", Constants.NBT.TAG_FLOAT)) {
+            this.setNLFDistance(compound.getFloat("NLFDistance"));
+        }
+        if (compound.contains("FloorDistance", Constants.NBT.TAG_FLOAT)) {
+            this.setFloorDistance(compound.getInt("FloorDistance"));
+        }
+        if (compound.contains("LightsOn", Constants.NBT.TAG_BYTE)) {
+            this.setLightsOn(compound.getBoolean("LightsOn"));
+        }
+        if (compound.contains("SonarLastCheck", Constants.NBT.TAG_FLOAT)) {
+            this.setSonarLastCheck(compound.getFloat("SonarLastCheck"));
         }
     }
 
@@ -91,6 +110,10 @@ public class PanthalassaVehicle extends Entity {
             compound.putFloat("MaxHealth", this.getMaxHealth());
             compound.putFloat("Health", this.getHealth());
             compound.putFloat("Armor", this.getArmor());
+            compound.putFloat("NLFDistance", this.getNLFDistance());
+            compound.putInt("FloorDistance", this.getFloorDistance());
+            compound.putBoolean("LightsOn", this.getLightsOn());
+            compound.putFloat("SonarLastCheck", this.getSonarLastCheck());
         }
     }
 
@@ -153,19 +176,39 @@ public class PanthalassaVehicle extends Entity {
         this.aiMoveSpeed = speedIn;
     }
 
-
     @Override
     public void tick() {
         super.tick();
         List<Entity> passengers = this.getPassengers();
-        if (!passengers.isEmpty()){
+        if (!passengers.isEmpty()) {
             for (Entity passenger : passengers) {
                 LivingEntity currentPassenger = (LivingEntity) passenger;
                 currentPassenger.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 10, 0));
             }
         }
+
+        lightTick = ++lightTick;
+
+        if (getLightsOn()) {
+            BlockPos vehiclePos = this.getPosition();
+            world.setBlockState(vehiclePos, lightBlock, 2);
+        }
+/*
+        if (lightTick>1){
+            final Stream<BlockPos> searchArea = BlockPos.betweenClosedStream(
+                    WorldHelper.getAABBInDirectionWithOffset(
+                            itemUseContext.getClickedPos(),
+                            itemUseContext.getClickedFace(),
+                            0,
+                            1,
+                            1
+                    )
+            );
+
+        }
+*/
+
         this.vehicleTick();
-        System.out.println(getAIMoveSpeed());
     }
 
     public void vehicleTick() {
@@ -211,11 +254,9 @@ public class PanthalassaVehicle extends Entity {
         this.world.getProfiler().endSection();
     }
 
-
     protected void updateEntityActionState() {
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
         this.interpTargetX = x;
         this.interpTargetY = y;
@@ -249,7 +290,7 @@ public class PanthalassaVehicle extends Entity {
                 vec3d = new Vector3d(moveX, moveY, moveZ);
 
 
-            } else{
+            } else {
                 setMotion(getMotion().add(0, -0.003, 0));
             }
 
@@ -317,60 +358,54 @@ public class PanthalassaVehicle extends Entity {
 
     @Override
     public boolean attackEntityFrom(@Nullable DamageSource source, float amount) {
-            if (this.isInvulnerableTo(source)) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else if (!this.world.isRemote && this.isAlive()) {
+            Entity trueSource = source.getTrueSource();
+            if (source instanceof IndirectEntityDamageSource && trueSource != null && this.isPassenger(trueSource)) {
                 return false;
-            } else if (!this.world.isRemote && this.isAlive()) {
-                Entity trueSource = source.getTrueSource();
-                if (source instanceof IndirectEntityDamageSource && trueSource != null && this.isPassenger(trueSource)) {
-                    return false;
-                } else {
-                    float adjustedAmount = (((100 - this.getArmor()) / 100) > 0) ? amount * (((100 - this.getArmor()) / 100)) : 0;
-                    this.setHealth(this.getHealth() - adjustedAmount);
-
-                    boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
-                    if (isCreativeMode || this.getHealth() < 0.0F) {
-                        this.remove();
-                    }
-                    return true;
-                }
             } else {
+                float adjustedAmount = (((100 - this.getArmor()) / 100) > 0) ? amount * (((100 - this.getArmor()) / 100)) : 0;
+                this.setHealth(this.getHealth() - adjustedAmount);
+
+                boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
+                if (isCreativeMode || this.getHealth() < 0.0F) {
+                    this.remove();
+                }
                 return true;
             }
+        } else {
+            return true;
+        }
     }
 
-    public void setHealth(float health)
-    {
+    public void setHealth(float health) {
         this.dataManager.set(HEALTH, Math.min(this.getMaxHealth(), health));
     }
 
-    public float getHealth()
-    {
+    public float getHealth() {
         return this.dataManager.get(HEALTH);
     }
 
-    public float getMaxHealth()
-    {
+    public float getMaxHealth() {
         return this.dataManager.get(MAX_HEALTH);
     }
 
-    public void setMaxHealth(float maxHealth)
-    {
+    public void setMaxHealth(float maxHealth) {
         this.dataManager.set(MAX_HEALTH, maxHealth);
     }
 
-    public void setArmor(float armor)
-    {
+    public void setArmor(float armor) {
         this.dataManager.set(ARMOR, armor);
     }
 
-    public float getArmor()
-    {
+    public float getArmor() {
         return this.dataManager.get(ARMOR);
     }
 
-    public Double testNLFDistance(PanthalassaVehicle vehicle) {
+    public float testNLFDistance(PanthalassaVehicle vehicle) {
         List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(vehicle, new AxisAlignedBB(vehicle.getPosX() - 20, vehicle.getPosY() - 20, vehicle.getPosZ() - 20, vehicle.getPosX() + 20, vehicle.getPosY() + 20, vehicle.getPosZ() + 20));
-        double closestDistance = 100;
+        float closestDistance = 100F;
         if (entities.size() != 0) {
             for (Entity testEntity : entities) {
                 if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity)) {
@@ -380,19 +415,19 @@ public class PanthalassaVehicle extends Entity {
                     }
                 }
             }
-            if (closestDistance < 20) {
+            if (closestDistance < 20 && closestDistance>0) {
                 return closestDistance;
             }
         }
-        return null;
+        return -1.00F;
     }
 
-    public void setNLFDistance(double nlfDistance) {
-        PanthalassaVehicle.nlfDistance = nlfDistance;
+    public void setNLFDistance(float nlfDistance) {
+        this.dataManager.set(NLF_DISTANCE, nlfDistance);
     }
 
-    public Double getNLFDistance() {
-        return nlfDistance;
+    public float getNLFDistance() {
+        return this.dataManager.get(NLF_DISTANCE);
     }
 
     public int testFloorDistance(PanthalassaVehicle vehicle, World world) {
@@ -408,38 +443,40 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public void setFloorDistance(int floorDistance) {
-        PanthalassaVehicle.floorDistance = floorDistance;
+        this.dataManager.set(FLOOR_DISTANCE,floorDistance);
     }
 
     public int getFloorDistance() {
-        return floorDistance;
+       return this.dataManager.get(FLOOR_DISTANCE);
     }
 
-    public void setLightState(boolean lightState) {
-        lightsOn = lightState;
+    public void setLightsOn(boolean lightState) {
+        this.dataManager.set(LIGHTS_ON,lightState);
     }
 
-    public boolean getLightState() {
-        return lightsOn;
+    public boolean getLightsOn() {
+        return this.dataManager.get(LIGHTS_ON);
+    }
+
+    public void setSonarLastCheck(float lastCheck) {
+        this.dataManager.set(SONAR_LAST_CHECK,lastCheck);
+    }
+
+    public float getSonarLastCheck() {
+        return this.dataManager.get(SONAR_LAST_CHECK);
     }
 
 
-    public void respondKeybindSpecial()
-    {
+
+    public void respondKeybindSpecial() {
     }
 
     public void respondKeybindSonar() {
         if (!this.getPassengers().isEmpty()) {
-            if (this.world.getGameTime() - sonarLastCheck > 10) {
-                sonarLastCheck = this.world.getGameTime();
-
+            if (this.world.getGameTime() - getSonarLastCheck() > 10) {
+                setSonarLastCheck(this.world.getGameTime());
                 this.checkedNLFDistance = testNLFDistance(this);
-                if (checkedNLFDistance != null) {
-                    setNLFDistance(checkedNLFDistance);
-                } else {
-                    setNLFDistance(-1);
-                }
-
+                setNLFDistance(checkedNLFDistance);
                 this.checkedFloorDistance = testFloorDistance(this, this.world);
                 setFloorDistance(checkedFloorDistance);
             }
@@ -447,7 +484,15 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public void respondKeybindLight() {
-        setLightState(!getLightState());
+        setLightsOn(!getLightsOn());
     }
 
+/*
+    public void addLight() {
+        BlockPos vehiclePos = new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ());
+        BlockState state = world.getBlockState(vehiclePos);
+        state.getBlockState()
+    }
+
+ */
 }
