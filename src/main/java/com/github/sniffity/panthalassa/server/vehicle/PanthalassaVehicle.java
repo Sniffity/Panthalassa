@@ -48,7 +48,6 @@ public class PanthalassaVehicle extends Entity {
     protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> SONAR_LAST_CHECK = EntityDataManager.createKey(PanthalassaVehicle.class, DataSerializers.FLOAT);
 
-
     public float waterSpeed;
     public float landSpeed;
     public static float aiMoveSpeed;
@@ -64,7 +63,9 @@ public class PanthalassaVehicle extends Entity {
     public float jumpMovementFactor = 0.02F;
     public float checkedNLFDistance;
     public int checkedFloorDistance;
-    public int lightTick;
+    public BlockPos prevPos;
+    public BlockState blockLightWater = PanthalassaBlocks.LIGHT_WATER.get().getDefaultState();
+    public BlockState blockLightAir = PanthalassaBlocks.LIGHT_AIR.get().getDefaultState();
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
@@ -73,7 +74,7 @@ public class PanthalassaVehicle extends Entity {
     @Override
     protected void registerData() {
 
-        this.dataManager.register(NLF_DISTANCE, 0.00F);
+        this.dataManager.register(NLF_DISTANCE, -1.00F);
         this.dataManager.register(FLOOR_DISTANCE, -1);
         this.dataManager.register(LIGHTS_ON, Boolean.FALSE);
         this.dataManager.register(SONAR_LAST_CHECK, 0.00F);
@@ -190,42 +191,63 @@ public class PanthalassaVehicle extends Entity {
             }
         }
 
-        if (lightTick>20) {
-            AxisAlignedBB searchArea = new AxisAlignedBB(this.getPosX()-10,this.getPosY()-10,this.getPosZ()-10,this.getPosX()+10,this.getPosY()+10,this.getPosZ()+10);
-            Set<BlockPos> set = BlockPos.getAllInBox(searchArea)
-                    .map(pos -> new BlockPos(pos))
-                    .filter(state -> (world.getBlockState(state) == PanthalassaBlocks.LIGHT_WATER.get().getDefaultState() || world.getBlockState(state) == PanthalassaBlocks.LIGHT_AIR.get().getDefaultState()))
-                    .collect(Collectors.toSet());
-            Iterator<BlockPos> it = set.iterator();
-
-            while (it.hasNext()){
-                BlockPos pos = it.next();
-                if (world.getBlockState(pos) == PanthalassaBlocks.LIGHT_WATER.get().getDefaultState())
-                {
-                    world.setBlockState(pos, Blocks.WATER.getDefaultState(), 2);
-                }
-                if (world.getBlockState(pos) == PanthalassaBlocks.LIGHT_AIR.get().getDefaultState())
-                {
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-                }
-            }
-            lightTick = 0;
-        }
-
-        lightTick = ++lightTick;
-
-        if (getLightsOn()) {
+        if (prevPos != null) {
+            Vector3d prevPosV = new Vector3d(prevPos.getX(), prevPos.getY(), prevPos.getZ());
             BlockPos vehiclePos = this.getPosition();
-            if (this.isInWater()) {
-                world.setBlockState(vehiclePos, PanthalassaBlocks.LIGHT_WATER.get().getDefaultState(), 2);
-            }
-            if (this.isOnGround()){
-                world.setBlockState(vehiclePos, PanthalassaBlocks.LIGHT_AIR.get().getDefaultState(), 2);
-            }
-        }
+            Vector3d vehiclePosV = new Vector3d(vehiclePos.getX(), vehiclePos.getY(), vehiclePos.getZ());
+            double distanceMoved = (prevPosV.subtract(vehiclePosV)).length();
+            boolean hasLooped = false;
+            BlockState vehiclePosBlockState = world.getBlockState(vehiclePos);
 
+            if (((distanceMoved > 1) || ((!this.isInWater() && this.isOnGround()) && (distanceMoved > 0.2)) || !this.getLightsOn())) {
+                AxisAlignedBB searchArea = new AxisAlignedBB(this.getPosX() - 20, this.getPosY() - 20, this.getPosZ() - 20, this.getPosX() + 20, this.getPosY() + 20, this.getPosZ() + 20);
+                Set<BlockPos> set = BlockPos.getAllInBox(searchArea)
+                        .map(pos -> new BlockPos(pos))
+                        .filter(state -> (world.getBlockState(state) == blockLightWater || world.getBlockState(state) == blockLightAir))
+                        .collect(Collectors.toSet());
+                Iterator<BlockPos> it = set.iterator();
+
+                while (it.hasNext()) {
+                    BlockPos lightPos = it.next();
+
+                    if (world.getBlockState(lightPos) == blockLightWater) {
+                        if (this.getLightsOn() && this.isInWater()) {
+                            world.setBlockState(vehiclePos, blockLightWater, 2);
+                        } else if (this.getLightsOn() && (!this.isInWater() && this.isOnGround()))
+                        {
+                            world.setBlockState(vehiclePos,blockLightAir, 2);
+                        }
+                        world.setBlockState(lightPos, Blocks.WATER.getDefaultState(), 2);
+                    }
+
+                    if (world.getBlockState(lightPos) == blockLightAir) {
+                        if (this.getLightsOn() && (!this.isInWater() && this.isOnGround())) {
+                            world.setBlockState(vehiclePos,blockLightAir, 2);
+                        } else if (this.getLightsOn() && this.isInWater())
+                        {
+                            world.setBlockState(vehiclePos,blockLightWater, 2);
+                        }
+                        world.setBlockState(lightPos, Blocks.AIR.getDefaultState(), 2);
+                    }
+                    hasLooped = true;
+                }
+            }
+
+            if (!hasLooped && (vehiclePosBlockState != blockLightWater || vehiclePosBlockState != blockLightAir)) {
+                    if (this.getLightsOn() && this.isInWater()) {
+                        world.setBlockState(vehiclePos, blockLightWater, 2);
+                    }
+                    if (this.getLightsOn() && (!this.isInWater() && this.isOnGround())) {
+                        world.setBlockState(vehiclePos, blockLightAir, 2);
+                    }
+                }
+            }
+
+        prevPos = this.getPosition();
         this.vehicleTick();
     }
+
+
 
 
 
@@ -386,6 +408,24 @@ public class PanthalassaVehicle extends Entity {
 
                 boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
                 if (isCreativeMode || this.getHealth() < 0.0F) {
+                    AxisAlignedBB searchArea = new AxisAlignedBB(this.getPosX() - 10, this.getPosY() - 10, this.getPosZ() - 10, this.getPosX() + 10, this.getPosY() + 10, this.getPosZ() + 10);
+                    Set<BlockPos> set = BlockPos.getAllInBox(searchArea)
+                            .map(pos -> new BlockPos(pos))
+                            .filter(state -> (world.getBlockState(state) == PanthalassaBlocks.LIGHT_WATER.get().getDefaultState() || world.getBlockState(state) == PanthalassaBlocks.LIGHT_AIR.get().getDefaultState()))
+                            .collect(Collectors.toSet());
+                    Iterator<BlockPos> it = set.iterator();
+
+                    while (it.hasNext()) {
+                        BlockPos lightPos = it.next();
+
+                        if (world.getBlockState(lightPos) == PanthalassaBlocks.LIGHT_WATER.get().getDefaultState()) {
+                                    world.setBlockState(lightPos, Blocks.WATER.getDefaultState(), 2);
+                        }
+                        if (world.getBlockState(lightPos) == PanthalassaBlocks.LIGHT_AIR.get().getDefaultState()) {
+                                world.setBlockState(lightPos, Blocks.AIR.getDefaultState(), 2);
+                        }
+                    }
+
                     this.remove();
                 }
                 return true;
@@ -503,12 +543,4 @@ public class PanthalassaVehicle extends Entity {
         setLightsOn(!getLightsOn());
     }
 
-/*
-    public void addLight() {
-        BlockPos vehiclePos = new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ());
-        BlockState state = world.getBlockState(vehiclePos);
-        state.getBlockState()
-    }
-
- */
 }

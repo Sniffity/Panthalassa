@@ -109,7 +109,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void respondKeybindSpecial() {
-        if (!this.world.isRemote && this.getBoostCooldown() < 0) {
+        if (!this.world.isRemote && this.getBoostCooldown() < 0 && this.isInWater()) {
             setIsBoosting(true);
             setBoostCooldown(500);
         }
@@ -117,13 +117,12 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public float getTravelSpeed() {
-        if (this.getIsBoosting()) {
+        if (this.getIsBoosting() && this.isInWater()) {
             return this.waterSpeed*4;
         } else if (this.isInWater()) {
             return this.waterSpeed;
-        } else {
-            return this.landSpeed;
-        }
+        } else
+        return this.landSpeed;
     }
 
     public void setBoostingTimer(float cooldown)
