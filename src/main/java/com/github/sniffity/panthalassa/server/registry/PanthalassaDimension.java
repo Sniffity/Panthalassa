@@ -12,11 +12,11 @@ import net.minecraftforge.event.TickEvent;
 
 
 public class PanthalassaDimension {
-    public static final RegistryKey<DimensionType> PANTHALASSA_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(Panthalassa.MODID, "panthalassa"));
-    public static final RegistryKey<World> PANTHALASSA = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(Panthalassa.MODID, "panthalassa"));
+    public static final RegistryKey<DimensionType> PANTHALASSA_TYPE = RegistryKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(Panthalassa.MODID, "panthalassa"));
+    public static final RegistryKey<World> PANTHALASSA = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(Panthalassa.MODID, "panthalassa"));
 
     public static void worldTick(TickEvent.WorldTickEvent event){
-        if(event.phase == TickEvent.Phase.END && !event.world.isRemote()){
+        if(event.phase == TickEvent.Phase.END && !event.world.isClientSide()){
             PanthalassaWorldSavedData.tick((ServerWorld) event.world);
         }
     }

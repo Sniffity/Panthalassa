@@ -6,7 +6,7 @@
       "config": {
         "noise_to_count_ratio": 100,
         "noise_factor": 1,
-        "noise_offset": 20
+        "noise_offset": 10
       }
     },
     "feature": {

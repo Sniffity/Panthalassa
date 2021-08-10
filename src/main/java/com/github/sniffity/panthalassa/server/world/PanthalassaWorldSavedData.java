@@ -40,7 +40,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
     }
 
     public static PanthalassaWorldSavedData get(ServerWorld world) {
-        return world.getSavedData().getOrCreate(PanthalassaWorldSavedData::new, DATA_KEY);
+        return world.getDataStorage().computeIfAbsent(PanthalassaWorldSavedData::new, DATA_KEY);
     }
 
     public static void tick(ServerWorld world) {
@@ -58,8 +58,8 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
         for (VehicleCompundTeleportEntry entry : compoundList) {
             Entity vehicle = entry.entity;
-            ServerWorld targetWorld = server.getWorld(entry.targetWorld);
-            ServerWorld originalWorld = server.getWorld(entry.originalWorld);
+            ServerWorld targetWorld = server.getLevel(entry.targetWorld);
+            ServerWorld originalWorld = server.getLevel(entry.originalWorld);
             RegistryKey<World> targetWorldKey = entry.targetWorld;
             RegistryKey<World> originalWorldKey = entry.originalWorld;
             Vector3d targetVec = entry.targetVec;
@@ -71,55 +71,55 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
             if (targetWorld != null && vehicle != null) {
                 Entity vehicle2 = vehicle.getType().create(targetWorld);
-                ChunkPos entityChunkpos = new ChunkPos(vehicle.getPosition());
-                targetWorld.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, vehicle.getEntityId());
+                ChunkPos entityChunkpos = new ChunkPos(vehicle.blockPosition());
+                targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, vehicle.getId());
                 assert vehicle2 != null;
-                vehicle2.copyDataFromOld(vehicle);
-                vehicle2.moveToBlockPosAndAngles(new BlockPos(targetVec.getX(), targetVec.getY(), targetVec.getZ()), vehicle.rotationYaw, vehicle.rotationPitch);
-                vehicle2.setMotion(vehicle.getMotion());
+                vehicle2.restoreFrom(vehicle);
+                vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
+                vehicle2.setDeltaMovement(vehicle.getDeltaMovement());
                 targetWorld.addFromAnotherDimension(vehicle2);
 
                 vehicle.remove();
 
-                targetWorld.getProfiler().endSection();
+                targetWorld.getProfiler().pop();
                 assert originalWorld != null;
-                originalWorld.resetUpdateEntityTick();
-                targetWorld.resetUpdateEntityTick();
+                originalWorld.resetEmptyTime();
+                targetWorld.resetEmptyTime();
 
                 for (int i = 0; i < vehicleSnapshot.getPassengers().size(); i++) {
                     Entity passenger = vehicleSnapshot.getPassengers().get(i);
                     if (passenger instanceof PlayerEntity) {
                         ServerPlayerEntity player = (ServerPlayerEntity) passenger;
-                        ChunkPos playerChunkPos = new ChunkPos(passenger.getPosition());
-                        targetWorld.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, passenger.getEntityId());
+                        ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());
+                        targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, passenger.getId());
 
                         player.fallDistance = 0;
-                        player.prevPosY = 0;
-                        player.teleport(
+                        player.yo = 0;
+                        player.teleportTo(
                                 targetWorld,
-                                entry.targetVec.getX(),
-                                entry.targetVec.getY() + 0.2D,
-                                entry.targetVec.getZ(),
+                                entry.targetVec.x(),
+                                entry.targetVec.y() + 0.2D,
+                                entry.targetVec.z(),
                                 entry.yaw,
                                 entry.pitch);
                         player.startRiding(vehicle2);
 
                     } else {
                         Entity passenger2 = passenger.getType().create(targetWorld);
-                        ChunkPos entityChunkpos2 = new ChunkPos(passenger.getPosition());
-                        targetWorld.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, entityChunkpos2, 1, passenger.getEntityId());
+                        ChunkPos entityChunkpos2 = new ChunkPos(passenger.blockPosition());
+                        targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos2, 1, passenger.getId());
 
                         assert passenger2 != null;
-                        passenger2.copyDataFromOld(passenger);
-                        passenger2.moveToBlockPosAndAngles(new BlockPos(targetVec.getX(), targetVec.getY(), targetVec.getZ()), passenger.rotationYaw, passenger.rotationPitch);
-                        passenger2.setMotion(passenger.getMotion());
+                        passenger2.restoreFrom(passenger);
+                        passenger2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), passenger.yRot, passenger.xRot);
+                        passenger2.setDeltaMovement(passenger.getDeltaMovement());
                         targetWorld.addFromAnotherDimension(passenger2);
 
                         passenger.remove();
 
-                        targetWorld.getProfiler().endSection();
-                        originalWorld.resetUpdateEntityTick();
-                        targetWorld.resetUpdateEntityTick();
+                        targetWorld.getProfiler().pop();
+                        originalWorld.resetEmptyTime();
+                        targetWorld.resetEmptyTime();
                         passenger2.startRiding(vehicle2);
                     }
                 }
@@ -127,19 +127,19 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
         }
 
         for (PlayerTeleportEntry entry : playerList) {
-            ServerPlayerEntity player = server.getPlayerList().getPlayerByUUID(entry.playerUUID);
-            ServerWorld targetWorld = server.getWorld(entry.targetWorld);
+            ServerPlayerEntity player = server.getPlayerList().getPlayer(entry.playerUUID);
+            ServerWorld targetWorld = server.getLevel(entry.targetWorld);
             if (player != null && targetWorld != null) {
-                ChunkPos playerChunkPos = new ChunkPos(player.getPosition());
-                targetWorld.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, player.getEntityId());
+                ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
+                targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, player.getId());
 
                     player.fallDistance = 0;
-                    player.prevPosY = 0;
-                    player.teleport(
+                    player.yo = 0;
+                    player.teleportTo(
                             targetWorld,
-                            entry.targetVec.getX(),
-                            entry.targetVec.getY() + 0.2D,
-                            entry.targetVec.getZ(),
+                            entry.targetVec.x(),
+                            entry.targetVec.y() + 0.2D,
+                            entry.targetVec.z(),
                             entry.yaw,
                             entry.pitch);
                 }
@@ -147,8 +147,8 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
             for (EntityTeleportEntry entry : entityList) {
                 Entity entity = entry.entity;
-                ServerWorld targetWorld = server.getWorld(entry.targetWorld);
-                ServerWorld originalWorld = server.getWorld(entry.originalWorld);
+                ServerWorld targetWorld = server.getLevel(entry.targetWorld);
+                ServerWorld originalWorld = server.getLevel(entry.originalWorld);
                 RegistryKey<World> targetWorldKey = entry.targetWorld;
                 RegistryKey<World> originalWorldKey = entry.originalWorld;
                 BlockPos targetBlock = entry.targetBlock;
@@ -159,19 +159,19 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 Entity entity2 = entity.getType().create(targetWorld);
 
                 if (entity2 != null) {
-                    ChunkPos entityChunkpos = new ChunkPos(entity.getPosition());
-                    targetWorld.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, entity.getEntityId());
+                    ChunkPos entityChunkpos = new ChunkPos(entity.blockPosition());
+                    targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, entity.getId());
 
-                    entity2.copyDataFromOld(entity);
-                    entity2.moveToBlockPosAndAngles(targetBlock, entity.rotationYaw, entity.rotationPitch);
-                    entity2.setMotion(entity.getMotion());
+                    entity2.restoreFrom(entity);
+                    entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
+                    entity2.setDeltaMovement(entity.getDeltaMovement());
                     targetWorld.addFromAnotherDimension(entity2);
 
                     entity.remove();
 
-                    targetWorld.getProfiler().endSection();
-                    originalWorld.resetUpdateEntityTick();
-                    targetWorld.resetUpdateEntityTick();
+                    targetWorld.getProfiler().pop();
+                    originalWorld.resetEmptyTime();
+                    targetWorld.resetEmptyTime();
 
                 }
             }
@@ -180,7 +180,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
         public void addPlayerTP (PlayerEntity player, RegistryKey < World > destination, Vector3d targetVec,float yaw,
         float pitch){
-            this.playerTeleportQueue.add(new PlayerTeleportEntry(PlayerEntity.getUUID(player.getGameProfile()), destination, targetVec, yaw, pitch));
+            this.playerTeleportQueue.add(new PlayerTeleportEntry(PlayerEntity.createPlayerUUID(player.getGameProfile()), destination, targetVec, yaw, pitch));
         }
 
 
@@ -197,11 +197,11 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
         }
 
         @Override
-        public void read (CompoundNBT nbt){
+        public void load (CompoundNBT nbt){
         }
 
         @Override
-        public CompoundNBT write (CompoundNBT compound){
+        public CompoundNBT save (CompoundNBT compound){
             return null;
         }
 
@@ -236,7 +236,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 this.entity = entity;
                 this.targetWorld = targetWorld;
                 this.originalWorld = originalWorld;
-                this.targetBlock = new BlockPos(targetVec.getX(), targetVec.getY(), targetVec.getZ());
+                this.targetBlock = new BlockPos(targetVec.x(), targetVec.y(), targetVec.z());
                 this.targetVec = targetVec;
                 this.yaw = yaw;
                 this.pitch = pitch;
@@ -259,7 +259,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 this.targetWorld = targetWorld;
                 this.originalWorld = originalWorld;
                 this.targetVec = targetVec;
-                this.targetBlock = new BlockPos(targetVec.getX(), targetVec.getY(), targetVec.getZ());
+                this.targetBlock = new BlockPos(targetVec.x(), targetVec.y(), targetVec.z());
                 this.yaw = yaw;
                 this.pitch = pitch;
             }

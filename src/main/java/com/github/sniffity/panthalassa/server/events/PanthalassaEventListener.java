@@ -17,7 +17,7 @@ public class PanthalassaEventListener {
     public static void onBlockBreak(BlockEvent.BreakEvent event){
         PlayerEntity player = event.getPlayer();
         if(player != null){
-            Entity vehicle = player.getRidingEntity();
+            Entity vehicle = player.getVehicle();
             if(vehicle instanceof PanthalassaVehicle){
                 event.setCanceled(true);
             }
@@ -29,10 +29,10 @@ public class PanthalassaEventListener {
         if (event.getEntityLiving() instanceof PlayerEntity) {
            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
         if(player != null) {
-            Entity vehicle = player.getRidingEntity();
+            Entity vehicle = player.getVehicle();
             if (vehicle instanceof PanthalassaVehicle) {
                 event.setCanceled(true);
-                vehicle.attackEntityFrom(event.getSource(),event.getAmount());
+                vehicle.hurt(event.getSource(),event.getAmount());
             }
         }
         }

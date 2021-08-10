@@ -16,7 +16,7 @@ public class PacketVehicleSonar {
             context.get().enqueueWork(() -> {
                 ServerPlayerEntity player = context.get().getSender();
                 if (player != null) {
-                    Entity vehicle = player.getRidingEntity();
+                    Entity vehicle = player.getVehicle();
                     PanthalassaVehicle panthalassaVehicle = (PanthalassaVehicle) vehicle;
                     if (panthalassaVehicle != null) {
                         panthalassaVehicle.respondKeybindSonar();

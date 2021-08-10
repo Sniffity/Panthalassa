@@ -27,19 +27,19 @@ public class CameraSetupEvent {
     @SubscribeEvent
     public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
         Minecraft mc = Minecraft.getInstance();
-        Entity vehicle = mc.player.getRidingEntity();
+        Entity vehicle = mc.player.getVehicle();
         if (!(vehicle instanceof PanthalassaVehicle)) return;
-        PointOfView view = mc.gameSettings.getPointOfView();
+        PointOfView view = mc.options.getCameraType();
 
         if (view == PointOfView.THIRD_PERSON_BACK) {
-            event.getInfo().movePosition(-calcCameraDistance(8.0,vehicle), 1, 0);
+            event.getInfo().move(-calcCameraDistance(8.0,vehicle), 1, 0);
         }
     }
 
     public static double calcCameraDistance(double startingDistance, Entity vehicle) {
-        ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
-        Vector3d position = info.getProjectedView();
-        Vector3f view = info.getViewVector();
+        ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vector3d position = info.getPosition();
+        Vector3f view = info.getLookVector();
 
         for (int i = 0; i < 8; ++i) {
             float f = (float) ((i & 1) * 2 - 1);
@@ -49,10 +49,10 @@ public class CameraSetupEvent {
             f1 = f1 * 0.1F;
             f2 = f2 * 0.1F;
             Vector3d vector3d = position.add((double) f, (double) f1, (double) f2);
-            Vector3d vector3d1 = new Vector3d(position.x - (double) view.getX() * startingDistance + (double) f + (double) f2, position.y - (double) view.getY() * startingDistance + (double) f1, position.z - (double) view.getZ() * startingDistance + (double) f2);
-            RayTraceResult raytraceresult = vehicle.world.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, vehicle));
+            Vector3d vector3d1 = new Vector3d(position.x - (double) view.x() * startingDistance + (double) f + (double) f2, position.y - (double) view.y() * startingDistance + (double) f1, position.z - (double) view.z() * startingDistance + (double) f2);
+            RayTraceResult raytraceresult = vehicle.level.clip(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, vehicle));
             if (raytraceresult.getType() != RayTraceResult.Type.MISS) {
-                double d0 = raytraceresult.getHitVec().distanceTo(position);
+                double d0 = raytraceresult.getLocation().distanceTo(position);
                 if (d0 < startingDistance) {
                     startingDistance = d0;
                 }

@@ -37,12 +37,12 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
 
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelLocation(entityIn));
-        matrixStackIn.push();
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees((-entityIn.rotationYaw)+180));
-        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-entityIn.rotationPitch));
-        Minecraft.getInstance().textureManager.bindTexture(this.getEntityTexture(entityIn));
+        matrixStackIn.pushPose();
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((-entityIn.yRot)+180));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-entityIn.xRot));
+        Minecraft.getInstance().textureManager.bind(this.getTextureLocation(entityIn));
         Color renderColor = this.getRenderColor(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn);
-        RenderType renderType = this.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, this.getEntityTexture(entityIn));
+        RenderType renderType = this.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, this.getTextureLocation(entityIn));
         this.render(model, entityIn, partialTicks, renderType, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, getPackedOverlay(entityIn, 0.0F), (float)renderColor.getRed() / 255.0F, (float)renderColor.getGreen() / 255.0F, (float)renderColor.getBlue() / 255.0F, (float)renderColor.getAlpha() / 255.0F);
         float lastLimbDistance = 0.0F;
         float limbSwing = 0.0F;
@@ -52,12 +52,12 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
             this.modelProvider.setLivingAnimations(entityIn, this.getUniqueID(entityIn), predicate);
         }
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     public static int getPackedOverlay(Entity livingEntityIn, float uIn) {
-        return OverlayTexture.getPackedUV(OverlayTexture.getU(uIn), OverlayTexture.getV(false));
+        return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(false));
     }
 
     public GeoModelProvider<T> getGeoModelProvider() {
@@ -69,9 +69,6 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
         return this.modelProvider.getTextureLocation(instance);
     }
 
-    public ResourceLocation getEntityTexture(T instance) {
-        return this.modelProvider.getTextureLocation(instance);
-    }
 
     static {
         AnimationController.addModelFetcher((object) -> {
@@ -79,7 +76,7 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
         });
     }
     @Override
-    protected int getBlockLight(T entityIn, BlockPos partialTicks) {
+    protected int getBlockLightLevel(T entityIn, BlockPos partialTicks) {
         return 0;
     }
 }

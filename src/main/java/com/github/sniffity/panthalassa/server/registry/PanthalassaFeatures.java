@@ -13,8 +13,11 @@ public class PanthalassaFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Panthalassa.MODID);
 
     public static final RegistryObject<Feature<NoFeatureConfig>> PANTHALASSA_KELP =
-            FEATURES.register("panthalassa_kelp", () -> new FeaturePanthalassaKelp(NoFeatureConfig.field_236558_a_));
+            FEATURES.register("panthalassa_kelp", () -> new FeaturePanthalassaKelp(NoFeatureConfig.CODEC));
+
+    public static final RegistryObject<Feature<NoFeatureConfig>> PANTHALASSA_SEA_GRASS =
+            FEATURES.register("panthalassa_sea_grass", () -> new FeaturePanthalassaKelp(NoFeatureConfig.CODEC));
 
     public static final RegistryObject<Feature<BlockStateFeatureConfig>> PANTHALASSA_ROCKS =
-            FEATURES.register("panthalassa_rocks", () -> new FeaturePanthalassaRocks(BlockStateFeatureConfig.field_236455_a_));
+            FEATURES.register("panthalassa_rocks", () -> new FeaturePanthalassaRocks(BlockStateFeatureConfig.CODEC));
 }

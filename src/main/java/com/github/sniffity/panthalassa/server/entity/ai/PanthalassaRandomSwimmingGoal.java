@@ -33,18 +33,18 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         this.speed = speed;
         this.executionChance = chance;
         this.checkNoActionTime = checkNATime;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
-    public boolean shouldExecute() {
-        if (this.creature.isBeingRidden()) {
+    public boolean canUse() {
+        if (this.creature.isVehicle()) {
             return false;
         } else {
             if (!this.mustUpdate) {
-                if (this.checkNoActionTime && this.creature.getIdleTime() >= 100) {
+                if (this.checkNoActionTime && this.creature.getNoActionTime() >= 100) {
                     return false;
                 }
-                if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
+                if (this.creature.getRandom().nextInt(this.executionChance) != 0) {
                     return false;
                 }
             }
@@ -65,43 +65,43 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
 
     @Nullable
     protected Vector3d getPosition() {
-        Vector3d travelVector = new Vector3d(this.creature.getMotion().getX(), this.creature.getMotion().getY(), this.creature.getMotion().getZ());
-        Vector3d vector = vector = RandomPositionGenerator.findRandomTargetBlockTowards(this.creature,30,20,travelVector);
+        Vector3d travelVector = new Vector3d(this.creature.getDeltaMovement().x(), this.creature.getDeltaMovement().y(), this.creature.getDeltaMovement().z());
+        Vector3d vector = vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector);
 
-        for (int i = 0; vector != null && !this.creature.world.getBlockState(new BlockPos(vector)).allowsMovement(this.creature.world, new BlockPos(vector), PathType.WATER) && i++ < 15;
-            vector = RandomPositionGenerator.findRandomTargetBlockTowards(this.creature,30,20,travelVector))
+        for (int i = 0; vector != null && !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER) && i++ < 15;
+            vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector))
         {}
         if (vector != null) {
-            if (!this.creature.world.getFluidState(new BlockPos(vector).up(1)).isTagged(FluidTags.WATER)) {
+            if (!this.creature.level.getFluidState(new BlockPos(vector).above(1)).is(FluidTags.WATER)) {
                 vector = vector.add(0, -3, 0);
-            } else if (!this.creature.world.getFluidState(new BlockPos(vector).up(2)).isTagged(FluidTags.WATER)) {
+            } else if (!this.creature.level.getFluidState(new BlockPos(vector).above(2)).is(FluidTags.WATER)) {
                 vector = vector.add(0, -2, 0);
-            } else if (!this.creature.world.getFluidState(new BlockPos(vector).down(1)).isTagged(FluidTags.WATER)) {
+            } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(1)).is(FluidTags.WATER)) {
                 vector = vector.add(0, +3, 0);
-            } else if (!this.creature.world.getFluidState(new BlockPos(vector).down(2)).isTagged(FluidTags.WATER)) {
+            } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(2)).is(FluidTags.WATER)) {
                 vector = vector.add(0, +2, 0);
             }
-            if (abs(vector.x - this.creature.getPosX()) < 5) {
+            if (abs(vector.x - this.creature.getX()) < 5) {
                 vector = vector.add(5, 0, 0);
             }
-            if (abs(vector.z - this.creature.getPosZ()) < 5) {
+            if (abs(vector.z - this.creature.getZ()) < 5) {
                 vector = vector.add(0, 0, 5);
             }
         }
         return vector;
     }
 
-    public boolean shouldContinueExecuting() {
-        return !this.creature.getNavigator().noPath() && !this.creature.isBeingRidden();
+    public boolean canContinueToUse() {
+        return !this.creature.getNavigation().isDone() && !this.creature.isVehicle();
     }
 
-    public void startExecuting() {
-        this.creature.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed);
+    public void start() {
+        this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
     }
 
-    public void resetTask() {
-        this.creature.getNavigator().clearPath();
-        super.resetTask();
+    public void stop() {
+        this.creature.getNavigation().stop();
+        super.stop();
     }
 /*
     public void makeUpdate() {

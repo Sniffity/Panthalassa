@@ -62,7 +62,7 @@ public final class Panthalassa {
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
 		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
-			event.getRegistry().register(new BlockItem(block, new Item.Properties().group(PanthalassaItemGroup.GROUP))
+			event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(PanthalassaItemGroup.GROUP))
 					.setRegistryName(block.getRegistryName()));
 		});
 	}

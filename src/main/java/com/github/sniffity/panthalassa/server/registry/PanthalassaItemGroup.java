@@ -8,7 +8,7 @@ public class PanthalassaItemGroup {
 
     public static final ItemGroup GROUP = new ItemGroup("group_panthalassa") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(Blocks.CYAN_GLAZED_TERRACOTTA);
         }
     };

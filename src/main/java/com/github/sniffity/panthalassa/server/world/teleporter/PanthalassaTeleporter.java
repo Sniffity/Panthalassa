@@ -45,27 +45,27 @@ public class PanthalassaTeleporter implements ITeleporter {
     @Nullable
     public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld) {
 
-        Optional<TeleportationRepositioner.Result> result = teleporterResult(destWorld, entity.getPosition());
+        Optional<TeleportationRepositioner.Result> result = teleporterResult(destWorld, entity.blockPosition());
 
-            BlockPos startPos = result.get().startPos;
+            BlockPos startPos = result.get().minCorner;
             if (result.isPresent()) {
-                if (destWorld.getDimensionKey() == PanthalassaDimension.PANTHALASSA) {
+                if (destWorld.dimension() == PanthalassaDimension.PANTHALASSA) {
 
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
 
                 } else {
                     destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 }
             }
 
             else {
 
-                if (destWorld.getDimensionKey() != PanthalassaDimension.PANTHALASSA) {
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                if (destWorld.dimension() != PanthalassaDimension.PANTHALASSA) {
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 } else {
 
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 }
 
             }
@@ -87,7 +87,7 @@ public class PanthalassaTeleporter implements ITeleporter {
 
 
     public Optional<TeleportationRepositioner.Result> getExistingPortal(@Nonnull ServerWorld serverWorld, BlockPos pos) {
-        PointOfInterestManager pointofinterestmanager = serverWorld.getPointOfInterestManager();
+        PointOfInterestManager pointofinterestmanager = serverWorld.getPoiManager();
         int i = 256;
         pointofinterestmanager.ensureLoadedAndValid(serverWorld, pos, i);
         Optional<PointOfInterest> optional = pointofinterestmanager
@@ -99,17 +99,17 @@ public class PanthalassaTeleporter implements ITeleporter {
 
                 .sorted(
                         Comparator
-                                .<PointOfInterest>comparingDouble((poi) -> {return poi.getPos().distanceSq(pos);})
+                                .<PointOfInterest>comparingDouble((poi) -> {return poi.getPos().distSqr(pos);})
                                 .thenComparingInt((poi) -> {return -poi.getPos().getY();}))
                 .findFirst();
 
         return optional.map(
                 (poi) -> {
                     BlockPos blockpos = poi.getPos();
-                    serverWorld.getChunkProvider().registerTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, blockpos);
+                    serverWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, blockpos);
                     BlockState blockstate = serverWorld.getBlockState(blockpos);
                     return TeleportationRepositioner
-                            .findLargestRectangle(
+                            .getLargestRectangleAround(
                                     blockpos,
                                     Direction.Axis.X,
                                     9,
@@ -128,7 +128,7 @@ public class PanthalassaTeleporter implements ITeleporter {
             for (j = -1; j > -5; --j) {
                 for (k = -8; k < 9; ++k) {
                     check = new BlockPos(potentialPos.getX() + i, potentialPos.getY() + j, potentialPos.getZ() + k);
-                    if (!(world.getBlockState(check) == Blocks.WATER.getDefaultState())) {
+                    if (!(world.getBlockState(check) == Blocks.WATER.defaultBlockState())) {
                         return false;
                     }
                 }
@@ -138,15 +138,15 @@ public class PanthalassaTeleporter implements ITeleporter {
     }
 
     public Optional<TeleportationRepositioner.Result> makePortalFromPos(ServerWorld world, @Nonnull BlockPos pos) {
-        BlockState portalCenter = PanthalassaBlocks.PORTAL.get().getDefaultState();
-        BlockState portalFrame = PanthalassaBlocks.PORTAL_FRAME.get().getDefaultState();
+        BlockState portalCenter = PanthalassaBlocks.PORTAL.get().defaultBlockState();
+        BlockState portalFrame = PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState();
 
         BlockPos pos1 = new BlockPos(pos.getX(),64, pos.getZ());
-        if (world.getDimensionKey() == World.OVERWORLD) {
+        if (world.dimension() == World.OVERWORLD) {
             Panthalassa.LOGGER.warn("Corresponding Overworld Portal not found!");
             Panthalassa.LOGGER.warn("Teleporting to spawn");
-            BlockPos spawnPoint = new BlockPos(world.getSpawnPoint().getX(), world.getSpawnPoint().getY(), world.getSpawnPoint().getZ());
-            return Optional.of(new TeleportationRepositioner.Result(spawnPoint.toImmutable(), 1, 1));
+            BlockPos spawnPoint = new BlockPos(world.getSharedSpawnPos().getX(), world.getSharedSpawnPos().getY(), world.getSharedSpawnPos().getZ());
+            return Optional.of(new TeleportationRepositioner.Result(spawnPoint.immutable(), 1, 1));
         }
 
         boolean validLocation;
@@ -154,13 +154,13 @@ public class PanthalassaTeleporter implements ITeleporter {
 
         while (!validLocation) {
             while (pos1.getY() < 128
-                    && world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)
-                    || world.getBlockState(pos1) == Blocks.KELP.getDefaultState()
-                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().getDefaultState())  {
-                pos1 = pos1.up();
+                    && world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)
+                    || world.getBlockState(pos1) == Blocks.KELP.defaultBlockState()
+                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState())  {
+                pos1 = pos1.above();
             }
-            while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1)).isTagged(FluidTags.WATER)) {
-                pos1 = pos1.down();
+            while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)) {
+                pos1 = pos1.below();
             }
 
             if (pos1.getY() < 10 || pos1.getY() > 118 || !checkRegionForPlacement(pos1, world )) {
@@ -172,116 +172,116 @@ public class PanthalassaTeleporter implements ITeleporter {
 
 
         for (int z = -2; z < 3; z++) {
-                world.setBlockState(pos1.add(-7, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-7, 0, z), portalFrame, 2);
             }
             for (int z = -2; z < 3; z++) {
-                world.setBlockState(pos1.add(7, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(7, 0, z), portalFrame, 2);
             }
 
             for (int z = -4; z < -1; z++) {
-                world.setBlockState(pos1.add(-6, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-6, 0, z), portalFrame, 2);
             }
             for (int z = 2; z < 5; z++) {
-                world.setBlockState(pos1.add(-6, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-6, 0, z), portalFrame, 2);
             }
             for (int z = -4; z < -1; z++) {
-                world.setBlockState(pos1.add(6, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(6, 0, z), portalFrame, 2);
             }
             for (int z = 2; z < 5; z++) {
-                world.setBlockState(pos1.add(6, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(6, 0, z), portalFrame, 2);
             }
 
             for (int z = -5; z < -3; z++) {
-                world.setBlockState(pos1.add(-5, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-5, 0, z), portalFrame, 2);
             }
             for (int z = 4; z < 6; z++) {
-                world.setBlockState(pos1.add(-5, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-5, 0, z), portalFrame, 2);
             }
             for (int z = -5; z < -3; z++) {
-                world.setBlockState(pos1.add(5, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(5, 0, z), portalFrame, 2);
             }
             for (int z = 4; z < 6; z++) {
-                world.setBlockState(pos1.add(5, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(5, 0, z), portalFrame, 2);
             }
 
 
             for (int z = -6; z < -4; z++) {
-                world.setBlockState(pos1.add(-4, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-4, 0, z), portalFrame, 2);
             }
             for (int z = 5; z < 7; z++) {
-                world.setBlockState(pos1.add(-4, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-4, 0, z), portalFrame, 2);
             }
             for (int z = -6; z < -4; z++) {
-                world.setBlockState(pos1.add(4, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(4, 0, z), portalFrame, 2);
             }
             for (int z = 5; z < 7; z++) {
-                world.setBlockState(pos1.add(4, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(4, 0, z), portalFrame, 2);
             }
 
-            world.setBlockState(pos1.add(-3, 0, -6), portalFrame, 2);
-            world.setBlockState(pos1.add(-3, 0, 6), portalFrame, 2);
-            world.setBlockState(pos1.add(3, 0, -6), portalFrame, 2);
-            world.setBlockState(pos1.add(3, 0, 6), portalFrame, 2);
+            world.setBlock(pos1.offset(-3, 0, -6), portalFrame, 2);
+            world.setBlock(pos1.offset(-3, 0, 6), portalFrame, 2);
+            world.setBlock(pos1.offset(3, 0, -6), portalFrame, 2);
+            world.setBlock(pos1.offset(3, 0, 6), portalFrame, 2);
 
             for (int z = -7; z < -5; z++) {
-                world.setBlockState(pos1.add(-2, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-2, 0, z), portalFrame, 2);
             }
             for (int z = 6; z < 8; z++) {
-                world.setBlockState(pos1.add(-2, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(-2, 0, z), portalFrame, 2);
             }
             for (int z = -7; z < -5; z++) {
-                world.setBlockState(pos1.add(2, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(2, 0, z), portalFrame, 2);
             }
             for (int z = 6; z < 8; z++) {
-                world.setBlockState(pos1.add(2, 0, z), portalFrame, 2);
+                world.setBlock(pos1.offset(2, 0, z), portalFrame, 2);
             }
 
             for (int x = -2; x < 3; x++) {
-                world.setBlockState(pos1.add(x, 0, -7), portalFrame, 2);
+                world.setBlock(pos1.offset(x, 0, -7), portalFrame, 2);
             }
 
             for (int x = -2; x < 3; x++) {
-                world.setBlockState(pos1.add(x, 0, 7), portalFrame, 2);
+                world.setBlock(pos1.offset(x, 0, 7), portalFrame, 2);
             }
 
             for (int x = -4; x < 5; x++) {
                 for (int z = -4; z < 5; z++) {
-                    world.setBlockState(pos1.add(x, 0, z), portalCenter, 2);
+                    world.setBlock(pos1.offset(x, 0, z), portalCenter, 2);
                 }
 
                 for (int z = -3; z < 4; z++) {
-                        world.setBlockState(pos1.add(-5, 0, z), portalCenter, 2);
+                        world.setBlock(pos1.offset(-5, 0, z), portalCenter, 2);
                     }
 
                 for (int z = -3; z < 4; z++) {
-                        world.setBlockState(pos1.add(5, 0, z), portalCenter, 2);
+                        world.setBlock(pos1.offset(5, 0, z), portalCenter, 2);
                     }
 
                 for (int z = -1; z < 2; z++) {
-                        world.setBlockState(pos1.add(-6, 0, z), portalCenter, 2);
+                        world.setBlock(pos1.offset(-6, 0, z), portalCenter, 2);
                     }
 
                 for (int z = -1; z < 2; z++) {
-                        world.setBlockState(pos1.add(6, 0, z), portalCenter, 2);
+                        world.setBlock(pos1.offset(6, 0, z), portalCenter, 2);
                     }
                 }
 
             for (int x = -3; x < 4; x++) {
-                    world.setBlockState(pos1.add(x, 0, -5), portalCenter, 2);
+                    world.setBlock(pos1.offset(x, 0, -5), portalCenter, 2);
                 }
 
             for (int x = -3; x < 4; x++) {
-                    world.setBlockState(pos1.add(x, 0, 5), portalCenter, 2);
+                    world.setBlock(pos1.offset(x, 0, 5), portalCenter, 2);
                 }
 
             for (int x = -1; x < 2; x++) {
-                    world.setBlockState(pos1.add(x, 0, -6), portalCenter, 2);
+                    world.setBlock(pos1.offset(x, 0, -6), portalCenter, 2);
                 }
 
             for (int x = -1; x < 2; x++) {
-                    world.setBlockState(pos1.add(x, 0, 6), portalCenter, 2);
+                    world.setBlock(pos1.offset(x, 0, 6), portalCenter, 2);
                 }
-        return Optional.of(new TeleportationRepositioner.Result(pos1.toImmutable(), 15, 1));
+        return Optional.of(new TeleportationRepositioner.Result(pos1.immutable(), 15, 1));
     }
 
 }

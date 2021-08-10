@@ -34,7 +34,7 @@ public class ClientHandler {
 
     public static void registerEntityRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.KRONOSAURUS.get(),
-                manager -> new RenderKronosaurus(manager));
+                RenderKronosaurus::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.mrsv.get(),
                 manager -> new RenderMRSV(manager));
     }
@@ -49,5 +49,6 @@ public class ClientHandler {
         ClientRegistry.registerKeyBinding(KEY_VEHICLE_SONAR);
 
     }
+
 }
 

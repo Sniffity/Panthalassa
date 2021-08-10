@@ -12,11 +12,11 @@ public class RenderKronosaurus extends GeoEntityRenderer<EntityKronosaurus> {
 
     public RenderKronosaurus(EntityRendererManager renderManager) {
         super(renderManager, new ModelKronosaurus());
-        this.shadowSize = 1.0F;
+        this.shadowRadius = 1.0F;
     }
 
     @Override
-    public ResourceLocation getEntityTexture(EntityKronosaurus entity) {
+    public ResourceLocation getTextureLocation(EntityKronosaurus entity) {
         return new ResourceLocation(Panthalassa.MODID,"textures/entity/kronosaurus/kronosaurus.png");
     }
 

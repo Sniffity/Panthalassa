@@ -1,1 +1,1 @@
-gradlew -PUPDATE_MAPPINGS=20201028-1.16.3 -PUPDATE_MAPPINGS_CHANNEL=snapshot updateMappings
+gradlew -PUPDATE_MAPPINGS_CHANNEL="official" -PUPDATE_MAPPINGS="1.16.5" updateMappings

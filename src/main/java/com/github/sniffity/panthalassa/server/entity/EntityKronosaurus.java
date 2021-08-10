@@ -27,7 +27,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
-        this.ignoreFrustumCheck = true;
+        this.noCulling = true;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -80,19 +80,19 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
 @Nullable
 @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
-    return super.onInitialSpawn(world, difficulty, reason, livingdata, compound);
+    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
+    return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
 }
 
 
     public static AttributeModifierMap.MutableAttribute kronosaurusAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 25)
-                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 1)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 20)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 150)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double) 1.3F);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 25)
+                .add(Attributes.ATTACK_KNOCKBACK, 1)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1)
+                .add(Attributes.FOLLOW_RANGE, 20)
+                .add(Attributes.MAX_HEALTH, 150)
+                .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
     public void registerGoals() {
@@ -100,7 +100,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10));
 
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.world.getDifficulty() == Difficulty.PEACEFUL))));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
 
     }

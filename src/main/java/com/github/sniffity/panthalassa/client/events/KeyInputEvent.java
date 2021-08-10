@@ -28,13 +28,13 @@ public class KeyInputEvent {
         if (game.player != null) {
             Entity vehicle = getVehicle(game.player);
             if (vehicle instanceof PanthalassaVehicle) {
-                if (ClientHandler.KEY_VEHICLE_SPECIAL.isKeyDown()) {
+                if (ClientHandler.KEY_VEHICLE_SPECIAL.isDown()) {
                     PanthalassaPacketHandler.INSTANCE.sendToServer(new PacketVehicleSpecial());
                 }
-                if (ClientHandler.KEY_VEHICLE_LIGHTS.isPressed()) {
+                if (ClientHandler.KEY_VEHICLE_LIGHTS.consumeClick()) {
                     PanthalassaPacketHandler.INSTANCE.sendToServer(new PacketVehicleLights());
                 }
-                if (ClientHandler.KEY_VEHICLE_SONAR.isPressed()) {
+                if (ClientHandler.KEY_VEHICLE_SONAR.consumeClick()) {
                     PanthalassaPacketHandler.INSTANCE.sendToServer(new PacketVehicleSonar());
                 }
             }
@@ -42,6 +42,6 @@ public class KeyInputEvent {
     }
 
     public static Entity getVehicle(Entity player) {
-        return player.getRidingEntity();
+        return player.getVehicle();
     }
 }

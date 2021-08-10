@@ -9,6 +9,8 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 /**
  * Panthalassa Mod - Class: BlockPortalFrame <br></br?>
  *
@@ -21,24 +23,24 @@ import net.minecraft.world.World;
 public class BlockPortalFrame extends Block {
 
     public BlockPortalFrame() {
-        super(Properties.create(
-                Material.IRON,
-                MaterialColor.GRAY)
-                .hardnessAndResistance(-1.0F, 3600000.0F)
+        super(Properties.of(
+                Material.METAL,
+                MaterialColor.COLOR_GRAY)
+                .strength(-1.0F, 3600000.0F)
                 .sound(SoundType.METAL));
     }
 
     boolean isPanthalassaPortal(BlockState state) {
-        return state == PanthalassaBlocks.PORTAL.get().getDefaultState();
+        return state == PanthalassaBlocks.PORTAL.get().defaultBlockState();
     }
 
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (worldIn.isBlockPowered(pos)) {
-            if (isPanthalassaPortal(worldIn.getBlockState(pos.add(1, 0, 0))) ||
-                    isPanthalassaPortal(worldIn.getBlockState(pos.add(-1, 0, 0))) ||
-                    isPanthalassaPortal(worldIn.getBlockState(pos.add(0, 0, -1))) ||
-                    isPanthalassaPortal(worldIn.getBlockState(pos.add(0, 0, 1)))) {
+        if (worldIn.hasNeighborSignal(pos)) {
+            if (isPanthalassaPortal(worldIn.getBlockState(pos.offset(1, 0, 0))) ||
+                    isPanthalassaPortal(worldIn.getBlockState(pos.offset(-1, 0, 0))) ||
+                    isPanthalassaPortal(worldIn.getBlockState(pos.offset(0, 0, -1))) ||
+                    isPanthalassaPortal(worldIn.getBlockState(pos.offset(0, 0, 1)))) {
                 ((BlockPortal) PanthalassaBlocks.PORTAL.get()).tryDestoyPortal(worldIn, pos);
             } else {
                 ((BlockPortal) PanthalassaBlocks.PORTAL.get()).trySpawnPortal(worldIn, pos);

@@ -14,11 +14,11 @@ import net.minecraft.world.gen.placement.TopSolidWithNoiseConfig;
 public class PanthalassaConfiguredFeatures {
 
     public static final ConfiguredFeature<?, ?> PANTHALASSA_KELP_CONFIGURED = PanthalassaFeatures.PANTHALASSA_KELP
-            .get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)
-            .withPlacement(Features.Placements.KELP_PLACEMENT)
-            .square()
-            .withPlacement(Placement.COUNT_NOISE_BIASED
-                    .configure(new TopSolidWithNoiseConfig(80, 80.0D, 0.0D)));
+            .get().configured(IFeatureConfig.NONE)
+            .decorated(Features.Placements.TOP_SOLID_HEIGHTMAP)
+            .squared()
+            .decorated(Placement.COUNT_NOISE_BIASED
+                    .configured(new TopSolidWithNoiseConfig(80, 80.0D, 0.0D)));
 
     public static void registerConfiguredFeatures() {
         Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;

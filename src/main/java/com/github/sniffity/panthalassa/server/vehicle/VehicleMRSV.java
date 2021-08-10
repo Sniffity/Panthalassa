@@ -19,9 +19,9 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
-    protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.createKey(VehicleMRSV.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.FLOAT);
 
 
     public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
@@ -31,18 +31,18 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
     }
 
     @Override
-    protected void registerData() {
-        this.dataManager.register(MAX_HEALTH, 100F);
-        this.dataManager.register(HEALTH, 100F);
-        this.dataManager.register(ARMOR, 20F);
-        this.dataManager.register(IS_BOOSTING, Boolean.FALSE);
-        this.dataManager.register(BOOST_COOLDOWN, 20F);
-        this.dataManager.register(BOOSTING_TIMER, 0F);
-        super.registerData();
+    protected void defineSynchedData() {
+        this.entityData.define(MAX_HEALTH, 100F);
+        this.entityData.define(HEALTH, 100F);
+        this.entityData.define(ARMOR, 20F);
+        this.entityData.define(IS_BOOSTING, Boolean.FALSE);
+        this.entityData.define(BOOST_COOLDOWN, 20F);
+        this.entityData.define(BOOSTING_TIMER, 0F);
+        super.defineSynchedData();
     }
 
     @Override
-    protected void readAdditional(CompoundNBT compound) {
+    protected void readAdditionalSaveData(CompoundNBT compound) {
         if (compound.contains("isBoosting", Constants.NBT.TAG_BYTE)) {
             this.setIsBoosting(compound.getBoolean("isBoosting"));
         }
@@ -54,22 +54,22 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         if (compound.contains("boostingTimer", Constants.NBT.TAG_FLOAT)) {
             this.setBoostingTimer(compound.getFloat("boostingTimer"));
         }
-        super.readAdditional(compound);
+        super.readAdditionalSaveData(compound);
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundNBT compound) {
         {
             compound.putBoolean("isBoosting", this.getIsBoosting());
             compound.putFloat("boostCooldown", this.getBoostCooldown());
             compound.putFloat("boostingTimer", this.getBoostingTimer());
 
-            super.writeAdditional(compound);
+            super.addAdditionalSaveData(compound);
         }
     }
 
     @Override
-    public double getMountedYOffset() {
+    public double getPassengersRidingOffset() {
         return 0.0D;
     }
 
@@ -109,7 +109,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void respondKeybindSpecial() {
-        if (!this.world.isRemote && this.getBoostCooldown() < 0 && this.isInWater()) {
+        if (!this.level.isClientSide && this.getBoostCooldown() < 0 && this.isInWater()) {
             setIsBoosting(true);
             setBoostCooldown(500);
         }
@@ -127,32 +127,32 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     public void setBoostingTimer(float cooldown)
     {
-        this.dataManager.set(BOOSTING_TIMER, cooldown);
+        this.entityData.set(BOOSTING_TIMER, cooldown);
     }
 
     public float getBoostingTimer()
     {
-        return this.dataManager.get(BOOSTING_TIMER);
+        return this.entityData.get(BOOSTING_TIMER);
     }
 
     public void setIsBoosting(boolean isBoosting)
     {
-        this.dataManager.set(IS_BOOSTING, isBoosting);
+        this.entityData.set(IS_BOOSTING, isBoosting);
     }
 
     public boolean getIsBoosting()
     {
-        return this.dataManager.get(IS_BOOSTING);
+        return this.entityData.get(IS_BOOSTING);
     }
 
     public void setBoostCooldown(float cooldown)
     {
-        this.dataManager.set(BOOST_COOLDOWN, cooldown);
+        this.entityData.set(BOOST_COOLDOWN, cooldown);
     }
 
     public float getBoostCooldown()
     {
-        return this.dataManager.get(BOOST_COOLDOWN);
+        return this.entityData.get(BOOST_COOLDOWN);
     }
 
 

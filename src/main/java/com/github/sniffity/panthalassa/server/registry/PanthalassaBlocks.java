@@ -28,64 +28,64 @@ public class PanthalassaBlocks {
             BlockPortal::new);
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
-            () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
-                    .hardnessAndResistance(2f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
+                    .strength(2f, 6f)
                     .harvestTool(ToolType.SHOVEL)
                     .harvestLevel(2)
-                    .sound(SoundType.GROUND)));
+                    .sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<Block> PANTHALASSA_COARSE_SOIL = BLOCKS.register("panthalassa_coarse_soil",
-            () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
-                    .hardnessAndResistance(2f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
+                    .strength(2f, 6f)
                     .harvestTool(ToolType.SHOVEL)
                     .harvestLevel(2)
-                    .sound(SoundType.GROUND)));
+                    .sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<Block> PANTHALASSA_LOOSE_SOIL = BLOCKS.register("panthalassa_loose_soil",
-            () -> new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.BROWN)
-                    .hardnessAndResistance(2f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
+                    .strength(2f, 6f)
                     .harvestTool(ToolType.SHOVEL)
                     .harvestLevel(2)
-                    .sound(SoundType.GROUND)));
+                    .sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<Block> PANTHALASSA_STONE = BLOCKS.register("panthalassa_stone",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
-                    .hardnessAndResistance(2f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+                    .strength(2f, 6f)
                     .harvestTool(ToolType.PICKAXE)
                     .harvestLevel(3)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_COARSE_STONE = BLOCKS.register("panthalassa_coarse_stone",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
-                    .hardnessAndResistance(2f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+                    .strength(2f, 6f)
                     .harvestTool(ToolType.PICKAXE)
                     .harvestLevel(3)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_LOOSE_STONE = BLOCKS.register("panthalassa_loose_stone",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
-                    .hardnessAndResistance(2f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+                    .strength(2f, 6f)
                     .harvestTool(ToolType.PICKAXE)
                     .harvestLevel(3)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_ROCK = BLOCKS.register("panthalassa_rock",
-            () -> new Block(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
-                    .hardnessAndResistance(3f, 6f)
+            () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+                    .strength(3f, 6f)
                     .harvestTool(ToolType.PICKAXE)
                     .harvestLevel(3)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> LIGHT_AIR = BLOCKS.register("light_air",
-            () -> new AirBlock(AbstractBlock.Properties.create(Material.AIR)
-                    .doesNotBlockMovement()
+            () -> new AirBlock(AbstractBlock.Properties.of(Material.AIR)
+                    .noCollission()
                     .noDrops()
-                    .setAir()
-                    .setLightLevel((n) -> 15)));
+                    .air()
+                    .lightLevel((n) -> 15)));
 
     public static final RegistryObject<Block> LIGHT_WATER = BLOCKS.register("light_water",
-            () -> new FlowingFluidBlock(() -> Fluids.WATER, AbstractBlock.Properties.create(Material.WATER)
-                    .doesNotBlockMovement()
+            () -> new FlowingFluidBlock(() -> Fluids.WATER, AbstractBlock.Properties.of(Material.WATER)
+                    .noCollission()
                     .noDrops()
-                    .setLightLevel((n) -> 15)));
+                    .lightLevel((n) -> 15)));
 }

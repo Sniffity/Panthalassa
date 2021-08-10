@@ -11,11 +11,11 @@ public class RenderMRSV extends PanthalassaVehicleRenderer<VehicleMRSV>{
 
         public RenderMRSV(EntityRendererManager renderManager) {
             super(renderManager, new ModelMRSV());
-            this.shadowSize = 1.0F;
+            this.shadowRadius = 1.0F;
         }
 
         @Override
-        protected int getBlockLight(VehicleMRSV entityIn, BlockPos partialTicks) {
+        protected int getBlockLightLevel(VehicleMRSV entityIn, BlockPos partialTicks) {
         return entityIn.getLightsOn() ? 15 : 1;
     }
 

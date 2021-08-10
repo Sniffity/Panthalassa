@@ -17,20 +17,20 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateFeatureConfig> {
         super(p_i231931_1_);
     }
 
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
         while(true) {
             label46: {
                 if (pos.getY() > 3) {
-                    if (reader.getBlockState(pos.down()) == Blocks.WATER.getDefaultState()) {
+                    if (reader.getBlockState(pos.below()) == Blocks.WATER.defaultBlockState()) {
                         break label46;
                     }
 
                     if (
-                            !(reader.getBlockState(pos.down()) == PanthalassaBlocks.PANTHALASSA_SOIL.get().getDefaultState())
+                            !(reader.getBlockState(pos.below()) == PanthalassaBlocks.PANTHALASSA_SOIL.get().defaultBlockState())
                             &&
-                            !(reader.getBlockState(pos.down()) == PanthalassaBlocks.PANTHALASSA_COARSE_SOIL.get().getDefaultState())
+                            !(reader.getBlockState(pos.below()) == PanthalassaBlocks.PANTHALASSA_COARSE_SOIL.get().defaultBlockState())
                             &&
-                            !(reader.getBlockState(pos.down()) == PanthalassaBlocks.PANTHALASSA_LOOSE_SOIL.get().getDefaultState()))
+                            !(reader.getBlockState(pos.below()) == PanthalassaBlocks.PANTHALASSA_LOOSE_SOIL.get().defaultBlockState()))
                      {
                         break label46;
                     }
@@ -46,19 +46,19 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateFeatureConfig> {
                     int k = rand.nextInt(5);
                     float f = (float)(i + j + k) * 0.333F + 0.5F;
 
-                    for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-i, -j, -k), pos.add(i, j, k))) {
-                        if (blockpos.distanceSq(pos) <= (double)(f * f)) {
-                            reader.setBlockState(blockpos, config.state, 4);
+                    for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-i, -j, -k), pos.offset(i, j, k))) {
+                        if (blockpos.distSqr(pos) <= (double)(f * f)) {
+                            reader.setBlock(blockpos, config.state, 4);
                         }
                     }
 
-                    pos = pos.add(-1 + rand.nextInt(2), -rand.nextInt(2), -1 + rand.nextInt(2));
+                    pos = pos.offset(-1 + rand.nextInt(2), -rand.nextInt(2), -1 + rand.nextInt(2));
                 }
 
                 return true;
             }
 
-            pos = pos.down();
+            pos = pos.below();
         }
     }
 }

@@ -23,15 +23,15 @@ public class TeleporterLogic {
 
         if (portalinfo !=null) {
             if (!entity.getPassengers().isEmpty()) {
-                PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity, targetWorld.getDimensionKey(), initialWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity, targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
             } else if (entity instanceof PlayerEntity) {
-                if(entity.getRidingEntity() != null) {
-                    PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity.getRidingEntity(), targetWorld.getDimensionKey(), initialWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                if(entity.getVehicle() != null) {
+                    PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity.getVehicle(), targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
                 } else {
-                    PanthalassaWorldSavedData.get(targetWorld).addPlayerTP((PlayerEntity) entity, targetWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                    PanthalassaWorldSavedData.get(targetWorld).addPlayerTP((PlayerEntity) entity, targetWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
                 }
             } else {
-                PanthalassaWorldSavedData.get(targetWorld).addEntityTP(entity, targetWorld.getDimensionKey(), initialWorld.getDimensionKey(), portalinfo.pos, portalinfo.rotationYaw, portalinfo.rotationPitch);
+                PanthalassaWorldSavedData.get(targetWorld).addEntityTP(entity, targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
             }
         }
     }
