@@ -54,9 +54,8 @@ public final class Panthalassa {
 	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
 		PanthalassaPacketHandler.register();
-		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();
-		});
-		DeferredWorkQueue.runLater(() -> {PanthalassaFeatures.registerConfiguredFeatures();});
+		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();});
+//		DeferredWorkQueue.runLater(() -> {PanthalassaConfiguredFeatures.registerConfiguredFeatures();});
 	}
 
 

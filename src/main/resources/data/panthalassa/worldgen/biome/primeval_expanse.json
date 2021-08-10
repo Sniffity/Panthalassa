@@ -17,19 +17,21 @@
     "air": []
   },
   "features": [
-    [
-      "panthalassa:panthalassa_rocks"
-    ],
-    [],
-    [],
-    [],
-    [],
-    [],
     [],
     [
     ],
+    [],
     [
-      "panthalassa:panthalassa_kelp"
+    ],
+    [],
+    [],
+    [
+    ],
+    [],
+    [
+      "panthalassa:panthalassa_kelp_configured"
+    ],
+    [
     ]
   ],
   "starts": [

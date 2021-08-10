@@ -290,6 +290,7 @@ public class PanthalassaVehicle extends Entity {
 
         this.world.getProfiler().startSection("push");
         this.world.getProfiler().endSection();
+
     }
 
     protected void updateEntityActionState() {

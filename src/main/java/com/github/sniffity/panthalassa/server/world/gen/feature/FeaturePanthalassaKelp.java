@@ -20,11 +20,12 @@ public class FeaturePanthalassaKelp extends Feature<NoFeatureConfig> {
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         int i = 0;
         int kelp_limit = 128;
-        BlockPos blockpos = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
+        double r = Math.floor(Math.random()*(81)+20);
+        BlockPos blockpos = new BlockPos(pos.getX(), pos.getY()+r, pos.getZ());
         if ((reader.getBlockState(blockpos).getBlock()== Blocks.WATER)&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.getDefaultState();
             BlockState blockstate1 = Blocks.KELP_PLANT.getDefaultState();
-            int k = 1 + rand.nextInt(10);
+            int k = 1 + rand.nextInt(20);
 
             for(int l = 0; l <= k; ++l) {
                 if (reader.getBlockState(blockpos).isIn(Blocks.WATER) && reader.getBlockState(blockpos.up()).isIn(Blocks.WATER) && blockstate1.isValidPosition(reader, blockpos)) {
