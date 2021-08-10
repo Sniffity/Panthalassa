@@ -41,7 +41,6 @@ public class PanthalassaFeatures {
                     .range(128)
                     .func_242731_b(100));
 
-
             register("panthalassa_rocks",ConfiguredFeatures.PANTHALASSA_ROCKS
                     .chance(20)
                     .square()
