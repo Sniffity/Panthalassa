@@ -23,7 +23,8 @@
     [],
     [
     ],
-    [],
+    [
+    ],
     [],
     [
     ],
@@ -36,6 +37,7 @@
     ]
   ],
   "starts": [
+    "minecraft:nether_fossil"
   ],
   "spawners": {
     "monster": [],
