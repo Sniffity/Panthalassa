@@ -4,13 +4,12 @@ import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.block.BlockPortal;
 import com.github.sniffity.panthalassa.server.block.BlockPortalFrame;
+import com.github.sniffity.panthalassa.server.block.BlockPrimordialStalk;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,6 +25,13 @@ public class PanthalassaBlocks {
 
     public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
             BlockPortal::new);
+
+    public static final RegistryObject<Block> PRIMORDIAL_STALK = BLOCKS.register("primordial_stalk",
+            () -> new BlockPrimordialStalk(AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN)
+                    .strength(0.6f, 0.6f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
             () -> new Block(AbstractBlock.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
@@ -76,6 +82,20 @@ public class PanthalassaBlocks {
                     .harvestLevel(3)
                     .sound(SoundType.STONE)));
 
+    public static final RegistryObject<Block> PANTHALASSA_SAND = BLOCKS.register("panthalassa_sand",
+            () -> new Block(AbstractBlock.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
+                    .strength(1f, 1f)
+                    .harvestTool(ToolType.SHOVEL)
+                    .harvestLevel(1)
+                    .sound(SoundType.SAND)));
+
+    public static final RegistryObject<Block> PANTHALASSA_OVERGROWN_SAND = BLOCKS.register("panthalassa_overgrown_sand",
+            () -> new Block(AbstractBlock.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
+                    .strength(1f, 1f)
+                    .harvestTool(ToolType.SHOVEL)
+                    .harvestLevel(1)
+                    .sound(SoundType.SAND)));
+
     public static final RegistryObject<Block> LIGHT_AIR = BLOCKS.register("light_air",
             () -> new AirBlock(AbstractBlock.Properties.of(Material.AIR)
                     .noCollission()
@@ -88,4 +108,8 @@ public class PanthalassaBlocks {
                     .noCollission()
                     .noDrops()
                     .lightLevel((n) -> 15)));
+
+
+
+
 }
