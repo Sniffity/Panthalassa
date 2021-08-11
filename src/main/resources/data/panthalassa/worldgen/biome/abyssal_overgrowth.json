@@ -1,6 +1,6 @@
 {
-  "scale": 0.2,
-  "depth": -0.2,
+  "scale": 0.6,
+  "depth": -0.3,
   "precipitation": "none",
   "category": "nether",
   "temperature": 2.0,
@@ -9,8 +9,8 @@
   "effects": {
     "sky_color": 8103167,
     "fog_color": 12638463,
-    "water_color": 2465141,
-    "water_fog_color": 2481269,
+    "water_color": 10928013,
+    "water_fog_color": 199177,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
@@ -24,24 +24,21 @@
   },
   "features": [
     [],
-    [
-    ],
     [],
-    [
-    ],
-    [
-    ],
+    [],
     [],
     [
     ],
     [],
+    [],
+    [],
     [
+      "panthalassa:panthalassa_coral_reef",
       "panthalassa:primordial_stalks",
       "panthalassa:kelp_abyssal_overgrowth",
       "panthalassa:panthalassa_sea_grass"
     ],
-    [
-    ]
+    []
   ],
   "starts": [
   ],

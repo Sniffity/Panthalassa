@@ -19,7 +19,7 @@ public class FeaturePrimordialStalks extends Feature<NoFeatureConfig> {
     }
 
     public boolean place(ISeedReader p_241855_1_, ChunkGenerator p_241855_2_, Random p_241855_3_, BlockPos p_241855_4_, NoFeatureConfig p_241855_5_) {
-        double r = Math.floor(Math.random()*(40)+20);
+        double r = Math.floor(Math.random()*(41)+20);
         BlockPos blockpos = new BlockPos(p_241855_4_.getX(), r, p_241855_4_.getZ());;
         if (p_241855_1_.isWaterAt(blockpos) && p_241855_1_.getBlockState(blockpos.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get())) {
 
