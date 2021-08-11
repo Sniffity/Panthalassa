@@ -1,0 +1,14 @@
+{
+  "type": "panthalassa:placeholder_placeholder",
+  "config": {
+    "top_material": {
+      "Name": "panthalassa:panthalassa_stone"
+    },
+    "under_material": {
+      "Name": "panthalassa:panthalassa_stone"
+    },
+    "underwater_material": {
+      "Name": "panthalassa:panthalassa_stone"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "panthalassa:abyssal_overgrowth",
+  "config": {
+    "top_material": {
+      "Name": "panthalassa:panthalassa_sand"
+    },
+    "under_material": {
+      "Name": "panthalassa:panthalassa_sand"
+    },
+    "underwater_material": {
+      "Name": "panthalassa:panthalassa_sand"
+    }
+  }
+}
