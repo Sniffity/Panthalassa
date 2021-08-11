@@ -1,6 +1,6 @@
 {
-  "scale": 0.6,
-  "depth": -0.3,
+  "scale": 0.2,
+  "depth": 0.1,
   "precipitation": "none",
   "category": "nether",
   "temperature": 2.0,
