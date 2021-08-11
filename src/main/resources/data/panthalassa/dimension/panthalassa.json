@@ -19,7 +19,7 @@
           }
         },
         {
-          "biome": "panthalassa:placeholder_placeholder",
+          "biome": "panthalassa:ancient_caverns",
           "parameters": {
             "altitude": 0.7,
             "weirdness": 0.5,
