@@ -1,16 +1,22 @@
 {
   "scale": 0.2,
+  "depth": 0.2,
+  "precipitation": "none",
+  "category": "nether",
+  "temperature": 2.0,
+  "downfall": 0.0,
+  "player_spawn_friendly": false,
   "effects": {
+    "sky_color": 8103167,
+    "fog_color": 12638463,
+    "water_color": 4445678,
+    "water_fog_color": 270131,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
       "block_search_extent": 8,
       "offset": 2
-    },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
-    "water_color": 4445678,
-    "water_fog_color": 270131
+    }
   },
   "surface_builder": "panthalassa:primeval_expanse",
   "carvers": {
@@ -30,14 +36,13 @@
     ],
     [],
     [
-      "panthalassa:panthalassa_kelp_configured",
-      "panthalassa:panthalassa_sea_grass_configured"
+      "panthalassa:panthalassa_sea_grass",
+      "panthalassa:kelp_primeval_expanse"
     ],
     [
     ]
   ],
   "starts": [
-    "minecraft:nether_fossil"
   ],
   "spawners": {
     "monster": [],
@@ -47,11 +52,5 @@
     "water_ambient": [],
     "misc": []
   },
-  "spawn_costs": {},
-  "player_spawn_friendly": false,
-  "precipitation": "none",
-  "temperature": 2.0,
-  "downfall": 0.0,
-  "category": "nether",
-  "depth": 0.1
+  "spawn_costs": {}
 }
