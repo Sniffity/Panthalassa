@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.server.world.gen.surfacebuilders.AbyssalOvergrowth;
+import com.github.sniffity.panthalassa.server.world.gen.surfacebuilders.PlaceholderPlaceholder;
 import com.github.sniffity.panthalassa.server.world.gen.surfacebuilders.PrimevalExpanse;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
@@ -14,4 +16,10 @@ public class PanthalassaSurfaceBuilders {
 
     public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> PRIMEVAL_EXPANSE = SURFACE_BUILDERS.register("primeval_expanse",
             () -> new PrimevalExpanse(SurfaceBuilderConfig.CODEC));
+
+    public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> ABYSSAL_OVERGROWTH = SURFACE_BUILDERS.register("abyssal_overgrowth",
+            () -> new AbyssalOvergrowth(SurfaceBuilderConfig.CODEC));
+
+    public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> PLACEHOLDER_PLACEHOLDER = SURFACE_BUILDERS.register("placeholder_placeholder",
+            () -> new PlaceholderPlaceholder(SurfaceBuilderConfig.CODEC));
 }
