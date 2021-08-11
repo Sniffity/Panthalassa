@@ -1,0 +1,54 @@
+{
+  "scale": 0.0,
+  "depth": 0.3,
+  "precipitation": "none",
+  "category": "nether",
+  "temperature": 2.0,
+  "downfall": 0.0,
+  "player_spawn_friendly": false,
+  "effects": {
+    "sky_color": 8103167,
+    "fog_color": 12638463,
+    "water_color": 4445678,
+    "water_fog_color": 270131,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2
+    }
+  },
+  "surface_builder": "panthalassa:ancient_caverns",
+  "carvers": {
+    "air": []
+  },
+  "features": [
+    [],
+    [
+    ],
+    [],
+    [
+    ],
+    [
+    ],
+    [],
+    [
+    ],
+    [],
+    [
+    ],
+    [
+    ]
+  ],
+  "starts": [
+  ],
+  "spawners": {
+    "monster": [],
+    "creature": [],
+    "ambient": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {}
+}

@@ -8,7 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.ValleySurfaceBuilder;
 
-public class PlaceholderPlaceholder extends ValleySurfaceBuilder {
+public class AncientCaverns extends ValleySurfaceBuilder {
     private static final BlockState CEILING_BLOCK_1 = Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.defaultBlockState();
     private static final BlockState CEILING_BLOCK_2 = Blocks.RED_GLAZED_TERRACOTTA.defaultBlockState();
     private static final BlockState CEILING_BLOCK_3 = Blocks.MAGENTA_GLAZED_TERRACOTTA.defaultBlockState();
@@ -21,7 +21,7 @@ public class PlaceholderPlaceholder extends ValleySurfaceBuilder {
     private static final ImmutableList<BlockState> FLOOR_BLOCK_STATES = ImmutableList.of(FLOOR_BLOCK_1, FLOOR_BLOCK_2, FLOOR_BLOCK_3);
     private static final ImmutableList<BlockState> CEILING_BLOCK_STATES = ImmutableList.of(CEILING_BLOCK_1, CEILING_BLOCK_2, CEILING_BLOCK_3);
 
-    public PlaceholderPlaceholder(Codec<SurfaceBuilderConfig> p_i232123_1_) {
+    public AncientCaverns(Codec<SurfaceBuilderConfig> p_i232123_1_) {
         super(p_i232123_1_);
     }
 
