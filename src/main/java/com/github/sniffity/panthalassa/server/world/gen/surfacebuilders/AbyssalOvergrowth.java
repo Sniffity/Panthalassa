@@ -9,9 +9,9 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.ValleySurfaceBuilder;
 
 public class AbyssalOvergrowth extends ValleySurfaceBuilder {
-    private static final BlockState CEILING_BLOCK_1 = Blocks.REDSTONE_BLOCK.defaultBlockState();
-    private static final BlockState CEILING_BLOCK_2 = Blocks.LAPIS_BLOCK.defaultBlockState();
-    private static final BlockState CEILING_BLOCK_3 = Blocks.IRON_BLOCK.defaultBlockState();
+    private static final BlockState CEILING_BLOCK_1 = PanthalassaBlocks.PANTHALASSA_STONE.get().defaultBlockState();
+    private static final BlockState CEILING_BLOCK_2 = PanthalassaBlocks.PANTHALASSA_COARSE_STONE.get().defaultBlockState();
+    private static final BlockState CEILING_BLOCK_3 = PanthalassaBlocks.PANTHALASSA_LOOSE_STONE.get().defaultBlockState();
     private static final BlockState FLOOR_BLOCK_1 = PanthalassaBlocks.PANTHALASSA_SAND.get().defaultBlockState();
     private static final BlockState FLOOR_BLOCK_2 = PanthalassaBlocks.PANTHALASSA_OVERGROWN_SAND.get().defaultBlockState();
 
