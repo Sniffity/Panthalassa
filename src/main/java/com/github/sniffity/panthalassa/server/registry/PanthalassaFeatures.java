@@ -23,6 +23,15 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<NoFeatureConfig>> PRIMORDIAL_STALKS =
             FEATURES.register("primordial_stalks", () -> new FeaturePrimordialStalks(NoFeatureConfig.CODEC));
 
+    public static final RegistryObject<Feature<NoFeatureConfig>> PANTHALASSA_CORAL_CLAW =
+            FEATURES.register("panthalassa_coral_claw", () -> new FeatureCoralClaw(NoFeatureConfig.CODEC));
+
+    public static final RegistryObject<Feature<NoFeatureConfig>> PANTHALASSA_CORAL_MUSHROOM =
+            FEATURES.register("panthalassa_coral_mushroom", () -> new FeatureCoralMushroom(NoFeatureConfig.CODEC));
+
+    public static final RegistryObject<Feature<NoFeatureConfig>> PANTHALASSA_CORAL_TREE =
+            FEATURES.register("panthalassa_coral_tree", () -> new FeatureCoralTree(NoFeatureConfig.CODEC));
+
     public static final RegistryObject<Feature<BlockStateFeatureConfig>> PANTHALASSA_ROCKS =
             FEATURES.register("panthalassa_rocks", () -> new FeaturePanthalassaRocks(BlockStateFeatureConfig.CODEC));
 }
