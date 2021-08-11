@@ -21,7 +21,7 @@ public class FeaturePrimevalExpanseKelp extends Feature<NoFeatureConfig> {
         int i = 0;
         int kelp_limit = 128;
         double r = Math.floor(Math.random()*(81)+20);
-        BlockPos blockpos = new BlockPos(pos.getX(), pos.getY()+r, pos.getZ());
+        BlockPos blockpos = new BlockPos(pos.getX(), r, pos.getZ());
         if ((reader.getBlockState(blockpos).getBlock()== Blocks.WATER)&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.defaultBlockState();
             BlockState blockstate1 = Blocks.KELP_PLANT.defaultBlockState();
