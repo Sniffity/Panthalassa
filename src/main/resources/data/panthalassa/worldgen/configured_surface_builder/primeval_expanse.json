@@ -2,13 +2,13 @@
   "type": "panthalassa:primeval_expanse",
   "config": {
     "top_material": {
-      "Name": "minecraft:stone"
+      "Name": "panthalassa:panthalassa_stone"
     },
     "under_material": {
-      "Name": "minecraft:stone"
+      "Name": "panthalassa:panthalassa_stone"
     },
     "underwater_material": {
-      "Name": "minecraft:stone"
+      "Name": "panthalassa:panthalassa_stone"
     }
   }
 }
