@@ -37,12 +37,11 @@ public class PanthalassaStructures {
     public static <F extends Structure<?>> void setupMapSpacingAndLand(
             F structure,
             StructureSeparationSettings structureSeparationSettings,
-            boolean transformSurroundingLand)
-    {
+            boolean transformSurroundingLand) {
 
         Structure.STRUCTURES_REGISTRY.put(structure.getRegistryName().toString(), structure);
 
-        if(transformSurroundingLand){
+        if (transformSurroundingLand) {
             Structure.NOISE_AFFECTING_FEATURES =
                     ImmutableList.<Structure<?>>builder()
                             .addAll(Structure.NOISE_AFFECTING_FEATURES)
@@ -58,18 +57,17 @@ public class PanthalassaStructures {
                         .build();
 
 
-
         WorldGenRegistries.NOISE_GENERATOR_SETTINGS.entrySet().forEach(settings -> {
             Map<Structure<?>, StructureSeparationSettings> structureMap = settings.getValue().structureSettings().structureConfig();
 
 
-            if(structureMap instanceof ImmutableMap){
+            if (structureMap instanceof ImmutableMap) {
                 Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(structureMap);
                 tempMap.put(structure, structureSeparationSettings);
                 settings.getValue().structureSettings().structureConfig = tempMap;
-            }
-            else{
+            } else {
                 structureMap.put(structure, structureSeparationSettings);
             }
         });
     }
+}
