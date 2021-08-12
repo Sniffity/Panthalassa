@@ -20,7 +20,13 @@
   },
   "surface_builder": "panthalassa:abyssal_overgrowth",
   "carvers": {
-    "air": []
+    "air": [
+      "panthalassa:ancient_canyon"
+    ],
+    "liquid":
+    [
+      "panthalassa:ancient_canyon"
+    ]
   },
   "features": [
     [],

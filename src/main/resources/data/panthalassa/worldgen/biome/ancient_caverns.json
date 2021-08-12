@@ -20,10 +20,12 @@
   },
   "surface_builder": "panthalassa:ancient_caverns",
   "carvers": {
-    "air": [],
+    "air": [
+      "panthalassa:ancient_canyon"
+    ],
     "liquid":
     [
-      "panthalassa:underwater_canyon"
+      "panthalassa:ancient_canyon"
     ]
   },
   "features": [
