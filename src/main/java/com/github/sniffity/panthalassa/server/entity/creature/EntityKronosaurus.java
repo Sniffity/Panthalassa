@@ -1,7 +1,7 @@
-package com.github.sniffity.panthalassa.server.entity;
+package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.ai.PanthalassaMeleeAttackGoal;
-import com.github.sniffity.panthalassa.server.entity.ai.PanthalassaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;

@@ -1,6 +1,6 @@
 package com.github.sniffity.panthalassa.server.network.packets;
 
-import com.github.sniffity.panthalassa.server.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.server.entity.ai;
+package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 
 import java.util.EnumSet;

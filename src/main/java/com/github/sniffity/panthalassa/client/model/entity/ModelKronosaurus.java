@@ -1,7 +1,7 @@
 package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.EntityKronosaurus;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
 
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.core.processor.IBone;

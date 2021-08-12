@@ -1,6 +1,6 @@
 package com.github.sniffity.panthalassa.client.events;
 
-import com.github.sniffity.panthalassa.server.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.settings.PointOfView;

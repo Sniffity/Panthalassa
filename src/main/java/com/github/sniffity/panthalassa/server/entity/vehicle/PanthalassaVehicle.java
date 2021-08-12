@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.server.vehicle;
+package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import net.minecraft.block.BlockState;
@@ -141,7 +141,7 @@ public class PanthalassaVehicle extends Entity {
 
     @Override
     public ActionResultType interact(PlayerEntity player, Hand hand) {
-        if (!this.level.isClientSide) {
+        if (!this.level.isClientSide && canAddPassenger(this)) {
             return player.startRiding(this) ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {
             return ActionResultType.SUCCESS;
@@ -149,7 +149,7 @@ public class PanthalassaVehicle extends Entity {
     }
 
     @Override
-    protected boolean canAddPassenger(Entity passenger) {
+    protected boolean canAddPassenger(Entity vehicle) {
         return this.getPassengers().size() < 1;
     }
 

@@ -1,8 +1,8 @@
 package com.github.sniffity.panthalassa.client.events;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
-import com.github.sniffity.panthalassa.server.vehicle.PanthalassaVehicle;
-import com.github.sniffity.panthalassa.server.vehicle.VehicleMRSV;
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

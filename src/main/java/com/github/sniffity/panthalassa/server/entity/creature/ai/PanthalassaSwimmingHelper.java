@@ -1,6 +1,6 @@
-package com.github.sniffity.panthalassa.server.entity.ai;
+package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
-import com.github.sniffity.panthalassa.server.entity.PanthalassaEntity;
+import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.tags.FluidTags;

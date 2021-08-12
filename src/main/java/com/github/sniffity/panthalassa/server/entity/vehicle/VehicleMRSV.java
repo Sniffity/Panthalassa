@@ -1,12 +1,10 @@
-package com.github.sniffity.panthalassa.server.vehicle;
+package com.github.sniffity.panthalassa.server.entity.vehicle;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import software.bernie.geckolib3.core.IAnimatable;

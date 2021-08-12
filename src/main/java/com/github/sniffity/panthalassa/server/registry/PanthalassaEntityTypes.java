@@ -1,8 +1,9 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.EntityKronosaurus;
-import com.github.sniffity.panthalassa.server.vehicle.VehicleMRSV;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAG;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -20,11 +21,19 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
-    public static final RegistryObject<EntityType<VehicleMRSV>> mrsv = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
+
+
+    public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
                     .of(VehicleMRSV::new,EntityClassification.MISC)
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "manta_ray_submersible_vehicle").toString()));
+
+    public static final RegistryObject<EntityType<VehicleAG>> AG = ENTITY_TYPES.register ("abyss_glider_vehicle",()->
+            EntityType.Builder
+                    .of(VehicleAG::new,EntityClassification.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_vehicle").toString()));
 
 
     @SuppressWarnings("deprecated")

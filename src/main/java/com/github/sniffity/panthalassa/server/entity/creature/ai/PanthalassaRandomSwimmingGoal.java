@@ -1,9 +1,9 @@
-package com.github.sniffity.panthalassa.server.entity.ai;
+package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
-import com.github.sniffity.panthalassa.server.entity.PanthalassaEntity;
+import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.PathType;

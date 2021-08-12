@@ -5,7 +5,7 @@ import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleLights;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSonar;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
-import com.github.sniffity.panthalassa.server.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.InputEvent;

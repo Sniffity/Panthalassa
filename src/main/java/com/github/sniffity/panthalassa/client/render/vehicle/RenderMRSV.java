@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.client.render.vehicle;
 
 import com.github.sniffity.panthalassa.client.model.vehicle.ModelMRSV;
 import com.github.sniffity.panthalassa.client.render.PanthalassaVehicleRenderer;
-import com.github.sniffity.panthalassa.server.vehicle.VehicleMRSV;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.math.BlockPos;
 

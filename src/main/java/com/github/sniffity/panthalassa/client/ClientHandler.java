@@ -5,6 +5,7 @@ import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
 import com.github.sniffity.panthalassa.client.render.entity.RenderKronosaurus;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderAG;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.client.settings.KeyBinding;
@@ -35,8 +36,10 @@ public class ClientHandler {
     public static void registerEntityRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.KRONOSAURUS.get(),
                 RenderKronosaurus::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.mrsv.get(),
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 manager -> new RenderMRSV(manager));
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.AG.get(),
+                manager -> new RenderAG(manager));
     }
 
     public static final KeyBinding KEY_VEHICLE_LIGHTS = new KeyBinding("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");

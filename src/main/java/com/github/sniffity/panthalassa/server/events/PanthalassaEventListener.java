@@ -1,7 +1,7 @@
 package com.github.sniffity.panthalassa.server.events;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
