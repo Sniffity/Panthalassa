@@ -35,6 +35,9 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<NoFeatureConfig>> ANCIENT_PILLARS =
             FEATURES.register("ancient_pillar", () -> new FeatureAncientPillar(NoFeatureConfig.CODEC));
 
+    public static final RegistryObject<Feature<ColumnConfig>> ANCIENT_COLUMNS =
+            FEATURES.register("ancient_column", () -> new FeatureAncientColumn(ColumnConfig.CODEC));
+
     public static final RegistryObject<Feature<BlockStateFeatureConfig>> PANTHALASSA_ROCKS =
             FEATURES.register("panthalassa_rocks", () -> new FeaturePanthalassaRocks(BlockStateFeatureConfig.CODEC));
 }

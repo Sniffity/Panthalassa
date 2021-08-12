@@ -1,6 +1,6 @@
 {
-  "scale": 0.2,
-  "depth": 0.1,
+  "scale": 0.3,
+  "depth": 0.3,
   "precipitation": "none",
   "category": "nether",
   "temperature": 2.0,
@@ -9,8 +9,8 @@
   "effects": {
     "sky_color": 8103167,
     "fog_color": 12638463,
-    "water_color": 4445678,
-    "water_fog_color": 270131,
+    "water_color": 6386834,
+    "water_fog_color": 793388,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
@@ -32,7 +32,10 @@
     [],
     [],
     [
-      "panthalassa:ancient_pillars"
+      "panthalassa:ancient_pillars",
+      "panthalassa:ancient_columns_large",
+      "panthalassa:ancient_columns_small"
+
     ],
     [],
     [],

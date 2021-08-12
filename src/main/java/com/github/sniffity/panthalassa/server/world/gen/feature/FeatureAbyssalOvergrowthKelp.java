@@ -20,7 +20,7 @@ public class FeatureAbyssalOvergrowthKelp extends Feature<NoFeatureConfig> {
     public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         int i = 0;
         int kelp_limit = 128;
-        double r = Math.floor(Math.random()*(41)+20);
+        double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockpos = new BlockPos(pos.getX(), r, pos.getZ());
         if ((reader.getBlockState(blockpos).getBlock()== Blocks.WATER)&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.defaultBlockState();

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:decorated",
+  "config": {
+    "decorator": {
+      "type": "minecraft:count_multilayer",
+      "config": {
+        "count": 30
+      }
+    },
+    "feature": {
+      "type": "panthalassa:ancient_column",
+      "config": {
+        "reach": {
+          "base": 2,
+          "spread": 1
+        },
+        "height": {
+          "base": 5,
+          "spread": 5
+        }
+      }
+    }
+  }
+}
