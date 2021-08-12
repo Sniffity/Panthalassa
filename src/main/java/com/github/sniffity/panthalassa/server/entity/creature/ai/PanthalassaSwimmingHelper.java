@@ -9,6 +9,13 @@ import net.minecraft.util.math.MathHelper;
 
 public class PanthalassaSwimmingHelper extends MovementController {
 
+    boolean blockedNorth = false;
+    boolean blockedSouth = false;
+    boolean blockedEast = false;
+    boolean blockedWest = false;
+    boolean blockedAbove = false;
+    boolean blockedBelow = false;
+
     private final PanthalassaEntity entityPanthalassa;
 
     public PanthalassaSwimmingHelper(PanthalassaEntity entity) {
@@ -19,6 +26,30 @@ public class PanthalassaSwimmingHelper extends MovementController {
     public void tick() {
         if (this.entityPanthalassa.isEyeInFluid(FluidTags.WATER)) {
             this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
+        }
+
+        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).above(1)).is(FluidTags.WATER) || !this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).above(2)).is(FluidTags.WATER)) {
+            blockedAbove = true;
+        }
+
+        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).below(1)).is(FluidTags.WATER) || !this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).below(2)).is(FluidTags.WATER)) {
+            blockedBelow = true;
+        }
+
+        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).north(1)).is(FluidTags.WATER) || !this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).north(2)).is(FluidTags.WATER)) {
+            blockedNorth = true;
+        }
+
+        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).south(1)).is(FluidTags.WATER) || !this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).south(2)).is(FluidTags.WATER)) {
+            blockedSouth = true;
+        }
+
+        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).east(1)).is(FluidTags.WATER) || !this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).east(2)).is(FluidTags.WATER)) {
+            blockedEast = true;
+        }
+
+        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).west(1)).is(FluidTags.WATER) || !this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).west(2)).is(FluidTags.WATER)) {
+            blockedWest = true;
         }
 
         if (this.operation == MovementController.Action.MOVE_TO && !this.entityPanthalassa.getNavigation().isDone()) {
@@ -54,22 +85,38 @@ public class PanthalassaSwimmingHelper extends MovementController {
 
             }
 
-        } else {
+        } else if(!blockedAbove && !blockedBelow && !blockedEast && !blockedWest && !blockedNorth && !blockedSouth ) {
             this.entityPanthalassa.setSpeed(1.0F);
             this.entityPanthalassa.setXxa(0.0F);
             this.entityPanthalassa.setYya(0.01F);
             this.entityPanthalassa.setZza(0.01F);
         }
 
-        if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).above(1)).is(FluidTags.WATER)) {
-            this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
-        } else if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).above(2)).is(FluidTags.WATER)) {
-            this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
-        } else if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).below(1)).is(FluidTags.WATER)) {
-            this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, +0.05D, 0.0D));
-        } else if (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).below(2)).is(FluidTags.WATER)) {
-            this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, +0.05D, 0.0D));
+        if (this.entityPanthalassa.isInWater()) {
+            if (blockedAbove){
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
+            }
 
+            if (blockedBelow) {
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, +0.05D, 0.0D));
+            }
+
+            if (blockedNorth) {
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0, 0.01D));
+
+            }
+
+            if (blockedSouth) {
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0, -0.01D));
+            }
+
+            if (blockedEast) {
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(-0.01D, 0, 0));
+            }
+
+            if (blockedWest) {
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.01D, 0, 0));
+            }
         }
     }
 }
