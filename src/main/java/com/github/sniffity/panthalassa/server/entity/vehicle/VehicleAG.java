@@ -11,6 +11,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -26,7 +27,7 @@ import java.util.List;
 public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
     protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> NET_TARGET = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
 
     public VehicleAG(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
@@ -40,7 +41,7 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
         this.entityData.define(HEALTH, 200F);
         this.entityData.define(ARMOR, 40F);
         this.entityData.define(NET_ACTIVATED, Boolean.FALSE);
-        this.entityData.define(NET_TARGET, Boolean.FALSE);
+        this.entityData.define(NET_CATCH, Boolean.FALSE);
 
         super.defineSynchedData();
     }
@@ -50,8 +51,8 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
         if (compound.contains("netActivated", Constants.NBT.TAG_BYTE)) {
             this.setNetActivated(compound.getBoolean("netActivated"));
         }
-        if (compound.contains("netTarget", Constants.NBT.TAG_BYTE)) {
-            this.setNetTarget(compound.getBoolean("netTarget"));
+        if (compound.contains("netCatch", Constants.NBT.TAG_BYTE)) {
+            this.setNetCatch(compound.getBoolean("netCatch"));
         }
 
         super.readAdditionalSaveData(compound);
@@ -62,7 +63,7 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
         {
             compound.putBoolean("netActivated", this.getNetActivated());
 
-            compound.putBoolean("netTarget", this.getNetTarget());
+            compound.putBoolean("netCatch", this.getNetCatch());
             super.addAdditionalSaveData(compound);
         }
 
@@ -102,17 +103,24 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void tick() {
-        if (getNetActivated() && this.isInWater() && !getNetTarget()) {
+        if (getNetActivated() && this.isInWater() && !getNetCatch()) {
             if (attemptNet(this)) ;
             {
-                setNetTarget(true);
+                setNetCatch(true);
+            }
+        }
+
+        if (!getNetActivated() && getNetCatch()) {
+            if (releaseNet(this)) ;
+            {
+                setNetCatch(false);
             }
         }
 
         List<Entity> passengers = this.getPassengers();
 
-        if (getNetTarget()) {
-            if (passengers != null && passengers.size() > 0) {
+        if (getNetCatch()) {
+            if (passengers.size() > 0) {
                 LivingEntity netTarget = (LivingEntity) passengers.get(1);
                 netTarget.addEffect(new EffectInstance(Effects.WEAKNESS, 20, 5));
             }
@@ -124,8 +132,14 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void respondKeybindSpecial() {
-        if (!this.level.isClientSide && !this.getNetActivated() && this.isInWater()) {
-            setNetActivated(true);
+        if (!this.level.isClientSide)
+        {
+            if (!this.getNetActivated() && this.isInWater()){
+                setNetActivated(true);
+            }
+            else if (this.getNetActivated()) {
+                setNetActivated(false);
+            }
         }
     }
 
@@ -142,7 +156,7 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
     }
 
     public boolean attemptNet(PanthalassaVehicle vehicle) {
-        if (!getNetTarget() && getNetActivated()) {
+        if (!getNetCatch() && getNetActivated()) {
             List<Entity> entities = level.getEntities(vehicle, new AxisAlignedBB(vehicle.getX() - 5, vehicle.getY() - 5, vehicle.getZ() - 5, vehicle.getX() + 5, vehicle.getY() + 5, vehicle.getZ() + 5));
             float closestDistance = 100F;
             if (entities.size() != 0) {
@@ -165,6 +179,15 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
         return false;
     }
 
+    public boolean releaseNet(PanthalassaVehicle vehicle) {
+        List<Entity> passengers = this.getPassengers();
+        if (getNetCatch() && !getNetActivated() && !passengers.isEmpty()) {
+            passengers.get(1).stopRiding();
+            return true;
+        }
+        return false;
+    }
+
     public void setNetActivated(boolean active)
     {
         this.entityData.set(NET_ACTIVATED, active);
@@ -175,15 +198,25 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
         return this.entityData.get(NET_ACTIVATED);
     }
 
-    public void setNetTarget(boolean target)
+    public void setNetCatch(boolean target)
     {
-        this.entityData.set(NET_TARGET, target);
+        this.entityData.set(NET_CATCH, target);
     }
 
-    public boolean getNetTarget()
+    public boolean getNetCatch()
     {
-        return this.entityData.get(NET_TARGET);
+        return this.entityData.get(NET_CATCH);
     }
 
+    @Override
+    public void positionRider(Entity passenger)
+    {
+        Vector3d offset = getPassengerPosOffset(passenger, getPassengers().indexOf(passenger));
+        passenger.setPos(getX()+offset.x, getY()+offset.y, getZ()+offset.z);
+    }
 
+    public Vector3d getPassengerPosOffset(Entity entity, int index)
+    {
+        return new Vector3d(0, index == 0? 0.0F : -0.50F, -2.00F);
+    }
 }
