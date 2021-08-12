@@ -41,8 +41,6 @@ public final class Panthalassa {
 
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
 
-
-		PanthalassaCarvers.CARVERS.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 

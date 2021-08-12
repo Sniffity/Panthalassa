@@ -21,31 +21,26 @@
   "surface_builder": "panthalassa:ancient_caverns",
   "carvers": {
     "air": [
-      "panthalassa:ancient_canyon"
     ],
     "liquid":
     [
-      "panthalassa:ancient_canyon"
     ]
   },
   "features": [
     [],
-    [
-    ],
+    [],
+    [],
     [],
     [
-    ],
-    [
-    ],
-    [],
-    [
+      "panthalassa:ancient_pillars"
     ],
     [],
-    [
-    ],
-    [
-    ]
+    [],
+    [],
+    [],
+    []
   ],
+
   "starts": [
   ],
   "spawners": {
