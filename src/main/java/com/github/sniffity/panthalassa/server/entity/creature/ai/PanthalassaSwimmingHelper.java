@@ -102,21 +102,29 @@ public class PanthalassaSwimmingHelper extends MovementController {
             }
 
             if (blockedNorth) {
-                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0, 0.01D));
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 00.0D, 0.05D));
 
             }
 
             if (blockedSouth) {
-                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0, -0.01D));
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, -0.05D));
             }
 
             if (blockedEast) {
-                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(-0.01D, 0, 0));
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(-0.05D, 0.0D, 0.0D));
             }
 
             if (blockedWest) {
-                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.01D, 0, 0));
+                this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.05D, 0.0D, 0.0D));
             }
         }
+
+        blockedAbove = false;
+        blockedBelow = false;
+        blockedEast = false;
+        blockedWest = false;
+        blockedNorth = false;
+        blockedSouth = false;
+
     }
 }
