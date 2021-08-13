@@ -26,7 +26,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     private AnimationFactory factory = new AnimationFactory(this);
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
-        super(type, worldIn);
+        super(type, worldIn, 3);
         this.noCulling = true;
     }
 
@@ -53,13 +53,16 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         if ((this.dead || this.getHealth() < 0.01)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.death", false));
             return PlayState.CONTINUE;
-            }
+        }
 
         //IF it's just in water, play float
-        if (this.isInWater())
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
-        return PlayState.CONTINUE;
+        if (this.isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
+            return PlayState.CONTINUE;
         }
+        return PlayState.STOP;
+
+    }
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -87,11 +90,11 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public static AttributeModifierMap.MutableAttribute kronosaurusAttributes() {
         return MobEntity.createMobAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 25)
+                .add(Attributes.ATTACK_DAMAGE, 20)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.FOLLOW_RANGE, 20)
-                .add(Attributes.MAX_HEALTH, 150)
+                .add(Attributes.MAX_HEALTH, 100)
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
