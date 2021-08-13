@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.BoatEntity;
@@ -9,10 +11,13 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.util.Direction;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import org.lwjgl.system.CallbackI;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class PanthalassaBreachAttackGoal extends Goal {
     protected final CreatureEntity attacker;
@@ -25,7 +30,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
     private int delayCounter;
     private int ticksUntilNextAttack;
     private long lastCanUseCheck;
-    private boolean step1 = false;
     private boolean step2 = false;
     private LivingEntity target;
     private BlockPos step1Pos;
@@ -55,10 +59,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
             } else if (!(target.getVehicle() instanceof BoatEntity)) {
                 return false;
             }
-            else if (step1) {
-                return false;
-            }
-
         this.lastCanUseCheck = i;
         return true;
         }
@@ -72,6 +72,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         else if (!target.isAlive()) {
             return false;
         }
+        //Change condition, distToTarget, not Sqr
         else if (this.attacker.distanceToSqr(target.getX(), target.getY(), target.getZ()) > 20) {
             return false;
         }
@@ -82,7 +83,9 @@ public class PanthalassaBreachAttackGoal extends Goal {
         } else {
             return !(target instanceof PlayerEntity) && (target.isSpectator() || ((PlayerEntity)target).isCreative());
         }
-        //If STUCK, stop
+
+        //If at any point, path is not travel-able, stop
+        //If both step1 and step2 are done, stop
     }
 
 
@@ -95,20 +98,25 @@ public class PanthalassaBreachAttackGoal extends Goal {
         }
     }
 
-    public void moveStep1(){
-        this.attacker.getLookControl().setLookAt(target.getX(), target.getY()-10, target.getZ());
-        this.attacker.getNavigation().moveTo(target.getX(),(target.getY()-10),target.getZ(), this.speedTowardsTarget);
+    public void moveStep1() {
+        this.attacker.getLookControl().setLookAt(target.getX(), target.getY() - 10, target.getZ());
+        if ((this.attacker.distanceToSqr(target.getX(), target.getY() - 10, target.getZ())) > 3) {
+            Vector3d strikePos = new Vector3d(this.target.getX(), this.target.getY() - 10, this.target.getZ());
+            this.attacker.getNavigation().moveTo(strikePos.x,strikePos.y,strikePos.z,this.speedTowardsTarget);
+        } else {
+            step1Done = true;
+        }
     }
 
     public boolean moveStep2(){
         this.attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
-        Vector3d targetPos = new Vector3d (this.target.getX(),this.target.getY(),this.target.getZ());
+        Vector3d targetPos = new Vector3d (this.target.getX()-2,this.target.getY(),this.target.getZ()-2);
         Vector3d attackerPos = new Vector3d (this.attacker.getX(),this.attacker.getY(),this.attacker.getZ());
         Vector3d attackTrajectory = targetPos.subtract(attackerPos);
+        //Change to moveTo
+        //step2Done flag
         this.attacker.setDeltaMovement(this.attacker.getDeltaMovement().add(attackTrajectory.normalize().x*0.5, attackTrajectory.normalize().y*0.5, attackTrajectory.normalize().z*0.5));
-        //< attack reach
-        return this.attacker.distanceToSqr(target) < 1;
-        //Hit all enemies in a box around the boat
+        return this.attacker.distanceTo(target) < 3;
     }
 
 
@@ -118,47 +126,41 @@ public class PanthalassaBreachAttackGoal extends Goal {
         }
         this.attacker.setAggressive(false);
         this.attacker.getNavigation().stop();
-        this.step1 = false;
     }
 
     @Override
     public void tick() {
         if (!step1Done) {
-            if ((this.attacker.distanceToSqr(target.getX(), target.getY() - 10, target.getZ())) < 3) {
-                step1Done = true;
-            }
+            moveStep1();
         } else {
+            //Make step2 flag, similar to step1. If step 2 has already been performed, do not perform again.
             if (moveStep2()){
-
-
-
+                //Change back to distSqr? Condition on step 2 was what was failing
+                double d0 = this.attacker.distanceTo(target);
+                checkAndPerformAreaAttack(target, d0);
+                this.attacker.setDeltaMovement(this.attacker.getDeltaMovement().add(0, 5.0D, 0));
             }
         }
-
-
-
-
-        //Get distance to step 1 position, if too much do nothing
-        //If true, call moveStep2
-
-
-
     }
 
 
-
-
-
-
-
-    protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-        double d0 = this.getAttackReachSqr(enemy);
-        if (distToEnemySqr <= d0 && this.ticksUntilNextAttack <= 0) {
+    protected void checkAndPerformAreaAttack(LivingEntity enemy, double distToTarget) {
+        double d0 = this.getAttackReachSqr  (enemy);
+        //Verify that calling this method with distSqr instead of dist actually works
+        if (distToTarget <= d0 && this.ticksUntilNextAttack <= 0) {
             this.resetAttackCooldown();
-            this.attacker.swing(Hand.MAIN_HAND);
-            this.attacker.doHurtTarget(enemy);
+            List<Entity> entities = this.attacker.level.getEntities(target, new AxisAlignedBB(target.getX() - 5, target.getY() - 5, target.getZ() - 5, target.getX() + 5, target.getY() + 5, target.getZ() + 5));
+            if (!entities.isEmpty()) {
+                this.attacker.swing(Hand.MAIN_HAND);
+                for (Entity entity : entities) {
+                    if (entity != attacker) {
+                        //Verify correctly hurting all entities inside the bounding box.
+                        //Second passenger not getting hit
+                        this.attacker.doHurtTarget(entity);
+                    }
+                }
+            }
         }
-
     }
 
     protected void resetAttackCooldown() {
@@ -166,6 +168,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
     }
 
     protected double getAttackReachSqr(LivingEntity attackTarget) {
-        return (double)(this.attacker.getBbWidth() * 2.0F * this.attacker.getBbWidth() * 2.0F + attackTarget.getBbWidth());
+        return (this.attacker.getBbWidth() * 2.0F * this.attacker.getBbWidth() * 2.0F + attackTarget.getBbWidth());
     }
 }

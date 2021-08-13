@@ -110,7 +110,6 @@ public class PanthalassaSwimmingHelper extends MovementController {
                 if (getBlockedEast(i)) {
                     this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.05D, 0.0D, 0.0D));
                 }
-
             }
         }
     }
