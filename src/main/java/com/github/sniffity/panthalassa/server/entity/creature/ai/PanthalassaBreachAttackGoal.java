@@ -93,6 +93,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     public void moveStep1(){
         this.attacker.getNavigation().moveTo(target.getX(),(target.getY()-10),target.getZ(), this.speedTowardsTarget);
+
     }
 
 
@@ -108,7 +109,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public void tick() {
-        //Get distance to step 1 position, if false do nothing
+
+        //Get distance to step 1 position, if too much do nothing
         //If true, call moveStep2
 
 
