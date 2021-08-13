@@ -39,7 +39,11 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     public boolean canUse() {
         if (this.creature.isVehicle()) {
             return false;
-        } else {
+        } if (this.creature.getTarget() != null){
+            return false;
+        }
+
+        else {
             if (!this.mustUpdate) {
                 if (this.checkNoActionTime && this.creature.getNoActionTime() >= 100) {
                     return false;
