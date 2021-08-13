@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAG;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.entity.EntityClassification;
@@ -21,6 +22,10 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
+    public static final RegistryObject<EntityType<EntityMegalodon>> MEGALODON = ENTITY_TYPES.register ("megalodon",()->
+            EntityType.Builder.of(EntityMegalodon::new,EntityClassification.CREATURE)
+                    .sized(2.0F, 1.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "megalodon").toString()));
 
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
@@ -28,7 +33,6 @@ public class PanthalassaEntityTypes {
                     .of(VehicleMRSV::new,EntityClassification.MISC)
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "manta_ray_submersible_vehicle").toString()));
-
     public static final RegistryObject<EntityType<VehicleAG>> AG = ENTITY_TYPES.register ("abyss_glider_vehicle",()->
             EntityType.Builder
                     .of(VehicleAG::new,EntityClassification.MISC)
@@ -39,5 +43,7 @@ public class PanthalassaEntityTypes {
     @SuppressWarnings("deprecated")
     public static void setupEntityTypeAttributes (){
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
+        GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
+
     }
 }

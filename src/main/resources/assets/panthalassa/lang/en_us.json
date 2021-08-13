@@ -16,6 +16,9 @@
     "block.panthalassa.panthalassa_portal_frame": "Panthalassa Portal Frame",
     "block.panthalassa.panthalassa_portal": "Panthalassa Portal",
 
+    "entity.panthalassa.manta_ray_submersible_vehicle": "Manta Ray Submersible Vehicle",
+    "entity.panthalassa.abyss_glider_vehicle": "Abyss Glider Vehicle",
 
-    "entity.panthalassa.kronosaurus": "Kronosaurus"
+    "entity.panthalassa.kronosaurus": "Kronosaurus",
+    "entity.panthalassa.megalodon": "Megalodon"
 }
