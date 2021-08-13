@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -26,8 +27,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     private AnimationFactory factory = new AnimationFactory(this);
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
-        super(type, worldIn, 3);
+        super(type, worldIn);
         this.noCulling = true;
+        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 5, 1);
+
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

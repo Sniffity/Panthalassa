@@ -12,14 +12,17 @@ public class PanthalassaSwimmingHelper extends MovementController {
 
 
     int blockedDistance;
-    boolean flag = false;
+    float anglePassive;
+    float angleAggro;
 
     private final PanthalassaEntity entityPanthalassa;
 
-    public PanthalassaSwimmingHelper(PanthalassaEntity entity, int blockDistance) {
+    public PanthalassaSwimmingHelper(PanthalassaEntity entity, int blockDistance, float passiveAngle, float aggroAngle) {
         super(entity);
         this.entityPanthalassa = entity;
         this.blockedDistance = blockDistance;
+        this.anglePassive = passiveAngle;
+        this.angleAggro = aggroAngle;
     }
 
     public boolean getBlockedAbove(int distance) {
@@ -59,9 +62,9 @@ public class PanthalassaSwimmingHelper extends MovementController {
             } else {
                 float f = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                 if ((this.entityPanthalassa.getTarget() != null)) {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 5.0F);
+                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, angleAggro);
                 } else {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 1.0F);
+                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, anglePassive);
                 }
                 this.entityPanthalassa.yBodyRot = this.entityPanthalassa.yRot;
                 this.entityPanthalassa.yHeadRot = this.entityPanthalassa.yRot;
@@ -83,7 +86,7 @@ public class PanthalassaSwimmingHelper extends MovementController {
             this.entityPanthalassa.setSpeed(1.0F);
             this.entityPanthalassa.setXxa(0.0F);
             this.entityPanthalassa.setYya(0.00F);
-            this.entityPanthalassa.setZza(0.01F);
+            this.entityPanthalassa.setZza(0.005F);
         }
 
         for (int i = 1; i <= blockedDistance; i++) {

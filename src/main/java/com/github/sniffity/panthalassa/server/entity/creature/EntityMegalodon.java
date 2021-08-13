@@ -3,10 +3,13 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaBreachAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.DolphinJumpGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.JumpGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,8 +33,9 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     private AnimationFactory factory = new AnimationFactory(this);
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
-        super(type, worldIn, 3);
+        super(type, worldIn);
         this.noCulling = true;
+        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 3, 1);
     }
 
 
@@ -70,15 +74,15 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MAX_HEALTH, 175)
-                .add(Attributes.MOVEMENT_SPEED, (double) 1.5F);
+                .add(Attributes.MOVEMENT_SPEED, (double) 1.0F);
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0, false));
-//        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
+        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 1.0, false));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
 
     }
 }
