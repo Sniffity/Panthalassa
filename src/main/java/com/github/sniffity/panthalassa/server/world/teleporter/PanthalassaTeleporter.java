@@ -88,7 +88,7 @@ public class PanthalassaTeleporter implements ITeleporter {
 
     public Optional<TeleportationRepositioner.Result> getExistingPortal(@Nonnull ServerWorld serverWorld, BlockPos pos) {
         PointOfInterestManager pointofinterestmanager = serverWorld.getPoiManager();
-        int i = 256;
+        int i = 384;
         pointofinterestmanager.ensureLoadedAndValid(serverWorld, pos, i);
         Optional<PointOfInterest> optional = pointofinterestmanager
                 .getInSquare(
