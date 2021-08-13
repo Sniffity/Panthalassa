@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaBreachAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.entity.*;
@@ -73,9 +74,8 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
-
+        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0, false));
+//        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityKronosaurus)));

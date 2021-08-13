@@ -31,6 +31,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     }
 
 
+    @Override
     public boolean canUse() {
         long i = this.attacker.level.getGameTime();
         if (i - this.lastCanUseCheck < 20L) {
@@ -54,6 +55,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     }
 
 
+    @Override
     public boolean canContinueToUse() {
         LivingEntity livingentity = this.attacker.getTarget();
         if (livingentity == null) {
@@ -69,6 +71,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         }
     }
 
+    @Override
     public void start() {
         this.attacker.getNavigation().moveTo(this.path, this.speedTowardsTarget);
 
@@ -78,6 +81,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         this.ticksUntilNextAttack = 0;
     }
 
+    @Override
     public void stop() {
         LivingEntity livingentity = this.attacker.getTarget();
         if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
