@@ -103,14 +103,4 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         this.creature.getNavigation().stop();
         super.stop();
     }
-/*
-    public void makeUpdate() {
-        this.mustUpdate = true;
-    }
-
-    public void setExecutionChance(int newchance) {
-        this.executionChance = newchance;
-    }
-
- */
 }

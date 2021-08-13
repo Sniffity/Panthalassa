@@ -18,10 +18,10 @@ import net.minecraft.world.World;
 public abstract class PanthalassaEntity extends WaterMobEntity {
 
 
-    public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
+    public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn, int blockDistance) {
         super(type, worldIn);
         this.lookControl = new DolphinLookController(this, 10);
-        this.moveControl = new PanthalassaSwimmingHelper(this);
+        this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance);
 
     }
 
