@@ -7,15 +7,11 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwim
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.DolphinJumpGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.JumpGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -26,11 +22,11 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
 import javax.annotation.Nullable;
-import java.lang.annotation.Target;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob {
+    public float prevYRot;
+    public float deltaYRot;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -42,13 +38,19 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        //If it's moving in the water, swimming, play swim.
         if ((this.dead || this.getHealth() < 0.01)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.test", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
 
+    }
+
+    @Override
+    public void tick(){
+        super.tick();
+        deltaYRot = this.yRot-prevYRot;
+        prevYRot = this.yRot;
     }
 
     @Override

@@ -1,11 +1,15 @@
 package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import net.minecraft.util.ResourceLocation;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+
+import javax.annotation.Nullable;
+
+import static java.lang.Math.PI;
 
 public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     @Override
@@ -24,8 +28,13 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     }
 
     @Override
-    public void setLivingAnimations(EntityMegalodon entity, Integer uniqueID) {
-        super.setLivingAnimations(entity, uniqueID);
+    public void setLivingAnimations(EntityMegalodon entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
+        super.setLivingAnimations(entity, uniqueID, customPredicate);
+        (this.getAnimationProcessor().getBone("main")).setRotationX(-(float)(entity.xRot*(PI/180.0F)));
+        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.deltaYRot*(PI/180.0F))*5);
+        (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.deltaYRot*(PI/180.0F))*5);
+        (this.getAnimationProcessor().getBone("lower_body_6")).setRotationY((float)(entity.deltaYRot*(PI/180.0F))*5);
+        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.deltaYRot*(PI/180.0F))*5);
     }
 
     @Override
