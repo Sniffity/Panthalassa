@@ -82,7 +82,7 @@ public class PanthalassaSwimmingHelper extends MovementController {
                     this.entityPanthalassa.setSpeed(f1 * 0.1F);
                 }
             }
-        } else {
+        } else if (this.entityPanthalassa.getTarget() == null){
             this.entityPanthalassa.setSpeed(1.0F);
             this.entityPanthalassa.setXxa(0.0F);
             this.entityPanthalassa.setYya(0.00F);

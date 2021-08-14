@@ -61,6 +61,10 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         return this.factory;
     }
 
+    @Override
+    public double getPassengersRidingOffset() {
+        return 0.2D;
+    }
 
     @Nullable
     @Override
@@ -74,18 +78,18 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
                 .add(Attributes.ATTACK_DAMAGE, 40)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.FOLLOW_RANGE, 20)
+                .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.MAX_HEALTH, 175)
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.0F);
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 1.0, false));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
+        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity.getVehicle() != null &&  entity.getVehicle() instanceof BoatEntity)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null &&  entity.getVehicle() instanceof BoatEntity)));
+        //this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
+        //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
 
     }
 }
