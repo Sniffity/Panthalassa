@@ -11,7 +11,9 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -33,7 +35,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 3, 1);
+        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 4, 8);
     }
 
 
@@ -87,11 +89,12 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
         this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null &&  entity.getVehicle() instanceof BoatEntity)));
-        //this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null &&  entity.getVehicle() instanceof BoatEntity)));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
 
     }
 }
