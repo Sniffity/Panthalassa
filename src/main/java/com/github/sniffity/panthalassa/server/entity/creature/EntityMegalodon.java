@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaBrea
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
+import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -13,6 +14,9 @@ import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -29,19 +33,22 @@ import javax.annotation.Nullable;
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob {
     public float prevYRot;
     public float deltaYRot;
+    public float adjustRotation;
+    public float adjustment = 0.25F;
 
     private AnimationFactory factory = new AnimationFactory(this);
+    protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.BOOLEAN);
+
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 4, 8);
+        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 4, 10);
     }
 
-
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if ((this.dead || this.getHealth() < 0.01)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.test", true));
+        if (getIsBreaching()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
@@ -49,10 +56,23 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     }
 
     @Override
-    public void tick(){
+    protected void defineSynchedData() {
+        this.entityData.define(IS_BREACHING, Boolean.FALSE);
+        super.defineSynchedData();
+    }
+
+    @Override
+    public void tick() {
         super.tick();
-        deltaYRot = this.yRot-prevYRot;
+        deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
+        if (adjustRotation > deltaYRot) {
+            adjustRotation = adjustRotation - adjustment;
+            adjustRotation = Math.max(adjustRotation, deltaYRot);
+        } else if (adjustRotation < deltaYRot) {
+            adjustRotation = adjustRotation + adjustment;
+            adjustRotation = Math.min(adjustRotation, deltaYRot);
+        }
     }
 
     @Override
@@ -84,17 +104,26 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.MAX_HEALTH, 175)
-                .add(Attributes.MOVEMENT_SPEED, (double) 1.0F);
+                .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
         this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null &&  entity.getVehicle() instanceof BoatEntity)));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null && entity.getVehicle() instanceof BoatEntity)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
 
     }
+
+    public void setIsBreaching(boolean breaching) {
+        this.entityData.set(IS_BREACHING,breaching);
+    }
+
+    public boolean getIsBreaching() {
+        return this.entityData.get(IS_BREACHING);
+    }
+
 }

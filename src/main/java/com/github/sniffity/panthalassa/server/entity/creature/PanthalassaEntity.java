@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 
 public abstract class PanthalassaEntity extends WaterMobEntity {
 
+    public boolean isTryingToBreach;
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
