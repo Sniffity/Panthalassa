@@ -38,6 +38,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> BREACH_COOLDOWN = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.FLOAT);
 
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
@@ -52,18 +53,19 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
-
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
+        this.entityData.define(BREACH_COOLDOWN, 0.00F);
         super.defineSynchedData();
     }
 
     @Override
     public void tick() {
         super.tick();
+        setBreachCooldown((getBreachCooldown())-1);
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
         if (adjustRotation > deltaYRot) {
@@ -124,6 +126,14 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
     public boolean getIsBreaching() {
         return this.entityData.get(IS_BREACHING);
+    }
+
+    public void setBreachCooldown(float breachCooldown) {
+        this.entityData.set(BREACH_COOLDOWN,breachCooldown);
+    }
+
+    public float getBreachCooldown() {
+        return this.entityData.get(BREACH_COOLDOWN);
     }
 
 }

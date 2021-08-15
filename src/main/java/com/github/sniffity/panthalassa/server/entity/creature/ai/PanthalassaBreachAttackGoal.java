@@ -1,34 +1,30 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
-import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-
 import java.util.EnumSet;
 import java.util.List;
+import net.minecraft.entity.item.BoatEntity;
 
 public class PanthalassaBreachAttackGoal extends Goal {
     protected final EntityMegalodon attacker;
     private final double speedTowardsTarget;
-    private LivingEntity target;
-    private BoatEntity boatTarget;
     private boolean step1Done;
     private boolean step2Done;
     private boolean step3Done;
-    private boolean step4Done;
-    private boolean step5Done;
     private double jumpStart;
     private double step1Ticks;
     private double step2Ticks;
+    private double step3Ticks;
 
     public PanthalassaBreachAttackGoal(EntityMegalodon creature, double speedIn) {
         this.attacker = creature;
@@ -36,42 +32,58 @@ public class PanthalassaBreachAttackGoal extends Goal {
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
+    //TODO: Cooldown in Megalodon entity itself, 30 seconds.
+
     @Override
     public boolean canUse() {
-            this.target = this.attacker.getTarget();
-            if ((target == null)) {
-                return false;
-            } else if (!target.isAlive()) {
-                return false;
-            } else if (target.getVehicle() == null) {
-                return false;
-            } else if (!(target.getVehicle() instanceof BoatEntity)) {
-                return false;
-            }
-            boatTarget = (BoatEntity) target.getVehicle();
-            return true;
+        LivingEntity target = attacker.getTarget();
+        if (attacker.getBreachCooldown()>0){
+            return false;
         }
+
+        if (attacker.level.dimension() == PanthalassaDimension.PANTHALASSA) {
+            return false;
+        }
+        if ((target == null)) {
+            return false;
+        }
+        BlockPos targetAbove = new BlockPos(target.getX(),target.getY()+3,target.getZ());
+        if (!attacker.level.getBlockState(targetAbove).is(Blocks.AIR)){
+            return false;
+        }
+        if (!target.isAlive()) {
+            return false;
+        }
+        if (!attacker.isInWater()) {
+            return false;
+        }
+        return true;
+        }
+
 
     @Override
     public boolean canContinueToUse() {
-        if (boatTarget == null) {
+        LivingEntity target = attacker.getTarget();
+        if (target == null) {
             return false;
         }
-        else if (!boatTarget.isAlive()) {
+        else if (!target.isAlive()) {
             return false;
         }
-        else if (this.attacker.distanceTo(boatTarget) > 40) {
+        else if (attacker.distanceTo(target) > 30) {
             return false;
         }
-        else if (!step2Done) {
-            return !this.attacker.getNavigation().isDone();
-        } else if (!this.attacker.isWithinRestriction(boatTarget.blockPosition())) {
+        else if (step1Ticks > 200) {
             return false;
-        } else if (step1Ticks > 200){
+        }
+        else if (step2Ticks>200) {
             return false;
-        } else if (step2Ticks > 100){
+        }
+        else if (step1Done && step2Done && step3Done) {
             return false;
-        } else if (step1Done && step2Done && step3Done && step4Done && step5Done){
+        } else if (!step1Done &&  (!attacker.isInWater())) {
+            return false;
+        } else if (step1Done && !step2Done && ((!attacker.isInWater()) || attacker.distanceTo(target) > 12)) {
             return false;
         }
         return true;
@@ -79,107 +91,113 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public void start() {
-        this.attacker.setAggressive(true);
-        if (!step1Done) {
-            this.moveStep1();
-        }
-        this.jumpStart = this.boatTarget.getY();
-        this.attacker.isTryingToBreach = true;
+        LivingEntity target = attacker.getTarget();
+        attacker.setAggressive(true);
+        attacker.isTryingToBreach = true;
         step1Ticks = 0;
         step2Ticks = 0;
     }
 
-    public void moveStep1() {
+    public boolean moveStep1() {
         step1Ticks = ++step1Ticks;
-        if ((this.attacker.distanceToSqr(boatTarget.getX(), boatTarget.getY() - 10, boatTarget.getZ())) >= 4) {
-            Vector3d strikePos = new Vector3d(this.boatTarget.getX(), this.boatTarget.getY() - 10, this.boatTarget.getZ());
-            this.attacker.getNavigation().moveTo(strikePos.x,strikePos.y,strikePos.z,this.speedTowardsTarget*3);
-        } else {
-            step1Done = true;
-        }
+        LivingEntity target = attacker.getTarget();
+        Vector3d strikePos = new Vector3d(target.getX(), target.getY() - 10, target.getZ());
+        attacker.getNavigation().moveTo(strikePos.x,strikePos.y,strikePos.z,speedTowardsTarget);
+        return (attacker.distanceToSqr(target.getX(), target.getY() - 10, target.getZ()) <= 2);
     }
+
 
     public boolean moveStep2(){
         step2Ticks = ++step2Ticks;
-        this.attacker.getLookControl().setLookAt(boatTarget.getX(), boatTarget.getY(), boatTarget.getZ());
-        this.attacker.getNavigation().moveTo(this.boatTarget.getX(),this.boatTarget.getY(),this.boatTarget.getZ(),this.speedTowardsTarget*5);
-        return this.attacker.distanceTo(boatTarget) < 4.0F;
+        LivingEntity target = attacker.getTarget();
+        attacker.setIsBreaching(true);
+        attacker.getNavigation().moveTo(target.getX(),target.getY(),target.getZ(),speedTowardsTarget*4);
+        return attacker.distanceTo(target) < 2.0F;
     }
 
     @Override
     public void stop() {
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(boatTarget)) {
-            this.attacker.setTarget(null);
+        LivingEntity target = attacker.getTarget();
+        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+            attacker.setTarget(null);
         }
-        this.attacker.setAggressive(false);
-        this.attacker.getNavigation().stop();
-        this.attacker.isTryingToBreach = false;
-        this.attacker.setIsBreaching(false);
+        attacker.setAggressive(false);
+        attacker.getNavigation().stop();
+        attacker.isTryingToBreach = false;
+        attacker.setIsBreaching(false);
         step1Ticks = 0;
         step2Ticks = 0;
+        step3Ticks = 0;
         step1Done = false;
         step2Done = false;
         step3Done = false;
-        step4Done = false;
-        step5Done = false;
+        attacker.setBreachCooldown(600);
+        if (!attacker.getPassengers().isEmpty()) {
+            attacker.ejectPassengers();
+        }
     }
 
     @Override
     public void tick() {
+        LivingEntity target = attacker.getTarget();
         if (!step1Done) {
-            moveStep1();
-        } else if (!step2Done) {
-            if (this.attacker.isInWater() && this.attacker.distanceTo(boatTarget)<12) {
-                this.attacker.setIsBreaching(true);
+            if (moveStep1()){
+                attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
+                step1Done = true;
+            }
+        }
+        if (step1Done && !step2Done) {
+            if (attacker.distanceTo(target) > 4.0F) {
                 if (moveStep2()) {
-                    //TODO: Either Start Riding here or set distance closer
                     step2Done = true;
+                    jumpStart = target.getY();
+                    if (target.getVehicle() != null) {
+                        target.getVehicle().startRiding(attacker);
+                    } else {
+                        target.startRiding(attacker);
+                    }
+                    if (attacker.getDeltaMovement().y < 1.00) {
+                        attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,1.00,0));
+                    }
                 }
             } else {
-                this.stop();
-            }
-        } else if (!step3Done) {
-            boatTarget.startRiding(attacker);
-            this.attacker.setDeltaMovement(this.attacker.getDeltaMovement().add(0.0, 1.5D, 0));
-            if (attacker.getPassengers().isEmpty()) {
-                this.stop();
-            }
-            step3Done = true;
-
-        } else if (!step4Done) {
+                step2Done = true;
+                jumpStart = target.getY();
+                if (target.getVehicle() != null) {
+                    target.getVehicle().startRiding(attacker);
+                } else {
+                    target.startRiding(attacker);
+                }
+                if (attacker.getDeltaMovement().y < 1.00) {
+                    attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,1.00,0));
+                }            }
+        }
+        if (step1Done && step2Done && !step3Done) {
+            step3Ticks = ++step3Ticks;
             if (attacker.getY() - jumpStart > 5) {
-                crushBoatandPassengers();
-                this.attacker.setIsBreaching(false);
-                step4Done = true;
-            } else if (this.attacker.isInWater()){
-                if (!this.attacker.getPassengers().isEmpty()) {
-                    this.attacker.ejectPassengers();
+                crushVehicleandPassengers();
+                if (!attacker.getPassengers().isEmpty()) {
+                    attacker.ejectPassengers();
                 }
-                step4Done = true;
-                step5Done= true;
-                this.attacker.setIsBreaching(false);
-                stop();
-            }
-        } else if (!step5Done && !this.attacker.isInWater()) {
-            if (this.attacker.isInWater()) {
-                if (!this.attacker.getPassengers().isEmpty()) {
-                    this.attacker.ejectPassengers();
+                attacker.setIsBreaching(false);
+                step3Done = true;
+            } else if (step3Ticks>30 && attacker.isInWater()){
+                crushVehicleandPassengers();
+                if (!attacker.getPassengers().isEmpty()) {
+                    attacker.ejectPassengers();
                 }
-                step5Done = true;
-                this.attacker.setIsBreaching(false);
-                stop();
+                step3Done = true;
             }
         }
     }
 
-    protected void crushBoatandPassengers() {
-        List<Entity> entities = this.attacker.level.getEntities(attacker, new AxisAlignedBB(attacker.getX() - 5, attacker.getY() - 5, attacker.getZ() - 5, attacker.getX() + 5, attacker.getY() + 5, attacker.getZ() + 5));
+    protected void crushVehicleandPassengers() {
+        List<Entity> entities = attacker.level.getEntities(attacker, new AxisAlignedBB(attacker.getX() - 5, attacker.getY() - 5, attacker.getZ() - 5, attacker.getX() + 5, attacker.getY() + 5, attacker.getZ() + 5));
         if (!entities.isEmpty()) {
-                this.attacker.swing(Hand.MAIN_HAND);
+                attacker.swing(Hand.MAIN_HAND);
                 for (Entity entity : entities) {
-                    this.attacker.doHurtTarget(entity);
+                    attacker.doHurtTarget(entity);
                 }
         }
     }
-
 }
