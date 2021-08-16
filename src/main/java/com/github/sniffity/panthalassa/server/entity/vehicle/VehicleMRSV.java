@@ -15,6 +15,17 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaVehicle <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Wyrmroost
+ * and Mr. Crayfish's Vehicle Mod handle their own respective vehicles. Additionally,
+ * Vanilla Minecraft's BoatEntity class was also studied.
+ */
+
+
 public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.BOOLEAN);
@@ -24,7 +35,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
-        this.waterSpeed = 0.05F;
+        this.waterSpeed = 0.06F;
         this.landSpeed = 0.004F;
     }
 

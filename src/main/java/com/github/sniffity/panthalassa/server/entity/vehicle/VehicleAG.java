@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.server.entity.vehicle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -21,18 +22,21 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import net.minecraft.entity.item.BoatEntity;
 
 import java.util.List;
 
 public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
+
+    public float deltaRotation;
 
     protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
 
     public VehicleAG(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
-        this.waterSpeed = 0.02F;
-        this.landSpeed = 0.002F;
+        this.waterSpeed = 0.04F;
+        this.landSpeed = 0.004F;
     }
 
     @Override
@@ -103,7 +107,7 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void tick() {
-        if (getNetActivated() && this.isInWater() && !getNetCatch()) {
+        if (getNetActivated() && this.isInWater() && this.isAlive() && !getNetCatch()) {
             if (attemptNet(this)) ;
             {
                 setNetCatch(true);
@@ -120,14 +124,12 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
         List<Entity> passengers = this.getPassengers();
 
         if (getNetCatch()) {
-            if (passengers.size() > 0) {
+            if (passengers.size() > 1) {
                 LivingEntity netTarget = (LivingEntity) passengers.get(1);
-                netTarget.addEffect(new EffectInstance(Effects.WEAKNESS, 20, 5));
+                netTarget.addEffect(new EffectInstance(Effects.WEAKNESS, 20, 20));
             }
         }
-
         super.tick();
-
     }
 
     @Override
@@ -181,7 +183,7 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
     public boolean releaseNet(PanthalassaVehicle vehicle) {
         List<Entity> passengers = this.getPassengers();
-        if (getNetCatch() && !getNetActivated() && !passengers.isEmpty()) {
+        if (getNetCatch() && !getNetActivated() && passengers.size() > 1) {
             passengers.get(1).stopRiding();
             return true;
         }
@@ -209,13 +211,31 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
     }
 
     @Override
-    public void positionRider(Entity passenger)
-    {
-        Vector3d offset = getPassengerPosOffset(passenger, getPassengers().indexOf(passenger));
-        passenger.setPos(getX()+offset.x, getY()+offset.y, getZ()+offset.z);
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            float f = 0.0F;
+            float f1 = (float)((!this.isAlive() ? (double)0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
+            float f2 = 0.0F;
+            if (this.getPassengers().size() > 1) {
+                int i = this.getPassengers().indexOf(passenger);
+                if (i == 0) {
+                    f = 0.2F;
+                    f2 = 0F;
+                } else {
+                    f = -0.6F;
+                    f2 = -1.0F;
+                }
+            }
+
+            Vector3d vector3d = (new Vector3d((double)f, f2, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+            passenger.setPos(this.getX() + vector3d.x, this.getY() + (double)f1, this.getZ() + vector3d.z);
+            passenger.yRot += this.deltaRotation;
+            passenger.setYHeadRot(passenger.getYHeadRot() + this.deltaRotation);
+        }
     }
 
-    public Vector3d getPassengerPosOffset(Entity entity, int index)
+
+    public Vector3d getPassengerPosOffset(int index)
     {
         return new Vector3d(0, index == 0? 0.0F : -0.50F, -2.00F);
     }

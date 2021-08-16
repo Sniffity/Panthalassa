@@ -86,8 +86,9 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 originalWorld.resetEmptyTime();
                 targetWorld.resetEmptyTime();
 
-                for (int i = 0; i < vehicleSnapshot.getPassengers().size(); i++) {
-                    Entity passenger = vehicleSnapshot.getPassengers().get(i);
+                while (vehicleSnapshot.getPassengers().size()>0) {
+                    Entity passenger = vehicleSnapshot.getPassengers().get(0);
+                    passenger.stopRiding();
                     if (passenger instanceof PlayerEntity) {
                         ServerPlayerEntity player = (ServerPlayerEntity) passenger;
                         ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());

@@ -24,16 +24,15 @@ public class TeleporterLogic {
         if (portalinfo !=null) {
             if (!entity.getPassengers().isEmpty()) {
                 PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity, targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
+            } else if (entity.getVehicle() != null) {
+                PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity.getVehicle(), targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
             } else if (entity instanceof PlayerEntity) {
-                if(entity.getVehicle() != null) {
-                    PanthalassaWorldSavedData.get(targetWorld).addCompoundTP(entity.getVehicle(), targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
-                } else {
-                    PanthalassaWorldSavedData.get(targetWorld).addPlayerTP((PlayerEntity) entity, targetWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
-                }
+                PanthalassaWorldSavedData.get(targetWorld).addPlayerTP((PlayerEntity) entity, targetWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
             } else {
                 PanthalassaWorldSavedData.get(targetWorld).addEntityTP(entity, targetWorld.dimension(), initialWorld.dimension(), portalinfo.pos, portalinfo.yRot, portalinfo.xRot);
             }
         }
     }
-
 }
+
+
