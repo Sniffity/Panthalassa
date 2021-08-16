@@ -73,6 +73,9 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 Entity vehicle2 = vehicle.getType().create(targetWorld);
                 ChunkPos entityChunkpos = new ChunkPos(vehicle.blockPosition());
                 targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, vehicle.getId());
+                originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
+
+
                 assert vehicle2 != null;
                 vehicle2.restoreFrom(vehicle);
                 vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
@@ -93,6 +96,8 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                         ServerPlayerEntity player = (ServerPlayerEntity) passenger;
                         ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());
                         targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, passenger.getId());
+                        originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
+
 
                         player.fallDistance = 0;
                         player.yo = 0;
@@ -109,6 +114,8 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                         Entity passenger2 = passenger.getType().create(targetWorld);
                         ChunkPos entityChunkpos2 = new ChunkPos(passenger.blockPosition());
                         targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos2, 1, passenger.getId());
+                        originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
+
 
                         assert passenger2 != null;
                         passenger2.restoreFrom(passenger);

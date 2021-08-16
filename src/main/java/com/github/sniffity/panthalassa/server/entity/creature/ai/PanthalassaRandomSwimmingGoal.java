@@ -36,6 +36,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
+    @Override
     public boolean canUse() {
         if (this.creature.isVehicle()) {
             return false;
@@ -95,14 +96,16 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         return vector;
     }
 
+    @Override
+
     public boolean canContinueToUse() {
         return !this.creature.getNavigation().isDone() && !this.creature.isVehicle();
     }
-
+    @Override
     public void start() {
         this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
     }
-
+    @Override
     public void stop() {
         this.creature.getNavigation().stop();
         super.stop();

@@ -1,9 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaBreachAttackGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -109,15 +106,17 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
+    @Override
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
+        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
+        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null && entity.getVehicle() instanceof BoatEntity)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
-
+        super.registerGoals();
     }
 
     public void setIsBreaching(boolean breaching) {

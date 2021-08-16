@@ -116,7 +116,4 @@ public class PanthalassaBlocks {
                     .noDrops()
                     .lightLevel((n) -> 15)));
 
-
-
-
 }

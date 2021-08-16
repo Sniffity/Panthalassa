@@ -25,8 +25,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.util.Direction;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 /**
  * Panthalassa Mod - Class: BlockPortal <br></br?>
  *

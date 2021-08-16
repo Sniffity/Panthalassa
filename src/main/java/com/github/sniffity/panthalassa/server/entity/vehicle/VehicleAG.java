@@ -3,7 +3,6 @@ package com.github.sniffity.panthalassa.server.entity.vehicle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -11,6 +10,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -22,7 +23,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import net.minecraft.entity.item.BoatEntity;
 
 import java.util.List;
 
@@ -129,6 +129,12 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
                 netTarget.addEffect(new EffectInstance(Effects.WEAKNESS, 20, 20));
             }
         }
+        if (!this.getPassengers().isEmpty()) {
+            if (!(this.getPassengers().get(0) instanceof PlayerEntity)){
+                this.ejectPassengers();
+                setNetCatch(false);
+            }
+        }
         super.tick();
     }
 
@@ -144,8 +150,6 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
             }
         }
     }
-
-
 
     @Override
     public float getTravelSpeed() {
@@ -163,7 +167,7 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
             float closestDistance = 100F;
             if (entities.size() != 0) {
                 for (Entity testEntity : entities) {
-                    if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity)) {
+                    if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity) && testEntity.getVehicle() == null) {
                         float distance = distanceTo(testEntity);
                         if (distance < closestDistance) {
                             closestDistance = distance;
@@ -216,27 +220,23 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
             float f = 0.0F;
             float f1 = (float)((!this.isAlive() ? (double)0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
             float f2 = 0.0F;
+
             if (this.getPassengers().size() > 1) {
                 int i = this.getPassengers().indexOf(passenger);
                 if (i == 0) {
                     f = 0.2F;
-                    f2 = 0F;
+                    f2 = 0.0F;
                 } else {
-                    f = -0.6F;
-                    f2 = -1.0F;
+                    f = -1.0F;
+                    f2= -1.0F;
                 }
             }
 
-            Vector3d vector3d = (new Vector3d((double)f, f2, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
-            passenger.setPos(this.getX() + vector3d.x, this.getY() + (double)f1, this.getZ() + vector3d.z);
+            Vector3d vector3d = (new Vector3d((double)f, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+            passenger.setPos(this.getX() + vector3d.x, this.getY() + (double)f1+f2, this.getZ() + vector3d.z);
             passenger.yRot += this.deltaRotation;
             passenger.setYHeadRot(passenger.getYHeadRot() + this.deltaRotation);
         }
     }
 
-
-    public Vector3d getPassengerPosOffset(int index)
-    {
-        return new Vector3d(0, index == 0? 0.0F : -0.50F, -2.00F);
-    }
 }

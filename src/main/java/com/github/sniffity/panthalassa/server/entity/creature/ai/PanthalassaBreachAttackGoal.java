@@ -32,8 +32,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
-    //TODO: Cooldown in Megalodon entity itself, 30 seconds.
-
     @Override
     public boolean canUse() {
         LivingEntity target = attacker.getTarget();
@@ -170,7 +168,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 }
                 if (attacker.getDeltaMovement().y < 1.00) {
                     attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,1.00,0));
-                }            }
+                }          }
         }
         if (step1Done && step2Done && !step3Done) {
             step3Ticks = ++step3Ticks;

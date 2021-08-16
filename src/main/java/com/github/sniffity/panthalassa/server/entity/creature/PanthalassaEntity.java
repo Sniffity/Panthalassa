@@ -1,17 +1,21 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaBreachAttackGoal;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
+import net.minecraft.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public abstract class PanthalassaEntity extends WaterMobEntity {
@@ -27,7 +31,9 @@ public abstract class PanthalassaEntity extends WaterMobEntity {
 
     public boolean canBreatheUnderwater() {
         return true;
-    };
+    }
+
+    ;
 
     public PathNavigator createNavigation(World worldIn) {
         return new SwimmerPathNavigator(this, worldIn);
