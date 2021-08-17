@@ -23,16 +23,18 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     protected int executionChance;
     protected boolean mustUpdate;
     private boolean checkNoActionTime;
+    protected int avoidDistance;
 
-    public PanthalassaRandomSwimmingGoal(PanthalassaEntity creatureIn, double speedIn, int chance) {
-        this(creatureIn, speedIn, chance, true);
+    public PanthalassaRandomSwimmingGoal(PanthalassaEntity creatureIn, double speedIn, int chance, int avoidDistance) {
+        this(creatureIn, speedIn, chance, avoidDistance, true);
     }
 
-    public PanthalassaRandomSwimmingGoal(PanthalassaEntity creature, double speed, int chance, boolean checkNATime) {
+    public PanthalassaRandomSwimmingGoal(PanthalassaEntity creature, double speed, int chance, int avoidDistance, boolean checkNATime) {
         this.creature = creature;
         this.speed = speed;
         this.executionChance = chance;
         this.checkNoActionTime = checkNATime;
+        this.avoidDistance = avoidDistance;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
@@ -74,20 +76,38 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector))
         {}
         if (vector != null) {
+            for (int i = 1; i <= avoidDistance; i ++) {
+                assert vector != null;
+                if (this.creature.level.getBlockState(new BlockPos(vector).north(i)).canOcclude()) {
+                    vector = null;
+                    break;
+                }
+
+                if (this.creature.level.getBlockState(new BlockPos(vector).south(i)).canOcclude()) {
+                    vector = null;
+                    break;
+                }
+                if (this.creature.level.getBlockState(new BlockPos(vector).east(i)).canOcclude()) {
+                    vector = null;
+                }
+                if (this.creature.level.getBlockState(new BlockPos(vector).west(i)).canOcclude()) {
+                    vector = null;
+                    break;
+                }
+            }
+
+            assert vector != null;
             if (!this.creature.level.getFluidState(new BlockPos(vector).above(1)).is(FluidTags.WATER)) {
                 vector = vector.add(0, -3, 0);
-            } else if (!this.creature.level.getFluidState(new BlockPos(vector).above(2)).is(FluidTags.WATER)) {
+            }
+            else if (!this.creature.level.getFluidState(new BlockPos(vector).above(2)).is(FluidTags.WATER)) {
                 vector = vector.add(0, -2, 0);
-            } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(1)).is(FluidTags.WATER)) {
+            }
+            else if (!this.creature.level.getFluidState(new BlockPos(vector).below(1)).is(FluidTags.WATER)) {
                 vector = vector.add(0, +3, 0);
-            } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(2)).is(FluidTags.WATER)) {
+            }
+            else if (!this.creature.level.getFluidState(new BlockPos(vector).below(2)).is(FluidTags.WATER)) {
                 vector = vector.add(0, +2, 0);
-            }
-            if (abs(vector.x - this.creature.getX()) < 5) {
-                vector = vector.add(5, 0, 0);
-            }
-            if (abs(vector.z - this.creature.getZ()) < 5) {
-                vector = vector.add(0, 0, 5);
             }
         }
         return vector;

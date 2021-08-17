@@ -21,15 +21,19 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob {
+
+    public int blockDistance = 3;
+    public int passiveAngle = 4;
+    public int aggroAngle = 8;
+
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, 3, 4, 8);
+        this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
 
     }
 
@@ -103,8 +107,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10));
-
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, blockDistance));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
