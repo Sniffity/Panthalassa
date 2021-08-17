@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaFossil;
+import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaLaboratory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -22,15 +23,15 @@ public class PanthalassaStructures {
     public static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Panthalassa.MODID);
 
 
-    public static final RegistryObject<Structure<NoFeatureConfig>> PANTHALASSA_FOSSIL = STRUCTURES.register("panthalassa_fossil", () -> (new StructurePanthalassaFossil(NoFeatureConfig.CODEC)));
+    public static final RegistryObject<Structure<NoFeatureConfig>> PANTHALASSA_LABORATORY = STRUCTURES.register("panthalassa_laboratory", () -> (new StructurePanthalassaLaboratory(NoFeatureConfig.CODEC)));
 
     public static void setupStructures() {
         setupMapSpacingAndLand(
-                PANTHALASSA_FOSSIL.get(),
-                new StructureSeparationSettings(2,
-                        1,
+                PANTHALASSA_LABORATORY.get(),
+                new StructureSeparationSettings(60,
+                        40,
                         42424242),
-                false);
+                true);
 
     }
 

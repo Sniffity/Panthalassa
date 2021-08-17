@@ -1,0 +1,17 @@
+{
+  "name": "panthalassa:panthalassa_laboratory/start_pool",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "panthalassa:panthalassa_laboratory",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

@@ -32,7 +32,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public int passiveAngle = 4;
     public int aggroAngle = 8;
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
     private AnimationFactory factory = new AnimationFactory(this);
 
 
