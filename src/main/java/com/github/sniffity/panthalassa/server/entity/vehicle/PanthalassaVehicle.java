@@ -198,7 +198,7 @@ public class PanthalassaVehicle extends Entity {
             BlockState vehiclePosBlockState = level.getBlockState(vehiclePos);
 
             if (((distanceMoved > 1) || ((!this.isInWater() && this.isOnGround()) && (distanceMoved > 0.2)) || !this.getLightsOn())) {
-                AxisAlignedBB searchArea = new AxisAlignedBB(this.getX() - 20, this.getY() - 20, this.getZ() - 20, this.getX() + 20, this.getY() + 20, this.getZ() + 20);
+                AxisAlignedBB searchArea = new AxisAlignedBB(this.getX() - 30, this.getY() - 30, this.getZ() - 30, this.getX() + 30, this.getY() + 30, this.getZ() + 30);
                 Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
                         .map(pos -> new BlockPos(pos))
                         .filter(state -> (level.getBlockState(state) == blockLightWater || level.getBlockState(state) == blockLightAir))
