@@ -39,7 +39,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.swim", true));
             return PlayState.CONTINUE;
         }
-
+/*
         //If it's out of the water, play bounce
         if ((this.isOnGround()) && !(this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.bounce", true));
@@ -62,7 +62,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         if (this.isInWater()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
             return PlayState.CONTINUE;
-        }
+        }*/
         return PlayState.STOP;
 
     }
