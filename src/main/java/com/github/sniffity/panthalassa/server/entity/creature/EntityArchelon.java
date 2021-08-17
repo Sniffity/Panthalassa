@@ -5,8 +5,14 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwim
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.FindWaterGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -25,22 +31,17 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     public int passiveAngle = 4;
     public int aggroAngle = 8;
 
+
     private AnimationFactory factory = new AnimationFactory(this);
 
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
-
+        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        //If it's moving in the water, swimming, play swim.
-        if ((this.isSwimming()) || (event.isMoving() && this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.swim", true));
-            return PlayState.CONTINUE;
-        }
-
         //If it's out of the water, play bounce
         if ((this.isOnGround()) && !(this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.test", true));
@@ -49,6 +50,8 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         return PlayState.STOP;
 
     }
+
+
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -74,6 +77,11 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     }
 
 
+    @Override
+    public void tick() {
+        super.tick();
+    }
+
     public static AttributeModifierMap.MutableAttribute archelonAttributes() {
         return MobEntity.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 5)
@@ -87,5 +95,8 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
 
     public void registerGoals() {
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, blockDistance));
+        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.3, 10));
+        this.goalSelector.addGoal(2, new FindWaterGoal(this));
+
     }
 }

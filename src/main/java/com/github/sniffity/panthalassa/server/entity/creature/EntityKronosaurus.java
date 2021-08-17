@@ -10,6 +10,9 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.*;
@@ -29,8 +32,9 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public int passiveAngle = 4;
     public int aggroAngle = 8;
 
-
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.INT);
     private AnimationFactory factory = new AnimationFactory(this);
+
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -99,19 +103,19 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Override
     public void tick() {
         super.tick();
-        int i = this.getAirSupply();
+        int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
     }
 
     protected void handleAirSupply(int p_209207_1_) {
         if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupply(p_209207_1_ - 1);
-            if (this.getAirSupply() == -20) {
-                this.setAirSupply(0);
+            this.setAirSupplyLocal(p_209207_1_ - 1);
+            if (this.getAirSupplyLocal() == -20) {
+                this.setAirSupplyLocal(0);
                 this.hurt(DamageSource.DROWN, 2.0F);
             }
         } else {
-            this.setAirSupply(300);
+            this.setAirSupplyLocal(300);
         }
 
     }
@@ -134,5 +138,13 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof EntityArchelon)));
 
+    }
+
+    public void setAirSupplyLocal(int airSupply) {
+        this.entityData.set(AIR_SUPPLY,airSupply);
+    }
+
+    public int getAirSupplyLocal() {
+        return this.entityData.get(AIR_SUPPLY);
     }
 }
