@@ -14,6 +14,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -41,12 +43,14 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> BREACH_COOLDOWN = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.INT);
 
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
+        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -61,6 +65,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     protected void defineSynchedData() {
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
+        this.entityData.define(AIR_SUPPLY, 300);
         super.defineSynchedData();
     }
 
@@ -76,6 +81,20 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         } else if (adjustRotation < deltaYRot) {
             adjustRotation = adjustRotation + adjustment;
             adjustRotation = Math.min(adjustRotation, deltaYRot);
+        }
+        int i = this.getAirSupplyLocal();
+        this.handleAirSupply(i);
+    }
+
+    protected void handleAirSupply(int p_209207_1_) {
+        if (this.isAlive() && !this.isInWaterOrBubble()) {
+            this.setAirSupplyLocal(p_209207_1_ - 1);
+            if (this.getAirSupplyLocal() == -20) {
+                this.setAirSupplyLocal(0);
+                this.hurt(DamageSource.DROWN, 2.0F);
+            }
+        } else {
+            this.setAirSupplyLocal(300);
         }
     }
 
@@ -141,4 +160,11 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         return this.entityData.get(BREACH_COOLDOWN);
     }
 
+    public void setAirSupplyLocal(int airSupply) {
+        this.entityData.set(AIR_SUPPLY,airSupply);
+    }
+
+    public int getAirSupplyLocal() {
+        return this.entityData.get(AIR_SUPPLY);
+    }
 }

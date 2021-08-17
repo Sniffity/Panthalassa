@@ -10,6 +10,8 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -34,7 +36,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         super(type, worldIn);
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
-
+        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -88,12 +90,31 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 */
 
-@Nullable
-@Override
+    @Nullable
+    @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
     return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
-}
+    }
 
+    @Override
+    public void tick() {
+        super.tick();
+        int i = this.getAirSupply();
+        this.handleAirSupply(i);
+    }
+
+    protected void handleAirSupply(int p_209207_1_) {
+        if (this.isAlive() && !this.isInWaterOrBubble()) {
+            this.setAirSupply(p_209207_1_ - 1);
+            if (this.getAirSupply() == -20) {
+                this.setAirSupply(0);
+                this.hurt(DamageSource.DROWN, 2.0F);
+            }
+        } else {
+            this.setAirSupply(300);
+        }
+
+    }
 
     public static AttributeModifierMap.MutableAttribute kronosaurusAttributes() {
         return MobEntity.createMobAttributes()
