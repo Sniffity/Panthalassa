@@ -113,9 +113,10 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null && entity.getVehicle() instanceof BoatEntity)));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity || entity instanceof EntityMegalodon)));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityMegalodon) && !(entity instanceof EntityArchelon)));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof EntityArchelon)));
         super.registerGoals();
     }
 

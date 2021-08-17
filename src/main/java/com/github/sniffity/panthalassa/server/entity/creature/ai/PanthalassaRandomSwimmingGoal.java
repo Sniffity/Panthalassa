@@ -43,7 +43,6 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         } if (this.creature.getTarget() != null){
             return false;
         }
-
         else {
             if (!this.mustUpdate) {
                 if (this.checkNoActionTime && this.creature.getNoActionTime() >= 100) {
@@ -53,11 +52,9 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                     return false;
                 }
             }
-
             Vector3d vector3d = this.getPosition();
             if (vector3d == null) {
                 return false;
-
             } else {
                 this.x = vector3d.x;
                 this.y = vector3d.y;

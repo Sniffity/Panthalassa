@@ -28,12 +28,9 @@ public abstract class PanthalassaEntity extends WaterMobEntity {
 
     }
 
-
     public boolean canBreatheUnderwater() {
         return true;
     }
-
-    ;
 
     public PathNavigator createNavigation(World worldIn) {
         return new SwimmerPathNavigator(this, worldIn);

@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAG;
@@ -27,6 +28,11 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon").toString()));
 
+    public static final RegistryObject<EntityType<EntityArchelon>> ARCHELON = ENTITY_TYPES.register ("archelon",()->
+            EntityType.Builder.of(EntityArchelon::new,EntityClassification.CREATURE)
+                    .sized(1.0F, 1.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "archelon").toString()));
+
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
@@ -44,6 +50,6 @@ public class PanthalassaEntityTypes {
     public static void setupEntityTypeAttributes (){
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
         GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
-
+        GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
     }
 }
