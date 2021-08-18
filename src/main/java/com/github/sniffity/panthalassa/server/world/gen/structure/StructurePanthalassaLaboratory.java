@@ -1,6 +1,5 @@
 package com.github.sniffity.panthalassa.server.world.gen.structure;
 
-
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
@@ -26,35 +25,38 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import org.apache.logging.log4j.Level;
 
 public class StructurePanthalassaLaboratory extends Structure<NoFeatureConfig> {
+
+    int i;
+
     public StructurePanthalassaLaboratory(Codec<NoFeatureConfig> codec) {
         super(codec);
     }
-
 
     @Override
     public  IStartFactory<NoFeatureConfig> getStartFactory() {
         return StructurePanthalassaLaboratory.Start::new;
     }
 
-
     @Override
     public GenerationStage.Decoration step() {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
-
     @Override
     protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeProvider biomeSource, long seed, SharedSeedRandom chunkRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPos, NoFeatureConfig featureConfig) {
         BlockPos centerOfChunk = new BlockPos(chunkX * 16, 0, chunkZ * 16);
-
         int landHeight = chunkGenerator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
-
-
         IBlockReader columnOfBlocks = chunkGenerator.getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ());
-
         BlockState topBlock = columnOfBlocks.getBlockState(centerOfChunk.above(landHeight));
-
-        return topBlock.getFluidState().isEmpty();
+        if (topBlock.getFluidState().is(FluidTags.WATER)) {
+            while (!topBlock.getBlockState().canOcclude()) {
+                i++;
+                topBlock = columnOfBlocks.getBlockState(centerOfChunk.above(landHeight-i));
+            }
+            float yHeight = (centerOfChunk.above(landHeight-i).getY());
+            return yHeight <= 42;
+        }
+        return false;
     }
 
     public static class Start extends StructureStart<NoFeatureConfig> {
@@ -62,14 +64,35 @@ public class StructurePanthalassaLaboratory extends Structure<NoFeatureConfig> {
             super(structureIn, chunkX, chunkZ, mutableBoundingBox, referenceIn, seedIn);
         }
 
+        int j;
+
         @Override
         public void generatePieces(DynamicRegistries dynamicRegistryManager, ChunkGenerator chunkGenerator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn, NoFeatureConfig config) {
 
-            int x = chunkX * 16;
-            int z = chunkZ * 16;
+            BlockPos centerOfChunk = new BlockPos(chunkX * 16, 0, chunkZ * 16);
+            int landHeight = chunkGenerator.getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
+            IBlockReader columnOfBlocks = chunkGenerator.getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ());
+            BlockState topBlock = columnOfBlocks.getBlockState(centerOfChunk.above(landHeight));
+            BlockPos centerPos;
+            if (topBlock.getFluidState().is(FluidTags.WATER)) {
+                while (!topBlock.getBlockState().canOcclude()) {
+                    j++;
+                    topBlock = columnOfBlocks.getBlockState(centerOfChunk.above(landHeight - j));
+                }
+                float yHeight = (centerOfChunk.above(landHeight - j).getY());
 
 
-            BlockPos centerPos = new BlockPos(x, 0, z);
+                int x = chunkX * 16;
+                int z = chunkZ * 16;
+                centerPos = new BlockPos(x, yHeight, z);
+
+                if (!(yHeight<= 42)) {
+                    return;
+                }
+
+            } else {
+                return;
+            }
 
             JigsawManager.addPieces(
                     dynamicRegistryManager,
@@ -84,8 +107,7 @@ public class StructurePanthalassaLaboratory extends Structure<NoFeatureConfig> {
                     this.pieces,
                     this.random,
                     false,
-                    true);
-
+                    false);
 
             Vector3i structureCenter = this.pieces.get(0).getBoundingBox().getCenter();
             int xOffset = centerPos.getX() - structureCenter.getX();
@@ -101,6 +123,5 @@ public class StructurePanthalassaLaboratory extends Structure<NoFeatureConfig> {
                     this.pieces.get(0).getBoundingBox().y0 + " " +
                     this.pieces.get(0).getBoundingBox().z0);
         }
-
     }
 }

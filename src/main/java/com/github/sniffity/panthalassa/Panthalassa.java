@@ -1,18 +1,15 @@
 package com.github.sniffity.panthalassa;
+
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.FlatChunkGenerator;
-import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
@@ -59,7 +56,6 @@ public final class Panthalassa {
 
 		PanthalassaStructures.STRUCTURES.register(modBus);
 
-
 		PanthalassaFeatures.FEATURES.register(modBus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 
@@ -72,14 +68,9 @@ public final class Panthalassa {
 		MinecraftForge.EVENT_BUS.register(this);
 		modBus.addListener(this::setup);
 
-
-
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
 		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
 		forgeBus.addListener(EventPriority.HIGH, this::biomeModification);
-
-
-
 	}
 
 	@SuppressWarnings("deprecated")
@@ -93,7 +84,7 @@ public final class Panthalassa {
 	}
 
 	public void biomeModification (final BiomeLoadingEvent event) {
-//		if (event.getName() != null && event.getName().equals(Biomes.WARM_OCEAN.getRegistryName())) {
+//		if (event.getName().equals(Biomes.WARM_OCEAN.getRegistryName())) {
 			event.getGeneration().getStructures().add(() -> PanthalassaConfiguredStructures.CONFIGURED_PANTHALASSA_LABORATORY);
 //		}
 	}
