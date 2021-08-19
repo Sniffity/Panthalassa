@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import java.util.EnumSet;
 import java.util.List;
-import net.minecraft.entity.item.BoatEntity;
 
 public class PanthalassaBreachAttackGoal extends Goal {
     protected final EntityMegalodon attacker;
@@ -21,6 +20,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     private boolean step1Done;
     private boolean step2Done;
     private boolean step3Done;
+    private boolean step4Done;
     private double jumpStart;
     private double step1Ticks;
     private double step2Ticks;
@@ -58,7 +58,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
         return true;
         }
 
-
     @Override
     public boolean canContinueToUse() {
         LivingEntity target = attacker.getTarget();
@@ -77,7 +76,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         else if (step2Ticks>200) {
             return false;
         }
-        else if (step1Done && step2Done && step3Done) {
+        else if (step1Done && step2Done && step3Done && step4Done) {
             return false;
         } else if (!step1Done &&  (!attacker.isInWater())) {
             return false;
@@ -103,7 +102,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
         attacker.getNavigation().moveTo(strikePos.x,strikePos.y,strikePos.z,speedTowardsTarget);
         return (attacker.distanceToSqr(target.getX(), target.getY() - 10, target.getZ()) <= 2);
     }
-
 
     public boolean moveStep2(){
         step2Ticks = ++step2Ticks;
@@ -145,7 +143,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
             }
         }
         if (step1Done && !step2Done) {
-            if (attacker.distanceTo(target) > 4.0F) {
+            assert target != null;
+            if (attacker.distanceTo(target) > 2.0F) {
                 if (moveStep2()) {
                     step2Done = true;
                     jumpStart = target.getY();
@@ -154,8 +153,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
                     } else {
                         target.startRiding(attacker);
                     }
-                    if (attacker.getDeltaMovement().y < 1.00) {
-                        attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,1.00,0));
+                    if (attacker.getDeltaMovement().y < 1.5D) {
+                        attacker.setDeltaMovement(attacker.getDeltaMovement().x,1.5D,attacker.getDeltaMovement().z);
                     }
                 }
             } else {
@@ -166,9 +165,10 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 } else {
                     target.startRiding(attacker);
                 }
-                if (attacker.getDeltaMovement().y < 1.00) {
-                    attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,1.00,0));
-                }          }
+                if (attacker.getDeltaMovement().y < 1.5D) {
+                    attacker.setDeltaMovement(attacker.getDeltaMovement().x,1.5D,attacker.getDeltaMovement().z);
+                }
+            }
         }
         if (step1Done && step2Done && !step3Done) {
             step3Ticks = ++step3Ticks;
@@ -187,10 +187,17 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 step3Done = true;
             }
         }
+
+        if (step1Done && step2Done && step3Done && attacker.isInWater()) {
+            step4Done = true;
+            if (attacker.getDeltaMovement().y > 0) {
+                attacker.setDeltaMovement(attacker.getDeltaMovement().x,0,attacker.getDeltaMovement().z);
+            }
+        }
     }
 
     protected void crushVehicleandPassengers() {
-        List<Entity> entities = attacker.level.getEntities(attacker, new AxisAlignedBB(attacker.getX() - 5, attacker.getY() - 5, attacker.getZ() - 5, attacker.getX() + 5, attacker.getY() + 5, attacker.getZ() + 5));
+        List<Entity> entities = attacker.level.getEntities(attacker, new AxisAlignedBB(attacker.getX() - 5, attacker.getY() - 3, attacker.getZ() - 5, attacker.getX() + 5, attacker.getY() + 10, attacker.getZ() + 5));
         if (!entities.isEmpty()) {
                 attacker.swing(Hand.MAIN_HAND);
                 for (Entity entity : entities) {
