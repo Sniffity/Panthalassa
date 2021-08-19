@@ -16,6 +16,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -108,9 +109,18 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         return this.factory;
     }
 
+    /*
     @Override
     public double getPassengersRidingOffset() {
-        return 0.2D;
+        return 5.0D;
+    }
+*/
+    @Override
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            Vector3d vector3d = (new Vector3d((double)0, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+            passenger.setPos(this.getX() + vector3d.x, this.getY() + 5.0D, this.getZ() + vector3d.z);
+        }
     }
 
     @Nullable
