@@ -13,9 +13,4 @@ public class RenderArchelon extends GeoEntityRenderer<EntityArchelon> {
         super(renderManager, new ModelArchelon());
         this.shadowRadius = 1.0F;
     }
-    @Override
-    public ResourceLocation getTextureLocation(EntityArchelon entity) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/creature/archelon/archelon.png");
-    }
-
 }

@@ -16,8 +16,4 @@ public class RenderKronosaurus extends GeoEntityRenderer<EntityKronosaurus> {
         this.shadowRadius = 1.0F;
     }
 
-    @Override
-    public ResourceLocation getTextureLocation(EntityKronosaurus entity) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/creature/kronosaurus/kronosaurus.png");
-    }
 }

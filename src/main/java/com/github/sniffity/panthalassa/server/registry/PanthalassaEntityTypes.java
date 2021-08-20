@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityMosasaurus;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAG;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.entity.EntityClassification;
@@ -33,6 +34,10 @@ public class PanthalassaEntityTypes {
                     .sized(1.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "archelon").toString()));
 
+    public static final RegistryObject<EntityType<EntityMosasaurus>> MOSASAURUS = ENTITY_TYPES.register ("mosasaurus",()->
+            EntityType.Builder.of(EntityMosasaurus::new,EntityClassification.CREATURE)
+                    .sized(1.0F, 1.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "mosasaurus").toString()));
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
@@ -51,5 +56,7 @@ public class PanthalassaEntityTypes {
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
         GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
         GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
+        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityArchelon.archelonAttributes().build());
+
     }
 }
