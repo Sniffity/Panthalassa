@@ -21,8 +21,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
 
     public boolean isTryingToBreach;
 
-    protected static final DataParameter<Integer> AVOID_DISTANCE = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.INT);
-
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -94,11 +92,5 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         }
         return flag;
     }
-
-
-    public int getAvoidDistance() {
-        return this.entityData.get(AVOID_DISTANCE);
-    }
-
 }
 

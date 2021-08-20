@@ -1,13 +1,11 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
-import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -38,6 +36,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public float deltaYRot;
     public float adjustYaw;
     public float adjustment = 0.25F;
+    public static final int AVOID_DISTANCE = 5;
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -49,7 +48,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), PASSIVE_ANGLE, AGGRO_ANGLE);
+        this.moveControl = new PanthalassaSwimmingHelper(this, AVOID_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
@@ -66,7 +65,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         this.entityData.define(AIR_SUPPLY, 300);
-        this.entityData.define(AVOID_DISTANCE, 5);
 
         super.defineSynchedData();
     }
@@ -146,7 +144,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, getAvoidDistance()));
+        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, AVOID_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
