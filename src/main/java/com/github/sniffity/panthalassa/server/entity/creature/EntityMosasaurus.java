@@ -31,7 +31,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob {
-    public int blockDistance = 5;
     public int passiveAngle = 4;
     public int aggroAngle = 15;
 
@@ -50,7 +49,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
+        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), passiveAngle, aggroAngle);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
@@ -91,6 +90,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(AVOID_DISTANCE, 5);
         super.defineSynchedData();
     }
 
@@ -146,7 +146,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 //        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.2, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.6));
-        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, blockDistance));
+        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, getAvoidDistance()));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));

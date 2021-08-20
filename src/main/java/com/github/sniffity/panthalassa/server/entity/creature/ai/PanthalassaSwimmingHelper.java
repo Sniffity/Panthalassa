@@ -46,6 +46,10 @@ public class PanthalassaSwimmingHelper extends MovementController {
         return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).south(distance)).canOcclude();
     }
 
+    public boolean getBlockedBelow(int distance) {
+        return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).below(distance)).canOcclude();
+    }
+
     public void tick () {
         if (this.entityPanthalassa.isEyeInFluid(FluidTags.WATER)) {
                 this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
@@ -92,25 +96,32 @@ public class PanthalassaSwimmingHelper extends MovementController {
         }
         for (int i = 0; i <= blockedDistance; i++) {
             if (this.entityPanthalassa.isInWater() && !this.entityPanthalassa.isAggressive()) {
-                if (getBlockedAbove(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, -0.1D, 0.0D));
-                    break;
-                }
+
                 if (getBlockedNorth(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, +0.1D));
+                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, +0.05D));
                     break;
                 }
                 if (getBlockedSouth(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, -0.1D));
+                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, -0.05D));
                     break;
                 }
                 if (getBlockedWest(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.1D, 0.0D, 0.0D));
+                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.05D, 0.0D, 0.0D));
                     break;
                 }
                 if (getBlockedEast(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(-0.1D, 0.0D, 0.0D));
+                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(-0.05D, 0.0D, 0.0D));
                     break;
+                }
+                for (int j = 0; j<=2; j++) {
+                    if (getBlockedAbove(i)) {
+                        this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
+                        break;
+                    }
+                    if (getBlockedBelow(j)) {
+                        this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.05D, 0.0D));
+                        break;
+                    }
                 }
             }
         }

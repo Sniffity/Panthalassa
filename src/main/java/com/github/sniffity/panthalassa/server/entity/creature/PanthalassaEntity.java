@@ -6,6 +6,9 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
@@ -18,11 +21,16 @@ public abstract class PanthalassaEntity extends CreatureEntity {
 
     public boolean isTryingToBreach;
 
+    protected static final DataParameter<Integer> AVOID_DISTANCE = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.INT);
+
+
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.lookControl = new DolphinLookController(this, 10);
 
     }
+
+
 
     public boolean canBreatheUnderwater() {
         return true;
@@ -86,5 +94,11 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         }
         return flag;
     }
+
+
+    public int getAvoidDistance() {
+        return this.entityData.get(AVOID_DISTANCE);
+    }
+
 }
 

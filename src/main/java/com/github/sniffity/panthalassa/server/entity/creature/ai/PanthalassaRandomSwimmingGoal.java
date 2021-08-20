@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.item.LeashKnotEntity;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +24,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     protected int executionChance;
     protected boolean mustUpdate;
     private boolean checkNoActionTime;
-    protected int avoidDistance;
+    protected final int avoidDistance;
 
     public PanthalassaRandomSwimmingGoal(PanthalassaEntity creatureIn, double speedIn, int chance, int avoidDistance) {
         this(creatureIn, speedIn, chance, avoidDistance, true);
@@ -33,8 +34,8 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         this.creature = creature;
         this.speed = speed;
         this.executionChance = chance;
-        this.checkNoActionTime = checkNATime;
         this.avoidDistance = avoidDistance;
+        this.checkNoActionTime = checkNATime;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
@@ -76,13 +77,11 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector))
         {}
         if (vector != null) {
-            //Adjust, from 0 to less than
-            for (int i = 1; i <= avoidDistance; i ++) {
+            for (int i = 0; i <= avoidDistance; i++) {
                 if (this.creature.level.getBlockState(new BlockPos(vector).north(i)).canOcclude()) {
                     vector = null;
                     break;
                 }
-
                 if (this.creature.level.getBlockState(new BlockPos(vector).south(i)).canOcclude()) {
                     vector = null;
                     break;
@@ -96,18 +95,16 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                 }
             }
 
-            assert vector != null;
-            if (!this.creature.level.getFluidState(new BlockPos(vector).above(1)).is(FluidTags.WATER)) {
-                vector = vector.add(0, -3, 0);
-            }
-            else if (!this.creature.level.getFluidState(new BlockPos(vector).above(2)).is(FluidTags.WATER)) {
-                vector = vector.add(0, -2, 0);
-            }
-            else if (!this.creature.level.getFluidState(new BlockPos(vector).below(1)).is(FluidTags.WATER)) {
-                vector = vector.add(0, +3, 0);
-            }
-            else if (!this.creature.level.getFluidState(new BlockPos(vector).below(2)).is(FluidTags.WATER)) {
-                vector = vector.add(0, +2, 0);
+            if (vector != null) {
+                if (!this.creature.level.getFluidState(new BlockPos(vector).above(1)).is(FluidTags.WATER)) {
+                    vector = vector.add(0, -3, 0);
+                } else if (!this.creature.level.getFluidState(new BlockPos(vector).above(2)).is(FluidTags.WATER)) {
+                    vector = vector.add(0, -2, 0);
+                } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(1)).is(FluidTags.WATER)) {
+                    vector = vector.add(0, +3, 0);
+                } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(2)).is(FluidTags.WATER)) {
+                    vector = vector.add(0, +2, 0);
+                }
             }
         }
         return vector;
@@ -121,7 +118,11 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     @Override
     public void start() {
         this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
+        BlockPos target = new BlockPos(this.x,this.y,this.z);
+        LeashKnotEntity marker = new LeashKnotEntity(this.creature.level,target);
+        creature.level.addFreshEntity(marker);
     }
+
     @Override
     public void stop() {
         this.creature.getNavigation().stop();
