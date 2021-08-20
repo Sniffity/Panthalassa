@@ -39,7 +39,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public float adjustYaw;
     public float adjustPitch;
     public float adjustment = 0.15F;
-    public static final int AVOID_DISTANCE = 4;
+    public static final int AVOID_DISTANCE = 6;
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -55,7 +55,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosaurus.test", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.test", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;

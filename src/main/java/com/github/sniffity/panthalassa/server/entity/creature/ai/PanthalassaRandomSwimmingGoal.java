@@ -46,7 +46,9 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         } if (this.creature.getTarget() != null){
             return false;
         }
-        else {
+        if (!this.creature.isInWater()) {
+            return false;
+        } else {
             if (!this.mustUpdate) {
                 if (this.checkNoActionTime && this.creature.getNoActionTime() >= 100) {
                     return false;
@@ -88,6 +90,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                 }
                 if (this.creature.level.getBlockState(new BlockPos(vector).east(i)).canOcclude()) {
                     vector = null;
+                    break;
                 }
                 if (this.creature.level.getBlockState(new BlockPos(vector).west(i)).canOcclude()) {
                     vector = null;

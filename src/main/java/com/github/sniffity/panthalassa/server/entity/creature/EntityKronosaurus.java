@@ -35,7 +35,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public static final int PASSIVE_ANGLE = 4;
     public static final int AGGRO_ANGLE = 8;
     protected ArrayList<EntityKronosaurus> school = new ArrayList<>();
-    public static final int AVOID_DISTANCE = 3;
+    public static final int AVOID_DISTANCE = 6;
 
 
 
@@ -129,8 +129,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 //            this.schoolMovement(this);
 //        }
 
-//       System.out.println("My School ID is: " +this.getSchoolId());
-       System.out.println("Is Schooling? " +this.getSchooling());
 
 
     }
