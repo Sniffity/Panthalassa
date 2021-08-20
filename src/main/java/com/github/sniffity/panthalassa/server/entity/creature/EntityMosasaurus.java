@@ -29,8 +29,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob {
-    public int passiveAngle = 4;
-    public int aggroAngle = 15;
+    public static final int PASSIVE_ANGLE = 4;
+    public static final int AGGRO_ANGLE = 15;
 
     public float prevYRot;
     public float deltaYRot;
@@ -47,7 +47,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), passiveAngle, aggroAngle);
+        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 

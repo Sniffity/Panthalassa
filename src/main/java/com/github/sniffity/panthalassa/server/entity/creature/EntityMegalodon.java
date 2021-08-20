@@ -32,9 +32,8 @@ import javax.annotation.Nullable;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob {
 
-    public int blockDistance = 5;
-    public int passiveAngle = 4;
-    public int aggroAngle = 8;
+    public static final int PASSIVE_ANGLE = 4;
+    public static final int AGGRO_ANGLE = 8;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
@@ -50,7 +49,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
+        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
@@ -67,6 +66,8 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(AVOID_DISTANCE, 5);
+
         super.defineSynchedData();
     }
 
@@ -145,7 +146,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, blockDistance));
+        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, getAvoidDistance()));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));

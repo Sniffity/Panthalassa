@@ -32,9 +32,8 @@ import java.util.*;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob {
 
-    public int blockDistance = 3;
-    public int passiveAngle = 4;
-    public int aggroAngle = 8;
+    public static final int PASSIVE_ANGLE = 4;
+    public static final int AGGRO_ANGLE = 8;
     protected ArrayList<EntityKronosaurus> school = new ArrayList<>();
 
 
@@ -48,7 +47,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
+        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
@@ -57,6 +56,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.entityData.define(SCHOOL_ID, 0);
         this.entityData.define(SCHOOLING, Boolean.FALSE);
         this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(AVOID_DISTANCE, 4);
         super.defineSynchedData();
     }
 
@@ -242,7 +242,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, blockDistance));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, getAvoidDistance()));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));

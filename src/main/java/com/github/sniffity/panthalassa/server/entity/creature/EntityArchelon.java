@@ -27,9 +27,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
-    public int blockDistance = 2;
-    public int passiveAngle = 4;
-    public int aggroAngle = 8;
+    public static final int PASSIVE_ANGLE = 4;
+    public static final int AGGRO_ANGLE = 8;
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -37,8 +36,15 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, blockDistance, passiveAngle, aggroAngle);
+        this.moveControl = new PanthalassaSwimmingHelper(this, getAvoidDistance(), PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+    }
+
+
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(AVOID_DISTANCE, 4);
+        super.defineSynchedData();
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -94,7 +100,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, blockDistance));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, getAvoidDistance()));
         this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.3, 10));
         this.goalSelector.addGoal(2, new FindWaterGoal(this));
 
