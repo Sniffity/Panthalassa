@@ -37,7 +37,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public int aggroAngle = 8;
     public float prevYRot;
     public float deltaYRot;
-    public float adjustRotation;
+    public float adjustYaw;
     public float adjustment = 0.25F;
 
 
@@ -76,12 +76,12 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         setBreachCooldown((getBreachCooldown())-1);
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-        if (adjustRotation > deltaYRot) {
-            adjustRotation = adjustRotation - adjustment;
-            adjustRotation = Math.max(adjustRotation, deltaYRot);
-        } else if (adjustRotation < deltaYRot) {
-            adjustRotation = adjustRotation + adjustment;
-            adjustRotation = Math.min(adjustRotation, deltaYRot);
+        if (adjustYaw > deltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);

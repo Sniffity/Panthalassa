@@ -33,16 +33,19 @@ import javax.annotation.Nullable;
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob {
     public int blockDistance = 5;
     public int passiveAngle = 4;
-    public int aggroAngle = 8;
+    public int aggroAngle = 15;
 
     public float prevYRot;
     public float deltaYRot;
-    public float adjustRotation;
-    public float adjustment = 0.25F;
+    public float prevXRot;
+    public float deltaXRot;
+    public float adjustYaw;
+    public float adjustPitch;
+    public float adjustment = 0.15F;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMosasaurus.class, DataSerializers.INT);
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -52,13 +55,13 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (1<0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.test", true));
+        if (!this.isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosaurus.test", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
-
     }
+
 
 
 
@@ -97,12 +100,21 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         super.tick();
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-        if (adjustRotation > deltaYRot) {
-            adjustRotation = adjustRotation - adjustment;
-            adjustRotation = Math.max(adjustRotation, deltaYRot);
-        } else if (adjustRotation < deltaYRot) {
-            adjustRotation = adjustRotation + adjustment;
-            adjustRotation = Math.min(adjustRotation, deltaYRot);
+        if (adjustYaw > deltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
+        }
+        deltaXRot = this.xRot - prevXRot;
+        prevXRot = this.xRot;
+        if (adjustPitch > deltaXRot) {
+            adjustPitch = adjustPitch - adjustment;
+            adjustPitch = Math.max(adjustPitch, deltaXRot);
+        } else if (adjustPitch < deltaXRot) {
+            adjustPitch = adjustPitch + adjustment;
+            adjustPitch = Math.min(adjustPitch, deltaXRot);
         }
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
@@ -122,7 +134,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     public static AttributeModifierMap.MutableAttribute archelonAttributes() {
         return MobEntity.createMobAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 30)
+                .add(Attributes.ATTACK_DAMAGE, 35)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.FOLLOW_RANGE, 32)
@@ -138,7 +150,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityMegalodon) && !(entity instanceof EntityArchelon)));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityMosasaurus) && !(entity instanceof EntityArchelon)));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
         super.registerGoals();
 

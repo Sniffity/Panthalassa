@@ -76,8 +76,8 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector))
         {}
         if (vector != null) {
+            //Adjust, from 0 to less than
             for (int i = 1; i <= avoidDistance; i ++) {
-                assert vector != null;
                 if (this.creature.level.getBlockState(new BlockPos(vector).north(i)).canOcclude()) {
                     vector = null;
                     break;
