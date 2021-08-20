@@ -28,20 +28,19 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob {
 
     public int blockDistance = 3;
     public int passiveAngle = 4;
     public int aggroAngle = 8;
+    protected ArrayList<EntityKronosaurus> school = new ArrayList<>();
+
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
     protected static final DataParameter<Integer> SCHOOL_ID = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
-    protected static final DataParameter<Boolean> SCHOOL = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SCHOOLING = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -56,7 +55,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Override
     protected void defineSynchedData() {
         this.entityData.define(SCHOOL_ID, 0);
-        this.entityData.define(SCHOOL, Boolean.FALSE);
+        this.entityData.define(SCHOOLING, Boolean.FALSE);
         this.entityData.define(AIR_SUPPLY, 300);
         super.defineSynchedData();
     }
@@ -123,87 +122,100 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         super.tick();
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-//        if (!this.getSchooling()) {
-//            this.tryAssignSchool(this);
-//        } else {
+        if (!this.getSchooling()) {
+            this.tryAssignSchool(this);
+        } //else {
 //            this.schoolMovement(this);
 //        }
 
 //       System.out.println("My School ID is: " +this.getSchoolId());
-//       System.out.println("Is Schooling? " +this.getSchooling());
+       System.out.println("Is Schooling? " +this.getSchooling());
 
 
     }
-/*
+
     protected void tryAssignSchool(EntityKronosaurus entityIn){
         //Each tick, for each Kronosaurus, get all entities within a 40*40*40 bounding box
 
-        List<Entity> entities = level.getEntities(entityIn, new AxisAlignedBB(this.getX() - 20, this.getY() - 20, this.getZ() - 20, this.getX() + 20, this.getY() + 20, this.getZ() + 20));
+        List<Entity> entities = level.getEntitiesOfClass(EntityKronosaurus.class, this.getBoundingBox().inflate(20));
 
-        //Then, filter that list to select only other EntityKronosaurus, that are not schooling
-        ArrayList<EntityKronosaurus> school = new ArrayList<>();
-
-        for (int k = 0; k < entities.size(); k++) {
-            Entity entity = entities.get(k);
-            if (entity instanceof EntityKronosaurus && !((EntityKronosaurus) entity).getSchooling()) {
+        //With the acquired list, if it's size is bigger than 1 (meaning, if it's a "group" of Kronosaurus...
+        // ...select the first 3 Kronosaurus or 2 Kronosaurus...
+        if (entities.size()>1) {
+            for (int k = 0; k < entities.size() && k < 3; k++) {
+                Entity entity = entities.get(k);
                 EntityKronosaurus kronosaurus = (EntityKronosaurus) entity;
-                school.add(kronosaurus);
+                //...and add them to the List "school.
+                if (!kronosaurus.getSchooling()){
+                    school.add(kronosaurus);
+
+                }
             }
         }
 
-        //And cap the list size at 3. Remove anything that would make the list greater than 3.
-        if (school.size()>3){
-            school.subList(3, school.size()).clear();
-        }
-
-        //Only create a new school if the list of potential candidates is 3. Do not creates schools of 2, or greater than 3.
-        if (school.size() != 3) {
-            school = null;
-        }
-
-        //Assign a school ID if the filters are passed. These 3 Kronosaurus will now be treated as a school.
-        int potentialSchoolID = this.getRandom().nextInt(1000);
-        if (school != null) {
-            for (int m = 0; m < school.size(); m++) {
-                EntityKronosaurus kronosaurus = (EntityKronosaurus) school.get(m);
-                kronosaurus.setSchooling(true);
-                kronosaurus.setSchoolId(potentialSchoolID);
-            }
+        //For each Kronosaurus in the school, set the SCHOOLING NBT tag to true.
+        for (int m = 0; m < school.size(); m++) {
+            EntityKronosaurus kronosaurus = (EntityKronosaurus) school.get(m);
+            kronosaurus.setSchooling(true);
         }
     }
-
 
     protected void schoolMovement(EntityKronosaurus entityIn) {
+        EntityKronosaurus kronosaurus1;
+        EntityKronosaurus kronosaurus2;
+        EntityKronosaurus kronosaurus3;
+        int size = school.size();
+        if (size ==3) {
+            //Get each Kronosaurus...
+            kronosaurus1 = school.get(0);
+            kronosaurus2 = school.get(1);
+            kronosaurus3 = school.get(2);
 
-        int schoolId = this.getSchoolId();
-        List<Entity> entities = level.getEntities(entityIn, new AxisAlignedBB(this.getX() - 20, this.getY() - 20, this.getZ() - 20, this.getX() + 20, this.getY() + 20, this.getZ() + 20));
-        ArrayList school = new ArrayList<EntityKronosaurus>();
-        for (int k = 0; k < entities.size(); k++) {
-            Entity entity = entities.get(k);
-            if (entity instanceof EntityKronosaurus && ((EntityKronosaurus) entity).getSchoolId() == schoolId) {
-                school.add(entity);
+            //And the position of each Kronosaurus
+            kronosaurus1.getPosition(0);
+            Vector3d kronosaurus1Pos = (kronosaurus1.position());
+            Vector3d kronosaurus2Pos = (kronosaurus2.position());
+            Vector3d kronosaurus3Pos = (kronosaurus3.position());
+
+            //Calculate the "average school position"...
+            Vector3d averagePos = (kronosaurus1Pos.add(kronosaurus2Pos).add(kronosaurus3Pos)).multiply( 1.0F/3.0F,1.0F/3.0F,1.0F/3.0F);
+            //The position of this Kronosaurus...
+            Vector3d thisPosition = this.position();
+
+            //Distance from this Kronosaurus to the average position...
+            double distanceThisToAveragePosition = averagePos.subtract(thisPosition).length();
+
+            //Target (unit) vector from this Kronosaurus to the average position...
+            Vector3d targetAveragePosition = averagePos.subtract(thisPosition).normalize();
+
+            //If this Kronosaurus moves too far away from the average position...
+            while (distanceThisToAveragePosition>5) {
+                //Push it back in towards the average position...
+                this.setDeltaMovement(this.getDeltaMovement().add(targetAveragePosition));
+                thisPosition = new Vector3d(this.getX(),this.getY(),this.getZ());
+                distanceThisToAveragePosition = averagePos.subtract(thisPosition).length();
+            }
+
+        } else {
+            //Same methods, but for a school of 2.
+            kronosaurus1 = school.get(0);
+            kronosaurus2 = school.get(1);
+
+            Vector3d kronosaurus1Pos = new Vector3d(kronosaurus1.getX(),kronosaurus1.getY(),kronosaurus1.getZ());
+            Vector3d kronosaurus2Pos = new Vector3d(kronosaurus2.getX(),kronosaurus2.getY(),kronosaurus2.getZ());
+
+            Vector3d averagePos = new Vector3d((kronosaurus1Pos.x+kronosaurus2Pos.x)/2,(kronosaurus1Pos.y+kronosaurus2Pos.y)/2,(+kronosaurus1Pos.z+kronosaurus2Pos.z)/2);
+            Vector3d thisPosition = new Vector3d(this.getX(),this.getY(),this.getZ());
+            double distanceThisToAveragePosition = averagePos.subtract(thisPosition).length();
+            Vector3d targetAveragePosition = averagePos.subtract(thisPosition).normalize();
+            while (distanceThisToAveragePosition>5) {
+                this.setDeltaMovement(this.getDeltaMovement().add(targetAveragePosition.x,targetAveragePosition.y,targetAveragePosition.z));
+                thisPosition = new Vector3d(this.getX(),this.getY(),this.getZ());
+                distanceThisToAveragePosition = averagePos.subtract(thisPosition).length();
             }
         }
-
-        EntityKronosaurus kronosaurus0 = (EntityKronosaurus) school.get(0);
-        EntityKronosaurus kronosaurus1 = (EntityKronosaurus) school.get(2);
-        EntityKronosaurus kronosaurus2 = (EntityKronosaurus) school.get(3);
-        Vector3d kronosaurus0Pos = new Vector3d(kronosaurus0.getX(),kronosaurus0.getY(),kronosaurus0.getZ());
-        Vector3d kronosaurus1Pos = new Vector3d(kronosaurus1.getX(),kronosaurus1.getY(),kronosaurus1.getZ());
-        Vector3d kronosaurus2Pos = new Vector3d(kronosaurus2.getX(),kronosaurus2.getY(),kronosaurus2.getZ());
-        Vector3d averagePos = new Vector3d((kronosaurus0Pos.x+kronosaurus1Pos.x+kronosaurus2Pos.x)/3,(kronosaurus0Pos.y+kronosaurus1Pos.y+kronosaurus2Pos.y)/3,(kronosaurus0Pos.z+kronosaurus1Pos.z+kronosaurus2Pos.z)/3);
-
-        Vector3d thisPosition = new Vector3d(this.getX(),this.getY(),this.getZ());
-        double distanceAveragePosition = averagePos.subtract(thisPosition).length();
-        Vector3d targetAveragePosition = averagePos.subtract(thisPosition).normalize();
-
-        while (distanceAveragePosition>5) {
-            this.setDeltaMovement(this.getDeltaMovement().add(targetAveragePosition.x,targetAveragePosition.y,targetAveragePosition.z));
-            thisPosition = new Vector3d(this.getX(),this.getY(),this.getZ());
-            distanceAveragePosition = averagePos.subtract(thisPosition).length();
-        }
     }
-*/
+
     protected void handleAirSupply(int p_209207_1_) {
         if (this.isAlive() && !this.isInWaterOrBubble()) {
             this.setAirSupplyLocal(p_209207_1_ - 1);
@@ -248,11 +260,11 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public void setSchooling(boolean schoolStatus) {
-        this.entityData.set(SCHOOL,schoolStatus);
+        this.entityData.set(SCHOOLING,schoolStatus);
     }
 
     public boolean getSchooling() {
-        return this.entityData.get(SCHOOL);
+        return this.entityData.get(SCHOOLING);
     }
 
     public void setSchoolId(int id) {
