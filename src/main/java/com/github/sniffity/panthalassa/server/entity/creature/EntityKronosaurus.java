@@ -3,6 +3,8 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -14,9 +16,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -32,11 +36,10 @@ import java.util.*;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob {
 
-    public static final int PASSIVE_ANGLE = 4;
-    public static final int AGGRO_ANGLE = 8;
+    public static final int PASSIVE_ANGLE = 1;
+    public static final int AGGRO_ANGLE = 15;
     protected ArrayList<EntityKronosaurus> school = new ArrayList<>();
     public static final int AVOID_DISTANCE = 6;
-
 
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
@@ -95,6 +98,20 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     }
 
+    public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type,IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        for (int x = -3; x < 4; x++) {
+            for (int y = -3; y < 4; y++) {
+                for (int z = -3; z < 4; z++) {
+                    if (!worldIn.getFluidState((pos.offset(x, y, z))).is(FluidTags.WATER)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
@@ -117,6 +134,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
+
 
     @Override
     public void tick() {

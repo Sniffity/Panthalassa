@@ -30,8 +30,8 @@ import javax.annotation.Nullable;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob {
 
-    public static final int PASSIVE_ANGLE = 4;
-    public static final int AGGRO_ANGLE = 8;
+    public static final int PASSIVE_ANGLE = 1;
+    public static final int AGGRO_ANGLE = 15;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;

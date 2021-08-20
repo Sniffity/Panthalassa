@@ -29,7 +29,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob {
-    public static final int PASSIVE_ANGLE = 4;
+    public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
 
     public float prevYRot;

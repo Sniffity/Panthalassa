@@ -27,8 +27,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
-    public static final int PASSIVE_ANGLE = 4;
-    public static final int AGGRO_ANGLE = 8;
+    public static final int PASSIVE_ANGLE = 1;
+    public static final int AGGRO_ANGLE = 15;
     public static final int AVOID_DISTANCE = 3;
 
 
@@ -101,8 +101,8 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
 
     public void registerGoals() {
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, AVOID_DISTANCE));
-        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.3, 10));
-        this.goalSelector.addGoal(2, new FindWaterGoal(this));
+        //this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.3, 10));
+        //this.goalSelector.addGoal(2, new FindWaterGoal(this));
 
     }
 }
