@@ -15,7 +15,7 @@ public class RenderArchelon extends GeoEntityRenderer<EntityArchelon> {
     }
     @Override
     public ResourceLocation getTextureLocation(EntityArchelon entity) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/entity/archelon/archelon.png");
+        return new ResourceLocation(Panthalassa.MODID,"textures/creature/archelon/archelon.png");
     }
 
 }

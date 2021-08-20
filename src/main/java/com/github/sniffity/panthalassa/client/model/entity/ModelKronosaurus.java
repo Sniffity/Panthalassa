@@ -11,17 +11,17 @@ public class ModelKronosaurus extends AnimatedGeoModel<EntityKronosaurus>
 {
     @Override
     public ResourceLocation getModelLocation(EntityKronosaurus object) {
-        return new ResourceLocation(Panthalassa.MODID,"geo/kronosaurus/kronosaurus.geo.json");
+        return new ResourceLocation(Panthalassa.MODID,"geo/creature/kronosaurus/kronosaurus.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureLocation(EntityKronosaurus object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/entity/kronosaurus/kronosaurus.png");
+        return new ResourceLocation(Panthalassa.MODID,"textures/creature/kronosaurus/kronosaurus.png");
     }
 
     @Override
     public ResourceLocation getAnimationFileLocation(EntityKronosaurus animatable) {
-        return new ResourceLocation(Panthalassa.MODID,"animations/kronosaurus/kronosaurus.json");
+        return new ResourceLocation(Panthalassa.MODID,"animations/creature/kronosaurus/kronosaurus.json");
     }
 
     @Override

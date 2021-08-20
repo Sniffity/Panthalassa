@@ -15,17 +15,17 @@ import static java.lang.Math.PI;
 public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     @Override
     public ResourceLocation getModelLocation(EntityMegalodon object) {
-        return new ResourceLocation(Panthalassa.MODID,"geo/megalodon/megalodon.geo.json");
+        return new ResourceLocation(Panthalassa.MODID,"geo/creature/megalodon/megalodon.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureLocation(EntityMegalodon object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/entity/megalodon/megalodon.png");
+        return new ResourceLocation(Panthalassa.MODID,"textures/creature/megalodon/megalodon.png");
     }
 
     @Override
     public ResourceLocation getAnimationFileLocation(EntityMegalodon animatable) {
-        return new ResourceLocation(Panthalassa.MODID,"animations/megalodon/megalodon.json");
+        return new ResourceLocation(Panthalassa.MODID,"animations/creature/megalodon/megalodon.json");
     }
 
     @Override

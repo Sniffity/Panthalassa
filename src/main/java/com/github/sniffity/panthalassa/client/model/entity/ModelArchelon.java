@@ -10,17 +10,17 @@ public class ModelArchelon extends AnimatedGeoModel<EntityArchelon>
 {
     @Override
     public ResourceLocation getModelLocation(EntityArchelon object) {
-        return new ResourceLocation(Panthalassa.MODID,"geo/archelon/archelon.geo.json");
+        return new ResourceLocation(Panthalassa.MODID,"geo/creature/archelon/archelon.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureLocation(EntityArchelon object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/entity/archelon/archelon.png");
+        return new ResourceLocation(Panthalassa.MODID,"textures/creature/archelon/archelon.png");
     }
 
     @Override
     public ResourceLocation getAnimationFileLocation(EntityArchelon animatable) {
-        return new ResourceLocation(Panthalassa.MODID,"animations/archelon/archelon.json");
+        return new ResourceLocation(Panthalassa.MODID,"animations/creature/archelon/archelon.json");
     }
 
     @Override
