@@ -2,9 +2,16 @@ package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+
+import javax.annotation.Nullable;
+
+import static java.lang.Math.PI;
 
 public class ModelArchelon extends AnimatedGeoModel<EntityArchelon>
 {
@@ -24,8 +31,11 @@ public class ModelArchelon extends AnimatedGeoModel<EntityArchelon>
     }
 
     @Override
-    public void setLivingAnimations(EntityArchelon entity, Integer uniqueID) {
-        super.setLivingAnimations(entity, uniqueID);
+    public void setLivingAnimations(EntityArchelon entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
+        super.setLivingAnimations(entity, uniqueID, customPredicate);
+        if (entity.isInWater() || !entity.isOnGround()) {
+            (this.getAnimationProcessor().getBone("shell")).setRotationX(-(float) (entity.xRot*(PI/180.0F)));
+        }
     }
 
     @Override
