@@ -121,9 +121,6 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     @Override
     public void start() {
         this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
-        BlockPos target = new BlockPos(this.x,this.y,this.z);
-        LeashKnotEntity marker = new LeashKnotEntity(this.creature.level,target);
-        creature.level.addFreshEntity(marker);
     }
 
     @Override
