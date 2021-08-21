@@ -56,6 +56,7 @@ public final class Panthalassa {
 
 		PanthalassaStructures.STRUCTURES.register(modBus);
 
+		PanthalassaBiomes.BIOMES.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 
@@ -80,6 +81,7 @@ public final class Panthalassa {
 		event.enqueueWork(() -> {
 			PanthalassaStructures.setupStructures();
 			PanthalassaConfiguredStructures.registerConfiguredStructures();
+			PanthalassaEntityTypes.spawnPlacements();
 		});
 	}
 
