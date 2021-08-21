@@ -5,6 +5,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRand
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -16,11 +17,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -99,15 +97,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type,IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        for (int x = -3; x < 4; x++) {
-            for (int y = -3; y < 4; y++) {
-                for (int z = -3; z < 4; z++) {
-                    if (!worldIn.getFluidState((pos.offset(x, y, z))).is(FluidTags.WATER)) {
-                        return false;
-                    }
-                }
-            }
-        }
+        System.out.println("canKronosaurusSpawn called with BlockPos: " +pos);
         return true;
     }
 
@@ -182,6 +172,15 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         EntityKronosaurus kronosaurus2;
         EntityKronosaurus kronosaurus3;
         int size = school.size();
+        Vector3d vector = new Vector3d(0,0,0);
+        for (int i = 0; i<school.size(); i++){
+            EntityKronosaurus kronosaurus = school.get(i);
+            vector = vector.add(kronosaurus.position());
+        }
+
+        Vector3d averagePos = vector.multiply(1.0F/school.size(),1.0F/school.size(),1.0F/school.size());
+
+
         if (size ==3) {
             //Get each Kronosaurus...
             kronosaurus1 = school.get(0);
@@ -195,7 +194,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             Vector3d kronosaurus3Pos = (kronosaurus3.position());
 
             //Calculate the "average school position"...
-            Vector3d averagePos = (kronosaurus1Pos.add(kronosaurus2Pos).add(kronosaurus3Pos)).multiply( 1.0F/3.0F,1.0F/3.0F,1.0F/3.0F);
             //The position of this Kronosaurus...
             Vector3d thisPosition = this.position();
 
@@ -221,7 +219,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             Vector3d kronosaurus1Pos = new Vector3d(kronosaurus1.getX(),kronosaurus1.getY(),kronosaurus1.getZ());
             Vector3d kronosaurus2Pos = new Vector3d(kronosaurus2.getX(),kronosaurus2.getY(),kronosaurus2.getZ());
 
-            Vector3d averagePos = new Vector3d((kronosaurus1Pos.x+kronosaurus2Pos.x)/2,(kronosaurus1Pos.y+kronosaurus2Pos.y)/2,(+kronosaurus1Pos.z+kronosaurus2Pos.z)/2);
             Vector3d thisPosition = new Vector3d(this.getX(),this.getY(),this.getZ());
             double distanceThisToAveragePosition = averagePos.subtract(thisPosition).length();
             Vector3d targetAveragePosition = averagePos.subtract(thisPosition).normalize();

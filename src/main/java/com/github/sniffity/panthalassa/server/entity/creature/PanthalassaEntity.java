@@ -12,9 +12,12 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public abstract class PanthalassaEntity extends CreatureEntity {
@@ -27,8 +30,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         this.lookControl = new DolphinLookController(this, 10);
 
     }
-
-
 
     public boolean canBreatheUnderwater() {
         return true;

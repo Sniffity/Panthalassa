@@ -1,16 +1,15 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMosasaurus;
+import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAG;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -51,12 +50,17 @@ public class PanthalassaEntityTypes {
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_vehicle").toString()));
 
 
+
+    public static void spawnPlacements() {
+        EntitySpawnPlacementRegistry.register(KRONOSAURUS.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityKronosaurus::canKronosaurusSpawn);
+    }
+
     @SuppressWarnings("deprecated")
     public static void setupEntityTypeAttributes (){
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
         GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
         GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
-        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityArchelon.archelonAttributes().build());
-
+//        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityMosasaurus.archelonAttributes().build());
     }
+
 }
