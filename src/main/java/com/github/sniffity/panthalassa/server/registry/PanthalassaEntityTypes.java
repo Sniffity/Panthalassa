@@ -49,18 +49,12 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_vehicle").toString()));
 
-
-
-    public static void spawnPlacements() {
-        EntitySpawnPlacementRegistry.register(KRONOSAURUS.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityKronosaurus::canKronosaurusSpawn);
-    }
-
     @SuppressWarnings("deprecated")
     public static void setupEntityTypeAttributes (){
         GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
         GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
         GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
-//        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityMosasaurus.archelonAttributes().build());
+        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
     }
 
 }

@@ -96,12 +96,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     }
 
-    public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type,IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        System.out.println("canKronosaurusSpawn called with BlockPos: " +pos);
-        return true;
-    }
-
-
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
