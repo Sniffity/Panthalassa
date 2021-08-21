@@ -1,9 +1,12 @@
 package com.github.sniffity.panthalassa.server.events;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.server.entity.creature.spawner.KronosaurusSpawner;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,13 +31,21 @@ public class PanthalassaEventListener {
     public static void onPlayerDamage(LivingHurtEvent event){
         if (event.getEntityLiving() instanceof PlayerEntity) {
            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-        if(player != null) {
+           if(player != null) {
             Entity vehicle = player.getVehicle();
             if (vehicle instanceof PanthalassaVehicle) {
                 event.setCanceled(true);
                 vehicle.hurt(event.getSource(),event.getAmount());
             }
+           }
         }
+    }
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event){
+        KronosaurusSpawner kronosaurusSpawner = new KronosaurusSpawner();
+        if (event.world instanceof  ServerWorld){
+            kronosaurusSpawner.tick((ServerWorld) event.world);
         }
     }
 }
