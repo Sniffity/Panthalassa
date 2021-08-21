@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.events;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.server.entity.creature.spawner.ArchelonSpawner;
 import com.github.sniffity.panthalassa.server.entity.creature.spawner.KronosaurusSpawner;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.entity.Entity;
@@ -44,8 +45,11 @@ public class PanthalassaEventListener {
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event){
         KronosaurusSpawner kronosaurusSpawner = new KronosaurusSpawner();
+        ArchelonSpawner archelonSpawner = new ArchelonSpawner();
+
         if (event.world instanceof  ServerWorld){
             kronosaurusSpawner.tick((ServerWorld) event.world);
+            archelonSpawner.tick((ServerWorld) event.world);
         }
     }
 }
