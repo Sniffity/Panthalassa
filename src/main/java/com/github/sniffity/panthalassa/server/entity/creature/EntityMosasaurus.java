@@ -131,7 +131,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         }
     }
 
-    public static AttributeModifierMap.MutableAttribute archelonAttributes() {
+    public static AttributeModifierMap.MutableAttribute mosasaurusAttributes() {
         return MobEntity.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 35)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
