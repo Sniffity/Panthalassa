@@ -81,7 +81,6 @@ public final class Panthalassa {
 		event.enqueueWork(() -> {
 			PanthalassaStructures.setupStructures();
 			PanthalassaConfiguredStructures.registerConfiguredStructures();
-			PanthalassaEntityTypes.spawnPlacements();
 		});
 	}
 
