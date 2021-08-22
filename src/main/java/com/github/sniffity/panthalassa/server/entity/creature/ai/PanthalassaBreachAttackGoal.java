@@ -1,6 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
+import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -15,7 +15,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class PanthalassaBreachAttackGoal extends Goal {
-    protected final EntityMegalodon attacker;
+    protected final IBreachable panthalassaBreachableEntity;
+    protected final PanthalassaEntity attacker;
     private final double speedTowardsTarget;
     private boolean step1Done;
     private boolean step2Done;
@@ -26,8 +27,9 @@ public class PanthalassaBreachAttackGoal extends Goal {
     private double step2Ticks;
     private double step3Ticks;
 
-    public PanthalassaBreachAttackGoal(EntityMegalodon creature, double speedIn) {
-        this.attacker = creature;
+    public PanthalassaBreachAttackGoal(IBreachable creature, double speedIn) {
+        this.panthalassaBreachableEntity = creature;
+        this.attacker = (PanthalassaEntity) creature;
         this.speedTowardsTarget = speedIn;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
@@ -35,7 +37,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = attacker.getTarget();
-        if (attacker.getBreachCooldown()>0){
+        if (panthalassaBreachableEntity.getBreachCooldown()>0){
             return false;
         }
 
@@ -98,7 +100,9 @@ public class PanthalassaBreachAttackGoal extends Goal {
     public boolean moveStep1() {
         step1Ticks = ++step1Ticks;
         LivingEntity target = attacker.getTarget();
-        Vector3d strikePos = new Vector3d(target.getX(), target.getY() - 10, target.getZ());
+        Vector3d strikePos;
+        assert target != null;
+        strikePos = new Vector3d(target.getX(), target.getY() - 10, target.getZ());
         attacker.getNavigation().moveTo(strikePos.x,strikePos.y,strikePos.z,speedTowardsTarget);
         return (attacker.distanceToSqr(target.getX(), target.getY() - 10, target.getZ()) <= 2);
     }
@@ -106,7 +110,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
     public boolean moveStep2(){
         step2Ticks = ++step2Ticks;
         LivingEntity target = attacker.getTarget();
-        attacker.setIsBreaching(true);
+        panthalassaBreachableEntity.setIsBreaching(true);
+        assert target != null;
         attacker.getNavigation().moveTo(target.getX(),target.getY(),target.getZ(),speedTowardsTarget*4);
         return attacker.distanceTo(target) < 2.0F;
     }
@@ -120,14 +125,14 @@ public class PanthalassaBreachAttackGoal extends Goal {
         attacker.setAggressive(false);
         attacker.getNavigation().stop();
         attacker.isTryingToBreach = false;
-        attacker.setIsBreaching(false);
+        panthalassaBreachableEntity.setIsBreaching(false);
         step1Ticks = 0;
         step2Ticks = 0;
         step3Ticks = 0;
         step1Done = false;
         step2Done = false;
         step3Done = false;
-        attacker.setBreachCooldown(600);
+        panthalassaBreachableEntity.setBreachCooldown(600);
         if (!attacker.getPassengers().isEmpty()) {
             attacker.ejectPassengers();
         }
@@ -138,6 +143,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         LivingEntity target = attacker.getTarget();
         if (!step1Done) {
             if (moveStep1()){
+                assert target != null;
                 attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
                 step1Done = true;
             }
@@ -153,8 +159,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
                     } else {
                         target.startRiding(attacker);
                     }
-                    if (attacker.getDeltaMovement().y < 1.5D) {
-                        attacker.setDeltaMovement(attacker.getDeltaMovement().x,1.5D,attacker.getDeltaMovement().z);
+                    if (attacker.getDeltaMovement().y < 2.0D) {
+                        attacker.setDeltaMovement(attacker.getDeltaMovement().x,2.0D,attacker.getDeltaMovement().z);
                     }
                 }
             } else {
@@ -165,8 +171,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 } else {
                     target.startRiding(attacker);
                 }
-                if (attacker.getDeltaMovement().y < 1.5D) {
-                    attacker.setDeltaMovement(attacker.getDeltaMovement().x,1.5D,attacker.getDeltaMovement().z);
+                if (attacker.getDeltaMovement().y < 2.0D) {
+                    attacker.setDeltaMovement(attacker.getDeltaMovement().x,2.0D,attacker.getDeltaMovement().z);
                 }
             }
         }
@@ -177,7 +183,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 if (!attacker.getPassengers().isEmpty()) {
                     attacker.ejectPassengers();
                 }
-                attacker.setIsBreaching(false);
+                panthalassaBreachableEntity.setIsBreaching(false);
                 step3Done = true;
             } else if (step3Ticks>30 && attacker.isInWater()){
                 crushVehicleandPassengers();
