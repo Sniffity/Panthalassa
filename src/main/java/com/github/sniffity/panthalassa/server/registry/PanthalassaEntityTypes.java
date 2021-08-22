@@ -64,7 +64,7 @@ public class PanthalassaEntityTypes {
         GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
         GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
 
-        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityThalassomedon.thalassomedonAttributes().build());
+        GlobalEntityTypeAttributes.put(THALASSOMEDON.get(), EntityThalassomedon.thalassomedonAttributes().build());
 
     }
 
