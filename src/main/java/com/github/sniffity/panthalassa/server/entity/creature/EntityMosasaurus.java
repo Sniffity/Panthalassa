@@ -25,22 +25,19 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
 import javax.annotation.Nullable;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob {
     public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
-
     public float prevYRot;
     public float deltaYRot;
     public float prevXRot;
     public float deltaXRot;
     public float adjustYaw;
     public float adjustPitch;
-    public float adjustment = 0.15F;
+    public float adjustment = 0.030F;
     public static final int AVOID_DISTANCE = 6;
-
 
     private AnimationFactory factory = new AnimationFactory(this);
 
