@@ -44,8 +44,6 @@ public class ClientHandler {
                 RenderMosasaurus::new);
 
 
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.THALASSOMEDON.get(),
-                RenderThalassomedon::new);
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 manager -> new RenderMRSV(manager));
