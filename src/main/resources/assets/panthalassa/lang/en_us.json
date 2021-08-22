@@ -21,5 +21,8 @@
 
     "entity.panthalassa.kronosaurus": "Kronosaurus",
     "entity.panthalassa.megalodon": "Megalodon",
-    "entity.panthalassa.archelon": "Archelon"
+    "entity.panthalassa.archelon": "Archelon",
+    "entity.panthalassa.mosasaurus": "Mosasaurus",
+
+    "entity.panthalassa.thalassomedon": "Thalassomedon"
 }
