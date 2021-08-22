@@ -30,21 +30,13 @@ public class PanthalassaEntityTypes {
 
     public static final RegistryObject<EntityType<EntityArchelon>> ARCHELON = ENTITY_TYPES.register ("archelon",()->
             EntityType.Builder.of(EntityArchelon::new,EntityClassification.CREATURE)
-                    .sized(1.0F, 1.0F)
+                    .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "archelon").toString()));
 
     public static final RegistryObject<EntityType<EntityMosasaurus>> MOSASAURUS = ENTITY_TYPES.register ("mosasaurus",()->
             EntityType.Builder.of(EntityMosasaurus::new,EntityClassification.CREATURE)
-                    .sized(1.0F, 1.0F)
+                    .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "mosasaurus").toString()));
-
-
-
-
-    public static final RegistryObject<EntityType<EntityThalassomedon>> THALASSOMEDON = ENTITY_TYPES.register ("thalassomedon",()->
-            EntityType.Builder.of(EntityThalassomedon::new,EntityClassification.CREATURE)
-                    .sized(1.0F, 1.0F)
-                    .build(new ResourceLocation(Panthalassa.MODID, "thalassomedon").toString()));
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
@@ -63,8 +55,6 @@ public class PanthalassaEntityTypes {
         GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
         GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
         GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
-
-        GlobalEntityTypeAttributes.put(THALASSOMEDON.get(), EntityThalassomedon.thalassomedonAttributes().build());
 
     }
 
