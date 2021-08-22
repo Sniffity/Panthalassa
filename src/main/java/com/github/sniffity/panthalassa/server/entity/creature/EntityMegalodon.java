@@ -28,7 +28,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
-public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob {
+public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
     public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
@@ -153,18 +153,22 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         super.registerGoals();
     }
 
+    @Override
     public void setIsBreaching(boolean breaching) {
         this.entityData.set(IS_BREACHING,breaching);
     }
 
+    @Override
     public boolean getIsBreaching() {
         return this.entityData.get(IS_BREACHING);
     }
 
+    @Override
     public void setBreachCooldown(float breachCooldown) {
         this.entityData.set(BREACH_COOLDOWN,breachCooldown);
     }
 
+    @Override
     public float getBreachCooldown() {
         return this.entityData.get(BREACH_COOLDOWN);
     }

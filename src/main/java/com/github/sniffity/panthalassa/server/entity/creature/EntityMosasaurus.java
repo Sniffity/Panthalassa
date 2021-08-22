@@ -14,6 +14,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -27,7 +28,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
-public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob {
+public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
     public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
     public float prevYRot;
@@ -36,12 +37,14 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public float deltaXRot;
     public float adjustYaw;
     public float adjustPitch;
-    public float adjustment = 0.030F;
+    public float adjustment = 0.020F;
     public static final int AVOID_DISTANCE = 6;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMosasaurus.class, DataSerializers.INT);
+    protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> BREACH_COOLDOWN = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.FLOAT);
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -51,15 +54,12 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.test", true));
+        if (getIsBreaching()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.breach", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
     }
-
-
-
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -78,6 +78,14 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     }
 */
 
+    @Override
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            Vector3d vector3d = (new Vector3d((double)0, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+            passenger.setPos(this.getX() + vector3d.x, this.getY() + 5.0D, this.getZ() + vector3d.z);
+        }
+    }
+
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
@@ -87,13 +95,15 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(IS_BREACHING, Boolean.FALSE);
+        this.entityData.define(BREACH_COOLDOWN, 0.00F);
         super.defineSynchedData();
     }
-
 
     @Override
     public void tick() {
         super.tick();
+        setBreachCooldown((getBreachCooldown())-1);
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
         if (adjustYaw > deltaYRot) {
@@ -139,7 +149,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     }
 
     public void registerGoals() {
-//        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
+        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.2, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.6));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, AVOID_DISTANCE));
@@ -149,7 +159,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityMosasaurus) && !(entity instanceof EntityArchelon)));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
         super.registerGoals();
-
     }
 
     public void setAirSupplyLocal(int airSupply) {
@@ -158,5 +167,25 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     public int getAirSupplyLocal() {
         return this.entityData.get(AIR_SUPPLY);
+    }
+
+    @Override
+    public void setIsBreaching(boolean breaching) {
+        this.entityData.set(IS_BREACHING,breaching);
+    }
+
+    @Override
+    public boolean getIsBreaching() {
+        return this.entityData.get(IS_BREACHING);
+    }
+
+    @Override
+    public void setBreachCooldown(float breachCooldown) {
+        this.entityData.set(BREACH_COOLDOWN,breachCooldown);
+    }
+
+    @Override
+    public float getBreachCooldown() {
+        return this.entityData.get(BREACH_COOLDOWN);
     }
 }
