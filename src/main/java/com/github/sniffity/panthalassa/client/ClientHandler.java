@@ -4,10 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
-import com.github.sniffity.panthalassa.client.render.entity.RenderArchelon;
-import com.github.sniffity.panthalassa.client.render.entity.RenderKronosaurus;
-import com.github.sniffity.panthalassa.client.render.entity.RenderMegalodon;
-import com.github.sniffity.panthalassa.client.render.entity.RenderMosasaurus;
+import com.github.sniffity.panthalassa.client.render.entity.*;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAG;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
@@ -45,6 +42,10 @@ public class ClientHandler {
                 RenderArchelon::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MOSASAURUS.get(),
                 RenderMosasaurus::new);
+
+
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.THALASSOMEDON.get(),
+                RenderThalassomedon::new);
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 manager -> new RenderMRSV(manager));
