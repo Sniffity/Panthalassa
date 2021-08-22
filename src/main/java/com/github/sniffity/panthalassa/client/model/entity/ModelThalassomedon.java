@@ -1,7 +1,6 @@
 package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityThalassomedon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
