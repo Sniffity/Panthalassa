@@ -73,12 +73,20 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     @Nullable
     protected Vector3d getPosition() {
         Vector3d travelVector = new Vector3d(this.creature.getDeltaMovement().x(), this.creature.getDeltaMovement().y(), this.creature.getDeltaMovement().z());
-        Vector3d vector = vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector);
+        Vector3d vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector);
 
         for (int i = 0; vector != null && !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER) && i++ < 15;
             vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector))
         {}
         if (vector != null) {
+
+            Vector3d creaturePos = this.creature.position();
+            double distance = creaturePos.subtract(vector).length();
+
+            if (distance < 10) {
+                return null;
+            }
+
             for (int i = 0; i <= avoidDistance; i++) {
                 if (this.creature.level.getBlockState(new BlockPos(vector).north(i)).canOcclude()) {
                     vector = null;
