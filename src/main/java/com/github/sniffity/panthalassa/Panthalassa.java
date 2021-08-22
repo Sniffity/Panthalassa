@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa;
 
+import com.github.sniffity.panthalassa.client.ClientHandler;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.mojang.serialization.Codec;
@@ -77,6 +78,7 @@ public final class Panthalassa {
 	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
 		PanthalassaPacketHandler.register();
+
 		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();});
 		event.enqueueWork(() -> {
 			PanthalassaStructures.setupStructures();

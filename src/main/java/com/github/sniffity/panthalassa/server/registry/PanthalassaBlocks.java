@@ -2,9 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
-import com.github.sniffity.panthalassa.server.block.BlockPortal;
-import com.github.sniffity.panthalassa.server.block.BlockPortalFrame;
-import com.github.sniffity.panthalassa.server.block.BlockPrimordialStalk;
+import com.github.sniffity.panthalassa.server.block.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -116,4 +114,19 @@ public class PanthalassaBlocks {
                     .noDrops()
                     .lightLevel((n) -> 15)));
 
+    public static final RegistryObject<AbstractTopPlantBlock> KRETHROSS = BLOCKS.register("krethross",
+            () -> new BlockKrethrossTop(AbstractBlock.Properties.of(Material.WATER_PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .lightLevel((n) -> 15)
+                    .sound(SoundType.WET_GRASS)));
+
+    public static final RegistryObject<AbstractPlantBlock> KRETHROSS_PLANT = BLOCKS.register("krethross_plant",
+            () -> new BlockKrethross(AbstractBlock.Properties.of(Material.WATER_PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .lightLevel((n) -> 15)
+                    .sound(SoundType.WET_GRASS)));
 }

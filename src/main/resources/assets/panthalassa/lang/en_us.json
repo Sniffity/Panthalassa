@@ -13,16 +13,17 @@
 
     "block.panthalassa.primordial_stalk": "Primordial Stalk",
 
+    "block.panthalassa.krethross": "Krethross",
+    "block.panthalassa.krethross_plant": "Krethross Plant",
+
+
     "block.panthalassa.panthalassa_portal_frame": "Panthalassa Portal Frame",
     "block.panthalassa.panthalassa_portal": "Panthalassa Portal",
 
     "entity.panthalassa.manta_ray_submersible_vehicle": "Manta Ray Submersible Vehicle",
-    "entity.panthalassa.abyss_glider_vehicle": "Abyss Glider Vehicle",
 
     "entity.panthalassa.kronosaurus": "Kronosaurus",
     "entity.panthalassa.megalodon": "Megalodon",
     "entity.panthalassa.archelon": "Archelon",
-    "entity.panthalassa.mosasaurus": "Mosasaurus",
-
-    "entity.panthalassa.thalassomedon": "Thalassomedon"
+    "entity.panthalassa.mosasaurus": "Mosasaurus"
 }

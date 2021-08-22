@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "panthalassa:block/krethross_plant"
+  }
+}
