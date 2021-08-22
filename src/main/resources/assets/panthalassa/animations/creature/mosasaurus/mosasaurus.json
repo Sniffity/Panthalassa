@@ -1,18 +1,14 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.mosasaurus.test": {
-			"animation_length": 0.56,
+		"animation.mosasaurus.breach": {
+			"loop": true,
 			"bones": {
-				"torso": {
-					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.56": {
-							"vector": [0, 21, 0]
-						}
-					}
+				"head": {
+					"rotation": [-20, 0, 0]
+				},
+				"lower_jaw": {
+					"rotation": [20, 0, 0]
 				}
 			}
 		}
