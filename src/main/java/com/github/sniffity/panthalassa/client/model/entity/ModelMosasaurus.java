@@ -37,19 +37,12 @@ public class ModelMosasaurus extends AnimatedGeoModel<EntityMosasaurus>
         if (entity.isInWater() || !entity.isOnGround()) {
             (this.getAnimationProcessor().getBone("torso")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z))*5)));
         }
-
         (this.getAnimationProcessor().getBone("lower_torso")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
         (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
         (this.getAnimationProcessor().getBone("tail_section_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
         (this.getAnimationProcessor().getBone("tail_section_2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
         (this.getAnimationProcessor().getBone("neck")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*3.0F);
 
-        (this.getAnimationProcessor().getBone("torso")).setRotationZ((float)(entity.adjustYaw*(PI/180.0F))*4.0F);
-        (this.getAnimationProcessor().getBone("lower_torso")).setRotationZ((float)(entity.adjustYaw*(PI/180.0F))*4.0F);
-        (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotationZ((float)(entity.adjustYaw*(PI/180.0F))*4.0F);
-        (this.getAnimationProcessor().getBone("tail_section_1")).setRotationZ((float)(entity.adjustYaw*(PI/180.0F))*4.0F);
-        (this.getAnimationProcessor().getBone("tail_section_2")).setRotationZ((float)(entity.adjustYaw*(PI/180.0F))*4.0F);
-        (this.getAnimationProcessor().getBone("neck")).setRotationZ((float)(entity.adjustYaw*(PI/180.0F))*4.0F);
     }
 
     @Override
