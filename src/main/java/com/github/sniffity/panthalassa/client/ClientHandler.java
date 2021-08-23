@@ -5,10 +5,8 @@ import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
 import com.github.sniffity.panthalassa.client.render.entity.*;
-import com.github.sniffity.panthalassa.client.render.vehicle.RenderAG;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderPCSV;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
-import com.github.sniffity.panthalassa.server.block.BlockKrethross;
-import com.github.sniffity.panthalassa.server.block.BlockKrethrossTop;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.block.Block;
@@ -21,7 +19,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.BlockItem;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -63,8 +60,8 @@ public class ClientHandler {
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 manager -> new RenderMRSV(manager));
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.AG.get(),
-                manager -> new RenderAG(manager));
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.PCSV.get(),
+                manager -> new RenderPCSV(manager));
     }
 
     public static final KeyBinding KEY_VEHICLE_LIGHTS = new KeyBinding("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");

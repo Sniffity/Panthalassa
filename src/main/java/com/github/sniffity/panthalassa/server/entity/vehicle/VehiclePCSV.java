@@ -10,8 +10,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -26,14 +24,17 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
+public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
 
     public float deltaRotation;
+    boolean prevTickNet;
+    boolean animationFlag1;
+    boolean animationFlag2;
 
-    protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehicleAG.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehiclePCSV.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehiclePCSV.class, DataSerializers.BOOLEAN);
 
-    public VehicleAG(EntityType<? extends PanthalassaVehicle> type, World world) {
+    public VehiclePCSV(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
         this.waterSpeed = 0.04F;
         this.landSpeed = 0.004F;
@@ -86,9 +87,11 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if ((this.isSwimming()) || (event.isMoving() && this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mrsv.roll", true));
-            return PlayState.CONTINUE;
+        if (animationFlag1) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pcsv.hook_deploy", false));
+            return PlayState.STOP;
+        } else if (animationFlag2) {
+
         }
         return PlayState.STOP;
     }
@@ -107,6 +110,12 @@ public class VehicleAG extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void tick() {
+        if (getNetActivated() && prevTickNet != getNetActivated()){
+            animationFlag1 = true;
+        } else {
+            animationFlag1 = false;
+        }
+
         if (getNetActivated() && this.isInWater() && this.isAlive() && !getNetCatch()) {
             if (attemptNet(this)) ;
             {
