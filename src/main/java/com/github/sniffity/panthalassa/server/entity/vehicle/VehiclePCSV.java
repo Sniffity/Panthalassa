@@ -27,9 +27,6 @@ import java.util.List;
 public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
 
     public float deltaRotation;
-    boolean prevTickNet;
-    boolean animationFlag1;
-    boolean animationFlag2;
 
     protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehiclePCSV.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehiclePCSV.class, DataSerializers.BOOLEAN);
@@ -87,13 +84,12 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
 
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (animationFlag1) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pcsv.hook_deploy", false));
+        if (getNetCatch()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pcsv.hook_deploy", false).addAnimation("animation.pcsv.hook_deploy_hold", true));
+            return PlayState.CONTINUE;
+        } else{
             return PlayState.STOP;
-        } else if (animationFlag2) {
-
         }
-        return PlayState.STOP;
     }
 
     @Override
@@ -110,14 +106,9 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void tick() {
-        if (getNetActivated() && prevTickNet != getNetActivated()){
-            animationFlag1 = true;
-        } else {
-            animationFlag1 = false;
-        }
 
         if (getNetActivated() && this.isInWater() && this.isAlive() && !getNetCatch()) {
-            if (attemptNet(this)) ;
+            if (attemptNet(this))
             {
                 setNetCatch(true);
             }
@@ -182,7 +173,9 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
                             closestDistance = distance;
                             if (closestDistance < 5) {
                                 testEntity.startRiding(this);
-                                return true;
+                                if (!this.getPassengers().isEmpty()){
+                                    return true;
+                                }
                             }
                         } else {
                             return false;
@@ -233,7 +226,7 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
             if (this.getPassengers().size() > 1) {
                 int i = this.getPassengers().indexOf(passenger);
                 if (i == 0) {
-                    f = 0.2F;
+                    f = 0.4F;
                     f2 = 0.0F;
                 } else {
                     f = -1.0F;

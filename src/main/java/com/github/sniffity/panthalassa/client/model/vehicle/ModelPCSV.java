@@ -9,20 +9,16 @@ public class ModelPCSV extends AnimatedGeoModel<VehiclePCSV>
 {
     @Override
     public ResourceLocation getModelLocation(VehiclePCSV object) {
-        return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/mrsv/mrsv.geo.json");
+        return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/pcsv/pcsv.geo.json");
     }
-
-    public ResourceLocation texture_lightsOff = new ResourceLocation(Panthalassa.MODID,"textures/vehicle/mrsv/mrsv.png");
-
-    public ResourceLocation texture_lightsOn = new ResourceLocation(Panthalassa.MODID,"textures/vehicle/mrsv/mrsv_lon.png");
 
     @Override
     public ResourceLocation getTextureLocation(VehiclePCSV object) {
-        return object.getLightsOn() ? texture_lightsOn : texture_lightsOff;
+        return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/pcsv/pcsv.png");
     }
 
     @Override
     public ResourceLocation getAnimationFileLocation(VehiclePCSV animatable) {
-        return new ResourceLocation(Panthalassa.MODID,"animations/vehicle/mrsv/mrsv.png");
+        return new ResourceLocation(Panthalassa.MODID,"animations/vehicle/pcsv/pcsv.json");
     }
 }
