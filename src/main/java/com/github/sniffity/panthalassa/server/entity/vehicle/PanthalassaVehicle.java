@@ -3,6 +3,8 @@ package com.github.sniffity.panthalassa.server.entity.vehicle;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -64,6 +66,8 @@ public class PanthalassaVehicle extends Entity {
     public BlockPos prevPos;
     public BlockState blockLightWater = PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState();
     public BlockState blockLightAir = PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState();
+    Minecraft mc = Minecraft.getInstance();
+
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
@@ -142,6 +146,7 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public ActionResultType interact(PlayerEntity player, Hand hand) {
         if (!this.level.isClientSide && canAddPassenger(this)) {
+            mc.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
             return player.startRiding(this) ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {
             return ActionResultType.SUCCESS;
