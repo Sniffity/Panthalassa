@@ -19,6 +19,6 @@ public class ModelMRSV extends AnimatedGeoModel<VehicleMRSV>
 
     @Override
     public ResourceLocation getAnimationFileLocation(VehicleMRSV animatable) {
-        return new ResourceLocation(Panthalassa.MODID,"animations/vehicle/mrsv/mrsv.png");
+        return new ResourceLocation(Panthalassa.MODID,"animations/vehicle/mrsv/mrsv.json");
     }
 }
