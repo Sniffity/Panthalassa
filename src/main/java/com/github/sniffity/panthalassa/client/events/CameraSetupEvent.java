@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.client.events;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.settings.PointOfView;
@@ -11,6 +13,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.system.CallbackI;
 
 /**
  * Panthalassa Mod - Class: CameraSetupEvent <br></br?>
@@ -28,11 +31,18 @@ public class CameraSetupEvent {
     public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
         Minecraft mc = Minecraft.getInstance();
         Entity vehicle = mc.player.getVehicle();
-        if (!(vehicle instanceof PanthalassaVehicle)) return;
+        if (!(vehicle instanceof PanthalassaVehicle))
+            return;
         PointOfView view = mc.options.getCameraType();
 
         if (view == PointOfView.THIRD_PERSON_BACK) {
-            event.getInfo().move(-calcCameraDistance(8.0,vehicle), 1, 0);
+            if (vehicle instanceof VehicleMRSV) {
+                event.getInfo().move(-calcCameraDistance(8.0, vehicle), 1, 0);
+            }
+            if (vehicle instanceof VehiclePCSV) {
+                event.getInfo().move(-calcCameraDistance(12.0, vehicle), 1, 0);
+
+            }
         }
     }
 
