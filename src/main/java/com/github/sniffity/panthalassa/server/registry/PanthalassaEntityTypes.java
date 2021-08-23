@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,14 +48,4 @@ public class PanthalassaEntityTypes {
                     .of(VehiclePCSV::new,EntityClassification.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "proteus_class_submersible_vehicle").toString()));
-
-    @SuppressWarnings("deprecated")
-    public static void setupEntityTypeAttributes (){
-        GlobalEntityTypeAttributes.put(KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
-        GlobalEntityTypeAttributes.put(MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
-        GlobalEntityTypeAttributes.put(ARCHELON.get(), EntityArchelon.archelonAttributes().build());
-        GlobalEntityTypeAttributes.put(MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
-
-    }
-
 }

@@ -1,6 +1,10 @@
 package com.github.sniffity.panthalassa;
 
 import com.github.sniffity.panthalassa.client.ClientHandler;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityMosasaurus;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.mojang.serialization.Codec;
@@ -17,6 +21,7 @@ import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -69,17 +74,18 @@ public final class Panthalassa {
 		GeckoLib.initialize();
 		MinecraftForge.EVENT_BUS.register(this);
 		modBus.addListener(this::setup);
+		modBus.addListener(this::registerEntityAttributes);
+
 
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
 		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
 		forgeBus.addListener(EventPriority.HIGH, this::biomeModification);
 	}
 
-	@SuppressWarnings("deprecated")
 	private void setup(final FMLCommonSetupEvent event){
 		PanthalassaPacketHandler.register();
 
-		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();});
+//		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();});
 		event.enqueueWork(() -> {
 			PanthalassaStructures.setupStructures();
 			PanthalassaConfiguredStructures.registerConfiguredStructures();
@@ -87,11 +93,15 @@ public final class Panthalassa {
 	}
 
 	public void biomeModification (final BiomeLoadingEvent event) {
-//		if (event.getName().equals(Biomes.WARM_OCEAN.getRegistryName())) {
 			event.getGeneration().getStructures().add(() -> PanthalassaConfiguredStructures.CONFIGURED_PANTHALASSA_LABORATORY);
-//		}
 	}
 
+	private void registerEntityAttributes(EntityAttributeCreationEvent event) {
+		event.put(PanthalassaEntityTypes.KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
+		event.put(PanthalassaEntityTypes.MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
+		event.put(PanthalassaEntityTypes.ARCHELON.get(), EntityArchelon.archelonAttributes().build());
+		event.put(PanthalassaEntityTypes.MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
+	}
 
 	private static Method GETCODEC_METHOD;
 	public void addDimensionalSpacing(final WorldEvent.Load event) {
