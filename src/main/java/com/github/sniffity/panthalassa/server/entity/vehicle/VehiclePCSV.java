@@ -226,8 +226,8 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
             if (this.getPassengers().size() > 1) {
                 int i = this.getPassengers().indexOf(passenger);
                 if (i == 0) {
-                    f = 0.4F;
-                    f2 = 0.0F;
+                    f = 0.0F;
+                    f2 = 0.5F;
                 } else {
                     f = -1.0F;
                     f2= -1.0F;
