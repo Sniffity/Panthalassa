@@ -43,8 +43,8 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     private AnimationFactory factory = new AnimationFactory(this);
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMosasaurus.class, DataSerializers.INT);
-    protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Float> BREACH_COOLDOWN = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMosasaurus.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> BREACH_COOLDOWN = EntityDataManager.defineId(EntityMosasaurus.class, DataSerializers.FLOAT);
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
