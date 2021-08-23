@@ -18,7 +18,15 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateFeatureConfig> {
     }
 
     public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+        boolean flag = false;
         while(true) {
+            if (!flag) {
+                double r = Math.floor(Math.random() * (81) + 20);
+                pos = new BlockPos(pos.getX(), r, pos.getZ());
+                flag = true;
+            }
+            double r = Math.floor(Math.random()*(81)+20);
+            pos = new BlockPos(pos.getX(), r, pos.getZ());
             label46: {
                 if (pos.getY() > 3) {
                     if (reader.getBlockState(pos.below()) == Blocks.WATER.defaultBlockState()) {
