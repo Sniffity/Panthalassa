@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.client.events;
 
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
@@ -47,6 +48,10 @@ public class RenderTickEvent {
         String vehicleText;
         if (vehicle instanceof VehicleMRSV) {
             vehicleText = "MANTA RAY SUBMERSIBLE VEHICLE";
+            game.font.drawShadow(matrixStack, TextFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
+        }
+        if (vehicle instanceof VehicleAGII) {
+            vehicleText = "ABYSS GLIDER II SUBMERSIBLE VEHICLE";
             game.font.drawShadow(matrixStack, TextFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
         }
 

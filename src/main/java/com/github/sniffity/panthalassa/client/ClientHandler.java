@@ -5,7 +5,7 @@ import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
 import com.github.sniffity.panthalassa.client.render.entity.*;
-import com.github.sniffity.panthalassa.client.render.vehicle.RenderPCSV;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
@@ -60,8 +60,8 @@ public class ClientHandler {
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 manager -> new RenderMRSV(manager));
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.PCSV.get(),
-                manager -> new RenderPCSV(manager));
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.AGII.get(),
+                manager -> new RenderAGII(manager));
     }
 
     public static final KeyBinding KEY_VEHICLE_LIGHTS = new KeyBinding("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");

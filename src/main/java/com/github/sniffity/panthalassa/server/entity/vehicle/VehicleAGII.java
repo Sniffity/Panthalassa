@@ -24,14 +24,14 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
+public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     public float deltaRotation;
 
-    protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehiclePCSV.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehiclePCSV.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehicleAGII.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehicleAGII.class, DataSerializers.BOOLEAN);
 
-    public VehiclePCSV(EntityType<? extends PanthalassaVehicle> type, World world) {
+    public VehicleAGII(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
         this.waterSpeed = 0.04F;
         this.landSpeed = 0.004F;
@@ -85,7 +85,7 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (getNetCatch()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pcsv.hook_deploy", false).addAnimation("animation.pcsv.hook_deploy_hold", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ag2.hook_deploy", false).addAnimation("animation.ag2.hook_deploy_hold", true));
             return PlayState.CONTINUE;
         } else{
             return PlayState.STOP;
