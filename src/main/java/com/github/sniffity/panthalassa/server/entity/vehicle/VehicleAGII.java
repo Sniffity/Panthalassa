@@ -79,7 +79,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public double getPassengersRidingOffset() {
-        return 0.0D;
+        return 0.6D;
     }
 
 
@@ -227,7 +227,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
                 int i = this.getPassengers().indexOf(passenger);
                 if (i == 0) {
                     f = 0.0F;
-                    f2 = 0.5F;
+                    f2 = 10F;
                 } else {
                     f = -1.0F;
                     f2= -1.0F;
@@ -237,7 +237,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
             Vector3d vector3d = (new Vector3d((double)f, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
             passenger.setPos(this.getX() + vector3d.x, this.getY() + (double)f1+f2, this.getZ() + vector3d.z);
             passenger.yRot += this.deltaRotation;
-            passenger.setYHeadRot(passenger.getYHeadRot() + this.deltaRotation);
+            passenger.setYHeadRot((passenger.getYHeadRot() + this.deltaRotation));
         }
     }
 

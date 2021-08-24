@@ -79,7 +79,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public double getPassengersRidingOffset() {
-        return 0.0D;
+        return 0.2D;
     }
 
 

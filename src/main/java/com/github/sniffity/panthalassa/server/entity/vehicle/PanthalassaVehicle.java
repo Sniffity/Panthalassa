@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
+import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -47,6 +49,8 @@ public class PanthalassaVehicle extends Entity {
     protected static final DataParameter<Integer> FLOOR_DISTANCE = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
     protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> SONAR_LAST_CHECK = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Integer> ENTRY_X = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> ENTRY_Z = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
 
     public float waterSpeed;
     public float landSpeed;
@@ -67,6 +71,7 @@ public class PanthalassaVehicle extends Entity {
     public BlockState blockLightWater = PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState();
     public BlockState blockLightAir = PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState();
     Minecraft mc = Minecraft.getInstance();
+    public RegistryKey<World> prevDimension;
 
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
@@ -80,8 +85,8 @@ public class PanthalassaVehicle extends Entity {
         this.entityData.define(FLOOR_DISTANCE, -1);
         this.entityData.define(LIGHTS_ON, Boolean.FALSE);
         this.entityData.define(SONAR_LAST_CHECK, 0.00F);
-
-
+        this.entityData.define(ENTRY_X, 0);
+        this.entityData.define(ENTRY_Z, 0);
     }
 
     @Override
@@ -158,11 +163,6 @@ public class PanthalassaVehicle extends Entity {
         return this.getPassengers().size() < 1;
     }
 
-    @Override
-    public double getPassengersRidingOffset() {
-        return 0.0D;
-    }
-
     @Nullable
     @Override
     public Entity getControllingPassenger() {
@@ -185,6 +185,16 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public void tick() {
         super.tick();
+
+        if (this.level.dimension() == PanthalassaDimension.PANTHALASSA && prevDimension != PanthalassaDimension.PANTHALASSA) {
+            setEntryX((int) this.position().x);
+            setEntryZ((int) this.position().z);
+        } else if (prevDimension == PanthalassaDimension.PANTHALASSA && this.level.dimension() != PanthalassaDimension.PANTHALASSA) {
+            setEntryX(0);
+            setEntryZ(0);
+        }
+
+
         List<Entity> passengers = this.getPassengers();
 
         if (!passengers.isEmpty()) {
@@ -247,7 +257,11 @@ public class PanthalassaVehicle extends Entity {
             }
 
         prevPos = this.blockPosition();
+        prevDimension = this.level.dimension();
+
         this.vehicleTick();
+
+
     }
 
 
@@ -526,6 +540,21 @@ public class PanthalassaVehicle extends Entity {
         return this.entityData.get(SONAR_LAST_CHECK);
     }
 
+    public void setEntryX(int x) {
+        this.entityData.set(ENTRY_X,x);
+    }
+
+    public float getEntryX() {
+        return this.entityData.get(ENTRY_X);
+    }
+
+    public void setEntryZ(int z) {
+        this.entityData.set(ENTRY_Z,z);
+    }
+
+    public float getEntryZ() {
+        return this.entityData.get(ENTRY_Z);
+    }
 
 
     public void respondKeybindSpecial() {

@@ -52,7 +52,7 @@ public class RenderTickEvent {
         }
         if (vehicle instanceof VehicleAGII) {
             vehicleText = "ABYSS GLIDER II SUBMERSIBLE VEHICLE";
-            game.font.drawShadow(matrixStack, TextFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, TextFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
         }
 
         String vehicleIntegrity;
@@ -76,6 +76,23 @@ public class RenderTickEvent {
             depth = new DecimalFormat("0").format(vehicle.blockPosition().getY());
         }
         game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Depth: " + TextFormatting.YELLOW + depth, 10, 35, Color.WHITE.getRGB());
+
+
+        double x = vehicle.getEntryX();
+        double z = vehicle.getEntryZ();
+        String entryXText = new DecimalFormat("0").format(x);
+        String entryZText = new DecimalFormat("0").format(z);
+
+        if (x != 0) {
+            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry X: " + TextFormatting.YELLOW + entryXText, 10, 55, Color.WHITE.getRGB());
+        } else {
+            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry X: " + TextFormatting.YELLOW + "???", 10, 55, Color.WHITE.getRGB());
+        }
+        if (z != 0){
+            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry Z" + TextFormatting.YELLOW + entryZText, 10, 65, Color.WHITE.getRGB());
+        } else {
+            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry Z" + TextFormatting.YELLOW + "???", 10, 65, Color.WHITE.getRGB());
+        }
 
         double nlfDistance;
         String nlfDistanceText;
