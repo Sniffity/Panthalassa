@@ -26,7 +26,6 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
-import org.lwjgl.system.CallbackI;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -46,12 +45,13 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public static final int BLOCKED_DISTANCE = 6;
     public static final float SCHOOL_SPEED = 1.0F;
     public static final float SCHOOL_AVOID_RADIUS = 2.0F;
-    public static final float MAX_MOVE_SPEED = 5.0F;
+    public static final float MAX_MOVE_SPEED = 0.5F;
     public static int SCHOOL_MAX_SIZE = 4;
 
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
-    protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> SCHOOL_ID = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
+    protected static final DataParameter<Boolean> SCHOOLING = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -65,9 +65,9 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(SCHOOL_ID, 0);
+        this.entityData.define(SCHOOLING, Boolean.FALSE);
         this.entityData.define(AIR_SUPPLY, 300);
-        this.entityData.define(LEADER, Boolean.FALSE);
-
         super.defineSynchedData();
     }
 
@@ -136,7 +136,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
         if (this.isInWater()){
-            this.schoolMovement(this);
+            this.assignMovement(this);
             /*
             this.assignSchool(this);
             if (this.getSchooling()){
@@ -144,78 +144,50 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             }*/
         }
 
+        new Vector2f((float) this.getDeltaMovement().x, (float) this.getDeltaMovement().z);
+        RayTraceContext rayTrace = new RayTraceContext(this.position(), this.position().add((this.getLookAngle()).scale(10)), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null);
+        BlockRayTraceResult result = level.clip(rayTrace);
+        System.out.println(result.getType());
     }
 
-    protected void schoolMovement(EntityKronosaurus entityIn) {
-        List<EntityKronosaurus> school = level.getEntitiesOfClass(EntityKronosaurus.class, entityIn.getBoundingBox().inflate(20));
-        //Process the school, to ensure it has one single leader
-        processLeader(school);
-        //Instantiate vectors we will be working with...
+    protected void assignMovement(EntityKronosaurus entityIn) {
+
         Vector3d attract = new Vector3d(0,0,0);
         Vector3d repel = new Vector3d(0,0,0);
-        Vector3d follow;
+        Vector3d follow = new Vector3d(0,0,0);
         Vector3d avoid = new Vector3d(0,0,0);
         Vector3d newMovement = new Vector3d(0,0,0);
-
+        //Try to assign a school to this Kronosaurus...
+        List<EntityKronosaurus> school = level.getEntitiesOfClass(EntityKronosaurus.class, entityIn.getBoundingBox().inflate(8));
         //Remove this Kronosaurus from the school for operations...
         school.remove(this);
-        //Only carry out school operations if the school is not empty
         if (!school.isEmpty()) {
 //            attract = (processAttract(school));
 //            repel = (processRepel(school));
-            //Follow is calculated considering the speed of all Kronosaurus, but the leader will not have follow applied
             follow = (processFollow(school));
 
             // Now normalize the vectors to get just the directions, and scale by the amount you want each force to have. These values will need fine-tuning
-//            attract = attract.normalize().scale(0.005F);
-//            repel = repel.normalize().scale(0.5);
-            follow = follow.normalize().scale(0.05);
+//            attract = attract.normalize().scale(0.6);
+//            repel = repel.normalize().scale(1);
+            follow = follow.normalize().scale(0.2);
 
-            //Only those who are not leaders will have the follow component applied to them.
-            //Hence, the leader will retain its previous movement, the rest will adjust to leader.
-            //Of note: Leader is following RandomSwimmingAI and utilizing SwimmingHelper - it'll avoid obstacles on its own...
-            //Followers must still have some method for avoiding obstacles.
-            if (!this.getIsLeader()){
-                newMovement = entityIn.getDeltaMovement().add(attract).add(repel).add(follow);
-                this.lookAt(EntityAnchorArgument.Type.EYES, newMovement);
-            } else {
-                newMovement = entityIn.getDeltaMovement().add(attract).add(repel);
-            }
-
-            // CLAMP THE VECTOR IF ITS MOVING TOO FAST. OTHERWISE THEY WILL ACCELERATE TO INFINITE SPEEDS
-            if (newMovement.length() > MAX_MOVE_SPEED){
-                newMovement = newMovement.normalize().scale(MAX_MOVE_SPEED);
-            }
-            this.setDeltaMovement(newMovement);
+            newMovement = entityIn.getDeltaMovement().add(attract).add(repel).add(follow);
         }
 
-       // avoid = processAvoid();
-        //if (avoid !=null){
-        //    newMovement = avoid.subtract(newMovement);
-        //}
+        avoid = processAvoid();
+        if (avoid !=null){
+            newMovement = avoid.subtract(newMovement);
+        }
+
+        // CLAMP THE VECTOR IF ITS MOVING TOO FAST. OTHERWISE THEY WILL ACCELERATE TO INFINITE SPEEDS
+        if (newMovement.length() > MAX_MOVE_SPEED){
+            newMovement = newMovement.normalize().scale(MAX_MOVE_SPEED);
+        }
+
+        this.setDeltaMovement(newMovement);
+        this.lookAt(EntityAnchorArgument.Type.EYES, newMovement);
     }
 
-    protected void processLeader(List<EntityKronosaurus> school) {
-        //Create a new list with all the nearby Kronosaurus currently tagged as leaders
-        List<EntityKronosaurus> leaders = new ArrayList<>();
-        for (int i =0; i<school.size() && i<SCHOOL_MAX_SIZE; i++) {
-            EntityKronosaurus kronosaurus = school.get(i);
-            if (kronosaurus.getIsLeader()) {
-                leaders.add(kronosaurus);
-            }
-        }
-        //If we have more than one leader, reduce to one leader...
-        if (leaders.size()>1) {
-            for (int i = 1; i < leaders.size(); i++) {
-                EntityKronosaurus kronosaurus = school.get(i);
-                kronosaurus.setLeader(false);
-            }
-            //If we have no leaders, set the first one in the school as Leader
-        } else if (leaders.isEmpty()) {
-            school.get(0).setLeader(true);
-        }
-        //Only other possibility is that we have exactly one leader, in which case, do nothing...
-    }
 
 
     protected Vector3d processAttract(List<EntityKronosaurus> school) {
@@ -284,29 +256,22 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
 
     protected Vector3d processFollow(List<EntityKronosaurus> school) {
-        //We will proceed to set the speed of the followers in school to match that of the leader...
-        //Once again, by this point, we only have a single leader.
+        //Calculate the average speed of the school, excluding THIS Kronosaurus...
         int size = school.size();
         Vector3d speedVector = new Vector3d(0, 0, 0);
-
         for (int i = 0; i < size && i < 4; i++) {
             EntityKronosaurus kronosaurus = school.get(i);
-            if (kronosaurus.getIsLeader()){
-                speedVector =kronosaurus.getDeltaMovement();
-            }
+            speedVector = speedVector.add(kronosaurus.getDeltaMovement());
         }
-        //Vector3d averageSpeed = speedVector.scale(1.0f / (float) size);
+        Vector3d averageSpeed = speedVector.scale(1.0f / (float) size);
         //This vector will be scaled by SCHOOL_SPEED, which is a factor that scales all school "operations"
-        //Vector3d target = (speedVector.subtract(this.position())).normalize().scale(SCHOOL_SPEED);
-        Vector3d target = (speedVector.normalize().scale(SCHOOL_SPEED));
+        Vector3d target = averageSpeed.subtract(this.position()).normalize().scale(SCHOOL_SPEED);
         //From this vector, subtract the velocity vector of the Kronosaurus...
 
         //This creates a new Vector, follow, that will attempt to adjust speed of THIS Kronosaurus to the speed of the group...
         //Taking the speed of THIS Kronosaurus into account
         return target.subtract(this.getDeltaMovement());
     }
-
-
 
     protected Vector3d processAvoid() {
         //Once all school vectors have been calculated, or if the Kronosaurus is alone, perform a check around it, 7 block radius.
@@ -372,7 +337,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        //this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
 
     }
@@ -386,12 +351,12 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         return this.entityData.get(AIR_SUPPLY);
     }
 
-    public void setLeader(boolean leaderStatus) {
-        this.entityData.set(LEADER,leaderStatus);
+    public void setSchooling(boolean schoolStatus) {
+        this.entityData.set(SCHOOLING,schoolStatus);
     }
 
-    public boolean getIsLeader() {
-        return this.entityData.get(LEADER);
+    public boolean getSchooling() {
+        return this.entityData.get(SCHOOLING);
     }
 
 
