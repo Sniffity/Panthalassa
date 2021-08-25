@@ -10,6 +10,7 @@ import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,10 +20,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
@@ -46,7 +44,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public static final int BLOCKED_DISTANCE = 6;
     public static final float SCHOOL_SPEED = 1.0F;
     public static final float SCHOOL_AVOID_RADIUS = 2.0F;
-    public static final float MAX_MOVE_SPEED = 5.0F;
+    public static final float MAX_MOVE_SPEED = 0.8F;
     public static int SCHOOL_MAX_SIZE = 4;
 
 
@@ -147,15 +145,25 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     protected void schoolMovement(EntityKronosaurus entityIn) {
+        //Get the potential school of Kronosaurus
         List<EntityKronosaurus> school = level.getEntitiesOfClass(EntityKronosaurus.class, entityIn.getBoundingBox().inflate(20));
         //Process the school, to ensure it has one single leader
         processLeader(school);
+        EntityKronosaurus leaderKronosaurus = null;
+
+        for (int i = 0; i < school.size(); i++) {
+            EntityKronosaurus kronosaurus = school.get(i);
+            if (kronosaurus.getIsLeader()) {
+                leaderKronosaurus = kronosaurus;
+            }
+        }
+
         //Instantiate vectors we will be working with...
-        Vector3d attract = new Vector3d(0,0,0);
-        Vector3d repel = new Vector3d(0,0,0);
+        Vector3d attract = new Vector3d(0, 0, 0);
+        Vector3d repel = new Vector3d(0, 0, 0);
         Vector3d follow;
-        Vector3d avoid = new Vector3d(0,0,0);
-        Vector3d newMovement = new Vector3d(0,0,0);
+        Vector3d avoid = new Vector3d(0, 0, 0);
+        Vector3d newMovement;
 
         //Remove this Kronosaurus from the school for operations...
         school.remove(this);
@@ -169,36 +177,62 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             // Now normalize the vectors to get just the directions, and scale by the amount you want each force to have. These values will need fine-tuning
 //            attract = attract.normalize().scale(0.005F);
 //            repel = repel.normalize().scale(0.5);
-            follow = follow.normalize().scale(0.05);
+            follow = follow.normalize().scale(1.0);
 
             //Only those who are not leaders will have the follow component applied to them.
             //Hence, the leader will retain its previous movement, the rest will adjust to leader.
             //Of note: Leader is following RandomSwimmingAI and utilizing SwimmingHelper - it'll avoid obstacles on its own...
             //Followers must still have some method for avoiding obstacles.
-            if (!this.getIsLeader()){
+            if (!this.getIsLeader()) {
                 newMovement = entityIn.getDeltaMovement().add(attract).add(repel).add(follow);
-                this.lookAt(EntityAnchorArgument.Type.EYES, newMovement);
             } else {
                 newMovement = entityIn.getDeltaMovement().add(attract).add(repel);
             }
 
-            // CLAMP THE VECTOR IF ITS MOVING TOO FAST. OTHERWISE THEY WILL ACCELERATE TO INFINITE SPEEDS
-            if (newMovement.length() > MAX_MOVE_SPEED){
-                newMovement = newMovement.normalize().scale(MAX_MOVE_SPEED);
+            // Clamping the vector to the leader's speed, to ensure the followers do not overtake leader in position
+            //Initialization of leaderSpeed to 1.0F is present just in case there is no leader, to avoid a NPE crash.
+            //This, however, should almost never be the case...
+            float leaderSpeed = 1.0F;
+            if (leaderKronosaurus != null) {
+                leaderSpeed = (float) leaderKronosaurus.getDeltaMovement().length();
             }
-            this.setDeltaMovement(newMovement);
-        }
 
-       // avoid = processAvoid();
-        //if (avoid !=null){
-        //    newMovement = avoid.subtract(newMovement);
-        //}
+            if (newMovement.length() > leaderSpeed) {
+                newMovement = newMovement.normalize().scale(leaderSpeed);
+            }
+
+
+            this.setDeltaMovement(newMovement);
+            /*
+            if (leaderKronosaurus != null) {
+                if (!this.getIsLeader()) {
+                    double d0 = (this.position().x+(this.getDeltaMovement().x));
+                    double d1 = (this.position().z+(this.getDeltaMovement().z));
+                    float f = (float) (MathHelper.atan2(d1, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                    if (this.getTarget() != null){
+                        this.yRot = this.rotlerp(this.yRot, f, PASSIVE_ANGLE);
+                    } else {
+                        this.yRot = this.rotlerp(this.yRot, f, AGGRO_ANGLE);
+                    }
+                    this.yBodyRot = this.yRot;
+                    this.yHeadRot = this.yRot;
+                }
+            }
+
+             */
+
+            if (leaderKronosaurus != null) {
+                if (!this.getIsLeader()) {
+                    this.lookAt(EntityAnchorArgument.Type.EYES, this.position().add(this.getDeltaMovement()));
+                }
+            }
+        }
     }
 
     protected void processLeader(List<EntityKronosaurus> school) {
         //Create a new list with all the nearby Kronosaurus currently tagged as leaders
         List<EntityKronosaurus> leaders = new ArrayList<>();
-        for (int i =0; i<school.size() && i<SCHOOL_MAX_SIZE; i++) {
+        for (int i =0; i<school.size(); i++) {
             EntityKronosaurus kronosaurus = school.get(i);
             if (kronosaurus.getIsLeader()) {
                 leaders.add(kronosaurus);
@@ -214,7 +248,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         } else if (leaders.isEmpty()) {
             school.get(0).setLeader(true);
         }
-        //Only other possibility is that we have exactly one leader, in which case, do nothing...
+        //Only other possibility is that we have exactly one leader, in which case, do nothing.
     }
 
 
@@ -392,6 +426,26 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public boolean getIsLeader() {
         return this.entityData.get(LEADER);
+    }
+
+    protected float rotlerp(float p_75639_1_, float p_75639_2_, float p_75639_3_) {
+        float f = MathHelper.wrapDegrees(p_75639_2_ - p_75639_1_);
+        if (f > p_75639_3_) {
+            f = p_75639_3_;
+        }
+
+        if (f < -p_75639_3_) {
+            f = -p_75639_3_;
+        }
+
+        float f1 = p_75639_1_ + f;
+        if (f1 < 0.0F) {
+            f1 += 360.0F;
+        } else if (f1 > 360.0F) {
+            f1 -= 360.0F;
+        }
+
+        return f1;
     }
 
 
