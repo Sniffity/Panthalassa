@@ -103,14 +103,14 @@ public class PanthalassaSchoolingGoal extends Goal {
         this.school.remove(panthalassaEntity);
         //Only carry out school operations if the school is not empty
         if (!this.school.isEmpty()) {
-            attract = (processAttract(school));
-            repel = (processRepel(school));
+            //attract = (processAttract(school));
+            //repel = (processRepel(school));
             //Follow is calculated considering the speed of all Kronosaurus, but the leader will not have follow applied
             follow = (processFollow(school));
 
             // Now normalize the vectors to get just the directions, and scale by the amount you want each force to have. These values will need fine-tuning
-            attract = attract.normalize().scale(0.05F);
-            repel = repel.normalize().scale(0.5);
+            //attract = attract.normalize().scale(0.05F);
+            //repel = repel.normalize().scale(0.5);
             follow = follow.normalize().scale(1.0);
 
             //Only those who are not leaders will have the follow component applied to them.
