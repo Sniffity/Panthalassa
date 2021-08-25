@@ -122,7 +122,6 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     }
 
     @Override
-
     public boolean canContinueToUse() {
         return !this.creature.getNavigation().isDone() && !this.creature.isVehicle();
     }

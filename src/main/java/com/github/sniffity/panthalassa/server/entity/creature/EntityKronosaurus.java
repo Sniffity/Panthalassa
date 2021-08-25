@@ -1,8 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import net.minecraft.block.Blocks;
@@ -37,13 +35,13 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob {
+public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
 
     public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
     public static final int BLOCKED_DISTANCE = 6;
     public static final float SCHOOL_SPEED = 1.0F;
-    public static final float SCHOOL_AVOID_RADIUS = 2.0F;
+    public static final float SCHOOL_AVOID_RADIUS = 10.0F;
     public static final float MAX_MOVE_SPEED = 0.8F;
     public static int SCHOOL_MAX_SIZE = 4;
 
@@ -133,16 +131,17 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         super.tick();
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-        if (this.isInWater()){
+/*        if (this.isInWater()){
             this.schoolMovement(this);
-            /*
+
             this.assignSchool(this);
             if (this.getSchooling()){
 
-            }*/
-        }
+            }
+        }*/
 
     }
+
 
     protected void schoolMovement(EntityKronosaurus entityIn) {
         //Get the potential school of Kronosaurus
@@ -220,18 +219,23 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             }
 
              */
-
+/*
             if (leaderKronosaurus != null) {
                 if (!this.getIsLeader()) {
                     this.lookAt(EntityAnchorArgument.Type.EYES, this.position().add(this.getDeltaMovement()));
                 }
             }
+
+ */
         }
     }
 
     protected void processLeader(List<EntityKronosaurus> school) {
         //Create a new list with all the nearby Kronosaurus currently tagged as leaders
         List<EntityKronosaurus> leaders = new ArrayList<>();
+        int size = school.size();
+
+
         for (int i =0; i<school.size(); i++) {
             EntityKronosaurus kronosaurus = school.get(i);
             if (kronosaurus.getIsLeader()) {
@@ -403,7 +407,8 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(1, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
+        this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         //this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
