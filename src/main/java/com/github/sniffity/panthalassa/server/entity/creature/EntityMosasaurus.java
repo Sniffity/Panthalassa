@@ -38,7 +38,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public float adjustYaw;
     public float adjustPitch;
     public float adjustment = 0.020F;
-    public static final int AVOID_DISTANCE = 6;
+    public static final int BLOCKED_DISTANCE = 6;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -49,7 +49,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, AVOID_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
+        this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
@@ -152,7 +152,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.2, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.6));
-        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, AVOID_DISTANCE));
+        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));

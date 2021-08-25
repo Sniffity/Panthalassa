@@ -27,7 +27,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     protected final int avoidDistance;
 
     public PanthalassaRandomSwimmingGoal(PanthalassaEntity creatureIn, double speedIn, int chance, int avoidDistance) {
-        this(creatureIn, speedIn, chance, avoidDistance, true);
+        this(creatureIn, speedIn, chance, avoidDistance, false);
     }
 
     public PanthalassaRandomSwimmingGoal(PanthalassaEntity creature, double speed, int chance, int avoidDistance, boolean checkNATime) {

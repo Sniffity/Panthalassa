@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
     public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
-    public static final int AVOID_DISTANCE = 3;
+    public static final int BLOCKED_DISTANCE = 3;
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -37,7 +37,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, AVOID_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
+        this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
@@ -100,7 +100,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, AVOID_DISTANCE));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         //this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.3, 10));
         //this.goalSelector.addGoal(2, new FindWaterGoal(this));
 

@@ -25,6 +25,7 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     public boolean isTryingToBreach;
 
 
+
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.lookControl = new DolphinLookController(this, 10);
