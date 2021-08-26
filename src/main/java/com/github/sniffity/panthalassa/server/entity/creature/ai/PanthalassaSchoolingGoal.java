@@ -1,10 +1,12 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 
@@ -14,6 +16,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaWorldSavedData <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed with the assitance of BobMowzie. Additionally, the following
+ * repository was referenced: https://github.com/codatproduction/Boids-simulation/blob/master/src/Boid.gd
+ */
+
 public class PanthalassaSchoolingGoal extends Goal {
 
     PanthalassaEntity panthalassaEntity;
@@ -22,7 +33,6 @@ public class PanthalassaSchoolingGoal extends Goal {
     float schoolMaxSize;
     float schoolAvoidRadius;
     List<PanthalassaEntity> school;
-    List<PanthalassaEntity> reducedSchool;
     PanthalassaEntity leader;
 
 
@@ -38,26 +48,39 @@ public class PanthalassaSchoolingGoal extends Goal {
     @Override
     public boolean canUse() {
         this.school = panthalassaEntity.level.getEntitiesOfClass(panthalassaEntity.getClass(), panthalassaEntity.getBoundingBox().inflate(20));
+        //If there's a single Kronosaurus, do not attempt schooling.
         if (school.size()<=1){
             return  false;
         }
+        //If the Kronosaurus is not in water, do not attempt schooling.
         if (!this.panthalassaEntity.isInWater()) {
             return false;
         }
-        return true;
+        //Only attempt schooling if there's a leader Kronosaurus nearby, else don't.
+        for (int i=0; i<school.size(); i++) {
+            PanthalassaEntity testEntity = school.get(i);
+            if (((ISchoolable) testEntity).getIsLeader()) {
+                return true;
+
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canContinueToUse() {
+        //Leader will be assigned on start. If leader is ever null, or if it dies, stop executing goal.
+        if (leader == null || this.leader.isDeadOrDying()) {
+            return false;
+        }
+        //If entity ever gets out of the water, stop schooling.
         if (!panthalassaEntity.isInWater()) {
             return false;
         }
         if (panthalassaEntity.getTarget() != null) {
             return false;
         }
-        if (this.leader.isDeadOrDying() || leader == null) {
-            return false;
-        }
+
         return true;
     }
 
@@ -65,28 +88,6 @@ public class PanthalassaSchoolingGoal extends Goal {
     @Override
     public void start() {
         processLeader(school);
-
-        //Once we have set all the leaders for this group of Kronosaurus...
-        //Reduce the school to 3 Kronosaurus, 1 of which is leader...
-        reducedSchool = new ArrayList<>();
-        boolean leaderAdded = false;
-        //Note that by this point, school will always have some Kronosaurus tagged as leader.
-        for (int i = 0; i < school.size(); i++) {
-            PanthalassaEntity testEntity = school.get(i);
-            //If testEntity is a leader, and the school does not have a leader yet...
-            if (((ISchoolable) testEntity).getIsLeader() && (!leaderAdded)) {
-                //Add this as a leader...
-                if (reducedSchool.size()<4) {
-                    reducedSchool.add(testEntity);
-                    leader = testEntity;
-                    //And flag the fact that we have a leader already...
-                    leaderAdded = true;
-                }
-            } else if (school.size()<3) {
-                //Add only up to 2 non-leader Kronosaurus
-                reducedSchool.add(testEntity);
-            }
-        }
     }
 
 
@@ -103,24 +104,26 @@ public class PanthalassaSchoolingGoal extends Goal {
         this.school.remove(panthalassaEntity);
         //Only carry out school operations if the school is not empty
         if (!this.school.isEmpty()) {
-            //attract = (processAttract(school));
-            //repel = (processRepel(school));
+            //Repel ensures the Kronosaurus do not collide onto each other
+            repel = (processRepel(school));
             //Follow is calculated considering the speed of all Kronosaurus, but the leader will not have follow applied
             follow = (processFollow(school));
+            //Avoid ensures the Kronosaurus that are following the leader avoid obstacles..
+            avoid = (processAvoid(panthalassaEntity));
 
-            // Now normalize the vectors to get just the directions, and scale by the amount you want each force to have. These values will need fine-tuning
-            //attract = attract.normalize().scale(0.05F);
-            //repel = repel.normalize().scale(0.5);
+            // Now normalize the vectors to get just the directions, and scale by the amount we want each force to have. These values will need fine-tuning
+            repel = repel.normalize().scale(1.2);
             follow = follow.normalize().scale(1.0);
+            avoid = avoid.normalize().scale(0.1);
 
             //Only those who are not leaders will have the follow component applied to them.
             //Hence, the leader will retain its previous movement, the rest will adjust to leader.
             //Of note: Leader is following RandomSwimmingAI and utilizing SwimmingHelper - it'll avoid obstacles on its own...
             //Followers must still have some method for avoiding obstacles.
             if (!this.panthalassaSchoolableEntity.getIsLeader()) {
-                newMovement = panthalassaEntity.getDeltaMovement().add(attract).add(repel).add(follow);
+                newMovement = panthalassaEntity.getDeltaMovement().add(repel).add(follow).add(avoid);
             } else {
-                newMovement = panthalassaEntity.getDeltaMovement().add(attract).add(repel);
+                newMovement = panthalassaEntity.getDeltaMovement().add(repel);
             }
 
             // Clamping the vector to the leader's speed, to ensure the followers do not overtake leader in position
@@ -135,27 +138,11 @@ public class PanthalassaSchoolingGoal extends Goal {
                 newMovement = newMovement.normalize().scale(leaderSpeed);
             }
 
-
             this.panthalassaEntity.setDeltaMovement(newMovement);
-            /*
-            if (leaderKronosaurus != null) {
-                if (!this.getIsLeader()) {
-                    double d0 = (this.position().x+(this.getDeltaMovement().x));
-                    double d1 = (this.position().z+(this.getDeltaMovement().z));
-                    float f = (float) (MathHelper.atan2(d1, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                    if (this.getTarget() != null){
-                        this.yRot = this.rotlerp(this.yRot, f, PASSIVE_ANGLE);
-                    } else {
-                        this.yRot = this.rotlerp(this.yRot, f, AGGRO_ANGLE);
-                    }
-                    this.yBodyRot = this.yRot;
-                    this.yHeadRot = this.yRot;
-                }
-            }
 
-             */
 
-            if (this.leader != null) {
+
+          if (this.leader != null) {
                 if (!panthalassaSchoolableEntity.getIsLeader()) {
                     panthalassaEntity.lookAt(EntityAnchorArgument.Type.EYES, panthalassaEntity.position().add(panthalassaEntity.getDeltaMovement()));
                 }
@@ -163,89 +150,15 @@ public class PanthalassaSchoolingGoal extends Goal {
         }
     }
 
-
     protected void processLeader(List<PanthalassaEntity> school) {
-        //Create a new list with all the nearby Kronosaurus currently tagged as leaders
-        float size = school.size();
-        List<PanthalassaEntity> leaders = new ArrayList<>();
+        //Iterate over the school, find the leader, identify its status as leader.
         for (int i = 0; i < school.size(); i++) {
             PanthalassaEntity testEntity = school.get(i);
             if (((ISchoolable) testEntity).getIsLeader()) {
-                leaders.add(testEntity);
+                leader = testEntity;
+                break;
             }
         }
-        //If we have more than one leader for every 3 Kronosaurus...
-        //Reduce all leaders that exceed this cap...
-        if (leaders.size() > Math.ceil(size/3.0F)) {
-            int leadersSize = leaders.size();
-            //Get the number of schools...
-            int groups = (int) Math.ceil(size / 3.0F);
-            //Get the amout of excess leaders...
-            int excessLeaders = -(leadersSize - groups);
-            //Loop over the school...
-
-            for (int i = (int) (Math.ceil(size / 3.0F)); i < school.size(); i++) {
-                ISchoolable testEntity = (ISchoolable) school.get(i);
-                //Each time we find a Kronosaurus which is a leader, remove its leader status..
-
-                if (testEntity.getIsLeader()) {
-                    testEntity.setLeader(false);
-                    //And reduce the amount of excess leaders by 1.
-                    excessLeaders = --excessLeaders;
-                    //If we no longer have excess leaders, stop the loop.
-                    if (excessLeaders<=0){
-                        break;
-                    }
-                }
-
-            }
-
-        }
-        //If we have less than one leader for every 3 Kronosaurus....
-        else if (leaders.size() < Math.ceil(size / 3.0F)) {
-            //Get the number of leaders...
-            int leadersSize = leaders.size();
-            //Get the number of schools...
-            int groups = (int) Math.ceil(size / 3.0F);
-            //Get the amout of leaders we need...
-            int requiredLeaders = -(leadersSize - groups);
-            //Loop over the school...
-            for (int i = 0; i < school.size(); i++) {
-                ISchoolable potentialLeader = (ISchoolable) (school.get(i));
-                //Each time we find a Kronosaurus which is not a leader, set it to be a leader..
-                if (!potentialLeader.getIsLeader()) {
-                    potentialLeader.setLeader(true);
-                    //And reduce the amount of required leaders by 1.
-                    requiredLeaders = --requiredLeaders;
-                    //If we hit the amount of required leaders, stop the loop.
-                    if (requiredLeaders <= 0) {
-                        break;
-                    }
-                }
-            }
-        }
-        //Other possibility is that leaders.size() = Math.ceil(size/4.0F), in which case we have exactly one leader for every 3 Kronosaurus.
-        //Do nothing in this case.
-    }
-
-
-
-    protected Vector3d processAttract(List<PanthalassaEntity> school) {
-        //Calculate the average position of the school, excluding THIS Kronosaurus
-        int size = school.size();
-        Vector3d positionVector = new Vector3d(0, 0, 0);
-        for (int i = 0; i < size && i < schoolMaxSize; i++) {
-            PanthalassaEntity testEntity = school.get(i);
-            positionVector = positionVector.add(testEntity.position());
-        }
-        Vector3d averagePos = positionVector.scale(1.0f / (float) size);
-        //Calculate a new vector... pointing from THIS Kronosaurus, to the center of the school.
-        //This vector will be scaled by SCHOOL_SPEED, which is a factor that scales all school "operations"
-        Vector3d target = averagePos.subtract(panthalassaEntity.position()).normalize().scale(schoolMaxSize);
-        //From this vector, subtract the velocity vector of THIS Kronosaurus...
-        //This creates a new Vector, attraction, that will attempt to adjust position towards center of group...
-        //Taking the speed of THIS Kronosaurus into account
-        return target.subtract(panthalassaEntity.getDeltaMovement());
     }
 
     protected Vector3d processRepel(List<PanthalassaEntity> school) {
@@ -293,7 +206,6 @@ public class PanthalassaSchoolingGoal extends Goal {
         return target.subtract(panthalassaEntity.getDeltaMovement());
     }
 
-
     protected Vector3d processFollow(List<PanthalassaEntity> school) {
         //We will proceed to set the speed of the followers in school to match that of the leader...
         //Once again, by this point, we only have a single leader, each Kronosaurus will search the leader closes to it
@@ -317,14 +229,13 @@ public class PanthalassaSchoolingGoal extends Goal {
         return target.subtract(panthalassaEntity.getDeltaMovement());
     }
 
-
-    protected Vector3d processAvoid() {
+    protected Vector3d processAvoid(PanthalassaEntity entityIn) {
         //Once all school vectors have been calculated perform a check around it, 7 block radius.
-        AxisAlignedBB searchArea = new AxisAlignedBB(panthalassaEntity.getX() - 7, panthalassaEntity.getY() - 7, panthalassaEntity.getZ() - 7, panthalassaEntity.getX() + 7, panthalassaEntity.getY() + 7, panthalassaEntity.getZ() + 7);
-        //Filter only the blocks that canOcclude, solid blocks...
+        AxisAlignedBB searchArea = new AxisAlignedBB(entityIn.getX() - 3, entityIn.getY() - 3, entityIn.getZ() - 3, entityIn.getX() + 3, entityIn.getY() + 3, entityIn.getZ() + 3);
+        //Filter only the blocks that canOcclude, solid blocks and air itself, to avoid floating on the surface of the water...
         Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
                 .map(pos -> new BlockPos(pos))
-                .filter(state -> (panthalassaEntity.level.getBlockState(state).canOcclude()))
+                .filter(state -> (panthalassaEntity.level.getBlockState(state).canOcclude() || panthalassaEntity.level.getBlockState(state).is(Blocks.AIR)))
                 .collect(Collectors.toSet());
         Iterator<BlockPos> it = set.iterator();
 
@@ -338,18 +249,18 @@ public class PanthalassaSchoolingGoal extends Goal {
 
             while (it.hasNext()) {
                 BlockPos testPos = it.next();
-                float distanceToPos = (float) panthalassaEntity.position().subtract(testPos.getX(), testPos.getY(), testPos.getZ()).length();
+                float distanceToPos = (float) entityIn.position().subtract(testPos.getX(), testPos.getY(), testPos.getZ()).length();
                 if (distanceToPos < distanceToClosestPos) {
                     distanceToClosestPos = distanceToPos;
                     closestPos = new BlockPos(testPos.getX(), testPos.getY(), testPos.getZ());
                 }
             }
 
-            Vector3d targetAwayFromClosestPos = (panthalassaEntity.position()).subtract(closestPos.getX(), closestPos.getY(), closestPos.getZ());
+            Vector3d targetAwayFromClosestPos = (entityIn.position()).subtract(closestPos.getX(), closestPos.getY(), closestPos.getZ());
             targetAwayFromClosestPos = targetAwayFromClosestPos.normalize();
-            return targetAwayFromClosestPos.subtract(panthalassaEntity.getDeltaMovement());
+            return targetAwayFromClosestPos.subtract(entityIn.getDeltaMovement());
         }
-        return null;
+        return new Vector3d(0,0,0);
     }
 
     @Override
@@ -357,4 +268,25 @@ public class PanthalassaSchoolingGoal extends Goal {
         this.panthalassaEntity.setDeltaMovement(0,0,0);
         super.stop();
     }
+
+    protected float rotlerp(float p_75639_1_, float p_75639_2_, float p_75639_3_) {
+        float f = MathHelper.wrapDegrees(p_75639_2_ - p_75639_1_);
+        if (f > p_75639_3_) {
+            f = p_75639_3_;
+        }
+
+        if (f < -p_75639_3_) {
+            f = -p_75639_3_;
+        }
+
+        float f1 = p_75639_1_ + f;
+        if (f1 < 0.0F) {
+            f1 += 360.0F;
+        } else if (f1 > 360.0F) {
+            f1 -= 360.0F;
+        }
+
+        return f1;
+    }
 }
+

@@ -95,9 +95,9 @@ public class KronosaurusSpawner  {
         EntityKronosaurus kronosaurus0 = PanthalassaEntityTypes.KRONOSAURUS.get().create(worldIn);
         EntityKronosaurus kronosaurus1 = PanthalassaEntityTypes.KRONOSAURUS.get().create(worldIn);
 
-        
         //Proceed to spawn each Kronosaurus and position them, verifying for possible null values.
         if (kronosaurus != null){
+            kronosaurus.setLeader(true);
             kronosaurus.moveTo(blockPos, 0.0F, 0.0F);
             if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(kronosaurus, worldIn, blockPos.getX(), blockPos.getY(), blockPos.getZ(), null, SpawnReason.NATURAL) != -1) {
                 kronosaurus.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
