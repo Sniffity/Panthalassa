@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.entity.*;
@@ -7,8 +8,11 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.FindWaterGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
@@ -118,9 +122,13 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     }
 
     public void registerGoals() {
+        this.goalSelector.addGoal(0, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
-        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.1, 30));
+        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
+        this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.1, 30));
         this.goalSelector.addGoal(3, new FindWaterGoal(this));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof AbstractFishEntity)));
+
     }
 
     public void switchNavigator(boolean isOnLand){
