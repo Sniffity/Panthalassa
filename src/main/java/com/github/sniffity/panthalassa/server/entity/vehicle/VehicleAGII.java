@@ -230,7 +230,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
                     f2 = 0.0F;
                 } else {
                     f = -1.0F;
-                    f2= -1.0F;
+                    f2= -2.0F;
                 }
             }
 
