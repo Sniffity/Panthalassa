@@ -94,7 +94,8 @@ public class PanthalassaSwimmingHelper extends MovementController {
             this.entityPanthalassa.setYya(0.00F);
             this.entityPanthalassa.setZza(0.005F);
         }*/
-        for (int i = 0; i <= (blockedDistance/2); i++) {
+        /*
+        for (int i = 0; i <= blockedDistance; i++) {
             if (this.entityPanthalassa.isInWater() && !this.entityPanthalassa.isAggressive()) {
 
                 if (getBlockedNorth(i)) {
@@ -125,5 +126,7 @@ public class PanthalassaSwimmingHelper extends MovementController {
                 }
             }
         }
+
+         */
     }
 }
