@@ -1,12 +1,10 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaFossil;
 import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaLaboratory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
