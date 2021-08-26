@@ -5,14 +5,14 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwim
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.FindWaterGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -26,10 +26,20 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaWorldSavedData <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Alex's Mobs implements different navigators
+ * for land and water for some of its creatures.
+ */
+
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
     public static final int PASSIVE_ANGLE = 1;
     public static final int AGGRO_ANGLE = 15;
     public static final int BLOCKED_DISTANCE = 3;
+    public boolean isLandNavigator;
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -37,8 +47,10 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+
+        switchNavigator(false);
     }
 
 
@@ -86,6 +98,12 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     @Override
     public void tick() {
         super.tick();
+        if (!this.isOnGround() && this.isLandNavigator) {
+            switchNavigator(false);
+        }
+        if (this.isOnGround() && !this.isLandNavigator) {
+            switchNavigator(true);
+        }
     }
 
     public static AttributeModifierMap.MutableAttribute archelonAttributes() {
@@ -101,8 +119,19 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
 
     public void registerGoals() {
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
-        //this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.3, 10));
-        //this.goalSelector.addGoal(2, new FindWaterGoal(this));
+        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 0.1, 30));
+        this.goalSelector.addGoal(3, new FindWaterGoal(this));
+    }
 
+    public void switchNavigator(boolean isOnLand){
+        if (isOnLand) {
+            this.moveControl = new MovementController(this);
+            this.navigation = new GroundPathNavigator(this, level);
+            this.isLandNavigator = true;
+        } else {
+            this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
+            this.navigation = new SwimmerPathNavigator(this, level);
+            this.isLandNavigator = false;
+        }
     }
 }

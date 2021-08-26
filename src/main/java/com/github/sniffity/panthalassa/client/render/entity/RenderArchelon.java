@@ -1,14 +1,11 @@
 package com.github.sniffity.panthalassa.client.render.entity;
 
-import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.model.entity.ModelArchelon;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class RenderArchelon extends GeoEntityRenderer<EntityArchelon> {

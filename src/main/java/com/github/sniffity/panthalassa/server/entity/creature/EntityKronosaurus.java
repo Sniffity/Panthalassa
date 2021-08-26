@@ -1,14 +1,9 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
-
-import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,11 +13,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
-import org.lwjgl.system.CallbackI;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -131,19 +122,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         super.tick();
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-        if (this.getTarget() == null){
-            List<EntityKronosaurus> testGroup = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(20));;
-            if (!testGroup.isEmpty()) {
-                for (int j = 0; j < testGroup.size(); j++) {
-                    EntityKronosaurus testEntity = testGroup.get(i);
-                    if (testEntity.getTarget() != null) {
-                        this.setTarget(testEntity.getTarget());
-                    }
-
-                }
-
-            }
-        }
     }
 
 
@@ -172,18 +150,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
-    public LivingEntity getNearbyKronosaurusTarget(){
-        List<EntityKronosaurus> school = this.level.getEntitiesOfClass(EntityKronosaurus.class, this.getBoundingBox().inflate(20));
-        if (!school.isEmpty()) {
-            for (int i = 0; i<school.size(); i++){
-                EntityKronosaurus testEntity = school.get(i);
-                if (testEntity.getTarget() !=null) {
-                    return testEntity.getTarget();
-                }
-            }
-        }
-        return null;
-    }
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 2.0, false));
@@ -191,8 +157,8 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        //this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
-        //this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
     }
 
     public void setAirSupplyLocal(int airSupply) {

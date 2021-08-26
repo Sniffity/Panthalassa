@@ -77,7 +77,7 @@ public class PanthalassaSchoolingGoal extends Goal {
         if (!panthalassaEntity.isInWater()) {
             return false;
         }
-        if (panthalassaEntity.getTarget() != null) {
+        if (panthalassaEntity.getTarget() != null || leader.getTarget() != null) {
             return false;
         }
 
@@ -114,7 +114,7 @@ public class PanthalassaSchoolingGoal extends Goal {
             // Now normalize the vectors to get just the directions, and scale by the amount we want each force to have. These values will need fine-tuning
             repel = repel.normalize().scale(1.2);
             follow = follow.normalize().scale(1.0);
-            avoid = avoid.normalize().scale(0.1);
+            avoid = avoid.normalize().scale(1.5);
 
             //Only those who are not leaders will have the follow component applied to them.
             //Hence, the leader will retain its previous movement, the rest will adjust to leader.

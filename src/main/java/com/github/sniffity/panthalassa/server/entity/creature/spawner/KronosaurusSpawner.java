@@ -54,7 +54,7 @@ public class KronosaurusSpawner  {
                 //Ensure that all the BlockPos that have been selected are different, and are loaded, and have space around them to spawn the entities without suffocation, and there's an actual water block where to spawn the Kronosaurus....
                 if (blockpos != blockpos0 && blockpos != blockpos1 && blockpos0 != blockpos1) {
                     if (worldIn.hasChunksAt(blockpos.getX() - 10, blockpos.getY() - 10, blockpos.getZ() - 10, blockpos.getX() + 10, blockpos.getY() + 10, blockpos.getZ() + 10)) {
-                        if ((checkValidSpawnArea(worldIn, blockpos)) || (checkValidSpawnArea(worldIn, blockpos0)) || (checkValidSpawnArea(worldIn, blockpos1))) {
+                        if ((checkValidSpawnArea(worldIn, blockpos)) && (checkValidSpawnArea(worldIn, blockpos0)) && (checkValidSpawnArea(worldIn, blockpos1))) {
                             if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos, PanthalassaEntityTypes.KRONOSAURUS.get())
                                     && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos0, PanthalassaEntityTypes.KRONOSAURUS.get())
                                     && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos1, PanthalassaEntityTypes.KRONOSAURUS.get())) {
