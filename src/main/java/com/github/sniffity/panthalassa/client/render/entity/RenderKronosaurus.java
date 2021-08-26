@@ -22,11 +22,11 @@ public class RenderKronosaurus extends GeoEntityRenderer<EntityKronosaurus> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(2.0F, 2.0F, 2.0F);
-    }
+        if (animatable.getIsLeader()) {
+            stackIn.scale(2.5F, 2.5F, 2.5F);
+        } else {
+            stackIn.scale(2.0F, 2.0F, 2.0F);
 
-    @Override
-    protected int getBlockLightLevel(EntityKronosaurus entityIn, BlockPos partialTicks) {
-        return entityIn.getIsLeader() ? 15 : 1;
+        }
     }
 }
