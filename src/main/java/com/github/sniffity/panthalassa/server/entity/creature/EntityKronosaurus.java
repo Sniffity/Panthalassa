@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaFluids;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -13,6 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -48,6 +51,14 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+    }
+
+    public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        System.out.println(pos);
+        if (worldIn.getBlockState(pos).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
+            return true;
+        }
+        return false;
     }
 
     @Override

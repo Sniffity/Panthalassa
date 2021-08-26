@@ -40,8 +40,8 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public static final float MAX_MOVE_SPEED = 0.8F;
     public static int SCHOOL_MAX_SIZE = 4;
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
-    protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityCoelacanth.class, DataSerializers.INT);
+    protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityCoelacanth.class, DataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 

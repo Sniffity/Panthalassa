@@ -75,9 +75,9 @@ public class KronosaurusSpawner  {
         if (worldIn.getBiome(blockPos).getRegistryName() != null) {
             //If the biome we're in is the Abyssal Overgrowth....
             if (Objects.equals(worldIn.getBiome(blockPos).getRegistryName(), new ResourceLocation(Panthalassa.MODID, "abyssal_overgrowth"))) {
-                //And, within a 96x96x96 Bounding Box, there's less than 10 Kronosaurus already spawned... (so basically, a maximum of 3 spawn "groups" of 3 within the 96x96x96 Bounding Box)
+                //And, within a 36x36x36 Bounding Box, there's less than 10 Kronosaurus already spawned... (so basically, a maximum of 3 spawn "groups" of 3 within the 96x96x96 Bounding Box)
                 List<EntityKronosaurus> list = worldIn.getEntitiesOfClass(EntityKronosaurus.class, (new AxisAlignedBB(blockPos)).inflate(36.0D, 36.0D, 36.0D));
-                //...and within a smaller 24x64x24 bounding box there's no other Kronosaurus (ensures separation of same species - separation will be different for same vs. different species)
+                //...and within a smaller 26x26x26 bounding box there's no other Kronosaurus (ensures separation of same species - separation will be different for same vs. different species)
                 List<EntityKronosaurus> list0 = worldIn.getEntitiesOfClass(EntityKronosaurus.class, (new AxisAlignedBB(blockPos)).inflate(26.0D, 24.0D, 24.0D));
                 //...and within a 12x12x12 bounding box there's no other Panthalassa Entities (ensures separation of different species - separation will be different for same vs. different species)
                 List<PanthalassaEntity> list1 = worldIn.getEntitiesOfClass(PanthalassaEntity.class, (new AxisAlignedBB(blockPos)).inflate(12.0D, 12.0D, 12.0D));
@@ -96,6 +96,7 @@ public class KronosaurusSpawner  {
         EntityKronosaurus kronosaurus1 = PanthalassaEntityTypes.KRONOSAURUS.get().create(worldIn);
 
         //Proceed to spawn each Kronosaurus and position them, verifying for possible null values.
+        //First Kronosaurus is set as leader, for Schooling AI purposes
         if (kronosaurus != null){
             kronosaurus.setLeader(true);
             kronosaurus.moveTo(blockPos, 0.0F, 0.0F);

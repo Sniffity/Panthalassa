@@ -71,11 +71,11 @@ public class PanthalassaEventListener {
         TICK_COUNTER = ++TICK_COUNTER;
 
         if (event.world instanceof ServerWorld) {
-                coelacanthSpawner.tick((ServerWorld) event.world);
-                archelonSpawner.tick((ServerWorld) event.world);
-                kronosaurusSpawner.tick((ServerWorld) event.world);
-                mosasaurusSpawner.tick((ServerWorld) event.world);
-                megalodonSpawner.tick((ServerWorld) event.world);
+                //coelacanthSpawner.tick((ServerWorld) event.world);
+                //archelonSpawner.tick((ServerWorld) event.world);
+                //kronosaurusSpawner.tick((ServerWorld) event.world);
+                //mosasaurusSpawner.tick((ServerWorld) event.world);
+                //megalodonSpawner.tick((ServerWorld) event.world);
         }
     }
 

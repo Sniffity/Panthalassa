@@ -7,7 +7,7 @@
     "Name": "panthalassa:panthalassa_stone"
   },
   "default_fluid": {
-    "Name": "minecraft:water",
+    "Name": "panthalassa:panthalassa_water",
     "Properties": {
       "level": "0"
     }

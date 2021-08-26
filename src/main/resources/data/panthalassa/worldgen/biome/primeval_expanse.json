@@ -38,7 +38,6 @@
     [
       "panthalassa:panthalassa_sea_grass",
       "panthalassa:kelp_primeval_expanse",
-      "panthalassa:rocks_primeval_expanse",
       "panthalassa:fossils"
     ],
     []
@@ -47,7 +46,14 @@
   ],
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "panthalassa:kronosaurus",
+        "weight": 200,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
     "ambient": [],
     "water_creature": [],
     "water_ambient": [],

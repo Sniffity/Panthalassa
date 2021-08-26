@@ -14,6 +14,7 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.FlatChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
@@ -56,6 +57,7 @@ public final class Panthalassa {
 
 		PanthalassaBlocks.BLOCKS.register(modBus);
 		PanthalassaItems.ITEMS.register(modBus);
+		PanthalassaFluids.FLUIDS.register(modBus);
 
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
 
@@ -69,6 +71,7 @@ public final class Panthalassa {
 
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
 		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
+
 
 		GeckoLib.initialize();
 		MinecraftForge.EVENT_BUS.register(this);
@@ -84,10 +87,10 @@ public final class Panthalassa {
 	private void setup(final FMLCommonSetupEvent event){
 		PanthalassaPacketHandler.register();
 
-//		DeferredWorkQueue.runLater(() -> {PanthalassaEntityTypes.setupEntityTypeAttributes();});
 		event.enqueueWork(() -> {
 			PanthalassaStructures.setupStructures();
 			PanthalassaConfiguredStructures.registerConfiguredStructures();
+			PanthalassaEntityTypes.spawnPlacements();
 		});
 	}
 

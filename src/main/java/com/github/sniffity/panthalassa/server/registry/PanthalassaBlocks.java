@@ -114,6 +114,9 @@ public class PanthalassaBlocks {
                     .noDrops()
                     .lightLevel((n) -> 15)));
 
+    public static final RegistryObject<FlowingFluidBlock> PANTHALASSA_WATER = BLOCKS.register("panthalassa_water", () -> new BlockPanthalassaFluid(
+            PanthalassaFluids.PANTHALASSA_WATER_SOURCE, AbstractBlock.Properties.of(Material.WATER)));
+
     public static final RegistryObject<AbstractTopPlantBlock> KRETHROSS = BLOCKS.register("krethross",
             () -> new BlockKrethrossTop(AbstractBlock.Properties.of(Material.WATER_PLANT)
                     .noCollission()

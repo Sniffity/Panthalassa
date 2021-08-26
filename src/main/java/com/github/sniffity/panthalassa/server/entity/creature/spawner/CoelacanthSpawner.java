@@ -68,8 +68,6 @@ public class CoelacanthSpawner  {
         }
     }
 
-
-
     private void spawnInBiome(ServerWorld worldIn, BlockPos blockPos, BlockPos blockPos0, BlockPos blockPos1) {
         //If for some reason the biome is null, do not spawn...
         if (worldIn.getBiome(blockPos).getRegistryName() != null) {
