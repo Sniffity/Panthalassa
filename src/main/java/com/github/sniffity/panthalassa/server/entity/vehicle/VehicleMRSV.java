@@ -84,10 +84,6 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if ((this.isSwimming()) || (event.isMoving() && this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mrsv.roll", true));
-            return PlayState.CONTINUE;
-        }
         return PlayState.STOP;
     }
 
