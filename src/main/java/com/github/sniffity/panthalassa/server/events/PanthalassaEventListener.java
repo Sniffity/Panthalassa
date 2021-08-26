@@ -2,8 +2,7 @@ package com.github.sniffity.panthalassa.server.events;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
-import com.github.sniffity.panthalassa.server.entity.creature.spawner.ArchelonSpawner;
-import com.github.sniffity.panthalassa.server.entity.creature.spawner.KronosaurusSpawner;
+import com.github.sniffity.panthalassa.server.entity.creature.spawner.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
@@ -21,11 +20,20 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.lwjgl.system.CallbackI;
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID)
 
 public class PanthalassaEventListener {
+
+    public static int TICK_COUNTER;
+    public static boolean FLAG0;
+    public static boolean FLAG1;
+    public static boolean FLAG2;
+    public static boolean FLAG3;
+
+
 
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
@@ -56,12 +64,21 @@ public class PanthalassaEventListener {
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
         KronosaurusSpawner kronosaurusSpawner = new KronosaurusSpawner();
         ArchelonSpawner archelonSpawner = new ArchelonSpawner();
+        MosasaurusSpawner mosasaurusSpawner = new MosasaurusSpawner();
+        MegalodonSpawner megalodonSpawner = new MegalodonSpawner();
+        CoelacanthSpawner coelacanthSpawner = new CoelacanthSpawner();
+
+        TICK_COUNTER = ++TICK_COUNTER;
 
         if (event.world instanceof ServerWorld) {
-            kronosaurusSpawner.tick((ServerWorld) event.world);
-            archelonSpawner.tick((ServerWorld) event.world);
+                coelacanthSpawner.tick((ServerWorld) event.world);
+                archelonSpawner.tick((ServerWorld) event.world);
+                kronosaurusSpawner.tick((ServerWorld) event.world);
+                mosasaurusSpawner.tick((ServerWorld) event.world);
+                megalodonSpawner.tick((ServerWorld) event.world);
         }
     }
+
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {

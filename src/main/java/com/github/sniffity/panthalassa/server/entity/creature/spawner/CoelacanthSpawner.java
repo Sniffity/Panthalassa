@@ -1,7 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature.spawner;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
+import com.github.sniffity.panthalassa.server.entity.creature.EntityCoelacanth;
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
@@ -23,10 +23,10 @@ import java.util.Random;
 
 //Class adapted from Vanilla Minecraft's CatSpawner, still needs some tweaking.
 
-public class KronosaurusSpawner  {
+public class CoelacanthSpawner  {
 
     //The class needs a constructor, so it can be initialized and then called from a static context.
-    public KronosaurusSpawner(){
+    public CoelacanthSpawner(){
     }
 
     //This tick method is called on the WorldTick Event. Returns methods being currently used so the method can stop ticking if conditions are not meant.
@@ -55,9 +55,9 @@ public class KronosaurusSpawner  {
                 if (blockpos != blockpos0 && blockpos != blockpos1 && blockpos0 != blockpos1) {
                     if (worldIn.hasChunksAt(blockpos.getX() - 10, blockpos.getY() - 10, blockpos.getZ() - 10, blockpos.getX() + 10, blockpos.getY() + 10, blockpos.getZ() + 10)) {
                         if ((checkValidSpawnArea(worldIn, blockpos)) && (checkValidSpawnArea(worldIn, blockpos0)) && (checkValidSpawnArea(worldIn, blockpos1))) {
-                            if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos, PanthalassaEntityTypes.KRONOSAURUS.get())
-                                    && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos0, PanthalassaEntityTypes.KRONOSAURUS.get())
-                                    && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos1, PanthalassaEntityTypes.KRONOSAURUS.get())) {
+                            if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos, PanthalassaEntityTypes.COELACANTH.get())
+                                    && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos0, PanthalassaEntityTypes.COELACANTH.get())
+                                    && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos1, PanthalassaEntityTypes.COELACANTH.get())) {
                                 //Proceed to do spawnInBiome...
                                 this.spawnInBiome(worldIn, blockpos, blockpos0, blockpos1);
                             }
@@ -76,49 +76,49 @@ public class KronosaurusSpawner  {
             //If the biome we're in is the Abyssal Overgrowth....
             if (Objects.equals(worldIn.getBiome(blockPos).getRegistryName(), new ResourceLocation(Panthalassa.MODID, "abyssal_overgrowth"))) {
                 //And, within a 96x96x96 Bounding Box, there's less than 10 Kronosaurus already spawned... (so basically, a maximum of 3 spawn "groups" of 3 within the 96x96x96 Bounding Box)
-                List<EntityKronosaurus> list = worldIn.getEntitiesOfClass(EntityKronosaurus.class, (new AxisAlignedBB(blockPos)).inflate(36.0D, 36.0D, 36.0D));
+                List<EntityCoelacanth> list = worldIn.getEntitiesOfClass(EntityCoelacanth.class, (new AxisAlignedBB(blockPos)).inflate(36.0D, 36.0D, 36.0D));
                 //...and within a smaller 24x64x24 bounding box there's no other Kronosaurus (ensures separation of same species - separation will be different for same vs. different species)
-                List<EntityKronosaurus> list0 = worldIn.getEntitiesOfClass(EntityKronosaurus.class, (new AxisAlignedBB(blockPos)).inflate(26.0D, 24.0D, 24.0D));
+                List<EntityCoelacanth> list0 = worldIn.getEntitiesOfClass(EntityCoelacanth.class, (new AxisAlignedBB(blockPos)).inflate(24.0D, 24.0D, 24.0D));
                 //...and within a 12x12x12 bounding box there's no other Panthalassa Entities (ensures separation of different species - separation will be different for same vs. different species)
                 List<PanthalassaEntity> list1 = worldIn.getEntitiesOfClass(PanthalassaEntity.class, (new AxisAlignedBB(blockPos)).inflate(12.0D, 12.0D, 12.0D));
 
                 if (list.size() < 10 && list0.isEmpty() && list1.isEmpty()) {
                     //Proceed to spawn the Kronosaurus school at the selected BlockPositions
-                    this.spawnKronosaurus(blockPos, blockPos0, blockPos1, worldIn);
+                    this.spawnCoelacanth(blockPos, blockPos0, blockPos1, worldIn);
                 }
             }
         }
     }
 
-    private void spawnKronosaurus(BlockPos blockPos, BlockPos blockPos0, BlockPos blockPos1, ServerWorld worldIn) {
-        EntityKronosaurus kronosaurus = PanthalassaEntityTypes.KRONOSAURUS.get().create(worldIn);
-        EntityKronosaurus kronosaurus0 = PanthalassaEntityTypes.KRONOSAURUS.get().create(worldIn);
-        EntityKronosaurus kronosaurus1 = PanthalassaEntityTypes.KRONOSAURUS.get().create(worldIn);
+    private void spawnCoelacanth(BlockPos blockPos, BlockPos blockPos0, BlockPos blockPos1, ServerWorld worldIn) {
+        EntityCoelacanth coelacanth = PanthalassaEntityTypes.COELACANTH.get().create(worldIn);
+        EntityCoelacanth coelacanth0 = PanthalassaEntityTypes.COELACANTH.get().create(worldIn);
+        EntityCoelacanth coelacanth1 = PanthalassaEntityTypes.COELACANTH.get().create(worldIn);
 
         //Proceed to spawn each Kronosaurus and position them, verifying for possible null values.
-        if (kronosaurus != null){
-            kronosaurus.setLeader(true);
-            kronosaurus.moveTo(blockPos, 0.0F, 0.0F);
-            if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(kronosaurus, worldIn, blockPos.getX(), blockPos.getY(), blockPos.getZ(), null, SpawnReason.NATURAL) != -1) {
-                kronosaurus.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
-                worldIn.addFreshEntityWithPassengers(kronosaurus);
+        if (coelacanth != null){
+            coelacanth.setLeader(true);
+            coelacanth.moveTo(blockPos, 0.0F, 0.0F);
+            if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(coelacanth, worldIn, blockPos.getX(), blockPos.getY(), blockPos.getZ(), null, SpawnReason.NATURAL) != -1) {
+                coelacanth.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
+                worldIn.addFreshEntityWithPassengers(coelacanth);
             }
         }
 
-        if (kronosaurus0 != null){
-            kronosaurus0.moveTo(blockPos0, 0.0F, 0.0F);
-            if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(kronosaurus0, worldIn, blockPos0.getX(), blockPos0.getY(), blockPos0.getZ(), null, SpawnReason.NATURAL) != -1) {
-                kronosaurus0.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
-                worldIn.addFreshEntityWithPassengers(kronosaurus0);
+        if (coelacanth0 != null){
+            coelacanth0.moveTo(blockPos0, 0.0F, 0.0F);
+            if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(coelacanth0, worldIn, blockPos0.getX(), blockPos0.getY(), blockPos0.getZ(), null, SpawnReason.NATURAL) != -1) {
+                coelacanth0.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
+                worldIn.addFreshEntityWithPassengers(coelacanth0);
             }
 
         }
 
-        if (kronosaurus1 != null) {
-            kronosaurus1.moveTo(blockPos1, 0.0F, 0.0F);
-            if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(kronosaurus1, worldIn, blockPos1.getX(), blockPos1.getY(), blockPos1.getZ(), null, SpawnReason.NATURAL) != -1) {
-                kronosaurus1.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos1), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
-                worldIn.addFreshEntityWithPassengers(kronosaurus1);
+        if (coelacanth1 != null) {
+            coelacanth1.moveTo(blockPos1, 0.0F, 0.0F);
+            if(net.minecraftforge.common.ForgeHooks.canEntitySpawn(coelacanth1, worldIn, blockPos1.getX(), blockPos1.getY(), blockPos1.getZ(), null, SpawnReason.NATURAL) != -1) {
+                coelacanth1.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockPos1), SpawnReason.NATURAL, (ILivingEntityData)null, (CompoundNBT)null);
+                worldIn.addFreshEntityWithPassengers(coelacanth1);
             }
         }
     }

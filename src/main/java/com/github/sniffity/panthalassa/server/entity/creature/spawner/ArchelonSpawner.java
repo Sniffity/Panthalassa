@@ -41,9 +41,9 @@ public class ArchelonSpawner  {
 
                 if (blockpos != blockpos0) {
                     if (worldIn.hasChunksAt(blockpos.getX() - 10, blockpos.getY() - 10, blockpos.getZ() - 10, blockpos.getX() + 10, blockpos.getY() + 10, blockpos.getZ() + 10)) {
-                        if ((checkValidSpawnArea(worldIn, blockpos)) || (checkValidSpawnArea(worldIn, blockpos0))) {
-                            if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos, PanthalassaEntityTypes.KRONOSAURUS.get())
-                                    && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos0, PanthalassaEntityTypes.KRONOSAURUS.get()))
+                        if ((checkValidSpawnArea(worldIn, blockpos)) && (checkValidSpawnArea(worldIn, blockpos0))) {
+                            if (WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos, PanthalassaEntityTypes.ARCHELON.get())
+                                    && WorldEntitySpawner.isSpawnPositionOk(EntitySpawnPlacementRegistry.PlacementType.IN_WATER, worldIn, blockpos0, PanthalassaEntityTypes.ARCHELON.get()))
                                 this.spawnInBiome(worldIn, blockpos, blockpos0);
                         }
                     }
@@ -54,9 +54,9 @@ public class ArchelonSpawner  {
 
     private void spawnInBiome(ServerWorld worldIn, BlockPos blockPos, BlockPos blockPos0) {
         if (worldIn.getBiome(blockPos).getRegistryName() != null) {
-            if (Objects.equals(worldIn.getBiome(blockPos).getRegistryName(), new ResourceLocation(Panthalassa.MODID, "abyssal_overgrowth"))) {
-                List<EntityArchelon> list = worldIn.getEntitiesOfClass(EntityArchelon.class, (new AxisAlignedBB(blockPos)).inflate(96.0D, 96.0D, 96.0D));
-                List<EntityArchelon> list0 = worldIn.getEntitiesOfClass(EntityArchelon.class, (new AxisAlignedBB(blockPos)).inflate(16.0D, 64.0D, 16.0D));
+            if (Objects.equals(worldIn.getBiome(blockPos).getRegistryName(), new ResourceLocation(Panthalassa.MODID, "ancient_caverns"))) {
+                List<EntityArchelon> list = worldIn.getEntitiesOfClass(EntityArchelon.class, (new AxisAlignedBB(blockPos)).inflate(36.0D, 36.0D, 36.0D));
+                List<EntityArchelon> list0 = worldIn.getEntitiesOfClass(EntityArchelon.class, (new AxisAlignedBB(blockPos)).inflate(24.0D, 24.0D, 24.0D));
                 List<PanthalassaEntity> list1 = worldIn.getEntitiesOfClass(PanthalassaEntity.class, (new AxisAlignedBB(blockPos)).inflate(12.0D, 12.0D, 12.0D));
                 if (list.size() < 9 && list0.isEmpty() && list1.isEmpty()) {
                     this.spawnArchelon(blockPos, blockPos0, worldIn);
