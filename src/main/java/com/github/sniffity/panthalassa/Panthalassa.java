@@ -12,6 +12,8 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.FlatChunkGenerator;
@@ -107,6 +109,9 @@ public final class Panthalassa {
 	public void addDimensionalSpacing(final WorldEvent.Load event) {
 		if(event.getWorld() instanceof ServerWorld){
 			ServerWorld serverWorld = (ServerWorld)event.getWorld();
+			if (serverWorld.getLevel().dimension() != World.OVERWORLD) {
+				return;
+			}
 
 			try {
 				if(GETCODEC_METHOD == null) GETCODEC_METHOD = ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
@@ -122,11 +127,6 @@ public final class Panthalassa {
 					serverWorld.dimension().equals(World.OVERWORLD)){
 				return;
 			}
-
-
-			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
-			tempMap.putIfAbsent(PanthalassaStructures.PANTHALASSA_LABORATORY.get(), DimensionStructuresSettings.DEFAULTS.get(PanthalassaStructures.PANTHALASSA_LABORATORY.get()));
-			serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
 		}
 	}
 
