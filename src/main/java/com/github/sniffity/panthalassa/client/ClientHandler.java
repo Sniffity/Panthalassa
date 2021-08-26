@@ -57,6 +57,8 @@ public class ClientHandler {
                 RenderArchelon::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MOSASAURUS.get(),
                 RenderMosasaurus::new);
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.COELACANTH.get(),
+                RenderCoelacanth::new);
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 manager -> new RenderMRSV(manager));

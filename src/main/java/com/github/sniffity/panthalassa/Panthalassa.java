@@ -1,10 +1,7 @@
 package com.github.sniffity.panthalassa;
 
 import com.github.sniffity.panthalassa.client.ClientHandler;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMosasaurus;
+import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.mojang.serialization.Codec;
@@ -103,6 +100,8 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
 		event.put(PanthalassaEntityTypes.ARCHELON.get(), EntityArchelon.archelonAttributes().build());
 		event.put(PanthalassaEntityTypes.MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
+		event.put(PanthalassaEntityTypes.COELACANTH.get(), EntityCoelacanth.coelacanthAttributes().build());
+
 	}
 
 	private static Method GETCODEC_METHOD;
