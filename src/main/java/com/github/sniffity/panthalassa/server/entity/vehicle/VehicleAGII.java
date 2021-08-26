@@ -84,8 +84,8 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getNetCatch()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ag2.hook_deploy", false).addAnimation("animation.ag2.hook_deploy_hold", true));
+        if (getNetActivated()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ag2.hook_deploy_hold", true));
             return PlayState.CONTINUE;
         } else{
             return PlayState.STOP;
@@ -221,13 +221,13 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         if (this.hasPassenger(passenger)) {
             float f = 0.0F;
             float f1 = (float)((!this.isAlive() ? (double)0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
-            float f2 = 0.0F;
+            float f2 = 0.06F;
 
             if (this.getPassengers().size() > 1) {
                 int i = this.getPassengers().indexOf(passenger);
                 if (i == 0) {
                     f = 0.0F;
-                    f2 = 10F;
+                    f2 = 0.0F;
                 } else {
                     f = -1.0F;
                     f2= -1.0F;
