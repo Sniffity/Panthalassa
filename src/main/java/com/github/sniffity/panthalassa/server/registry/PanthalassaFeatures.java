@@ -17,6 +17,10 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<NoFeatureConfig>> ABYSSAL_OVERGROWTH_KELP =
             FEATURES.register("abyssal_overgrowth_kelp", () -> new FeatureAbyssalOvergrowthKelp(NoFeatureConfig.CODEC));
 
+    public static final RegistryObject<Feature<NoFeatureConfig>> KRETHROSS =
+            FEATURES.register("krethross", () -> new FeatureKrethross(NoFeatureConfig.CODEC));
+
+
     public static final RegistryObject<Feature<ProbabilityConfig>> PANTHALASSA_SEA_GRASS =
             FEATURES.register("panthalassa_sea_grass", () -> new FeaturePanthalassaSeaGrass(ProbabilityConfig.CODEC));
 
