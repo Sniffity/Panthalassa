@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.world.gen.feature;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import java.util.Random;
 import net.minecraft.block.BlockState;
@@ -23,13 +24,13 @@ public class FeatureAbyssalOvergrowthKelp extends Feature<NoFeatureConfig> {
         int kelp_limit = 128;
         double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockpos = new BlockPos(pos.getX(), r, pos.getZ());
-        if ((reader.getFluidState(blockpos).is(FluidTags.WATER))&&(pos.getY()<kelp_limit)) {
+        if ((reader.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.defaultBlockState();
             BlockState blockstate1 = Blocks.KELP_PLANT.defaultBlockState();
             int k = 1 + rand.nextInt(100);
 
             for(int l = 0; l <= k; ++l) {
-                if (reader.getFluidState(blockpos).is(FluidTags.WATER) && (reader.getFluidState(blockpos.above()).is(FluidTags.WATER) && blockstate1.canSurvive(reader, blockpos) && !reader.getBlockState(blockpos.below()).is(Blocks.KELP))) {
+                if (reader.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && (reader.getBlockState(blockpos.above()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && blockstate1.canSurvive(reader, blockpos) && !reader.getBlockState(blockpos.below()).is(Blocks.KELP))) {
                     if (l == k) {
                         reader.setBlock(blockpos, blockstate.setValue(KelpTopBlock.AGE, Integer.valueOf(rand.nextInt(4) + 20)), 2);
                         ++i;

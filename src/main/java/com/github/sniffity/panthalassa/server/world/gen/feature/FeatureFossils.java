@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.world.gen.feature;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import java.util.Random;
 
@@ -53,22 +54,22 @@ public class FeatureFossils extends Feature<NoFeatureConfig> {
 
         BlockPos blockpos1 = template.getZeroPositionWithTransform(blockpos0.offset(j, blockpos0.getY()-1, k), Mirror.NONE, rotation);
 
-        if ((p_241855_1_.getFluidState(blockpos1.below()).is(FluidTags.WATER))) {
+        if ((p_241855_1_.getBlockState(blockpos1.below()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
         }
-        if (!(p_241855_1_.getFluidState(blockpos1).is(FluidTags.WATER))) {
+        if (!(p_241855_1_.getBlockState(blockpos1).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
         }
-        if ((p_241855_1_.getFluidState(blockpos1.below().north()).is(FluidTags.WATER))) {
+        if ((p_241855_1_.getBlockState(blockpos1.below().north()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
         }
-        if ((p_241855_1_.getFluidState(blockpos1.below().south()).is(FluidTags.WATER))) {
+        if ((p_241855_1_.getBlockState(blockpos1.below().south()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
         }
-        if ((p_241855_1_.getFluidState(blockpos1.below().east()).is(FluidTags.WATER))) {
+        if ((p_241855_1_.getBlockState(blockpos1.below().east()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
         }
-        if ((p_241855_1_.getFluidState(blockpos1.below().west()).is(FluidTags.WATER))) {
+        if ((p_241855_1_.getBlockState(blockpos1.below().west()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
         }
 

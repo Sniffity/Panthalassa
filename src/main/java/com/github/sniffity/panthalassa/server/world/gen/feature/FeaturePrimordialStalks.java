@@ -18,12 +18,12 @@ public class FeaturePrimordialStalks extends Feature<NoFeatureConfig> {
         super(p_i231936_1_);
     }
 
-    public boolean place(ISeedReader p_241855_1_, ChunkGenerator p_241855_2_, Random p_241855_3_, BlockPos p_241855_4_, NoFeatureConfig p_241855_5_) {
+    public boolean place(ISeedReader seedReader, ChunkGenerator chunkGenerator, Random random, BlockPos blockPos, NoFeatureConfig noFeatureConfig) {
         double r = Math.floor(Math.random()*(41)+20);
-        BlockPos blockpos = new BlockPos(p_241855_4_.getX(), r, p_241855_4_.getZ());;
-        if (p_241855_1_.isWaterAt(blockpos) && p_241855_1_.getBlockState(blockpos.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get())) {
+        BlockPos blockpos = new BlockPos(blockPos.getX(), r, blockPos.getZ());;
+        if (seedReader.isWaterAt(blockpos) && seedReader.getBlockState(blockpos.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get())) {
 
-            BlockPrimordialStalk.generatePlant(p_241855_1_, blockpos, p_241855_3_, 8);
+            BlockPrimordialStalk.generatePlant(seedReader, blockpos, random, 8);
             return true;
         } else {
             return false;

@@ -31,7 +31,7 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateFeatureConfig> {
             pos0 = new BlockPos(pos0.getX(), pos0.getY(), pos0.getZ());
             label46: {
                 if (pos0.getY() > 3) {
-                    if (reader.getFluidState(pos0.below()).is(FluidTags.WATER)) {
+                    if (reader.getBlockState(pos0.below()).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                         break label46;
                     }
 

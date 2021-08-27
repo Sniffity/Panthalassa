@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.world.gen.feature;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
@@ -95,9 +96,9 @@ public class FeatureAncientColumn extends Feature<ColumnConfig> {
         if (!isWater(p_242762_0_, p_242762_1_, p_242762_2_)) {
             return false;
         } else {
-            FluidState fluidstate = p_242762_0_.getFluidState(p_242762_2_.move(Direction.DOWN));
+            BlockState blockState = p_242762_0_.getBlockState(p_242762_2_.move(Direction.DOWN));
             p_242762_2_.move(Direction.UP);
-            return !fluidstate.is(FluidTags.WATER);
+            return !blockState.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
         }
     }
 
@@ -105,8 +106,8 @@ public class FeatureAncientColumn extends Feature<ColumnConfig> {
     private static BlockPos findWater(IWorld p_236249_0_, BlockPos.Mutable p_236249_1_, int p_236249_2_) {
         while(p_236249_1_.getY() < p_236249_0_.getMaxBuildHeight() && p_236249_2_ > 0) {
             --p_236249_2_;
-            FluidState fluidstate = p_236249_0_.getFluidState(p_236249_1_);
-            if (fluidstate.is(FluidTags.WATER)) {
+            BlockState blockstate = p_236249_0_.getBlockState(p_236249_1_);
+            if (blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                 return p_236249_1_;
             }
 
@@ -117,7 +118,7 @@ public class FeatureAncientColumn extends Feature<ColumnConfig> {
     }
 
     private static boolean isWater(IWorld p_236247_0_, int p_236247_1_, BlockPos p_236247_2_) {
-        FluidState fluidstate = p_236247_0_.getFluidState(p_236247_2_);
-        return fluidstate.is(FluidTags.WATER);
+        BlockState blockstate = p_236247_0_.getBlockState(p_236247_2_);
+        return blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
     }
 }

@@ -34,12 +34,12 @@ public abstract class FeatureAbstractCoral extends Feature<NoFeatureConfig> {
         BlockState blockstate = p_204624_1_.getBlockState(p_204624_3_);
         FluidState fluidState = p_204624_1_.getFluidState(p_204624_3_);
         BlockPos blockposAbove = p_204624_3_.above();
-        FluidState fluidStateAbove = p_204624_1_.getFluidState(blockposAbove);
+        BlockState blockStateAbove = p_204624_1_.getBlockState(blockposAbove);
 
         BlockPos blockposBelow = p_204624_3_.below();
         BlockState blockstateBelow = p_204624_1_.getBlockState(blockposBelow);
 
-        if (((fluidState.is(FluidTags.WATER)) && (blockstateBelow.is(PanthalassaBlocks.PANTHALASSA_SAND.get()))) || blockstate.is(BlockTags.CORALS) && (fluidStateAbove.is(FluidTags.WATER))){
+        if (((blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get())) && (blockstateBelow.is(PanthalassaBlocks.PANTHALASSA_SAND.get()))) || blockstate.is(BlockTags.CORALS) && (blockStateAbove.is(PanthalassaBlocks.PANTHALASSA_WATER.get()))){
             p_204624_1_.setBlock(p_204624_3_, p_204624_4_, 3);
             if (p_204624_2_.nextFloat() < 0.25F) {
                 p_204624_1_.setBlock(blockposAbove, BlockTags.CORALS.getRandomElement(p_204624_2_).defaultBlockState(), 2);
@@ -50,7 +50,7 @@ public abstract class FeatureAbstractCoral extends Feature<NoFeatureConfig> {
             for(Direction direction : Direction.Plane.HORIZONTAL) {
                 if (p_204624_2_.nextFloat() < 0.2F) {
                     BlockPos blockpos1 = p_204624_3_.relative(direction);
-                    if (p_204624_1_.getFluidState(blockpos1).is(FluidTags.WATER)) {
+                    if (p_204624_1_.getBlockState(blockpos1).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                         BlockState blockstate1 = BlockTags.WALL_CORALS.getRandomElement(p_204624_2_).defaultBlockState().setValue(DeadCoralWallFanBlock.FACING, direction);
                         p_204624_1_.setBlock(blockpos1, blockstate1, 2);
                     }
@@ -70,7 +70,7 @@ public abstract class FeatureAbstractCoral extends Feature<NoFeatureConfig> {
         FluidState fluidStateAbove = p_204624_1_.getFluidState(blockposAbove);
 
 
-        if (((fluidState.is(FluidTags.WATER))) || blockstate.is(BlockTags.CORALS) && (fluidStateAbove.is(FluidTags.WATER))){
+        if (((blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) || blockstate.is(BlockTags.CORALS) && (blockstateAbove.is(PanthalassaBlocks.PANTHALASSA_WATER.get()))){
             p_204624_1_.setBlock(p_204624_3_, p_204624_4_, 3);
             if (p_204624_2_.nextFloat() < 0.25F) {
                 p_204624_1_.setBlock(blockposAbove, BlockTags.CORALS.getRandomElement(p_204624_2_).defaultBlockState(), 2);
@@ -81,7 +81,7 @@ public abstract class FeatureAbstractCoral extends Feature<NoFeatureConfig> {
             for(Direction direction : Direction.Plane.HORIZONTAL) {
                 if (p_204624_2_.nextFloat() < 0.2F) {
                     BlockPos blockpos1 = p_204624_3_.relative(direction);
-                    if (p_204624_1_.getBlockState(blockpos1).is(Blocks.WATER)) {
+                    if (p_204624_1_.getBlockState(blockpos1).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                         BlockState blockstate1 = BlockTags.WALL_CORALS.getRandomElement(p_204624_2_).defaultBlockState().setValue(DeadCoralWallFanBlock.FACING, direction);
                         p_204624_1_.setBlock(blockpos1, blockstate1, 2);
                     }
