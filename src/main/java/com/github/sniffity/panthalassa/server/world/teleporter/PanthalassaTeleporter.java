@@ -61,7 +61,6 @@ public class PanthalassaTeleporter implements ITeleporter {
             }
 
             else {
-
                 if (destWorld.dimension() != PanthalassaDimension.PANTHALASSA) {
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 } else {
@@ -156,9 +155,8 @@ public class PanthalassaTeleporter implements ITeleporter {
 
         while (!validLocation) {
             while (pos1.getY() < 128
-                    && world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)
-                    || world.getBlockState(pos1) == Blocks.KELP.defaultBlockState()
-                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState())  {
+                    && (world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)
+                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState()))  {
                 pos1 = pos1.above();
             }
             while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)) {
