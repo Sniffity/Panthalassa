@@ -5,6 +5,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -93,9 +95,9 @@ public class FeatureAncientColumn extends Feature<ColumnConfig> {
         if (!isWater(p_242762_0_, p_242762_1_, p_242762_2_)) {
             return false;
         } else {
-            BlockState blockstate = p_242762_0_.getBlockState(p_242762_2_.move(Direction.DOWN));
+            FluidState fluidstate = p_242762_0_.getFluidState(p_242762_2_.move(Direction.DOWN));
             p_242762_2_.move(Direction.UP);
-            return !blockstate.is(Blocks.WATER);
+            return !fluidstate.is(FluidTags.WATER);
         }
     }
 
@@ -103,8 +105,8 @@ public class FeatureAncientColumn extends Feature<ColumnConfig> {
     private static BlockPos findWater(IWorld p_236249_0_, BlockPos.Mutable p_236249_1_, int p_236249_2_) {
         while(p_236249_1_.getY() < p_236249_0_.getMaxBuildHeight() && p_236249_2_ > 0) {
             --p_236249_2_;
-            BlockState blockstate = p_236249_0_.getBlockState(p_236249_1_);
-            if (blockstate.is(Blocks.WATER)) {
+            FluidState fluidstate = p_236249_0_.getFluidState(p_236249_1_);
+            if (fluidstate.is(FluidTags.WATER)) {
                 return p_236249_1_;
             }
 
@@ -115,7 +117,7 @@ public class FeatureAncientColumn extends Feature<ColumnConfig> {
     }
 
     private static boolean isWater(IWorld p_236247_0_, int p_236247_1_, BlockPos p_236247_2_) {
-        BlockState blockstate = p_236247_0_.getBlockState(p_236247_2_);
-        return blockstate.is(Blocks.WATER);
+        FluidState fluidstate = p_236247_0_.getFluidState(p_236247_2_);
+        return fluidstate.is(FluidTags.WATER);
     }
 }

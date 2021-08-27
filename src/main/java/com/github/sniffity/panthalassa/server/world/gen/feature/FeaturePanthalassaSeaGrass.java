@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TallSeaGrassBlock;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -24,14 +25,14 @@ public class FeaturePanthalassaSeaGrass extends Feature<ProbabilityConfig> {
         int j = p_241855_3_.nextInt(8) - p_241855_3_.nextInt(8);
         double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockpos = new BlockPos(p_241855_4_.getX() + i, r, p_241855_4_.getZ() + j);
-        if (p_241855_1_.getBlockState(blockpos).is(Blocks.WATER)) {
+        if (p_241855_1_.getFluidState(blockpos).is(FluidTags.WATER)) {
             boolean flag1 = p_241855_3_.nextDouble() < (double)p_241855_5_.probability;
             BlockState blockstate = flag1 ? Blocks.TALL_SEAGRASS.defaultBlockState() : Blocks.SEAGRASS.defaultBlockState();
             if (blockstate.canSurvive(p_241855_1_, blockpos)) {
                 if (flag1) {
                     BlockState blockstate1 = blockstate.setValue(TallSeaGrassBlock.HALF, DoubleBlockHalf.UPPER);
                     BlockPos blockpos1 = blockpos.above();
-                    if (p_241855_1_.getBlockState(blockpos1).is(Blocks.WATER)) {
+                    if (p_241855_1_.getFluidState(blockpos1).is(FluidTags.WATER)) {
                         p_241855_1_.setBlock(blockpos, blockstate, 2);
                         p_241855_1_.setBlock(blockpos1, blockstate1, 2);
                     }
