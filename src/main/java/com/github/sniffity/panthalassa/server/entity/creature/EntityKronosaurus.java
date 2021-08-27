@@ -1,19 +1,22 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
+import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaFluids;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
@@ -27,8 +30,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
 
@@ -55,10 +56,11 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         System.out.println(pos);
-        if (worldIn.getBlockState(pos).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
+
+        if (pos.getY()>20 && pos.getY()<110) {
             return true;
         }
-        return false;
+        return true;
     }
 
     @Override

@@ -1,22 +1,24 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.block.BlockPanthalassaFluid;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.spawner.WorldEntitySpawner;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.function.Predicate;
 
 public class PanthalassaEntityTypes {
 
@@ -25,6 +27,7 @@ public class PanthalassaEntityTypes {
     public static final RegistryObject<EntityType<EntityKronosaurus>> KRONOSAURUS = ENTITY_TYPES.register ("kronosaurus",()->
             EntityType.Builder.of(EntityKronosaurus::new,EntityClassification.CREATURE)
                     .sized(2.0F, 1.0F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
     public static final RegistryObject<EntityType<EntityMegalodon>> MEGALODON = ENTITY_TYPES.register ("megalodon",()->
@@ -61,11 +64,14 @@ public class PanthalassaEntityTypes {
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_2_submersible_vehicle").toString()));
 
     public static void spawnPlacements() {
-        Heightmap.Type.MOTION_BLOCKING.isOpaque = (state) -> {
+
+
+
+        Heightmap.Type.MOTION_BLOCKING_NO_LEAVES.isOpaque = (state) -> {
             return (state.getMaterial().blocksMotion() || !state.getFluidState().isEmpty()) && !(state.getBlock() == PanthalassaBlocks.PANTHALASSA_WATER.get());
         };
 
-        EntitySpawnPlacementRegistry.register(KRONOSAURUS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, EntityKronosaurus::canKronosaurusSpawn);
+        EntitySpawnPlacementRegistry.register(KRONOSAURUS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityKronosaurus::canKronosaurusSpawn);
 
     }
 
