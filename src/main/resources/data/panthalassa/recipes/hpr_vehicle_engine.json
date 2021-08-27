@@ -2,28 +2,28 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "   ",
     "xzx",
-    "xyx"
+    "zyz",
+    "xzx"
   ],
   "key":
   {
     "x":
     {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:redstone"
     },
     "y":
     {
-      "item": "minecraft:redstone"
+      "item": "minecraft:fire_charge"
     },
     "z":
     {
-      "item": "minecraft:black_dye"
+      "item": "minecraft:iron_ingot"
     }
   },
   "result":
   {
-    "item": "panthalassa:hpr_vehicle_panel",
+    "item": "panthalassa:hpr_vehicle_engine",
     "count": 1
   }
 }

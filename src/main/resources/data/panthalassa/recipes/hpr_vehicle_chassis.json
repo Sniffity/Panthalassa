@@ -2,28 +2,28 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "   ",
     "xzx",
-    "xyx"
+    "zyz",
+    "zzz"
   ],
   "key":
   {
     "x":
     {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:yellow_dye"
     },
     "y":
     {
-      "item": "minecraft:redstone"
+      "item": "minecraft:iron_block"
     },
     "z":
     {
-      "item": "minecraft:black_dye"
+      "item": "minecraft:terracotta"
     }
   },
   "result":
   {
-    "item": "panthalassa:hpr_vehicle_panel",
+    "item": "panthalassa:hpr_vehicle_chassis",
     "count": 1
   }
 }

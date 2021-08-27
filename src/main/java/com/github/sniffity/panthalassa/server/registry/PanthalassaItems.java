@@ -21,11 +21,15 @@ public class PanthalassaItems {
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> HPR_VEHICLE_COCKPIT = ITEMS.register("hpr_vehicle_cockpit",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_WING = ITEMS.register("hpr_vehicle_wing",
+	public static final RegistryObject<Item> HPR_VEHICLE_CHASSIS = ITEMS.register("hpr_vehicle_chassis",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> HPR_VEHICLE_PROPELLER = ITEMS.register("hpr_vehicle_propeller",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_TAIL = ITEMS.register("hpr_vehicle_tail",
+	public static final RegistryObject<Item> HPR_VEHICLE_ENGINE = ITEMS.register("hpr_vehicle_engine",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_LIGHT = ITEMS.register("hpr_vehicle_light",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_WING = ITEMS.register("hpr_vehicle_wing",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> HPR_VEHICLE = ITEMS.register("hpr_vehicle",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));

@@ -3,7 +3,7 @@
   "pattern":
   [
     "   ",
-    "xzx",
+    " x ",
     "xyx"
   ],
   "key":
@@ -14,16 +14,12 @@
     },
     "y":
     {
-      "item": "minecraft:redstone"
-    },
-    "z":
-    {
-      "item": "minecraft:black_dye"
+      "item": "minecraft:glowstone_dust"
     }
   },
   "result":
   {
-    "item": "panthalassa:hpr_vehicle_panel",
+    "item": "panthalassa:hpr_vehicle_light",
     "count": 1
   }
 }

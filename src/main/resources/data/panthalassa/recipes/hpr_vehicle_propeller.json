@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "   ",
-    "xzx",
-    "xyx"
+    "xyx",
+    "zyz",
+    "zyz"
   ],
   "key":
   {
     "x":
     {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:black_dye"
     },
     "y":
     {
@@ -18,12 +18,12 @@
     },
     "z":
     {
-      "item": "minecraft:black_dye"
+      "item": "minecraft:iron_ingot"
     }
   },
   "result":
   {
-    "item": "panthalassa:hpr_vehicle_panel",
-    "count": 1
+    "item": "panthalassa:hpr_vehicle_propeller",
+    "count": 2
   }
 }
