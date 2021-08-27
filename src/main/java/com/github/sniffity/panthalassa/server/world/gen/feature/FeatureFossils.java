@@ -52,7 +52,7 @@ public class FeatureFossils extends Feature<NoFeatureConfig> {
         int j = p_241855_3_.nextInt(16 - blockpos.getX());
         int k = p_241855_3_.nextInt(16 - blockpos.getZ());
 
-        BlockPos blockpos1 = template.getZeroPositionWithTransform(blockpos0.offset(j, blockpos0.getY()-1, k), Mirror.NONE, rotation);
+        BlockPos blockpos1 = template.getZeroPositionWithTransform(blockpos0.offset(j, 0, k), Mirror.NONE, rotation);
 
         if ((p_241855_1_.getBlockState(blockpos1.below()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) {
             return false;
@@ -73,9 +73,11 @@ public class FeatureFossils extends Feature<NoFeatureConfig> {
             return false;
         }
 
+        BlockPos blockpos2 = new BlockPos(blockpos1.getX(), blockpos1.getY()-2, blockpos1.getZ());
+
         IntegrityProcessor integrityprocessor = new IntegrityProcessor(0.9F);
         placementsettings.clearProcessors().addProcessor(integrityprocessor);
-        template.placeInWorld(p_241855_1_, blockpos1, blockpos1, placementsettings, p_241855_3_, 4);
+        template.placeInWorld(p_241855_1_, blockpos2, blockpos2, placementsettings, p_241855_3_, 4);
         placementsettings.popProcessor(integrityprocessor);
 
         return true;
