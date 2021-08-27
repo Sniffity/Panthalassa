@@ -20,7 +20,7 @@ public class BlockKrethross extends AbstractBodyPlantBlock implements ILiquidCon
         return PanthalassaBlocks.KRETHROSS.get();
     }
 
-    public FluidState getFluidState(BlockState p_204507_1_) {
+    public FluidState getFluidState(BlockState blockState) {
         return Fluids.WATER.getSource(false);
     }
 

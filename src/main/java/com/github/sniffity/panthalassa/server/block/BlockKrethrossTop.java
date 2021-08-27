@@ -53,7 +53,7 @@ public class BlockKrethrossTop extends AbstractTopPlantBlock implements ILiquidC
         return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(p_196258_1_) : null;
     }
 
-    public FluidState getFluidState(BlockState p_204507_1_) {
+    public FluidState getFluidState(BlockState blockState) {
         return Fluids.WATER.getSource(false);
     }
 }
