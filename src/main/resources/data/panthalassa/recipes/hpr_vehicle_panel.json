@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "   ",
+    "xzx",
+    "xyx"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    "y":
+    {
+      "item": "minecraft:redstone_dust"
+    },
+    "z":
+    {
+      "item": "panthalassa:hpr_vehicle_seat"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:hpr_vehicle_cockpit",
+    "count": 1
+  }
+}

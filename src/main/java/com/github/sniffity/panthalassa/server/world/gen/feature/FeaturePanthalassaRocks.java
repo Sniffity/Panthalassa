@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -29,7 +30,7 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateFeatureConfig> {
             pos = new BlockPos(pos.getX(), r, pos.getZ());
             label46: {
                 if (pos.getY() > 3) {
-                    if (reader.getBlockState(pos.below()) == Blocks.WATER.defaultBlockState()) {
+                    if (reader.getFluidState(pos.below()).is(FluidTags.WATER)) {
                         break label46;
                     }
 

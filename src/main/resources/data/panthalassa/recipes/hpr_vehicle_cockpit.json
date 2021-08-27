@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "   ",
+    "xyz",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "panthalassa:hpr_vehicle_panel"
+    },
+    "y":
+    {
+      "item": "panthalassa:hpr_glass_sphere"
+    },
+    "z":
+    {
+      "item": "panthalassa:hpr_vehicle_seat"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:hpr_vehicle_cockpit",
+    "count": 1
+  }
+}
