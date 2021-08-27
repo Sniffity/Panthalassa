@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "vwv",
+    "xyx",
+    "xzx"
+  ],
+  "key":
+  {
+    "v":
+    {
+      "item": "panthalassa:hpr_vehicle_light"
+    },
+    "w":
+    {
+      "item": "panthalassa:hpr_vehicle_cockpit"
+    },
+    "x":
+    {
+      "item": "panthalassa:hpr_vehicle_propeller"
+    },
+    "y":
+    {
+      "item": "panthalassa:hpr_vehicle_chassis"
+    },
+    "z":
+    {
+      "item": "panthalassa:hpr_vehicle_engine"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:ag2_vehicle",
+    "count": 1
+  }
+}
