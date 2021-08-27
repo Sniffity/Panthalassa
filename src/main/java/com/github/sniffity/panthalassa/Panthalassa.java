@@ -57,7 +57,6 @@ public final class Panthalassa {
 
 		PanthalassaBlocks.BLOCKS.register(modBus);
 		PanthalassaItems.ITEMS.register(modBus);
-		PanthalassaFluids.FLUIDS.register(modBus);
 
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
 
@@ -69,12 +68,12 @@ public final class Panthalassa {
 
 		PanthalassaPOI.POI.register(modBus);
 
-		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA);
-		MinecraftForge.EVENT_BUS.register(PanthalassaDimension.PANTHALASSA_TYPE);
+		forgeBus.register(PanthalassaDimension.PANTHALASSA);
+		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
 
 
 		GeckoLib.initialize();
-		MinecraftForge.EVENT_BUS.register(this);
+		forgeBus.register(this);
 		modBus.addListener(this::setup);
 		modBus.addListener(this::registerEntityAttributes);
 

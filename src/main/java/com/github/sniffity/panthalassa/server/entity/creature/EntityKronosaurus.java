@@ -55,7 +55,9 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        FluidState fluidstate = worldIn.getFluidState(pos);
         System.out.println(pos);
+        System.out.println(fluidstate.is(FluidTags.WATER));
 
         if (pos.getY()>20 && pos.getY()<110) {
             return true;
