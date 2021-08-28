@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -18,7 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+
+import java.util.Random;
 
 public abstract class PanthalassaEntity extends CreatureEntity {
 
@@ -94,5 +99,16 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         }
         return flag;
     }
+    public static boolean canPanthalassaEntitySpawn(EntityType<? extends PanthalassaEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        if (pos.getY()>20 && pos.getY()<110) {
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public boolean checkSpawnObstruction(IWorldReader p_205019_1_) {
+        return p_205019_1_.containsAnyLiquid(this.getBoundingBox());
+    }
+
 }
 

@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -20,6 +21,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
+import net.minecraftforge.fml.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -54,16 +56,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
-    public static boolean canKronosaurusSpawn(EntityType<? extends PanthalassaEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        FluidState fluidstate = worldIn.getFluidState(pos);
-        System.out.println(pos);
-        System.out.println(fluidstate.is(FluidTags.WATER));
-
-        if (pos.getY()>20 && pos.getY()<110) {
-            return true;
-        }
-        return true;
-    }
 
     @Override
     protected void defineSynchedData() {

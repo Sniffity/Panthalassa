@@ -6,6 +6,7 @@
   "temperature": 2.0,
   "downfall": 0.0,
   "player_spawn_friendly": false,
+  "creature_spawn_probability": 0.05,
   "effects": {
     "sky_color": 8103167,
     "fog_color": 12638463,
@@ -50,8 +51,8 @@
     "monster": [],
     "creature": [
       {
-        "type": "panthalassa:kronosaurus",
-        "weight": 200,
+        "type": "panthalassa:megalodon",
+        "weight": 1,
         "minCount": 1,
         "maxCount": 1
       }
