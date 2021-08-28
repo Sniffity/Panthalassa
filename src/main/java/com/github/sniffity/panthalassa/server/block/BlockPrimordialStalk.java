@@ -41,15 +41,8 @@ public class BlockPrimordialStalk extends SixWayBlock implements IWaterLoggable 
         Block block3 = blockReader.getBlockState(blockPos.east()).getBlock();
         Block block4 = blockReader.getBlockState(blockPos.south()).getBlock();
         Block block5 = blockReader.getBlockState(blockPos.west()).getBlock();
-        return this.defaultBlockState()
-                .setValue(DOWN, block == PanthalassaBlocks.PANTHALASSA_SAND.get())
-                .setValue(DOWN, block == PanthalassaBlocks.PANTHALASSA_OVERGROWN_SAND.get())
-                .setValue(UP, block1 == PanthalassaBlocks.PRIMORDIAL_STALK.get())
-                .setValue(NORTH,block2 == PanthalassaBlocks.PRIMORDIAL_STALK.get())
-                .setValue(EAST, block3 == PanthalassaBlocks.PRIMORDIAL_STALK.get())
-                .setValue(SOUTH, block4 == PanthalassaBlocks.PRIMORDIAL_STALK.get())
-                .setValue(WEST, block5 == PanthalassaBlocks.PRIMORDIAL_STALK.get())
-                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+        return this.defaultBlockState().setValue(DOWN, Boolean.valueOf(block == this || block == PanthalassaBlocks.PRIMORDIAL_STALK.get() || block == PanthalassaBlocks.PANTHALASSA_SAND.get())).setValue(UP, Boolean.valueOf(block1 == this || block1 == PanthalassaBlocks.PRIMORDIAL_STALK.get())).setValue(NORTH, Boolean.valueOf(block2 == this || block2 == PanthalassaBlocks.PRIMORDIAL_STALK.get())).setValue(EAST, Boolean.valueOf(block3 == this || block3 == PanthalassaBlocks.PRIMORDIAL_STALK.get())).setValue(SOUTH, Boolean.valueOf(block4 == this || block4 == PanthalassaBlocks.PRIMORDIAL_STALK.get())).setValue(WEST, Boolean.valueOf(block5 == this || block5 == PanthalassaBlocks.PRIMORDIAL_STALK.get())).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+
     }
     
     public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState0, IWorld world, BlockPos blockPos0, BlockPos blockPos1) {
