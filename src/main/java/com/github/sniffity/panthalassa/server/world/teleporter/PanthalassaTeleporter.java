@@ -48,18 +48,18 @@ public class PanthalassaTeleporter implements ITeleporter {
 
         Optional<TeleportationRepositioner.Result> result = teleporterResult(destWorld, entity.blockPosition());
 
-            BlockPos startPos = result.get().minCorner;
             if (result.isPresent()) {
+                BlockPos startPos = result.get().minCorner;
                 if (destWorld.dimension() == PanthalassaDimension.PANTHALASSA) {
 
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
 
                 } else {
                     destWorld.getChunk(new BlockPos(startPos.getX(),startPos.getY(),startPos.getZ()));
-                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getDeltaMovement(), entity.yRot, entity.xRot);
+                    return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 }
             }
-
+            /*
             else {
                 if (destWorld.dimension() != PanthalassaDimension.PANTHALASSA) {
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
@@ -67,9 +67,8 @@ public class PanthalassaTeleporter implements ITeleporter {
 
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() + 5, startPos.getZ()-1), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 }
-
-            }
-
+            }*/
+        return null;
     }
 
 
