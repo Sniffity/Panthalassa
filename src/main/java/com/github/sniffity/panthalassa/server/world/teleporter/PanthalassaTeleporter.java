@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Panthalassa Mod - Class: PanthalassaTeleporter <br></br?>
@@ -60,7 +61,6 @@ public class PanthalassaTeleporter implements ITeleporter {
             }
             /*
             else {
-
                 if (destWorld.dimension() != PanthalassaDimension.PANTHALASSA) {
                     return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY() - 5, startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
                 } else {
@@ -127,7 +127,7 @@ public class PanthalassaTeleporter implements ITeleporter {
             for (j = -1; j > -5; --j) {
                 for (k = -8; k < 9; ++k) {
                     check = new BlockPos(potentialPos.getX() + i, potentialPos.getY() + j, potentialPos.getZ() + k);
-                    if (!(world.getBlockState(check) == Blocks.WATER.defaultBlockState())) {
+                    if (!(world.getFluidState(check).is(FluidTags.WATER))) {
                         return false;
                     }
                 }
@@ -140,6 +140,7 @@ public class PanthalassaTeleporter implements ITeleporter {
         BlockState portalCenter = PanthalassaBlocks.PORTAL.get().defaultBlockState();
         BlockState portalFrame = PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState();
 
+        BlockPos originalPos = new BlockPos(pos.getX(),64, pos.getZ());
         BlockPos pos1 = new BlockPos(pos.getX(),64, pos.getZ());
         if (world.dimension() == World.OVERWORLD) {
             Panthalassa.LOGGER.warn("Corresponding Overworld Portal not found!");
@@ -153,9 +154,8 @@ public class PanthalassaTeleporter implements ITeleporter {
 
         while (!validLocation) {
             while (pos1.getY() < 128
-                    && world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)
-                    || world.getBlockState(pos1) == Blocks.KELP.defaultBlockState()
-                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState())  {
+                    && (world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)
+                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState()))  {
                 pos1 = pos1.above();
             }
             while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)) {
@@ -163,12 +163,28 @@ public class PanthalassaTeleporter implements ITeleporter {
             }
 
             if (pos1.getY() < 10 || pos1.getY() > 118 || !checkRegionForPlacement(pos1, world )) {
-                pos1 = new BlockPos(pos1.getX()+(int)Math.floor((Math.random())*(20))-20,64,pos1.getZ()+(int)Math.floor((Math.random())*(20))-20);
+
+                double adjustedX = pos1.getX()+(int)Math.floor(Math.random()*(50)+15)*((new Random().nextBoolean()) ? -1 : 1);;
+                double adjustedZ = pos1.getZ()+(int)Math.floor(Math.random()*(50)+15)*((new Random().nextBoolean()) ? -1 : 1);
+                if (Math.abs(originalPos.getX()-adjustedX) > 70) {
+                    if (adjustedX>originalPos.getX()){
+                        adjustedX = originalPos.getX()+70;
+                    } else {
+                        adjustedX = originalPos.getX()-70;
+                    }
+                }
+                if (Math.abs(originalPos.getZ()-adjustedZ) > 70) {
+                    if (adjustedZ>originalPos.getZ()){
+                        adjustedZ = originalPos.getZ()+70;
+                    } else {
+                        adjustedZ = originalPos.getZ()-70;
+                    }
+                }
+                pos1 = new BlockPos(adjustedX,64,adjustedZ);
             } else {
                 validLocation=true;
             }
         }
-
 
         for (int z = -2; z < 3; z++) {
                 world.setBlock(pos1.offset(-7, 0, z), portalFrame, 2);
