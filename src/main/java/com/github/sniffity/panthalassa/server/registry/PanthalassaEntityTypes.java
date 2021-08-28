@@ -74,6 +74,8 @@ public class PanthalassaEntityTypes {
         EntitySpawnPlacementRegistry.register(KRONOSAURUS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
         EntitySpawnPlacementRegistry.register(MOSASAURUS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
         EntitySpawnPlacementRegistry.register(COELACANTH.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
+        EntitySpawnPlacementRegistry.register(MEGALODON.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
+        EntitySpawnPlacementRegistry.register(ARCHELON.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
 
     }
 
