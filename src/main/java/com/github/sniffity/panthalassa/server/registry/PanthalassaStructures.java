@@ -40,6 +40,7 @@ public class PanthalassaStructures {
 
         Structure.STRUCTURES_REGISTRY.put(structure.getRegistryName().toString(), structure);
 
+        /*
         if (transformSurroundingLand) {
             Structure.NOISE_AFFECTING_FEATURES =
                     ImmutableList.<Structure<?>>builder()
@@ -47,7 +48,7 @@ public class PanthalassaStructures {
                             .add(structure)
                             .build();
         }
-
+*/
 
         DimensionStructuresSettings.DEFAULTS =
                 ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
