@@ -23,8 +23,8 @@ public class BlockKrethrossTop extends AbstractTopPlantBlock implements ILiquidC
         super(p_i48781_1_, Direction.UP, SHAPE, true, 0.14D);
     }
 
-    protected boolean canGrowInto(BlockState p_230334_1_) {
-        return p_230334_1_.is(Blocks.WATER);
+    protected boolean canGrowInto(BlockState blockState) {
+        return blockState.is(Blocks.WATER);
     }
 
     protected Block getBodyBlock() {
@@ -53,7 +53,7 @@ public class BlockKrethrossTop extends AbstractTopPlantBlock implements ILiquidC
         return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(p_196258_1_) : null;
     }
 
-    public FluidState getFluidState(BlockState blockState) {
+    public FluidState getFluidState(BlockState p_204507_1_) {
         return Fluids.WATER.getSource(false);
     }
 }

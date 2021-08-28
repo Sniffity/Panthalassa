@@ -24,11 +24,11 @@ public class BlockKrethross extends AbstractBodyPlantBlock implements ILiquidCon
         return Fluids.WATER.getSource(false);
     }
 
-    public boolean canPlaceLiquid(IBlockReader p_204510_1_, BlockPos p_204510_2_, BlockState p_204510_3_, Fluid p_204510_4_) {
+    public boolean canPlaceLiquid(IBlockReader blockReader, BlockPos blockPos, BlockState blockState, Fluid fluid) {
         return false;
     }
 
-    public boolean placeLiquid(IWorld p_204509_1_, BlockPos p_204509_2_, BlockState p_204509_3_, FluidState p_204509_4_) {
+    public boolean placeLiquid(IWorld world, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
         return false;
     }
 }
