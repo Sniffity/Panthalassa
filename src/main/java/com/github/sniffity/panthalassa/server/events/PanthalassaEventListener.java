@@ -60,26 +60,7 @@ public class PanthalassaEventListener {
         }
     }
 
-    @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        KronosaurusSpawner kronosaurusSpawner = new KronosaurusSpawner();
-        ArchelonSpawner archelonSpawner = new ArchelonSpawner();
-        MosasaurusSpawner mosasaurusSpawner = new MosasaurusSpawner();
-        MegalodonSpawner megalodonSpawner = new MegalodonSpawner();
-        CoelacanthSpawner coelacanthSpawner = new CoelacanthSpawner();
-
-        TICK_COUNTER = ++TICK_COUNTER;
-
-        if (event.world instanceof ServerWorld) {
-                //coelacanthSpawner.tick((ServerWorld) event.world);
-                //archelonSpawner.tick((ServerWorld) event.world);
-                //kronosaurusSpawner.tick((ServerWorld) event.world);
-                //mosasaurusSpawner.tick((ServerWorld) event.world);
-                //megalodonSpawner.tick((ServerWorld) event.world);
-        }
-    }
-
-
+    
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         Entity entity = event.getEntity();
