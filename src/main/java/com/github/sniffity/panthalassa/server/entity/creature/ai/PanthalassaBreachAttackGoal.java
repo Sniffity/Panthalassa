@@ -36,6 +36,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        ///TODO: Verify position is PathFindable !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
         LivingEntity target = attacker.getTarget();
         if (panthalassaBreachableEntity.getBreachCooldown()>0){
             return false;
@@ -62,6 +63,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+    //TODO: Verify position is STILL PathFindable !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
+        
         LivingEntity target = attacker.getTarget();
         if (target == null) {
             return false;
@@ -82,7 +85,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
             return false;
         } else if (!step1Done &&  (!attacker.isInWater())) {
             return false;
-        } else if (step1Done && !step2Done && ((!attacker.isInWater()) || attacker.distanceTo(target) > 12)) {
+        } else if (step1Done && !step2Done && ((!attacker.isInWater()) || attacker.distanceTo(target) > 12 )) {
             return false;
         }
         return true;
@@ -108,6 +111,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     }
 
     public boolean moveStep2(){
+        //TODO: TickCounter = 50;
         step2Ticks = ++step2Ticks;
         LivingEntity target = attacker.getTarget();
         panthalassaBreachableEntity.setIsBreaching(true);
@@ -151,6 +155,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (step1Done && !step2Done) {
             assert target != null;
             if (attacker.distanceTo(target) > 2.0F) {
+                //TODO: Step2 can potentially run infinitely. Add a tick counter to stop it.
                 if (moveStep2()) {
                     step2Done = true;
                     jumpStart = target.getY();
