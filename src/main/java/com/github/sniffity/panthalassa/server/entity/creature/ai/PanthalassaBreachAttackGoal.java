@@ -6,6 +6,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.pathfinding.PathType;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,9 +37,14 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        ///TODO: Verify position of target is PathFindable
-        //!this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
-        //TODO PathType?
+        LivingEntity target = attacker.getTarget();
+        if ((target == null)) {
+            return false;
+        }
+
+        if (!this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below())).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathType.WATER)) {
+            return false;
+        }
         if (!attacker.isInWater()) {
             return false;
         }
@@ -49,11 +55,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (attacker.level.dimension() == PanthalassaDimension.PANTHALASSA) {
             return false;
         }
-        LivingEntity target = attacker.getTarget();
 
-        if ((target == null)) {
-            return false;
-        }
         BlockPos targetAbove = new BlockPos(target.getX(),target.getY()+3,target.getZ());
         if (!attacker.level.getBlockState(targetAbove).is(Blocks.AIR)){
             return false;
@@ -66,29 +68,36 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-    //TODO: Verify position is STILL PathFindable !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
-
         LivingEntity target = attacker.getTarget();
-        if (target == null) {
+        if ((!step3Done || step4Done) && target == null) {
             return false;
         }
-        else if (!target.isAlive()) {
+        else if (target != null && attacker.distanceTo(target) > 30) {
             return false;
         }
-        else if (attacker.distanceTo(target) > 30) {
+        else if ((!step3Done || step4Done) && !target.isAlive()) {
             return false;
         }
-        else if (step1Ticks > 200) {
+        else if (target != null && !step1Done && !this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below(10))).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathType.WATER)) {
             return false;
         }
-        else if (step2Ticks>200) {
+        else if (target != null && step1Done && !step2Done && !this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below(1))).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathType.WATER)) {
+            return false;
+        }
+
+        else if (step1Ticks > 100) {
+            return false;
+        }
+        else if (step2Ticks> 100) {
             return false;
         }
         else if (step1Done && step2Done && step3Done && step4Done) {
             return false;
+
         } else if (!step1Done &&  (!attacker.isInWater())) {
             return false;
-        } else if (step1Done && !step2Done && ((!attacker.isInWater()) || attacker.distanceTo(target) > 12 )) {
+
+        } else if (target != null && step1Done && !step2Done && ((!attacker.isInWater()) || attacker.distanceTo(target) > 20 )) {
             return false;
         }
         return true;
@@ -103,18 +112,14 @@ public class PanthalassaBreachAttackGoal extends Goal {
     }
 
     public boolean moveStep1() {
-        //TODO: Fake dives, lower Y position.
         step1Ticks = ++step1Ticks;
         LivingEntity target = attacker.getTarget();
-        Vector3d strikePos;
         assert target != null;
-        strikePos = new Vector3d(target.getX(), target.getY() - 10, target.getZ());
-        attacker.getNavigation().moveTo(strikePos.x,strikePos.y,strikePos.z,speedTowardsTarget);
-        return (attacker.distanceToSqr(target.getX(), target.getY() - 10, target.getZ()) <= 2);
+        BlockPos strikePos = (target.blockPosition().below(10));
+        attacker.getNavigation().moveTo(strikePos.getX(),strikePos.getY(),strikePos.getZ(),speedTowardsTarget);return (attacker.distanceToSqr(target.getX(), target.getY() - 15, target.getZ()) <= 15);
     }
 
     public boolean moveStep2(){
-        //TODO: TickCounter = 50;
         step2Ticks = ++step2Ticks;
         LivingEntity target = attacker.getTarget();
         panthalassaBreachableEntity.setIsBreaching(true);
@@ -130,7 +135,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
             attacker.setTarget(null);
         }
         attacker.setAggressive(false);
-        attacker.getNavigation().stop();
         attacker.isTryingToBreach = false;
         panthalassaBreachableEntity.setIsBreaching(false);
         step1Ticks = 0;
@@ -139,6 +143,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         step1Done = false;
         step2Done = false;
         step3Done = false;
+        step4Done = false;
         panthalassaBreachableEntity.setBreachCooldown(600);
         if (!attacker.getPassengers().isEmpty()) {
             attacker.ejectPassengers();
@@ -151,6 +156,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!step1Done) {
             if (moveStep1()){
                 assert target != null;
+                //Necessary? Creates spinning?
                 attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
                 step1Done = true;
             }
@@ -158,7 +164,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (step1Done && !step2Done) {
             assert target != null;
             if (attacker.distanceTo(target) > 2.0F) {
-                //TODO: Step2 can potentially run infinitely. Add a tick counter to stop it.
                 if (moveStep2()) {
                     step2Done = true;
                     jumpStart = target.getY();
@@ -166,6 +171,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
                         target.getVehicle().startRiding(attacker);
                     } else {
                         target.startRiding(attacker);
+
                     }
                     if (attacker.getDeltaMovement().y < 2.0D) {
                         attacker.setDeltaMovement(attacker.getDeltaMovement().x,2.0D,attacker.getDeltaMovement().z);
@@ -202,12 +208,12 @@ public class PanthalassaBreachAttackGoal extends Goal {
             }
         }
 
-        if (step1Done && step2Done && step3Done && attacker.isInWater()) {
+        if (step1Done && step2Done && step3Done && !step4Done && attacker.isInWater()) {
             step4Done = true;
-            if (attacker.getDeltaMovement().y > 0) {
-                attacker.setDeltaMovement(attacker.getDeltaMovement().x,0,attacker.getDeltaMovement().z);
-            }
+
+            attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,-2.0,0));
         }
+
     }
 
     protected void crushVehicleandPassengers() {
