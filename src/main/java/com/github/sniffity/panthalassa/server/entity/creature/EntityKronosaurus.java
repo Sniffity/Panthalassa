@@ -61,7 +61,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(LEADER, Boolean.FALSE);
 
         super.defineSynchedData();
@@ -143,7 +143,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
                 this.hurt(DamageSource.DROWN, 2.0F);
             }
         } else {
-            this.setAirSupplyLocal(300);
+            this.setAirSupplyLocal(150);
         }
 
 
@@ -161,10 +161,11 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(1, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
-        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(2, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
+        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
+        this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
+        this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3));
+        this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon)));

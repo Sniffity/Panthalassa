@@ -68,7 +68,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     protected void defineSynchedData() {
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
-        this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(AIR_SUPPLY, 150);
 
         super.defineSynchedData();
     }
@@ -108,7 +108,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
                 this.hurt(DamageSource.DROWN, 2.0F);
             }
         } else {
-            this.setAirSupplyLocal(300);
+            this.setAirSupplyLocal(150);
         }
     }
 
@@ -155,7 +155,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
     @Override
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.5F));
+        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0));
         this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.0, false));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3));

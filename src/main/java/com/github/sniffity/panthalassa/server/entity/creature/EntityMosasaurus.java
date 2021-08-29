@@ -93,7 +93,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 300);
+        this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         super.defineSynchedData();
@@ -133,7 +133,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
                 this.hurt(DamageSource.DROWN, 2.0F);
             }
         } else {
-            this.setAirSupplyLocal(300);
+            this.setAirSupplyLocal(150);
         }
     }
 
@@ -148,10 +148,11 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.2, false));
-        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.6));
-        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
+        this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0));
+        this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.2, false));
+        this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.6));
+        this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));

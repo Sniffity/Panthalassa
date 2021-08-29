@@ -26,7 +26,7 @@ public class PanthalassaFindWaterGoal extends Goal {
     }
 
     public boolean canUse() {
-        if (this.mob.isOnGround() && (!this.mob.level.getFluidState(this.mob.blockPosition()).is(FluidTags.WATER) || !this.mob.level.getFluidState((this.mob.blockPosition().below())).is(FluidTags.WATER))) {
+        if (this.mob.isOnGround() && (!this.mob.level.getFluidState(this.mob.blockPosition()).is(FluidTags.WATER))) {
             targetPos = generateTarget();
             return targetPos != null;
         }
@@ -58,7 +58,7 @@ public class PanthalassaFindWaterGoal extends Goal {
             while(this.mob.level.getBlockState(blockpos1).is(Blocks.AIR) && blockpos1.getY() > 1){
                 blockpos1 = blockpos1.below();
             }
-            if(this.mob.level.getFluidState(blockpos1).is(FluidTags.WATER) && this.mob.level.getFluidState(blockpos1.below()).is(FluidTags.WATER)){
+            if(this.mob.level.getFluidState(blockpos1).is(FluidTags.WATER)){
                 blockpos = blockpos1;
             }
         }

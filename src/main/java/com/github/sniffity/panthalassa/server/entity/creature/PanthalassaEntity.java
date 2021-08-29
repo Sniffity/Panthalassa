@@ -51,11 +51,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     @Override
     public void tick() {
         super.tick();
-
-        System.out.println("Am I in water? " +this.isInWater());
-        System.out.println("Am I on ground? " +this.isOnGround());
-        System.out.println("Am I using landNavigator? " +this.isLandNavigator);
-
         if (this.isInWater() && this.isLandNavigator) {
             switchToLandNavigator(false);
         }
