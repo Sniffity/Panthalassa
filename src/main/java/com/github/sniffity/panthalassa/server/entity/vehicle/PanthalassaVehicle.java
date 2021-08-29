@@ -51,6 +51,9 @@ public class PanthalassaVehicle extends Entity {
     protected static final DataParameter<Float> SONAR_LAST_CHECK = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
     protected static final DataParameter<Integer> ENTRY_X = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
     protected static final DataParameter<Integer> ENTRY_Z = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> LIGHT_X = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> LIGHT_Y = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> LIGHT_Z = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
 
     public float waterSpeed;
     public float landSpeed;
@@ -87,6 +90,10 @@ public class PanthalassaVehicle extends Entity {
         this.entityData.define(SONAR_LAST_CHECK, 0.00F);
         this.entityData.define(ENTRY_X, 0);
         this.entityData.define(ENTRY_Z, 0);
+        this.entityData.define(LIGHT_X, 0);
+        this.entityData.define(LIGHT_Y, 0);
+        this.entityData.define(LIGHT_Z, 0);
+
     }
 
     @Override
@@ -112,11 +119,19 @@ public class PanthalassaVehicle extends Entity {
         if (compound.contains("SonarLastCheck", Constants.NBT.TAG_FLOAT)) {
             this.setSonarLastCheck(compound.getFloat("SonarLastCheck"));
         }
+        if (compound.contains("LightX", Constants.NBT.TAG_INT)) {
+            this.setLightPosX(compound.getInt("LightX"));
+        }
+        if (compound.contains("LightY", Constants.NBT.TAG_INT)) {
+            this.setLightPosY(compound.getInt("LightY"));
+        }
+        if (compound.contains("LightZ", Constants.NBT.TAG_INT)) {
+            this.setLightPosZ(compound.getInt("LightZ"));
+        }
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
-        {
+    protected void addAdditionalSaveData(CompoundNBT compound) { {
             compound.putFloat("MaxHealth", this.getMaxHealth());
             compound.putFloat("Health", this.getHealth());
             compound.putFloat("Armor", this.getArmor());
@@ -124,7 +139,11 @@ public class PanthalassaVehicle extends Entity {
             compound.putInt("FloorDistance", this.getFloorDistance());
             compound.putBoolean("LightsOn", this.getLightsOn());
             compound.putFloat("SonarLastCheck", this.getSonarLastCheck());
-        }
+            compound.putInt("LightX", this.getLightPos().getX());
+            compound.putInt("LightY", this.getLightPos().getY());
+            compound.putInt("LightZ", this.getLightPos().getZ());
+
+    }
     }
 
     public static boolean canVehicleCollide(Entity p_242378_0_, Entity entity) {
@@ -186,6 +205,8 @@ public class PanthalassaVehicle extends Entity {
     public void tick() {
         super.tick();
 
+        List<Entity> passengers = this.getPassengers();
+
         if (this.level.dimension() == PanthalassaDimension.PANTHALASSA && prevDimension != PanthalassaDimension.PANTHALASSA) {
             setEntryX((int) this.position().x);
             setEntryZ((int) this.position().z);
@@ -193,9 +214,6 @@ public class PanthalassaVehicle extends Entity {
             setEntryX(0);
             setEntryZ(0);
         }
-
-
-        List<Entity> passengers = this.getPassengers();
 
         if (!passengers.isEmpty()) {
             for (Entity passenger : passengers) {
@@ -213,60 +231,64 @@ public class PanthalassaVehicle extends Entity {
             BlockState vehiclePosBlockState = level.getBlockState(vehiclePos);
 
             if (((distanceMoved > 1) || ((!this.isInWater() && this.isOnGround()) && (distanceMoved > 0.2)) || !this.getLightsOn())) {
-                AxisAlignedBB searchArea = new AxisAlignedBB(this.getX() - 30, this.getY() - 30, this.getZ() - 30, this.getX() + 30, this.getY() + 30, this.getZ() + 30);
-                Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
-                        .map(pos -> new BlockPos(pos))
-                        .filter(state -> (level.getBlockState(state) == blockLightWater || level.getBlockState(state) == blockLightAir))
-                        .collect(Collectors.toSet());
-                Iterator<BlockPos> it = set.iterator();
 
-                while (it.hasNext()) {
-                    BlockPos lightPos = it.next();
-
-                    if (level.getBlockState(lightPos) == blockLightWater) {
+                BlockPos prevLight = this.getLightPos();
+                if (prevLight != null) {
+                    if (level.getBlockState(prevLight) == blockLightWater) {
                         if (this.getLightsOn() && this.isInWater()) {
                             level.setBlock(vehiclePos, blockLightWater, 2);
-                        } else if (this.getLightsOn() && (!this.isInWater() && this.isOnGround()))
-                        {
-                            level.setBlock(vehiclePos,blockLightAir, 2);
+                            this.setLightPos(vehiclePos);
+                        } else if (this.getLightsOn() && (!this.isInWater() && this.isOnGround())) {
+                            level.setBlock(vehiclePos, blockLightAir, 2);
+                            this.setLightPos(vehiclePos);
                         }
-                        level.setBlock(lightPos, Blocks.WATER.defaultBlockState(), 2);
+                        level.setBlock(prevLight, Blocks.WATER.defaultBlockState(), 2);
                     }
-
-                    if (level.getBlockState(lightPos) == blockLightAir) {
+                    if (level.getBlockState(prevLight) == blockLightAir) {
                         if (this.getLightsOn() && (!this.isInWater() && this.isOnGround())) {
-                            level.setBlock(vehiclePos,blockLightAir, 2);
-                        } else if (this.getLightsOn() && this.isInWater())
-                        {
-                            level.setBlock(vehiclePos,blockLightWater, 2);
+                            level.setBlock(vehiclePos, blockLightAir, 2);
+                            this.setLightPos(vehiclePos);
+                        } else if (this.getLightsOn() && this.isInWater()) {
+                            level.setBlock(vehiclePos, blockLightWater, 2);
+                            this.setLightPos(vehiclePos);
                         }
-                        level.setBlock(lightPos, Blocks.AIR.defaultBlockState(), 2);
+                        level.setBlock(prevLight, Blocks.AIR.defaultBlockState(), 2);
                     }
                     hasLooped = true;
                 }
             }
 
-            if (!hasLooped && (vehiclePosBlockState != blockLightWater || vehiclePosBlockState != blockLightAir)) {
-                    if (this.getLightsOn() && this.isInWater()) {
-                        level.setBlock(vehiclePos, blockLightWater, 2);
-                    }
-                    if (this.getLightsOn() && (!this.isInWater() && this.isOnGround())) {
-                        level.setBlock(vehiclePos, blockLightAir, 2);
-                    }
+            if (!hasLooped && (vehiclePosBlockState != blockLightWater && vehiclePosBlockState != blockLightAir)) {
+                BlockPos prevLight = this.getLightPos();
+                if (level.getBlockState(prevLight) == blockLightWater){
+                    level.setBlock(prevLight, Blocks.WATER.defaultBlockState(), 2);
+                    System.out.println("I killed the following lightPos (3):" + prevLight);
+
+
+                }
+                else if (level.getBlockState(prevLight) == blockLightAir){
+                    level.setBlock(prevLight, Blocks.AIR.defaultBlockState(), 2);
+                    System.out.println("I killed the following lightPos (4):" + prevLight);
+
+                }
+
+                if (this.getLightsOn() && this.isInWater() && level.getBlockState(getLightPos()) != PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState()) {
+                    level.setBlock(vehiclePos, blockLightWater, 2);
+                    this.setLightPos(vehiclePos);
+                    System.out.println("I set this light pos (5): "+ vehiclePos);
+                }
+                else if (this.getLightsOn() && (!this.isInWater() && this.isOnGround()) && level.getBlockState(getLightPos()) != PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState()) {
+                    level.setBlock(vehiclePos, blockLightAir, 2);
+                    this.setLightPos(vehiclePos);
+                    System.out.println("I set this light pos (6):  "+ vehiclePos);
+
                 }
             }
-
+        }
         prevPos = this.blockPosition();
         prevDimension = this.level.dimension();
-
         this.vehicleTick();
-
-
     }
-
-
-
-
 
     public void vehicleTick() {
         if (this.isControlledByLocalInstance()) {
@@ -437,7 +459,7 @@ public class PanthalassaVehicle extends Entity {
                         BlockPos lightPos = it.next();
 
                         if (level.getBlockState(lightPos) == PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState()) {
-                                    level.setBlock(lightPos, Blocks.WATER.defaultBlockState(), 2);
+                            level.setBlock(lightPos, Blocks.WATER.defaultBlockState(), 2);
                         }
                         if (level.getBlockState(lightPos) == PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState()) {
                                 level.setBlock(lightPos, Blocks.AIR.defaultBlockState(), 2);
@@ -556,6 +578,28 @@ public class PanthalassaVehicle extends Entity {
         return this.entityData.get(ENTRY_Z);
     }
 
+    public void setLightPosX(int x) {
+        this.entityData.set(LIGHT_X, x);
+    }
+
+    public void setLightPosY(int y) {
+        this.entityData.set(LIGHT_Y, y);
+    }
+
+    public void setLightPosZ(int z) {
+        this.entityData.set(LIGHT_Z, z);
+    }
+
+    public void setLightPos(BlockPos blockPos) {
+        this.entityData.set(LIGHT_X, blockPos.getX());
+        this.entityData.set(LIGHT_Y, blockPos.getY());
+        this.entityData.set(LIGHT_Z, blockPos.getZ());
+    }
+
+    public BlockPos getLightPos() {
+        BlockPos blockpos = new BlockPos (this.entityData.get(LIGHT_X),this.entityData.get(LIGHT_Y), this.entityData.get(LIGHT_Z));
+        return blockpos;
+    }
 
     public void respondKeybindSpecial() {
     }
