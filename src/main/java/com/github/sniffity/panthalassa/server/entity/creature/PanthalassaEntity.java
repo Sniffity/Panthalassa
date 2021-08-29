@@ -1,15 +1,19 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
@@ -28,22 +32,49 @@ import java.util.Random;
 public abstract class PanthalassaEntity extends CreatureEntity {
 
     public boolean isTryingToBreach;
+    public boolean isLandNavigator;
 
-
+    protected static final DataParameter<Boolean> IS_GROUND_NAVIGATOR = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.BOOLEAN);
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.lookControl = new DolphinLookController(this, 10);
-
+        this.switchToLandNavigator(false);
     }
+
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(IS_GROUND_NAVIGATOR, Boolean.FALSE);
+        super.defineSynchedData();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        System.out.println("Am I in water? " +this.isInWater());
+        System.out.println("Am I on ground? " +this.isOnGround());
+        System.out.println("Am I using landNavigator? " +this.isLandNavigator);
+
+        if (this.isInWater() && this.isLandNavigator) {
+            switchToLandNavigator(false);
+        }
+        if (!this.isInWater() && !this.isLandNavigator) {
+            switchToLandNavigator(true);
+        }
+    }
+
 
     public boolean canBreatheUnderwater() {
         return true;
     }
 
+    /*
     public PathNavigator createNavigation(World worldIn) {
         return new SwimmerPathNavigator(this, worldIn);
     }
+
+     */
 
     public void travel(Vector3d travelVector) {
         if (this.isEffectiveAi() && this.isInWater()) {
@@ -105,10 +136,30 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         }
         return false;
     }
+
     @Override
     public boolean checkSpawnObstruction(IWorldReader p_205019_1_) {
         return p_205019_1_.containsAnyLiquid(this.getBoundingBox());
     }
 
+    public void switchToLandNavigator(boolean isOnLand){
+        if (isOnLand) {
+            this.moveControl = new MovementController(this);
+            this.navigation = new GroundPathNavigator(this, level);
+            this.isLandNavigator = true;
+        } else {
+            this.moveControl = new PanthalassaSwimmingHelper(this);
+            this.navigation = new SwimmerPathNavigator(this, level);
+            this.isLandNavigator = false;
+        }
+    }
+
+    public void setGroundNavigator(boolean groundNavigator) {
+        this.entityData.set(IS_GROUND_NAVIGATOR,groundNavigator);
+    }
+
+    public boolean getGroundNavigator() {
+        return this.entityData.get(IS_GROUND_NAVIGATOR);
+    }
 }
 

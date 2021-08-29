@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.FindWaterGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
@@ -37,6 +38,8 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public float adjustYaw;
     public float adjustment = 0.25F;
     public static final int BLOCKED_DISTANCE = 5;
+    public boolean isLandNavigator;
+
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -48,8 +51,9 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -84,6 +88,16 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         }
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
+
+        /*
+        if (this.onGround) {
+            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F), 0.5D, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F)));
+            this.yRot = this.random.nextFloat() * 360.0F;
+            this.onGround = false;
+            this.hasImpulse = true;
+        }
+
+         */
     }
 
     protected void handleAirSupply(int p_209207_1_) {
@@ -141,10 +155,11 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
     @Override
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaBreachAttackGoal(this, 2.0));
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.5F));
+        this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0));
+        this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.0, false));
+        this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3));
+        this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));

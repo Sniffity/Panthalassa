@@ -35,8 +35,8 @@ import javax.annotation.Nullable;
  *
  * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
  *
- * Acknowledgements: The following class was developed after studying how Alex's Mobs implements different navigators
- * for land and water for some of its creatures.
+ * Acknowledgements: The navigator section of the following class was developed after studying how Alex's Mobs implements
+ * different navigators for land and water for some of its creatures.
  */
 
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
@@ -53,8 +53,6 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         this.noCulling = true;
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
         this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
-
-        switchNavigator(false);
     }
 
 
@@ -102,12 +100,6 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     @Override
     public void tick() {
         super.tick();
-        if (!this.isOnGround() && this.isLandNavigator) {
-            switchNavigator(false);
-        }
-        if (this.isOnGround() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
     }
 
     public static AttributeModifierMap.MutableAttribute archelonAttributes() {
@@ -131,15 +123,4 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
 
     }
 
-    public void switchNavigator(boolean isOnLand){
-        if (isOnLand) {
-            this.moveControl = new MovementController(this);
-            this.navigation = new GroundPathNavigator(this, level);
-            this.isLandNavigator = true;
-        } else {
-            this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
-            this.navigation = new SwimmerPathNavigator(this, level);
-            this.isLandNavigator = false;
-        }
-    }
 }

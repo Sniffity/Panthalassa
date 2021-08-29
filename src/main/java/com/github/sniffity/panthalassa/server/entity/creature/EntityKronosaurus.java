@@ -52,8 +52,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
+        this.moveControl = new PanthalassaSwimmingHelper(this);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+
     }
 
 

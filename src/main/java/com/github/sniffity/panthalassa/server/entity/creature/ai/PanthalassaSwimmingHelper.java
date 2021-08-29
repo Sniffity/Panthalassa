@@ -11,18 +11,12 @@ import net.minecraft.util.math.MathHelper;
 public class PanthalassaSwimmingHelper extends MovementController {
 
 
-    int blockedDistance;
-    float anglePassive;
-    float angleAggro;
 
     private final PanthalassaEntity entityPanthalassa;
 
-    public PanthalassaSwimmingHelper(PanthalassaEntity entity, int blockDistance, float passiveAngle, float aggroAngle) {
+    public PanthalassaSwimmingHelper(PanthalassaEntity entity) {
         super(entity);
         this.entityPanthalassa = entity;
-        this.blockedDistance = blockDistance;
-        this.anglePassive = passiveAngle;
-        this.angleAggro = aggroAngle;
     }
 
     public boolean getBlockedAbove(int distance) {
@@ -68,9 +62,9 @@ public class PanthalassaSwimmingHelper extends MovementController {
                 if (this.entityPanthalassa.isTryingToBreach) {
                     this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 90);
                 } else if ((this.entityPanthalassa.getTarget() != null)) {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, angleAggro);
+                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 5.0F);
                 } else {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, anglePassive);
+                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 1.0F);
                 }
                 this.entityPanthalassa.yBodyRot = this.entityPanthalassa.yRot;
                 this.entityPanthalassa.yHeadRot = this.entityPanthalassa.yRot;

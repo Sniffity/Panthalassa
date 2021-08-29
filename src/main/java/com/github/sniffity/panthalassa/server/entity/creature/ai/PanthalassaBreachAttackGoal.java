@@ -36,8 +36,12 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        ///TODO: Verify position is PathFindable !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
-        LivingEntity target = attacker.getTarget();
+        ///TODO: Verify position of target is PathFindable
+        //!this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
+        //TODO PathType?
+        if (!attacker.isInWater()) {
+            return false;
+        }
         if (panthalassaBreachableEntity.getBreachCooldown()>0){
             return false;
         }
@@ -45,6 +49,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (attacker.level.dimension() == PanthalassaDimension.PANTHALASSA) {
             return false;
         }
+        LivingEntity target = attacker.getTarget();
+
         if ((target == null)) {
             return false;
         }
@@ -55,16 +61,13 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!target.isAlive()) {
             return false;
         }
-        if (!attacker.isInWater()) {
-            return false;
-        }
         return true;
         }
 
     @Override
     public boolean canContinueToUse() {
     //TODO: Verify position is STILL PathFindable !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER)
-        
+
         LivingEntity target = attacker.getTarget();
         if (target == null) {
             return false;
@@ -93,7 +96,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     @Override
     public void start() {
-        LivingEntity target = attacker.getTarget();
         attacker.setAggressive(true);
         attacker.isTryingToBreach = true;
         step1Ticks = 0;
@@ -101,6 +103,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     }
 
     public boolean moveStep1() {
+        //TODO: Fake dives, lower Y position.
         step1Ticks = ++step1Ticks;
         LivingEntity target = attacker.getTarget();
         Vector3d strikePos;

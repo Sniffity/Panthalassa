@@ -29,12 +29,9 @@ import javax.annotation.Nullable;
 
 public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
 
-    public static final int PASSIVE_ANGLE = 1;
-    public static final int AGGRO_ANGLE = 15;
     public static final int BLOCKED_DISTANCE = 6;
     public static final float SCHOOL_SPEED = 1.0F;
     public static final float SCHOOL_AVOID_RADIUS = 10.0F;
-    public static final float MAX_MOVE_SPEED = 0.8F;
     public static int SCHOOL_MAX_SIZE = 4;
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityCoelacanth.class, DataSerializers.INT);
@@ -46,14 +43,17 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public EntityCoelacanth(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, BLOCKED_DISTANCE, PASSIVE_ANGLE, AGGRO_ANGLE);
+        this.moveControl = new PanthalassaSwimmingHelper(this);
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(AIR_SUPPLY, 300);
         this.entityData.define(LEADER, Boolean.FALSE);
+
 
         super.defineSynchedData();
     }
