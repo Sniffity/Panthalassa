@@ -14,6 +14,16 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import static java.lang.Math.*;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaRandomSwimmingGoal <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: This class was developed by imitating Ice and Fire's SeaSerpentAIGetInWater class, with permission
+ * from Alexthe668. At the time of writing this, the class in question can be found here:
+ * https://github.com/Alex-the-666/Ice_and_Fire/blob/d848efb1c92d2fd7196c002d3950368dafc84e1b/src/main/java/com/github/alexthe666/iceandfire/entity/ai/SeaSerpentAIGetInWater.java
+ */
+
 public class PanthalassaRandomSwimmingGoal extends Goal {
 
     protected final PanthalassaEntity creature;
