@@ -47,7 +47,7 @@ public class CameraSetupEvent {
 
     public static double calcCameraDistance(double startingDistance, Entity vehicle) {
         ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Vector3d position = info.getPosition();
+        Vector3d position = info.getPosition().add(0, 1, 0);
         Vector3f view = info.getLookVector();
 
         for (int i = 0; i < 8; ++i) {
