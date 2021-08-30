@@ -20,6 +20,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -34,14 +35,14 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
-
-    public static final int PASSIVE_ANGLE = 1;
-    public static final int AGGRO_ANGLE = 15;
     public static final int BLOCKED_DISTANCE = 6;
-    public static final float SCHOOL_SPEED = 1.0F;
-    public static final float SCHOOL_AVOID_RADIUS = 10.0F;
-    public static final float MAX_MOVE_SPEED = 0.8F;
-    public static int SCHOOL_MAX_SIZE = 4;
+    public float prevYRot;
+    public float deltaYRot;
+    public float adjustYaw;
+    public float adjustment = 0.25F;
+    public float newRotationPitch;
+    public float prevRotationPitch;
+
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
     protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
@@ -69,35 +70,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         //If it's moving in the water, swimming, play swim.
-        if ((this.isSwimming()) || (event.isMoving() && this.isInWater())) {
+        if ((this.getDeltaMovement().length()>1 && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.swim", true));
             return PlayState.CONTINUE;
         }
-
-        /*
-        //If it's out of the water, play bounce
-        if ((this.isOnGround()) && !(this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.bounce", true));
-            return PlayState.CONTINUE;
-        }
-
-        //If it's attacking, play attack
-        if (this.isAggressive() && !(this.dead)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.attack", true));
-            return PlayState.CONTINUE;
-        }
-
-        //If it's dying, play death
-        if ((this.dead || this.getHealth() < 0.01)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.death", false));
-            return PlayState.CONTINUE;
-        }
-
-        //IF it's just in water, play float
-        if (this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
-            return PlayState.CONTINUE;
-        }*/
         return PlayState.STOP;
 
     }
@@ -129,8 +105,25 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Override
     public void tick() {
         super.tick();
+
+        deltaYRot = this.yRot - prevYRot;
+        prevYRot = this.yRot;
+
+        if (adjustYaw > deltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
+        }
+
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
+
+        prevRotationPitch = xRot;
+        newRotationPitch = ( (float) (MathHelper.atan2((this.getDeltaMovement().y),MathHelper.sqrt((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z)))));
+
+
     }
 
 
@@ -163,7 +156,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
+        //this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
