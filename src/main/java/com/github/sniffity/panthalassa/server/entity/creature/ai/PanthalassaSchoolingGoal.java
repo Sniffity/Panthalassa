@@ -47,16 +47,16 @@ public class PanthalassaSchoolingGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        this.school = panthalassaEntity.level.getEntitiesOfClass(panthalassaEntity.getClass(), panthalassaEntity.getBoundingBox().inflate(20));
-        //If there's a single Kronosaurus, do not attempt schooling.
+        this.school = panthalassaEntity.level.getEntitiesOfClass(panthalassaEntity.getClass(), panthalassaEntity.getBoundingBox().inflate(10));
+        //If there's a single PanthalassaEntity, do not attempt schooling.
         if (school.size()<=1){
             return  false;
         }
-        //If the Kronosaurus is not in water, do not attempt schooling.
+        //If the PanthalassaEntity is not in water, do not attempt schooling.
         if (!this.panthalassaEntity.isInWater()) {
             return false;
         }
-        //Only attempt schooling if there's a leader Kronosaurus nearby, else don't.
+        //Only attempt schooling if there's a leader PanthalassaEntity nearby, else don't.
         for (int i=0; i<school.size(); i++) {
             PanthalassaEntity testEntity = school.get(i);
             if (((ISchoolable) testEntity).getIsLeader()) {
@@ -100,15 +100,15 @@ public class PanthalassaSchoolingGoal extends Goal {
         Vector3d avoid = new Vector3d(0, 0, 0);
         Vector3d newMovement;
 
-        //Remove this Kronosaurus from the school for operations...
+        //Remove this PanthalassaEntity from the school for operations...
         this.school.remove(panthalassaEntity);
         //Only carry out school operations if the school is not empty
         if (!this.school.isEmpty()) {
-            //Repel ensures the Kronosaurus do not collide onto each other
+            //Repel ensures the PanthalassaEntity do not collide onto each other
             repel = (processRepel(school));
-            //Follow is calculated considering the speed of all Kronosaurus, but the leader will not have follow applied
+            //Follow is calculated considering the speed of all PanthalassaEntity, but the leader will not have follow applied
             follow = (processFollow(school));
-            //Avoid ensures the Kronosaurus that are following the leader avoid obstacles..
+            //Avoid ensures the PanthalassaEntity that are following the leader avoid obstacles..
             avoid = (processAvoid(panthalassaEntity));
 
             // Now normalize the vectors to get just the directions, and scale by the amount we want each force to have. These values will need fine-tuning
@@ -164,19 +164,19 @@ public class PanthalassaSchoolingGoal extends Goal {
     protected Vector3d processRepel(List<PanthalassaEntity> school) {
 
         Vector3d separation = new Vector3d(0, 0, 0);
-        //Create a new list to store Kronosaurus that are too close to THIS Kronosaurus....
+        //Create a new list to store PanthalassaEntity that are too close to THIS PanthalassaEntity....
         List<PanthalassaEntity> closeEntities = new ArrayList<>();
         int schoolSize = school.size();
         for (int i = 0; i < schoolSize && i < 4; i++) {
-            //Get the position of each Kronosaurus in school...
+            //Get the position of each PanthalassaEntity in school...
             PanthalassaEntity testEntity = school.get(i);
             float distanceToEntity = (float) panthalassaEntity.position().subtract(testEntity.position()).length();
-            //Add those that Kronosaurus are too close to THIS Kronosaurus to the list specified above.
+            //Add those that PanthalassaEntity are too close to THIS PanthalassaEntity to the list specified above.
             if (distanceToEntity < schoolAvoidRadius) {
                 closeEntities.add(testEntity);
             }
         }
-        //If there are no close Kronosaurus, return a zero-vector. No adjustment will be made for avoidance.
+        //If there are no close PanthalassaEntity, return a zero-vector. No adjustment will be made for avoidance.
         if (closeEntities.isEmpty()) {
             return new Vector3d(0, 0, 0);
         }
@@ -185,21 +185,21 @@ public class PanthalassaSchoolingGoal extends Goal {
         int closeSize = closeEntities.size();
         for (int i = 0; i < closeSize; i++) {
             PanthalassaEntity testEntity = school.get(i);
-            //For each Kronosaurus create a vector...
-            //This vector points from the CURRENT Kronosaurus being analyzed to THIS Kronosaurus
+            //For each PanthalassaEntity create a vector...
+            //This vector points from the CURRENT PanthalassaEntity being analyzed to THIS PanthalassaEntity
             Vector3d difference = panthalassaEntity.position().subtract(testEntity.position());
             //For this vector, normalize it to get a direction..
-            //Then scale it down, its length will depend inversely on the distance to THIS Kronosaurus
+            //Then scale it down, its length will depend inversely on the distance to THIS PanthalassaEntity
             separation = separation.add(difference.normalize().scale(1.0f / difference.length()));
         }
         //All of these vectors have been added together...
-        //Each Kronosaurus analyzed contributed to these vectors..
-        //The resulting vector will be one that pushes THIS Kronosaurus away from all OTHER Kronosaurus
+        //Each PanthalassaEntity analyzed contributed to these vectors..
+        //The resulting vector will be one that pushes THIS PanthalassaEntity away from all OTHER PanthalassaEntity
         //Get an average to scale this vector...
         separation = separation.scale(1.0f / closeSize);
         //This vector will be scaled by SCHOOL_SPEED, which is a factor that scales all school "operations"
         Vector3d target = separation.normalize().scale(schoolSpeed);
-        //From this vector, subtract the velocity vector of the Kronosaurus...
+        //From this vector, subtract the velocity vector of the PanthalassaEntity...
 
         //This creates a new Vector, attraction, that will attempt to adjust position away from center of group...
         //Taking the speed of THIS Kronosaurus into account
@@ -208,7 +208,7 @@ public class PanthalassaSchoolingGoal extends Goal {
 
     protected Vector3d processFollow(List<PanthalassaEntity> school) {
         //We will proceed to set the speed of the followers in school to match that of the leader...
-        //Once again, by this point, we only have a single leader, each Kronosaurus will search the leader closes to it
+        //Once again, by this point, we only have a single leader, each PanthalassaEntity will search the leader closes to it
         int size = school.size();
         Vector3d speedVector = new Vector3d(0, 0, 0);
 
@@ -222,9 +222,9 @@ public class PanthalassaSchoolingGoal extends Goal {
         //This vector will be scaled by SCHOOL_SPEED, which is a factor that scales all school "operations"
         //Vector3d target = (speedVector.subtract(this.position())).normalize().scale(SCHOOL_SPEED);
         Vector3d target = (speedVector.normalize().scale(schoolSpeed));
-        //From this vector, subtract the velocity vector of the Kronosaurus...
+        //From this vector, subtract the velocity vector of the PanthalassaEntity...
 
-        //This creates a new Vector, follow, that will attempt to adjust speed of THIS Kronosaurus to the speed of the group...
+        //This creates a new Vector, follow, that will attempt to adjust speed of THIS PanthalassaEntity to the speed of the group...
         //Taking the speed of THIS Kronosaurus into account
         return target.subtract(panthalassaEntity.getDeltaMovement());
     }
