@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -35,6 +36,15 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         super(type, world);
         this.waterSpeed = 0.04F;
         this.landSpeed = 0.004F;
+    }
+
+    public VehicleAGII(World p_i1705_1_, double x, double y, double z) {
+        this(PanthalassaEntityTypes.AGII.get(), p_i1705_1_);
+        this.setPos(x, y, z);
+        this.setDeltaMovement(Vector3d.ZERO);
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
     }
 
     @Override

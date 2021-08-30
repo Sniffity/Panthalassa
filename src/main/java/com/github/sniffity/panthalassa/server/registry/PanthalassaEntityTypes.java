@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
@@ -52,20 +53,18 @@ public class PanthalassaEntityTypes {
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
-                    .of(VehicleMRSV::new,EntityClassification.MISC)
+                    .<VehicleMRSV>of(VehicleMRSV::new,EntityClassification.MISC)
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "manta_ray_submersible_vehicle").toString()));
 
 
     public static final RegistryObject<EntityType<VehicleAGII>> AGII = ENTITY_TYPES.register ("abyss_glider_2_submersible_vehicle",()->
             EntityType.Builder
-                    .of(VehicleAGII::new,EntityClassification.MISC)
+                    .<VehicleAGII>of(VehicleAGII::new,EntityClassification.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_2_submersible_vehicle").toString()));
 
     public static void spawnPlacements() {
-
-
 
         Heightmap.Type.MOTION_BLOCKING_NO_LEAVES.isOpaque = (state) -> {
             return (state.getMaterial().blocksMotion() || !state.getFluidState().isEmpty()) && !(state.getBlock() == PanthalassaBlocks.PANTHALASSA_WATER.get());

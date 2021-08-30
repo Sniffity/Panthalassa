@@ -1,10 +1,12 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -37,6 +39,15 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         super(type, world);
         this.waterSpeed = 0.06F;
         this.landSpeed = 0.004F;
+    }
+
+    public VehicleMRSV(World p_i1705_1_, double x, double y, double z) {
+        this(PanthalassaEntityTypes.MRSV.get(), p_i1705_1_);
+        this.setPos(x, y, z);
+        this.setDeltaMovement(Vector3d.ZERO);
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
     }
 
     @Override

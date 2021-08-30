@@ -2,6 +2,8 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
+import com.github.sniffity.panthalassa.server.item.ItemAGII;
+import com.github.sniffity.panthalassa.server.item.ItemMRSV;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,5 +32,7 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> HPR_VEHICLE_LIGHT = ITEMS.register("hpr_vehicle_light",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",
+			() -> new ItemMRSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 }
