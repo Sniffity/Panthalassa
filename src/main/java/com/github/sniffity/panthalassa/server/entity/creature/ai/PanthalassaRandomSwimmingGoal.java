@@ -105,7 +105,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                     break;
                 }
             }
-
+/*
             if (vector != null) {
                 if (!this.creature.level.getFluidState(new BlockPos(vector).above(1)).is(FluidTags.WATER)) {
                     vector = vector.add(0, -3, 0);
@@ -117,6 +117,8 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                     vector = vector.add(0, +2, 0);
                 }
             }
+
+ */
         }
         return vector;
     }
