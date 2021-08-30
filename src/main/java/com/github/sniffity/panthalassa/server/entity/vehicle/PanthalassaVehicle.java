@@ -260,30 +260,36 @@ public class PanthalassaVehicle extends Entity {
 
             if (!hasLooped && (vehiclePosBlockState != blockLightWater && vehiclePosBlockState != blockLightAir)) {
                 BlockPos prevLight = this.getLightPos();
-                if (level.getBlockState(prevLight) == blockLightWater){
-                    level.setBlock(prevLight, Blocks.WATER.defaultBlockState(), 2);
-                    System.out.println("I killed the following lightPos (3):" + prevLight);
-
-
-                }
-                else if (level.getBlockState(prevLight) == blockLightAir){
-                    level.setBlock(prevLight, Blocks.AIR.defaultBlockState(), 2);
-                    System.out.println("I killed the following lightPos (4):" + prevLight);
-
-                }
 
                 if (this.getLightsOn() && this.isInWater() && level.getBlockState(getLightPos()) != PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState()) {
                     //TODO: Kill lights here.
                     level.setBlock(vehiclePos, blockLightWater, 2);
                     this.setLightPos(vehiclePos);
-                    System.out.println("I set this light pos (5): "+ vehiclePos);
+                    if (prevLight != null) {
+                        if (level.getBlockState(prevLight) == blockLightWater){
+                            level.setBlock(prevLight, Blocks.WATER.defaultBlockState(), 2);
+
+
+                        }
+                        else if (level.getBlockState(prevLight) == blockLightAir){
+                            level.setBlock(prevLight, Blocks.AIR.defaultBlockState(), 2);
+
+                        }
+                    }
                 }
                 else if (this.getLightsOn() && (!this.isInWater() && this.isOnGround()) && level.getBlockState(getLightPos()) != PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState()) {
-                    //TODO: Kill Lights here.
                     level.setBlock(vehiclePos, blockLightAir, 2);
                     this.setLightPos(vehiclePos);
-                    System.out.println("I set this light pos (6):  "+ vehiclePos);
+                    if (prevLight != null) {
+                        if (level.getBlockState(prevLight) == blockLightWater){
+                            level.setBlock(prevLight, Blocks.WATER.defaultBlockState(), 2);
 
+                        }
+                        else if (level.getBlockState(prevLight) == blockLightAir){
+                            level.setBlock(prevLight, Blocks.AIR.defaultBlockState(), 2);
+
+                        }
+                    }
                 }
             }
         }
