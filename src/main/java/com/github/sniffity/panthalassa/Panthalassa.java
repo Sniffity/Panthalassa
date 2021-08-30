@@ -28,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
-
 import java.lang.reflect.Method;
 
 @Mod(Panthalassa.MODID)
