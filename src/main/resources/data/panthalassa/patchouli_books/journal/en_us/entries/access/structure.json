@@ -1,0 +1,11 @@
+{
+  "name": "Structure",
+  "icon": "minecraft:writable_book",
+  "category": "panthalassa:access",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This is a test entry, but it should show up!"
+    }
+  ]
+}
