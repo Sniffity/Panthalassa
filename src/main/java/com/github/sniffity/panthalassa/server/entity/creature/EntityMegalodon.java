@@ -76,12 +76,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
 
-        /*
-        prevXRot = this.xRot;
-        if (this.isInWater() || !this.isOnGround()) {
-            this.xRot = ((float) (MathHelper.atan2((this.getDeltaMovement().y),MathHelper.sqrt((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z))*5)));
-        }
-        */
         if (adjustYaw > deltaYRot) {
             adjustYaw = adjustYaw - adjustment;
             adjustYaw = Math.max(adjustYaw, deltaYRot);
@@ -92,17 +86,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
 
-
-
-        /*
-        if (this.onGround) {
-            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F), 0.5D, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F)));
-            this.yRot = this.random.nextFloat() * 360.0F;
-            this.onGround = false;
-            this.hasImpulse = true;
-        }
-
-         */
     }
 
     protected void handleAirSupply(int p_209207_1_) {

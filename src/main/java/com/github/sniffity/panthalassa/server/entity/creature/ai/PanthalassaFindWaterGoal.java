@@ -27,13 +27,11 @@ public class PanthalassaFindWaterGoal extends Goal {
 
     public boolean canUse() {
         if (this.mob.isInWater() && this.mob.level.getBlockState(this.mob.blockPosition().below()).canOcclude() && this.mob.level.getBlockState(this.mob.blockPosition().above()).is(Blocks.AIR)) {
-            System.out.println("Called 1");
             targetPos = generateTarget();
             return targetPos != null;
         }
 
         if (this.mob.isOnGround() && (!this.mob.isInWater())) {
-            System.out.println("Called 2");
             targetPos = generateTarget();
             return targetPos != null;
         }
@@ -43,7 +41,7 @@ public class PanthalassaFindWaterGoal extends Goal {
     public void start() {
 
         if (targetPos != null) {
-            Vector3d targetVector = new Vector3d ((double)targetPos.getX(), (double)targetPos.getY(), (double)targetPos.getZ()).subtract(mob.position()).normalize().scale(0.5);
+            Vector3d targetVector = new Vector3d ((double)targetPos.getX(), (double)targetPos.getY(), (double)targetPos.getZ()).subtract(mob.position()).normalize().scale(0.05);
             this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), Math.max(speed,0.10D));
             this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(targetVector));
             System.out.println(this.mob.getDeltaMovement().length());
@@ -66,7 +64,7 @@ public class PanthalassaFindWaterGoal extends Goal {
             while(this.mob.level.getBlockState(blockpos1).is(Blocks.AIR) && blockpos1.getY() > 1){
                 blockpos1 = blockpos1.below();
             }
-            if(this.mob.level.getFluidState(blockpos1).is(FluidTags.WATER)){
+            if(this.mob.level.getFluidState(blockpos1).is(FluidTags.WATER) && this.mob.level.getFluidState(blockpos1.below()).is(FluidTags.WATER)){
                 blockpos = blockpos1;
             }
         }

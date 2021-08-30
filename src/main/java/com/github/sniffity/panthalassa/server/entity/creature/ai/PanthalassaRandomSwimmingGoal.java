@@ -14,16 +14,6 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import static java.lang.Math.*;
 
-/**
- * Panthalassa Mod - Class: PanthalassaRandomSwimmingGoal <br></br?>
- *
- * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
- *
- * Acknowledgements: This class was developed by imitating Ice and Fire's SeaSerpentAIGetInWater class, with permission
- * from Alexthe668. At the time of writing this, the class in question can be found here:
- * https://github.com/Alex-the-666/Ice_and_Fire/blob/d848efb1c92d2fd7196c002d3950368dafc84e1b/src/main/java/com/github/alexthe666/iceandfire/entity/ai/SeaSerpentAIGetInWater.java
- */
-
 public class PanthalassaRandomSwimmingGoal extends Goal {
 
     protected final PanthalassaEntity creature;
@@ -93,24 +83,24 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             Vector3d creaturePos = this.creature.position();
             double distance = creaturePos.subtract(vector).length();
 
-            if (distance < 5) {
+            if (distance < 2) {
                 return null;
             }
 
             for (int i = 0; i <= avoidDistance; i++) {
-                if (this.creature.level.getBlockState(new BlockPos(vector).north(i)).canOcclude()) {
+                if (!this.creature.level.getFluidState(new BlockPos(vector).north(i)).is(FluidTags.WATER)) {
                     vector = null;
                     break;
                 }
-                if (this.creature.level.getBlockState(new BlockPos(vector).south(i)).canOcclude()) {
+                if (!this.creature.level.getFluidState(new BlockPos(vector).south(i)).is(FluidTags.WATER)) {
                     vector = null;
                     break;
                 }
-                if (this.creature.level.getBlockState(new BlockPos(vector).east(i)).canOcclude()) {
+                if (!this.creature.level.getFluidState(new BlockPos(vector).east(i)).is(FluidTags.WATER)) {
                     vector = null;
                     break;
                 }
-                if (this.creature.level.getBlockState(new BlockPos(vector).west(i)).canOcclude()) {
+                if (!this.creature.level.getFluidState(new BlockPos(vector).west(i)).is(FluidTags.WATER)) {
                     vector = null;
                     break;
                 }
