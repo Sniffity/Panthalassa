@@ -1,11 +1,9 @@
 package com.github.sniffity.panthalassa.server.world.teleporter;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.block.PanthalassaBlockTags;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaPOI;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PortalInfo;
@@ -121,14 +119,14 @@ public class PanthalassaTeleporter implements ITeleporter {
     }
 
     private boolean checkRegionForPlacement(BlockPos potentialPos, World world) {
-        BlockPos.Mutable check = new BlockPos.Mutable(0,0,0);
+        BlockPos check;
         int i;
         int j;
         int k;
         for (i = -8; i < 9; ++i) {
             for (j = -1; j > -5; --j) {
                 for (k = -8; k < 9; ++k) {
-                    check.set(potentialPos.getX(), potentialPos.getY(), potentialPos.getZ()).move(i, j, k);
+                    check = new BlockPos(potentialPos.getX() + i, potentialPos.getY() + j, potentialPos.getZ() + k);
                     if (!(world.getFluidState(check).is(FluidTags.WATER))) {
                         return false;
                     }
@@ -155,10 +153,9 @@ public class PanthalassaTeleporter implements ITeleporter {
         validLocation = false;
 
         while (!validLocation) {
-            int i = 0;
             while (pos1.getY() < 128
                     && (world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)
-                    || !(world.getBlockState(pos1).is(PanthalassaTags.Blocks.VALID_PORTAL_POSITION)))) {
+                    || world.getBlockState(pos1) == PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState()))  {
                 pos1 = pos1.above();
             }
             while (pos1.getY() > -1 && !world.getFluidState(new BlockPos(pos1)).is(FluidTags.WATER)) {
@@ -166,9 +163,8 @@ public class PanthalassaTeleporter implements ITeleporter {
             }
 
             if (pos1.getY() < 10 || pos1.getY() > 118 || !checkRegionForPlacement(pos1, world )) {
-                i = i+5;
 
-                double adjustedX = pos1.getX()+i*((new Random().nextBoolean()) ? -1 : 1);;
+                double adjustedX = pos1.getX()+(int)Math.floor(Math.random()*(50)+15)*((new Random().nextBoolean()) ? -1 : 1);;
                 double adjustedZ = pos1.getZ()+(int)Math.floor(Math.random()*(50)+15)*((new Random().nextBoolean()) ? -1 : 1);
                 if (Math.abs(originalPos.getX()-adjustedX) > 70) {
                     if (adjustedX>originalPos.getX()){
