@@ -15,6 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -31,14 +32,11 @@ import javax.annotation.Nullable;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
-    public static final int PASSIVE_ANGLE = 1;
-    public static final int AGGRO_ANGLE = 15;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
     public float adjustment = 0.25F;
     public static final int BLOCKED_DISTANCE = 5;
-    public boolean isLandNavigator;
 
 
 
@@ -52,8 +50,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         super(type, worldIn);
         this.noCulling = true;
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
-        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
-
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -79,6 +75,13 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         setBreachCooldown((getBreachCooldown())-1);
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
+
+        /*
+        prevXRot = this.xRot;
+        if (this.isInWater() || !this.isOnGround()) {
+            this.xRot = ((float) (MathHelper.atan2((this.getDeltaMovement().y),MathHelper.sqrt((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z))*5)));
+        }
+        */
         if (adjustYaw > deltaYRot) {
             adjustYaw = adjustYaw - adjustment;
             adjustYaw = Math.max(adjustYaw, deltaYRot);
@@ -88,6 +91,8 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         }
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
+
+
 
         /*
         if (this.onGround) {
@@ -150,7 +155,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.MAX_HEALTH, 175)
-                .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
+                .add(Attributes.MOVEMENT_SPEED, 1.3F);
     }
 
     @Override

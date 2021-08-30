@@ -31,13 +31,9 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     @Override
     public void setLivingAnimations(EntityMegalodon entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (entity.isInWater() || !entity.isOnGround()) {
-            (this.getAnimationProcessor().getBone("main")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z))*5)));
-        }
-        //TODO: ONLY ADJUST RotX IF BREACHING
-        if (entity.getIsBreaching()) {
 
-        }
+        (this.getAnimationProcessor().getBone("main")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z)))));
+
         (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
         (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
         (this.getAnimationProcessor().getBone("lower_body_6")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
