@@ -1,9 +1,11 @@
 package com.github.sniffity.panthalassa;
 
+import com.github.sniffity.panthalassa.server.block.PanthalassaBlockTags;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.mojang.serialization.Codec;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +15,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -23,6 +26,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -64,6 +68,8 @@ public final class Panthalassa {
 		forgeBus.register(this);
 		modBus.addListener(this::setup);
 		modBus.addListener(this::registerEntityAttributes);
+		modBus.addListener(this::gatherData);
+
 
 
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
@@ -116,6 +122,18 @@ public final class Panthalassa {
 					serverWorld.dimension().equals(World.OVERWORLD)){
 				return;
 			}
+		}
+	}
+
+	public void gatherData(GatherDataEvent event) {
+		DataGenerator generator = event.getGenerator();
+		ExistingFileHelper helper = event.getExistingFileHelper();
+
+		if(event.includeClient()) {
+		}
+		if(event.includeServer()) {
+			PanthalassaBlockTags blockTags = new PanthalassaBlockTags(generator, helper);
+			generator.addProvider(blockTags);
 		}
 	}
 
