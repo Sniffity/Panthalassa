@@ -30,14 +30,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-/**
- * Panthalassa Mod - Class: PanthalassaWorldSavedData <br></br?>
- *
- * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
- *
- * Acknowledgements: The navigator section of the following class was developed after studying how Alex's Mobs implements
- * different navigators for land and water for some of its creatures.
- */
+
 
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
     public static final int PASSIVE_ANGLE = 1;
