@@ -1,11 +1,12 @@
 {
-  "name": "Panthalassa Portal",
-  "icon": "minecraft:writable_book",
+  "name": "Panthalassa Portals",
+  "icon": "panthalassa:textures/block/panthalassa_portal_frame.png",
   "category": "panthalassa:access",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "This is a test entry, but it should show up!"
+      "text": "As mentioned previously, the portals to Panthalassa can be found in research laboratories. Igniting one of these portals provides a gateway, to and from Panthalassa. The entry portal will create a sister portal on Panthalassa's roof. Be warned however, for Panthalassa's denizens will feel attracted to this portal... "
     }
   ]
 }

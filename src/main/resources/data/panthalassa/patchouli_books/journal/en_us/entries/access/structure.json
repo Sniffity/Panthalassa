@@ -1,11 +1,12 @@
 {
-  "name": "Structure",
-  "icon": "minecraft:writable_book",
+  "name": "Research Laboratories",
+  "icon": "panthalassa:book/microscope.png",
   "category": "panthalassa:access",
+  "sortnum": 0,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "This is a test entry, but it should show up!"
+      "text": "It was scientific research, first and foremost, that opened the way to Panthalassa. Although the scientists that started this journey are now long gone, the laboratories that housed their research remains. It is within these underwater structures that one will find access to Panthalassa."
     }
   ]
 }

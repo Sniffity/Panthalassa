@@ -1,7 +1,9 @@
 {
-  "name": "Warning!",
-  "icon": "minecraft:writable_book",
+  "name": "WARNING: Crush Depth!",
+  "icon": "panthalassa:book/warning.png",
   "category": "panthalassa:access",
+  "sortnum": 2,
+
   "pages": [
     {
       "type": "patchouli:text",

@@ -44,8 +44,6 @@ public class PanthalassaFindWaterGoal extends Goal {
             Vector3d targetVector = new Vector3d ((double)targetPos.getX(), (double)targetPos.getY(), (double)targetPos.getZ()).subtract(mob.position()).normalize().scale(0.05);
             this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), Math.max(speed,0.10D));
             this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(targetVector));
-            System.out.println(this.mob.getDeltaMovement().length());
-
         }
     }
 

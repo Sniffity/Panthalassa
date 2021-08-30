@@ -1,5 +1,8 @@
 {
   "name": "Panthalassa Journal",
-  "landing_text": "The following journal recounts my experience within the prehistoric seas of Panthalassa...",
-  "version": 1
+  "landing_text": "Multi pertransibunt et augebitur scientia...",
+  "version": 1,
+  "show_progress": false,
+  "model": "patchouli:book_cyan",
+  "book_texture": "patchouli:textures/gui/book_cyan.png"
 }
