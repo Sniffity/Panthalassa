@@ -52,23 +52,15 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     @Override
     public void tick() {
         super.tick();
-        //If it's in one block shallow water, and not using landNavigator...
-        //Switch to land navigator.
         if (!this.isLandNavigator && this.isInWater() && this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR)) {
             switchToLandNavigator(true);
-            System.out.println("Switched to land navigator (1)");
-
         }
 
-        //Else, if it's not in one block shallow water, and it's actually in water, and it's using land navigator...
-        //Switch back to water navigator.
-        else if (this.isInWater() && this.isLandNavigator &&  !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
-            System.out.println("Switched to water navigator (1)");
+        else if (this.isLandNavigator && this.isInWater() && !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
             switchToLandNavigator(false);
         }
-        // Else, if it's
+
         else if (!this.isInWater() && !this.isLandNavigator) {
-            System.out.println("Switched to land navigator (2)");
             switchToLandNavigator(true);
         }
     }
