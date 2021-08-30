@@ -3,10 +3,15 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaPOI;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.village.PointOfInterest;
+import net.minecraft.village.PointOfInterestManager;
+import net.minecraft.world.server.ServerWorld;
+
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
@@ -35,7 +40,7 @@ public class PanthalassaEscapeGoal extends Goal {
         if (this.creature.isVehicle()) {
             return false;
         } else {
-            AxisAlignedBB searchArea = new AxisAlignedBB(creature.getX() - 20, creature.getY() - 20, creature.getZ() - 20, creature.getX() + 20, creature.getY() + 20, creature.getZ() + 20);
+            AxisAlignedBB searchArea = new AxisAlignedBB(creature.getX() - 10, creature.getY() - 10, creature.getZ() - 10, creature.getX() + 10, creature.getY() + 10, creature.getZ() + 10);
             Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
                     .map(pos -> new BlockPos(pos))
                     .filter(state -> (creature.level.getBlockState(state) == PanthalassaBlocks.PORTAL.get().defaultBlockState()))
