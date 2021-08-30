@@ -1,15 +1,27 @@
 {
     "item.panthalassa.hpr_glass_sphere": "HPR Glass Sphere",
+    "item.panthalassa.hpr_vehicle_panel": "HPR Vehicle Panel",
+    "item.panthalassa.hpr_vehicle_seat": "HPR Vehicle Seat",
+    "item.panthalassa.hpr_vehicle_cockpit": "HPR Vehicle Cockpit",
+    "item.panthalassa.hpr_vehicle_chassis": "HPR Vehicle Chassis",
+    "item.panthalassa.hpr_vehicle_propeller": "HPR Vehicle Propeller",
+    "item.panthalassa.hpr_vehicle_engine": "HPR Vehicle Engine",
+    "item.panthalassa.hpr_vehicle_light": "HPR Vehicle Light",
+    "item.panthalassa.ag2_vehicle": "Abyss Glider II Submersible Vehicle",
 
     "block.panthalassa.panthalassa_soil": "Panthalassa Soil",
     "block.panthalassa.panthalassa_coarse_soil": "Panthalassa Coarse Soil",
     "block.panthalassa.panthalassa_loose_soil": "Panthalassa Loose Soil",
 
-    "block.panthalassa.panthalassa_rocks": "Panthalassa Rocks",
-    "block.panthalassa.panthalassa_coarse_rocks": "Panthalassa Coarse Rocks",
-    "block.panthalassa.panthalassa_loose_rocks": "Panthalassa Loose Rocks",
+    "block.panthalassa.panthalassa_stone": "Panthalassa Stone",
+    "block.panthalassa.panthalassa_coarse_stone": "Panthalassa Coarse Stone",
+    "block.panthalassa.panthalassa_loose_stone": "Panthalassa Loose Stone",
 
     "block.panthalassa.panthalassa_sand": "Panthalassa Sand",
+    "block.panthalassa.panthalassa_overgrown_sand": "Panthalassa Overgrown Sand",
+
+    "block.panthalassa.panthalassa_rock": "Panthalassa Rock",
+    "block.panthalassa.panthalassa_ancient_rock": "Panthalassa Ancient Rock",
 
     "block.panthalassa.primordial_stalk": "Primordial Stalk",
 
@@ -25,6 +37,7 @@
 
     "entity.panthalassa.manta_ray_submersible_vehicle": "Manta Ray Submersible Vehicle",
     "entity.panthalassa.abyss_glider_2_submersible_vehicle": "Abyss Glider II Submersible Vehicle",
+
 
 
     "entity.panthalassa.kronosaurus": "Kronosaurus",
