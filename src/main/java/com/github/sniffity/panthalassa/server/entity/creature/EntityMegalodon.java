@@ -30,13 +30,18 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
+import static java.lang.Math.PI;
+
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
+
+    public static final int BLOCKED_DISTANCE = 5;
+    public float prevSetPitchValue;
+    public float setPitchValue;
     public float prevYRot;
     public float deltaYRot;
-    public float adjustYaw;
+    public float adjustRotation;
     public float adjustment = 0.25F;
-    public static final int BLOCKED_DISTANCE = 5;
 
 
 
@@ -73,19 +78,22 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public void tick() {
         super.tick();
         setBreachCooldown((getBreachCooldown())-1);
+
+        prevSetPitchValue = setPitchValue;
+
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-
-        if (adjustYaw > deltaYRot) {
-            adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, deltaYRot);
-        } else if (adjustYaw < deltaYRot) {
-            adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYRot);
+        if (adjustRotation > deltaYRot) {
+            adjustRotation = adjustRotation - adjustment;
+            adjustRotation = Math.max(adjustRotation, deltaYRot);
+        } else if (adjustRotation < deltaYRot) {
+            adjustRotation = adjustRotation + adjustment;
+            adjustRotation = Math.min(adjustRotation, deltaYRot);
         }
+        setPitchValue = (float) MathHelper.atan2((this.getDeltaMovement().y), MathHelper.sqrt((this.getDeltaMovement().x) * (this.getDeltaMovement().x) + (this.getDeltaMovement().z) * (this.getDeltaMovement().z)));
+
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
     }
 
     protected void handleAirSupply(int p_209207_1_) {

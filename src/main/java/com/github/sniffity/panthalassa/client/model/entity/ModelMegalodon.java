@@ -31,13 +31,19 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     @Override
     public void setLivingAnimations(EntityMegalodon entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
+
         if (entity.isInWater() || !entity.isOnGround()) {
-            (this.getAnimationProcessor().getBone("main")).setRotationX((float) (MathHelper.atan2((entity.getDeltaMovement().y), MathHelper.sqrt((entity.getDeltaMovement().x) * (entity.getDeltaMovement().x) + (entity.getDeltaMovement().z) * (entity.getDeltaMovement().z)))));
+            float bonePitch = (entity.prevSetPitchValue+(entity.setPitchValue-entity.prevSetPitchValue)*customPredicate.getPartialTick());
+            (this.getAnimationProcessor().getBone("main")).setRotationX(bonePitch);
         }
-        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("lower_body_6")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*5.0F);
+
+        (this.getAnimationProcessor().getBone("main")).setRotationX(-(float)(entity.xRot*(PI/180.0F)));
+        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.deltaYRot*(PI/180.0F))*5);
+        (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.deltaYRot*(PI/180.0F))*5);
+        (this.getAnimationProcessor().getBone("lower_body_6")).setRotationY((float)(entity.deltaYRot*(PI/180.0F))*5);
+        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.deltaYRot*(PI/180.0F))*5);
+
+
 
     }
 
@@ -46,4 +52,3 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
         return super.getBone(boneName);
     }
 }
-
