@@ -45,6 +45,7 @@ public final class Panthalassa {
 		PanthalassaBlocks.BLOCKS.register(modBus);
 		PanthalassaItems.ITEMS.register(modBus);
 
+		PanthalassaTileEntities.TILE_ENTITY_TYPES.register(modBus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
 
 		PanthalassaStructures.STRUCTURES.register(modBus);

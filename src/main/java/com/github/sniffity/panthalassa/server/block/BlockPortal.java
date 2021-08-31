@@ -1,17 +1,26 @@
 package com.github.sniffity.panthalassa.server.block;
 
+import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.world.teleporter.PanthalassaTeleporter;
 import com.github.sniffity.panthalassa.server.world.teleporter.TeleporterLogic;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -22,19 +31,22 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.util.Direction;
+import net.minecraftforge.common.util.Constants;
+
 import javax.annotation.Nonnull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Panthalassa Mod - Class: BlockPortal <br></br?>
- *
+ * <p>
  * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
- *
+ * <p>
  * Acknowledgements: The following class was developed after studying how Atum 2, the Undergarden,
- * UltraAmplifiedDiemsnion and The Twilight Forest mods implement their own respective teleportation systems.
-*/
+ * UltraAmplifiedDimension and The Twilight Forest mods implement their own respective teleportation systems.
+ */
 
-public class BlockPortal extends Block {
+public class BlockPortal extends Block implements ITileEntityProvider {
 
     private static final VoxelShape portalShape = VoxelShapes.box(0.0D, 0.0, 0.0D, 1.0D, 1.0D, 1.0D);
 
@@ -42,18 +54,49 @@ public class BlockPortal extends Block {
         super(Properties.of(
                 Material.PORTAL,
                 MaterialColor.COLOR_CYAN)
-                .strength(-1.0F,3600000.0F)
+                .strength(-1.0F, 3600000.0F)
                 .sound(SoundType.GLASS)
                 .lightLevel((state) -> 10)
                 .randomTicks());
     }
 
+    public static void changeDimension(ServerWorld initialWorld, Entity entity, BlockPos portalBlockPos, PanthalassaTeleporter teleporter) {
+
+        // If portal block is connected to a portal in other dimension already, just teleport right away
+        TileEntity tileEntity = initialWorld.getBlockEntity(portalBlockPos);
+        if (tileEntity instanceof BlockPortalTileEntity) {
+            BlockPortalTileEntity portalTE = (BlockPortalTileEntity) tileEntity;
+            ServerWorld targetWorld = initialWorld.getServer().getLevel(portalTE.destinationWorld);
+            if (targetWorld != null && portalTE.destinationPos != null && targetWorld.getBlockState(portalTE.destinationPos).is(PanthalassaBlocks.PORTAL.get())) {
+                TeleporterLogic.teleport(entity, targetWorld, initialWorld, portalTE.destinationPos);
+                return;
+            }
+        }
+
+        // Portal block is unlinked. Time to create new portal and link the two together.
+        RegistryKey<World> targetWorldKey = initialWorld.dimension() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
+        ServerWorld targetWorld = initialWorld.getServer().getLevel(targetWorldKey);
+
+        if (targetWorld != null) {
+            TeleporterLogic.teleportAndCreatePortal(entity, portalBlockPos, targetWorld, initialWorld, teleporter);
+            entity.setPortalCooldown();
+        } else {
+            Panthalassa.LOGGER.error("Panthalassa: Portal block is unable to find this dimension for teleporting to: {}", targetWorldKey);
+        }
+    }
+
     @Override
-        public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
-        return 5.0F;    }
+    public TileEntity newBlockEntity(IBlockReader blockReader) {
+        return new BlockPortalTileEntity();
+    }
+
+    @Override
+    public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
+        return 5.0F;
+    }
 
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (trySpawnPortal(worldIn, pos)) {
+        if (!worldIn.isClientSide() && trySpawnPortal(worldIn, pos)) {
             return ActionResultType.SUCCESS;
         } else {
             return ActionResultType.FAIL;
@@ -81,7 +124,7 @@ public class BlockPortal extends Block {
         BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
 
         if (check.match) {
-            check.placePortalBlocks();
+            check.createPortalCenter();
             return true;
         } else {
             return false;
@@ -110,29 +153,56 @@ public class BlockPortal extends Block {
 
     @Override
     public void entityInside(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity entity) {
-        if (world instanceof ServerWorld) {
-            changeDimension((ServerWorld) world, entity, new PanthalassaTeleporter((ServerWorld) world));
-        }
-    }
-
-    public static void changeDimension(ServerWorld initialWorld, Entity entity, PanthalassaTeleporter teleporter) {
-        RegistryKey<World> targetWorldKey = initialWorld.dimension() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
-        ServerWorld targetWorld = initialWorld.getServer().getLevel(targetWorldKey);
-
-        if (targetWorld == null) {
-            return;
-        }
-        if (!entity.isOnPortalCooldown()) {
-            entity.level.getProfiler().push("panthalassa_portal");
-            new TeleporterLogic(entity, targetWorld, initialWorld, teleporter);
-            entity.setPortalCooldown();
-            entity.level.getProfiler().pop();
+        if (world instanceof ServerWorld && !entity.isOnPortalCooldown()) {
+            changeDimension((ServerWorld) world, entity, pos, new PanthalassaTeleporter((ServerWorld) world));
         }
     }
 
     public static class matchShapeSize {
         private final IWorld world;
+        public boolean match = true;
         BlockPos centerPosition;
+        float minPortalFrameRadius = 6.1f;
+        float maxPortalFrameRadius = 7.5f;
+
+        public matchShapeSize(IWorld world, BlockPos pos, boolean createPortal) {
+            this.world = world;
+            if (createPortal) {
+                centerPosition = pos;
+                createPortalFrame();
+                createPortalCenter();
+                match = true;
+            } else {
+                int offsetN = centerPortal(pos, Direction.NORTH);
+                int offsetS = centerPortal(pos, Direction.SOUTH);
+                int offsetE = centerPortal(pos, Direction.EAST);
+                int offsetW = centerPortal(pos, Direction.WEST);
+
+                centerPosition = new BlockPos(pos.getX() + ((offsetE - offsetW) / 2), pos.getY(), pos.getZ() - ((offsetN - offsetS) / 2));
+                if (match) match = checkIfValidPortalFrame(centerPosition);
+            }
+        }
+
+        public matchShapeSize(IWorld world, BlockPos pos) {
+            this(world, pos, false);
+        }
+
+        public static void recursivelyFindPortalPositions(IWorld world, BlockPos portalCenter, BlockPos currentOffset, Set<BlockPos> savedOffsets) {
+            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            for (Direction side : Direction.Plane.HORIZONTAL) {
+                // Check if we hit frame or not in world space
+                mutable.set(portalCenter).move(currentOffset).move(side);
+                if (!world.getBlockState(mutable).is(PanthalassaBlocks.PORTAL_FRAME.get())) {
+
+                    // check if this offset has already been saved or not
+                    mutable.set(currentOffset).move(side);
+                    if (!savedOffsets.contains(mutable)) {
+                        savedOffsets.add(mutable.immutable());
+                        recursivelyFindPortalPositions(world, portalCenter, mutable.immutable(), savedOffsets);
+                    }
+                }
+            }
+        }
 
         boolean isPanthalassaPortalFrame(BlockState state) {
             return state == PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState();
@@ -140,265 +210,6 @@ public class BlockPortal extends Block {
 
         boolean isWaterOrPortal(BlockState state) {
             return (state.getFluidState().is(FluidTags.WATER) || state.getBlockState() == PanthalassaBlocks.PORTAL.get().defaultBlockState());
-        }
-
-        boolean match = true;
-
-        public matchShapeSize(IWorld world, BlockPos pos) {
-
-            this.world = world;
-
-            int offsetN = centerPortal(pos, Direction.NORTH);
-            int offsetS = centerPortal(pos, Direction.SOUTH);
-            int offsetE = centerPortal(pos, Direction.EAST);
-            int offsetW = centerPortal(pos, Direction.WEST);
-
-            centerPosition = new BlockPos(pos.getX() + ((offsetE - offsetW) / 2), pos.getY(), pos.getZ() - ((offsetN - offsetS) / 2));
-
-
-            for (int z = -2; z < 3; z++) {
-                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-7, 0, z)))) {
-                    match = false;
-                    break;
-                }
-            }
-
-            if (match) {
-                for (int z = -2; z < 3; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(7, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -4; z < -1; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-6, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = 2; z < 5; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-6, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -4; z < -1; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(6, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = 2; z < 5; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(6, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -5; z < -3; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-5, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-            if (match) {
-                for (int z = 4; z < 6; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-5, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -5; z < -3; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(5, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-            if (match) {
-                for (int z = 4; z < 6; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(5, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-            if (match) {
-                for (int z = -6; z < -4; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-4, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-            if (match) {
-                for (int z = 5; z < 7; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-4, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-            if (match) {
-                for (int z = -6; z < -4; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(4, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = 5; z < 7; z++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(4, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-3, 0, -6)))) {
-                    match = false;
-                }
-            }
-
-            if (match) {
-                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(-3, 0, 6)))) {
-                    match = false;
-                }
-            }
-
-            if (match) {
-                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(3, 0, -6)))) {
-                    match = false;
-                }
-            }
-
-            if (match) {
-                if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(3, 0, 6)))) {
-                    match = false;
-                }
-            }
-
-            if (match) {
-                for (int x = -2; x < 3; x++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(x, 0, -7)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int x = -2; x < 3; x++) {
-                    if (!isPanthalassaPortalFrame(world.getBlockState(centerPosition.offset(x, 0, 7)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -4; z < 4; z++) {
-                    for (int x = -4; x < 4; x++) {
-                        if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(x, 0, z)))) {
-                            match = false;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -3; z < 4; z++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(-5, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -3; z < 4; z++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(5, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -1; z < 2; z++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(-6, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int z = -1; z < 2; z++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(6, 0, z)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int x = -1; x < 2; x++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(x, 0, -6)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int x = -1; x < 2; x++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(x, 0, 6)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int x = -3; x < 4; x++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(x, 0, -5)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-
-            if (match) {
-                for (int x = -3; x < 4; x++) {
-                    if (!isWaterOrPortal(world.getBlockState(centerPosition.offset(x, 0, 5)))) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
         }
 
         int centerPortal(BlockPos pos, Direction direction) {
@@ -421,66 +232,112 @@ public class BlockPortal extends Block {
             return distance;
         }
 
-        void placePortalBlocks() {
-            for (int x = -4; x < 5; x++) {
-                for (int z = -4; z < 5; z++) {
-                    this.world.setBlock(centerPosition.offset(x, 0, z), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-                }
-                for (int z = -3; z < 4; z++) {
-                    this.world.setBlock(centerPosition.offset(-5, 0, z), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-                }
-                for (int z = -3; z < 4; z++) {
-                    this.world.setBlock(centerPosition.offset(5, 0, z), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-                }
-                for (int z = -1; z < 2; z++) {
-                    this.world.setBlock(centerPosition.offset(-6, 0, z), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-                }
-                for (int z = -1; z < 2; z++) {
-                    this.world.setBlock(centerPosition.offset(6, 0, z), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-                }
-            }
-            for (int x = -3; x < 4; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, -5), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-            }
-            for (int x = -3; x < 4; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, 5), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-            }
-            for (int x = -1; x < 2; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, -6), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
-            }
-            for (int x = -1; x < 2; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, 6), PanthalassaBlocks.PORTAL.get().defaultBlockState(), 2);
+        void destroyPortalBlocks() {
+            Set<BlockPos> portalPositionsOffsets = new HashSet<>();
+            portalPositionsOffsets.add(BlockPos.ZERO);
+            recursivelyFindPortalPositions(this.world, this.centerPosition, BlockPos.ZERO, portalPositionsOffsets);
+
+            for (BlockPos pos : portalPositionsOffsets) {
+                this.world.setBlock(centerPosition.offset(pos), Blocks.WATER.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
             }
         }
-        void destroyPortalBlocks() {
-            for (int x = -4; x < 5; x++) {
-                for (int z = -4; z < 5; z++) {
-                    this.world.setBlock(centerPosition.offset(x, 0, z), Blocks.WATER.defaultBlockState(), 2);
-                }
-                for (int z = -3; z < 4; z++) {
-                    this.world.setBlock(centerPosition.offset(-5, 0, z), Blocks.WATER.defaultBlockState(), 2);
-                }
-                for (int z = -3; z < 4; z++) {
-                    this.world.setBlock(centerPosition.offset(5, 0, z), Blocks.WATER.defaultBlockState(), 2);
-                }
-                for (int z = -1; z < 2; z++) {
-                    this.world.setBlock(centerPosition.offset(-6, 0, z), Blocks.WATER.defaultBlockState(), 2);
-                }
-                for (int z = -1; z < 2; z++) {
-                    this.world.setBlock(centerPosition.offset(6, 0, z), Blocks.WATER.defaultBlockState(), 2);
+
+        public boolean checkIfValidPortalFrame(BlockPos pos) {
+            float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
+            float maxRadiusSq = maxPortalFrameRadius * maxPortalFrameRadius;
+            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            for (int x = (int) -maxPortalFrameRadius; x < maxPortalFrameRadius; x++) {
+                for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
+                    int distSq = x * x + z * z;
+                    if (distSq > minRadiusSq && distSq < maxRadiusSq) {
+                        mutable.set(pos).move(x, 0, z);
+                        if (!isPanthalassaPortalFrame(world.getBlockState(mutable))) {
+                            return false;
+                        }
+                    } else if (distSq <= minRadiusSq) {
+                        mutable.set(pos).move(x, 0, z);
+                        if (!isWaterOrPortal(world.getBlockState(mutable))) {
+                            return false;
+                        }
+                    }
                 }
             }
-            for (int x = -3; x < 4; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, -5), Blocks.WATER.defaultBlockState(), 2);
+            return true;
+        }
+
+        public void createPortalFrame() {
+            float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
+            float maxRadiusSq = maxPortalFrameRadius * maxPortalFrameRadius;
+            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            for (int x = (int) -maxPortalFrameRadius; x < maxPortalFrameRadius; x++) {
+                for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
+                    int distSq = x * x + z * z;
+                    if (distSq > minRadiusSq && distSq < maxRadiusSq) {
+                        mutable.set(this.centerPosition).move(x, 0, z);
+                        this.world.setBlock(mutable, PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+
+                        // Helps prevent portal frame from sticking out over ledges
+                        if (((ServerWorld) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
+                            while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK)) {
+                                this.world.setBlock(mutable, PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                            }
+                        }
+                    }
+                }
             }
-            for (int x = -3; x < 4; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, 5), Blocks.WATER.defaultBlockState(), 2);
+        }
+
+        public void createPortalCenter() {
+            float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
+            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            for (int x = (int) -minPortalFrameRadius; x < minPortalFrameRadius; x++) {
+                for (int z = (int) -minPortalFrameRadius; z < minPortalFrameRadius; z++) {
+                    int distSq = x * x + z * z;
+                    if (distSq <= minRadiusSq) {
+                        mutable.set(this.centerPosition).move(x, 0, z);
+                        this.world.setBlock(mutable, PanthalassaBlocks.PORTAL.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+
+                        TileEntity tileEntity = this.world.getBlockEntity(mutable);
+                        if (tileEntity instanceof BlockPortalTileEntity) {
+                            ((BlockPortalTileEntity) tileEntity).offsetFromCenter = new BlockPos(x, 0, z);
+                        }
+
+                        // Helps create some space for mobs to swim into portal
+                        if (((ServerWorld) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
+                            while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK) && mutable.getY() < this.centerPosition.getY() + 7) {
+                                this.world.setBlock(mutable, Blocks.WATER.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                            }
+                        }
+                    }
+                }
             }
-            for (int x = -1; x < 2; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, -6), Blocks.WATER.defaultBlockState(), 2);
-            }
-            for (int x = -1; x < 2; x++) {
-                this.world.setBlock(centerPosition.offset(x, 0, 6), Blocks.WATER.defaultBlockState(), 2);
+        }
+
+        public void linkPortalCenters(IWorld otherWorld, BlockPos centerOfOtherPortal) {
+            float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
+            BlockPos.Mutable mutable1 = new BlockPos.Mutable();
+            BlockPos.Mutable mutable2 = new BlockPos.Mutable();
+            for (int x = (int) -maxPortalFrameRadius; x < maxPortalFrameRadius; x++) {
+                for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
+                    int distSq = x * x + z * z;
+                    if (distSq <= minRadiusSq) {
+                        mutable1.set(this.centerPosition).move(x, 0, z);
+                        mutable2.set(centerOfOtherPortal).move(x, 0, z);
+
+                        TileEntity tileEntity1 = this.world.getBlockEntity(mutable1);
+                        TileEntity tileEntity2 = otherWorld.getBlockEntity(mutable2);
+                        if (tileEntity1 instanceof BlockPortalTileEntity && tileEntity2 instanceof BlockPortalTileEntity) {
+                            BlockPortalTileEntity portal1 = ((BlockPortalTileEntity) tileEntity1);
+                            BlockPortalTileEntity portal2 = ((BlockPortalTileEntity) tileEntity2);
+
+                            portal1.destinationPos = portal2.getBlockPos();
+                            portal1.destinationWorld = portal2.getLevel().dimension();
+
+                            portal2.destinationPos = portal1.getBlockPos();
+                            portal2.destinationWorld = portal1.getLevel().dimension();
+                        }
+                    }
+                }
             }
         }
     }

@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaPOI;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,8 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,30 +43,24 @@ public class PanthalassaEscapeGoal extends Goal {
         if (this.creature.isVehicle()) {
             return false;
         } else {
-            AxisAlignedBB searchArea = new AxisAlignedBB(creature.getX() - 10, creature.getY() - 10, creature.getZ() - 10, creature.getX() + 10, creature.getY() + 10, creature.getZ() + 10);
-            Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
-                    .map(pos -> new BlockPos(pos))
-                    .filter(state -> (creature.level.getBlockState(state) == PanthalassaBlocks.PORTAL.get().defaultBlockState()))
-                    .collect(Collectors.toSet());
+            int searchRadius = 10;
+            PointOfInterestManager pointofinterestmanager = ((ServerWorld)creature.level).getPoiManager();
+            Optional<PointOfInterest> portalPOI = pointofinterestmanager.getInRange(
+                    (pointOfInterestType) -> pointOfInterestType == PanthalassaPOI.PANTHALASSA_POI_PORTAL.get(),
+                    creature.blockPosition(),
+                    searchRadius,
+                    PointOfInterestManager.Status.ANY)
+                    .findFirst();
 
-            for (BlockPos portalPos : set) {
-                if (creature.level.getBlockState(portalPos.north(4)) == PanthalassaBlocks.PORTAL.get().defaultBlockState()
-                        && creature.level.getBlockState(portalPos.south(4)) == PanthalassaBlocks.PORTAL.get().defaultBlockState()
-                        && creature.level.getBlockState(portalPos.east(4)) == PanthalassaBlocks.PORTAL.get().defaultBlockState()
-                        && creature.level.getBlockState(portalPos.west(4)) == PanthalassaBlocks.PORTAL.get().defaultBlockState()) {
-                    this.targetPos = portalPos;
-                    break;
-                } else {
-                    this.targetPos = null;
-                }
+            if(portalPOI.isPresent()) {
+                this.targetPos = portalPOI.get().getPos();
             }
-
-            if (targetPos == null) {
+            else {
+                this.targetPos = null;
                 return false;
             }
 
             Vector3d vector3d = this.getPosition();
-
             if (vector3d == null) {
                 return false;
             }

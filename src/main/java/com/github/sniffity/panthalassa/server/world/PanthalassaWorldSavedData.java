@@ -24,7 +24,7 @@ import java.util.UUID;
  * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
  *
  * Acknowledgements: The following class was developed after studying how Atum 2, the Undergarden,
- * UltraAmplifiedDiemsnion and The Twilight Forest mods implement their own respective teleportation systems.
+ * UltraAmplifiedDimension and The Twilight Forest mods implement their own respective teleportation systems.
  */
 
 public class PanthalassaWorldSavedData extends WorldSavedData {
@@ -60,14 +60,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
             Entity vehicle = entry.entity;
             ServerWorld targetWorld = server.getLevel(entry.targetWorld);
             ServerWorld originalWorld = server.getLevel(entry.originalWorld);
-            RegistryKey<World> targetWorldKey = entry.targetWorld;
-            RegistryKey<World> originalWorldKey = entry.originalWorld;
             Vector3d targetVec = entry.targetVec;
-            float yaw = entry.yaw;
-            float pitch = entry.pitch;
-
-
-            Entity vehicleSnapshot = vehicle;
 
             if (targetWorld != null && vehicle != null) {
                 Entity vehicle2 = vehicle.getType().create(targetWorld);
@@ -81,17 +74,18 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
                 vehicle2.setDeltaMovement(vehicle.getDeltaMovement());
                 targetWorld.addFromAnotherDimension(vehicle2);
+                vehicle2.setPortalCooldown();
 
                 vehicle.remove();
 
-                targetWorld.getProfiler().pop();
                 assert originalWorld != null;
                 originalWorld.resetEmptyTime();
                 targetWorld.resetEmptyTime();
 
-                while (vehicleSnapshot.getPassengers().size()>0) {
-                    Entity passenger = vehicleSnapshot.getPassengers().get(0);
+                while (vehicle.getPassengers().size()>0) {
+                    Entity passenger = vehicle.getPassengers().get(0);
                     passenger.stopRiding();
+
                     if (passenger instanceof PlayerEntity) {
                         ServerPlayerEntity player = (ServerPlayerEntity) passenger;
                         ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());
@@ -109,7 +103,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                                 entry.yaw,
                                 entry.pitch);
                         player.startRiding(vehicle2);
-
+                        player.setPortalCooldown();
                     } else {
                         Entity passenger2 = passenger.getType().create(targetWorld);
                         ChunkPos entityChunkpos2 = new ChunkPos(passenger.blockPosition());
@@ -125,10 +119,10 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
                         passenger.remove();
 
-                        targetWorld.getProfiler().pop();
                         originalWorld.resetEmptyTime();
                         targetWorld.resetEmptyTime();
                         passenger2.startRiding(vehicle2);
+                        passenger2.setPortalCooldown();
                     }
                 }
             }
@@ -150,6 +144,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                             entry.targetVec.z(),
                             entry.yaw,
                             entry.pitch);
+                    player.setPortalCooldown();
                 }
             }
 
@@ -157,8 +152,6 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 Entity entity = entry.entity;
                 ServerWorld targetWorld = server.getLevel(entry.targetWorld);
                 ServerWorld originalWorld = server.getLevel(entry.originalWorld);
-                RegistryKey<World> targetWorldKey = entry.targetWorld;
-                RegistryKey<World> originalWorldKey = entry.originalWorld;
                 BlockPos targetBlock = entry.targetBlock;
 
                 assert targetWorld != null;
@@ -173,14 +166,13 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                     entity2.restoreFrom(entity);
                     entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
                     entity2.setDeltaMovement(entity.getDeltaMovement());
+                    entity2.setPortalCooldown();
                     targetWorld.addFromAnotherDimension(entity2);
 
                     entity.remove();
 
-                    targetWorld.getProfiler().pop();
                     originalWorld.resetEmptyTime();
                     targetWorld.resetEmptyTime();
-
                 }
             }
         }
