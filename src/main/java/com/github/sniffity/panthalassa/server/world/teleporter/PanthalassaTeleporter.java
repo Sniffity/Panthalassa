@@ -87,7 +87,7 @@ public class PanthalassaTeleporter implements ITeleporter {
         // Link the two portal's portal blocks together by finding center of original portal
         BlockPortalTileEntity tempTE = getPortalTE(originalWorld, originalPosition);
         if (tempTE != null) {
-            BlockPortalTileEntity centerTE = getPortalTE(originalWorld, originalPosition.offset(tempTE.offsetFromCenter));
+            BlockPortalTileEntity centerTE = getPortalTE(originalWorld, originalPosition.subtract(tempTE.offsetFromCenter));
             if (centerTE != null) {
                 portalMatch.linkPortalCenters(originalWorld, centerTE.getBlockPos());
             }
