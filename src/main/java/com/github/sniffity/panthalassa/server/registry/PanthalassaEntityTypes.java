@@ -26,14 +26,14 @@ public class PanthalassaEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Panthalassa.MODID);
 
     public static final RegistryObject<EntityType<EntityKronosaurus>> KRONOSAURUS = ENTITY_TYPES.register ("kronosaurus",()->
-            EntityType.Builder.of(EntityKronosaurus::new,EntityClassification.MONSTER)
+            EntityType.Builder.<EntityKronosaurus>of(EntityKronosaurus::new,EntityClassification.CREATURE)
                     .sized(2.0F, 1.0F)
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
     public static final RegistryObject<EntityType<EntityMegalodon>> MEGALODON = ENTITY_TYPES.register ("megalodon",()->
             EntityType.Builder.of(EntityMegalodon::new,EntityClassification.CREATURE)
-                    .sized(2.0F, 1.0F)
+                    .sized(1.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon").toString()));
 
     public static final RegistryObject<EntityType<EntityArchelon>> ARCHELON = ENTITY_TYPES.register ("archelon",()->

@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.entity.*;
@@ -36,10 +37,7 @@ import javax.annotation.Nullable;
 
 
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
-    public static final int PASSIVE_ANGLE = 1;
-    public static final int AGGRO_ANGLE = 15;
-    public static final int BLOCKED_DISTANCE = 3;
-    public boolean isLandNavigator;
+    public static final int BLOCKED_DISTANCE = 2;
 
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -115,6 +113,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.1, 30));
         this.goalSelector.addGoal(3, new FindWaterGoal(this));
+        this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3, false));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof CodEntity || entity instanceof SalmonEntity || entity instanceof TropicalFishEntity)));
 
     }
