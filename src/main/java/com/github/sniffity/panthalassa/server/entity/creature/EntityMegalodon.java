@@ -35,9 +35,9 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public float[] deltaYRotList = new float[3];
+    public float[] deltaYRotList = new float[10];
     public float averageDeltaYRot;
-    float adjustment = 0.05F;
+    float adjustment = 0.12F;
 
 
 
@@ -78,22 +78,16 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
 
-        for (int i = 2; i > 0; i--) {
+        for (int i = 9; i > 0; i--) {
             deltaYRotList[i] = deltaYRotList[i-1];
         }
-        if (this.getTarget() != null) {
 
-
-
-        } else {
-
-        }
         deltaYRotList[0] = deltaYRot;
         float sum = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             sum = sum + deltaYRotList[i];
         }
-        averageDeltaYRot = sum / 3;
+        averageDeltaYRot = sum / 10;
         if (adjustYaw > averageDeltaYRot) {
             adjustYaw = adjustYaw - adjustment;
             adjustYaw = Math.max(adjustYaw, averageDeltaYRot);

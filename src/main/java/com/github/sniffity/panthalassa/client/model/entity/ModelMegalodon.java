@@ -34,11 +34,12 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
         if (entity.isInWater() || !entity.isOnGround()) {
             (this.getAnimationProcessor().getBone("main")).setRotationX(((float) MathHelper.atan2((entity.getDeltaMovement().y), MathHelper.sqrt((entity.getDeltaMovement().x) * (entity.getDeltaMovement().x) + (entity.getDeltaMovement().z) * (entity.getDeltaMovement().z)))));
         }
-        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*10.0F);
-        (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*10.0F);
-        (this.getAnimationProcessor().getBone("lower_body_6")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*10.0F);
-        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*10.0F);
+            (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 10.0F);
+            (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 10.0F);
+            (this.getAnimationProcessor().getBone("lower_body_6")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 10.0F);
+            (this.getAnimationProcessor().getBone("head")).setRotationY((float) (-entity.adjustYaw * (PI / 180.0F)) * 10.0F);
     }
+
 
     @Override
     public IBone getBone(String boneName) {
