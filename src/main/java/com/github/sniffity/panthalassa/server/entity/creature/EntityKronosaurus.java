@@ -35,15 +35,12 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
-    public static final int BLOCKED_DISTANCE = 6;
+    public static final int BLOCKED_DISTANCE = 3;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
     public float adjustment = 0.25F;
-    public float newRotationPitch;
-    public float prevRotationPitch;
-    public float[] deltaYRotList = new float[10];
-    public float averageDeltaYRot;
+
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
     protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
@@ -104,34 +101,19 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Override
     public void tick() {
         super.tick();
-
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-
-        for (int i = 9; i > 0; i--) {
-            deltaYRotList[i] = deltaYRotList[i-1];
-        }
-
-        deltaYRotList[0] = deltaYRot;
-        float sum = 0;
-        for (int i = 0; i < 10; i++) {
-            sum = sum + deltaYRotList[i];
-        }
-        averageDeltaYRot = sum / 10;
-        if (adjustYaw > averageDeltaYRot) {
+        if (adjustYaw > deltaYRot) {
             adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, averageDeltaYRot);
-        } else if (adjustYaw < averageDeltaYRot) {
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
             adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, averageDeltaYRot);
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
+
 
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
-        prevRotationPitch = xRot;
-        newRotationPitch = ( (float) (MathHelper.atan2((this.getDeltaMovement().y),MathHelper.sqrt((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z)))));
-
 
     }
 
