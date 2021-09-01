@@ -83,7 +83,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             Vector3d creaturePos = this.creature.position();
             double distance = creaturePos.subtract(vector).length();
 
-            if (distance < 2) {
+            if (distance < 4) {
                 return null;
             }
 
@@ -125,6 +125,10 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+        if (this.creature.distanceToSqr(this.x,this.y,this.z) < 50) {
+            return false;
+        }
+
         return !this.creature.getNavigation().isDone() && !this.creature.isVehicle();
     }
     @Override

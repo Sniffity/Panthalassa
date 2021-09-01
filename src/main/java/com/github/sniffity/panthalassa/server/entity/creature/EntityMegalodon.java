@@ -4,7 +4,6 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.FindWaterGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
@@ -15,7 +14,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -29,14 +27,19 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public float adjustment = 0.25F;
     public static final int BLOCKED_DISTANCE = 5;
+    public float[] deltaYRotList = new float[10];
+    public float averageDeltaYRot;
+    float adjustment;
+    float adjustment0;
+
 
 
 
@@ -73,19 +76,77 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public void tick() {
         super.tick();
         setBreachCooldown((getBreachCooldown())-1);
+
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-
         if (adjustYaw > deltaYRot) {
-            adjustYaw = adjustYaw - adjustment;
+            adjustment0 -= 0.2F;
+            adjustment0 = Math.max(adjustment, -1.00F);
+            adjustYaw = adjustYaw + adjustment;
             adjustYaw = Math.max(adjustYaw, deltaYRot);
         } else if (adjustYaw < deltaYRot) {
+            adjustment0 += 0.2F;
+            adjustment0 = Math.min(adjustment, +1.0F);
             adjustYaw = adjustYaw + adjustment;
             adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
+
+        /*
+
+        if (this.getTarget() != null) {
+            if (adjustment != 0) {
+                adjustment = 0;
+                adjustYaw = 0;
+            } else {
+                deltaYRot = this.yRot - prevYRot;
+                prevYRot = this.yRot;
+                if (adjustYaw > deltaYRot) {
+                    adjustment0 -= 0.2F;
+                    adjustment0 = Math.max(adjustment, -1.00F);
+                    adjustYaw = adjustYaw + adjustment;
+                    adjustYaw = Math.max(adjustYaw, deltaYRot);
+                } else if (adjustYaw < deltaYRot) {
+                    adjustment0 += 0.2F;
+                    adjustment0 = Math.min(adjustment, +1.0F);
+                    adjustYaw = adjustYaw + adjustment;
+                    adjustYaw = Math.min(adjustYaw, deltaYRot);
+                }
+
+            }
+        } else {
+            if (adjustment0 != 0) {
+                adjustment0 = 0;
+                adjustYaw = 0;
+            } else {
+
+            adjustment = 0.05F;
+            deltaYRot = this.yRot - prevYRot;
+            prevYRot = this.yRot;
+            for (int i = 9; i > 0; i--) {
+                deltaYRotList[i] = deltaYRotList[i-1];
+            }
+            deltaYRotList[0] = deltaYRot;
+
+            float sum = 0;
+            for (int i = 0; i < 10; i++) {
+                sum = sum + deltaYRotList[i];
+            }
+
+            averageDeltaYRot = sum / 10;
+            if (adjustYaw > averageDeltaYRot) {
+                adjustYaw = adjustYaw - adjustment;
+                adjustYaw = Math.max(adjustYaw, averageDeltaYRot);
+
+            } else if (adjustYaw < averageDeltaYRot) {
+                adjustYaw = adjustYaw + adjustment;
+                adjustYaw = Math.min(adjustYaw, averageDeltaYRot);
+            }
+
+            }
+        }
+*/
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
     }
 
     protected void handleAirSupply(int p_209207_1_) {

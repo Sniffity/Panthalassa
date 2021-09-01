@@ -70,7 +70,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         //If it's moving in the water, swimming, play swim.
-        if ((this.getDeltaMovement().length()>1 && this.isInWater())) {
+        if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.swim", true));
             return PlayState.CONTINUE;
         }
