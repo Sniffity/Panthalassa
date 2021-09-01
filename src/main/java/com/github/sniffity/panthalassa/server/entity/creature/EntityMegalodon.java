@@ -4,7 +4,6 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.FindWaterGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
@@ -15,7 +14,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -30,18 +28,17 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
-import static java.lang.Math.PI;
-
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
 
     public static final int BLOCKED_DISTANCE = 5;
-    public float prevSetPitchValue;
-    public float setPitchValue;
     public float prevYRot;
     public float deltaYRot;
-    public float adjustRotation;
-    public float adjustment = 0.25F;
+    public float adjustYaw;
+    public float[] deltaYRotList = new float[3];
+    public float averageDeltaYRot;
+    float adjustment = 0.10F;
+
 
 
 
@@ -74,24 +71,36 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         super.defineSynchedData();
     }
 
-    @Override
     public void tick() {
         super.tick();
         setBreachCooldown((getBreachCooldown())-1);
 
-        prevSetPitchValue = setPitchValue;
-
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-        if (adjustRotation > deltaYRot) {
-            adjustRotation = adjustRotation - adjustment;
-            adjustRotation = Math.max(adjustRotation, deltaYRot);
-        } else if (adjustRotation < deltaYRot) {
-            adjustRotation = adjustRotation + adjustment;
-            adjustRotation = Math.min(adjustRotation, deltaYRot);
-        }
-        setPitchValue = (float) MathHelper.atan2((this.getDeltaMovement().y), MathHelper.sqrt((this.getDeltaMovement().x) * (this.getDeltaMovement().x) + (this.getDeltaMovement().z) * (this.getDeltaMovement().z)));
 
+        for (int i = 2; i > 0; i--) {
+            deltaYRotList[i] = deltaYRotList[i-1];
+        }
+        if (this.getTarget() != null) {
+
+
+
+        } else {
+
+        }
+        deltaYRotList[0] = deltaYRot;
+        float sum = 0;
+        for (int i = 0; i < 3; i++) {
+            sum = sum + deltaYRotList[i];
+        }
+        averageDeltaYRot = sum / 3;
+        if (adjustYaw > averageDeltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, averageDeltaYRot);
+        } else if (adjustYaw < averageDeltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, averageDeltaYRot);
+        }
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
     }
