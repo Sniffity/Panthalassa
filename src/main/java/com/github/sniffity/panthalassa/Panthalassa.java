@@ -1,9 +1,11 @@
 package com.github.sniffity.panthalassa;
 
 import com.github.sniffity.panthalassa.server.entity.creature.*;
+import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.mojang.serialization.Codec;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -126,5 +128,10 @@ public final class Panthalassa {
 			event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(PanthalassaItemGroup.GROUP))
 					.setRegistryName(block.getRegistryName()));
 		});
+	}
+
+	@SubscribeEvent
+	public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
+		ItemPanthalassaSpawnEgg.initUnaddedEggs();
 	}
 }
