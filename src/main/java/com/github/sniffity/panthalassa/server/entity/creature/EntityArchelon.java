@@ -13,6 +13,9 @@ import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.passive.fish.CodEntity;
+import net.minecraft.entity.passive.fish.SalmonEntity;
+import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
@@ -112,7 +115,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.1, 30));
         this.goalSelector.addGoal(3, new FindWaterGoal(this));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof AbstractFishEntity)));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof CodEntity || entity instanceof SalmonEntity || entity instanceof TropicalFishEntity)));
 
     }
 

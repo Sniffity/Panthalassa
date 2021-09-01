@@ -42,7 +42,8 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public float adjustment = 0.25F;
     public float newRotationPitch;
     public float prevRotationPitch;
-
+    public float[] deltaYRotList = new float[10];
+    public float averageDeltaYRot;
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
     protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
@@ -69,13 +70,11 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        //If it's moving in the water, swimming, play swim.
         if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.swim", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.idle", true));
             return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
-
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -109,12 +108,22 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
 
-        if (adjustYaw > deltaYRot) {
+        for (int i = 9; i > 0; i--) {
+            deltaYRotList[i] = deltaYRotList[i-1];
+        }
+
+        deltaYRotList[0] = deltaYRot;
+        float sum = 0;
+        for (int i = 0; i < 10; i++) {
+            sum = sum + deltaYRotList[i];
+        }
+        averageDeltaYRot = sum / 10;
+        if (adjustYaw > averageDeltaYRot) {
             adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, deltaYRot);
-        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = Math.max(adjustYaw, averageDeltaYRot);
+        } else if (adjustYaw < averageDeltaYRot) {
             adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYRot);
+            adjustYaw = Math.min(adjustYaw, averageDeltaYRot);
         }
 
         int i = this.getAirSupplyLocal();
