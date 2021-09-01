@@ -28,16 +28,11 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
-    public static final int PASSIVE_ANGLE = 1;
-    public static final int AGGRO_ANGLE = 15;
     public float prevYRot;
     public float deltaYRot;
-    public float prevXRot;
-    public float deltaXRot;
     public float adjustYaw;
-    public float adjustPitch;
-    public float adjustment = 0.020F;
-    public static final int BLOCKED_DISTANCE = 6;
+    public float adjustment = 0.35F;
+    public static final int BLOCKED_DISTANCE = 3;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -80,11 +75,10 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 */
 
     @Override
-    public void positionRider(Entity passenger) {
-        if (this.hasPassenger(passenger)) {
-            Vector3d vector3d = (new Vector3d((double)0, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
-            passenger.setPos(this.getX() + vector3d.x, this.getY() + 5.0D, this.getZ() + vector3d.z);
-        }
+
+    public double getPassengersRidingOffset() {
+    return 0.2D;
+
     }
 
     @Nullable
@@ -105,6 +99,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public void tick() {
         super.tick();
         setBreachCooldown((getBreachCooldown())-1);
+
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
         if (adjustYaw > deltaYRot) {
@@ -114,15 +109,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
             adjustYaw = adjustYaw + adjustment;
             adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
-        deltaXRot = this.xRot - prevXRot;
-        prevXRot = this.xRot;
-        if (adjustPitch > deltaXRot) {
-            adjustPitch = adjustPitch - adjustment;
-            adjustPitch = Math.max(adjustPitch, deltaXRot);
-        } else if (adjustPitch < deltaXRot) {
-            adjustPitch = adjustPitch + adjustment;
-            adjustPitch = Math.min(adjustPitch, deltaXRot);
-        }
+
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
     }
