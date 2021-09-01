@@ -31,13 +31,11 @@ import javax.annotation.Nullable;
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
 
-    public static final int BLOCKED_DISTANCE = 5;
+    public static final int BLOCKED_DISTANCE = 3;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public float[] deltaYRotList = new float[10];
-    public float averageDeltaYRot;
-    float adjustment = 0.12F;
+    public float adjustment = 0.25F;
 
 
 
@@ -77,24 +75,15 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
 
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
-
-        for (int i = 9; i > 0; i--) {
-            deltaYRotList[i] = deltaYRotList[i-1];
-        }
-
-        deltaYRotList[0] = deltaYRot;
-        float sum = 0;
-        for (int i = 0; i < 10; i++) {
-            sum = sum + deltaYRotList[i];
-        }
-        averageDeltaYRot = sum / 10;
-        if (adjustYaw > averageDeltaYRot) {
+        if (adjustYaw > deltaYRot) {
             adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, averageDeltaYRot);
-        } else if (adjustYaw < averageDeltaYRot) {
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
             adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, averageDeltaYRot);
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
+
+
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
     }
@@ -121,18 +110,10 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         return this.factory;
     }
 
-    /*
+
     @Override
     public double getPassengersRidingOffset() {
-        return 5.0D;
-    }
-*/
-    @Override
-    public void positionRider(Entity passenger) {
-        if (this.hasPassenger(passenger)) {
-            Vector3d vector3d = (new Vector3d((double)0, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
-            passenger.setPos(this.getX() + vector3d.x, this.getY() + 5.0D, this.getZ() + vector3d.z);
-        }
+        return 0.2D;
     }
 
     @Nullable
