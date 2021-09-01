@@ -64,7 +64,7 @@ public class PanthalassaSwimmingHelper extends MovementController {
                 } else if ((this.entityPanthalassa.getTarget() != null)) {
                     this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 10.0F);
                 } else {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 1.0F);
+                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 3.0F);
                 }
                 this.entityPanthalassa.yBodyRot = this.entityPanthalassa.yRot;
                 this.entityPanthalassa.yHeadRot = this.entityPanthalassa.yRot;

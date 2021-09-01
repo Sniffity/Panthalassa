@@ -91,6 +91,8 @@ minecraft {
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             // Recommended logging level for the console
             // You can set various levels here.
@@ -138,7 +140,7 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.61'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.2'
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -204,7 +206,7 @@ repositories {
 }
 dependencies {
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.16.5:3.0.43')
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.1:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.1")
     annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 }

@@ -6,10 +6,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
 import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraftforge.common.util.Constants;
 
 /**
  * Panthalassa Mod - Class: BlockPortalFrame <br></br?>
@@ -17,7 +22,7 @@ import net.minecraft.block.AbstractBlock.Properties;
  * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
  *
  * Acknowledgements: The following class was developed after studying how Atum 2, the Undergarden,
- * UltraAmplifiedDiemsnion and The Twilight Forest mods implement their own respective teleportation systems.
+ * UltraAmplifiedDimension and The Twilight Forest mods implement their own respective teleportation systems.
  */
 
 public class BlockPortalFrame extends Block {
