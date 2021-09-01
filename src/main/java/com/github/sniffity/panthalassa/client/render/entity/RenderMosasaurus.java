@@ -24,6 +24,6 @@ public class RenderMosasaurus extends GeoEntityRenderer<EntityMosasaurus> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(2.0F, 2.0F, 2.0F);
+        stackIn.scale(1.0F, 1.0F, 1.0F);
     }
 }

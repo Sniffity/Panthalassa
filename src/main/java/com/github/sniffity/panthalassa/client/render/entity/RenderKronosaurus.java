@@ -23,9 +23,9 @@ public class RenderKronosaurus extends GeoEntityRenderer<EntityKronosaurus> {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
         if (animatable.getIsLeader()) {
-            stackIn.scale(2.5F, 2.5F, 2.5F);
+            stackIn.scale(1.2F, 1.2F, 1.2F);
         } else {
-            stackIn.scale(2.0F, 2.0F, 2.0F);
+            stackIn.scale(1.0F, 1.0F, 1.0F);
 
         }
     }

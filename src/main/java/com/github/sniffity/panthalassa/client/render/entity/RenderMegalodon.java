@@ -28,6 +28,6 @@ public class RenderMegalodon extends GeoEntityRenderer<EntityMegalodon> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(2.5F, 2.5F, 2.5F);
+        stackIn.scale(1.0F, 1.0F, 1.0F);
     }
 }
