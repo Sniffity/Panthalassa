@@ -9,6 +9,9 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.passive.fish.CodEntity;
+import net.minecraft.entity.passive.fish.SalmonEntity;
+import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -29,10 +32,14 @@ import javax.annotation.Nullable;
 
 public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
 
-    public static final int BLOCKED_DISTANCE = 6;
+    public static final int BLOCKED_DISTANCE = 2;
     public static final float SCHOOL_SPEED = 1.0F;
     public static final float SCHOOL_AVOID_RADIUS = 10.0F;
     public static int SCHOOL_MAX_SIZE = 4;
+    public float prevYRot;
+    public float deltaYRot;
+    public float adjustYaw;
+    public float adjustment = 0.10F;
 
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityCoelacanth.class, DataSerializers.INT);
     protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityCoelacanth.class, DataSerializers.BOOLEAN);
@@ -123,6 +130,19 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         super.tick();
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
+
+
+        deltaYRot = this.yRot - prevYRot;
+        prevYRot = this.yRot;
+        if (adjustYaw > deltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
+        }
+
+
     }
 
     protected void handleAirSupply(int p_209207_1_) {
@@ -156,7 +176,8 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof AbstractFishEntity)));
+        this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3, false));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof CodEntity || entity instanceof SalmonEntity || entity instanceof TropicalFishEntity)));
     }
 
     public void setAirSupplyLocal(int airSupply) {
