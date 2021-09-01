@@ -10,6 +10,11 @@
     "item.panthalassa.ag2_vehicle": "Abyss Glider II Submersible Vehicle",
     "item.panthalassa.mrsv_vehicle": "Manta Ray Submersible Vehicle",
 
+    "item.panthalassa.kronosaurus_spawn_egg": "Kronosaurus Spawn Egg",
+    "item.panthalassa.megalodon_spawn_egg": "Megalodon Spawn Egg",
+    "item.panthalassa.archelon_spawn_egg": "Archelon Spawn Egg",
+    "item.panthalassa.mosasaurus_spawn_egg": "Mosasaurus Spawn Egg",
+    "item.panthalassa.coelacanth_spawn_egg": "Coelacanth Spawn Egg",
 
     "block.panthalassa.panthalassa_soil": "Panthalassa Soil",
     "block.panthalassa.panthalassa_coarse_soil": "Panthalassa Coarse Soil",
@@ -39,8 +44,6 @@
 
     "entity.panthalassa.manta_ray_submersible_vehicle": "Manta Ray Submersible Vehicle",
     "entity.panthalassa.abyss_glider_2_submersible_vehicle": "Abyss Glider II Submersible Vehicle",
-
-
 
     "entity.panthalassa.kronosaurus": "Kronosaurus",
     "entity.panthalassa.megalodon": "Megalodon",

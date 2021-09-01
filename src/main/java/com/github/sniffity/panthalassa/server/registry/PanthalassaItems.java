@@ -2,9 +2,12 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
+import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.item.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.ItemMRSV;
+import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
 import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,4 +38,42 @@ public class PanthalassaItems {
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",
 			() -> new ItemMRSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> KRONOSAURUS_SPAWN_EGG = ITEMS.register("kronosaurus_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.KRONOSAURUS.get(),
+							0x232E75,
+							0xC0C3DA,
+					(new Item.Properties().tab(PanthalassaItemGroup.GROUP))));
+
+	public static final RegistryObject<Item> MEGALODON_SPAWN_EGG = ITEMS.register("megalodon_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.MEGALODON.get(),
+					0xB3B4B9,
+					0xD1D4E7,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> ARCHELON_SPAWN_EGG = ITEMS.register("archelon_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.ARCHELON.get(),
+					0x462C10,
+					0xD39049,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> MOSASAURUS_SPAWN_EGG = ITEMS.register("mosasaurus_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.MOSASAURUS.get(),
+					0x54C07C,
+					0xCDE8D7,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+
+
+	public static final RegistryObject<Item> COELACANTH_SPAWN_EGG = ITEMS.register("coelacanth_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.COELACANTH.get(),
+					0x075B25,
+					0x11371F,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 }
