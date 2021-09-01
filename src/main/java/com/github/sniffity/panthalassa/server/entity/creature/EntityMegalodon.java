@@ -37,7 +37,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public float adjustYaw;
     public float[] deltaYRotList = new float[3];
     public float averageDeltaYRot;
-    float adjustment = 0.10F;
+    float adjustment = 0.05F;
 
 
 
