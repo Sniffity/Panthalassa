@@ -81,6 +81,7 @@ public final class Panthalassa {
 			PanthalassaStructures.setupStructures();
 			PanthalassaConfiguredStructures.registerConfiguredStructures();
 			PanthalassaEntityTypes.spawnPlacements();
+			PanthalassaDimension.registerDimensionAccessories();
 		});
 	}
 
