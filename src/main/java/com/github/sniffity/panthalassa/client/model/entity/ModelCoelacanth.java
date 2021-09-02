@@ -1,9 +1,7 @@
 package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityCoelacanth;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;

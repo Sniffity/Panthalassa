@@ -2,10 +2,12 @@ package com.github.sniffity.panthalassa.client.render.entity;
 
 import com.github.sniffity.panthalassa.client.model.entity.ModelMegalodon;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.util.math.BlockPos;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 
@@ -29,5 +31,10 @@ public class RenderMegalodon extends GeoEntityRenderer<EntityMegalodon> {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
         stackIn.scale(1.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    protected int getBlockLightLevel(EntityMegalodon entityIn, BlockPos partialTicks) {
+        return 15;
     }
 }

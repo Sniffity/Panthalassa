@@ -2,7 +2,6 @@ package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityDunkleosteus;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -34,12 +33,11 @@ public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
     public void setLivingAnimations(EntityDunkleosteus entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         if (entity.isInWater() || !entity.isOnGround()) {
-            (this.getAnimationProcessor().getBone("torso")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z)))));
+            (this.getAnimationProcessor().getBone("main")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z)))));
         }
         (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
         (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
         (this.getAnimationProcessor().getBone("upper_body_1")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*5.0F);
-
     }
 
     @Override
