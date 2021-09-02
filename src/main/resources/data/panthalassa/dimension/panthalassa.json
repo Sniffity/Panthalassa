@@ -1,10 +1,12 @@
 {
   "type": "panthalassa:panthalassa",
   "generator": {
-    "type": "panthalassa:chunk_generator",
+    "type": "minecraft:noise",
+    "seed": 0,
     "settings": "panthalassa:panthalassa_noise_settings",
     "biome_source": {
-      "type": "panthalassa:biome_provider",
+      "seed": 0,
+      "type": "minecraft:multi_noise",
       "biomes": [
         {
           "biome": "panthalassa:primeval_expanse",
