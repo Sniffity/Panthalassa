@@ -15,6 +15,7 @@
     "item.panthalassa.archelon_spawn_egg": "Archelon Spawn Egg",
     "item.panthalassa.mosasaurus_spawn_egg": "Mosasaurus Spawn Egg",
     "item.panthalassa.coelacanth_spawn_egg": "Coelacanth Spawn Egg",
+    "item.panthalassa.dunkleosteus_spawn_egg": "Dunkleosteus Spawn Egg",
 
     "block.panthalassa.panthalassa_soil": "Panthalassa Soil",
     "block.panthalassa.panthalassa_coarse_soil": "Panthalassa Coarse Soil",
@@ -49,5 +50,7 @@
     "entity.panthalassa.megalodon": "Megalodon",
     "entity.panthalassa.archelon": "Archelon",
     "entity.panthalassa.mosasaurus": "Mosasaurus",
-    "entity.panthalassa.coelacanth": "Coelacanth"
+    "entity.panthalassa.coelacanth": "Coelacanth",
+    "entity.panthalassa.dunkleosteus": "Dunkleosteus"
+
 }

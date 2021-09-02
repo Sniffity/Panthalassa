@@ -67,13 +67,19 @@ public class PanthalassaItems {
 					0xCDE8D7,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
-
-
 	public static final RegistryObject<Item> COELACANTH_SPAWN_EGG = ITEMS.register("coelacanth_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
 					() -> PanthalassaEntityTypes.COELACANTH.get(),
 					0x075B25,
 					0x11371F,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> DUNKLEOSTEUS_SPAWN_EGG = ITEMS.register("dunkleosteus_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.DUNKLEOSTEUS.get(),
+					0x060F46,
+					0x1D2763,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 
 }

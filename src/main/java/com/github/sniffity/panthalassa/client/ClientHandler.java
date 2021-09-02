@@ -59,11 +59,13 @@ public class ClientHandler {
                 RenderMosasaurus::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.COELACANTH.get(),
                 RenderCoelacanth::new);
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.DUNKLEOSTEUS.get(),
+                RenderDunkleosteus::new);
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
-                manager -> new RenderMRSV(manager));
+                RenderMRSV::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.AGII.get(),
-                manager -> new RenderAGII(manager));
+                RenderAGII::new);
     }
 
     public static final KeyBinding KEY_VEHICLE_LIGHTS = new KeyBinding("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
