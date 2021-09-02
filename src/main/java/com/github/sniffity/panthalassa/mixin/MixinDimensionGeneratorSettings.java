@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(DimensionGeneratorSettings.class)
 public class MixinDimensionGeneratorSettings {
 
-    @Inject(method = "<init>(JZZLnet/minecraft/util/registry/SimpleRegistry;)V", at = @At(value = "RETURN"))
+    @Inject(method = "<init>(JZZLnet/minecraft/util/registry/SimpleRegistry;Ljava/util/Optional;)V", at = @At(value = "RETURN"))
     private void getSeedFromConstructor(long seed, boolean generateFeatures, boolean bonusChest, SimpleRegistry<Dimension> registry, CallbackInfo ci) {
         SeedBearer.putInSeed(seed);
     }
