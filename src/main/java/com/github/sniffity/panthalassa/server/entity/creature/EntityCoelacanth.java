@@ -19,6 +19,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -73,32 +75,6 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         }
         return PlayState.STOP;
 
-
-        /*
-        //If it's out of the water, play bounce
-        if ((this.isOnGround()) && !(this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.bounce", true));
-            return PlayState.CONTINUE;
-        }
-
-        //If it's attacking, play attack
-        if (this.isAggressive() && !(this.dead)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.attack", true));
-            return PlayState.CONTINUE;
-        }
-
-        //If it's dying, play death
-        if ((this.dead || this.getHealth() < 0.01)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.death", false));
-            return PlayState.CONTINUE;
-        }
-
-        //IF it's just in water, play float
-        if (this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.float", true));
-            return PlayState.CONTINUE;
-        }*/
-
     }
 
     @Override
@@ -111,12 +87,10 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         return this.factory;
     }
 
-/*
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_HOGLIN_DEATH;
+        return this.isInWaterOrBubble() ? SoundEvents.GUARDIAN_DEATH : SoundEvents.GUARDIAN_DEATH_LAND;
     }
-*/
 
     @Nullable
     @Override

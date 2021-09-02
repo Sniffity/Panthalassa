@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "panthalassa.refmap.json",
   "mixins": [
-    "MixinDimensionGeneratorSettings"
+    "DimensionGeneratorSettingsMixin"
   ],
   "minVersion": "0.8"
 }
