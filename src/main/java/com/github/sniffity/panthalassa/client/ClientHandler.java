@@ -63,6 +63,8 @@ public class ClientHandler {
                 RenderDunkleosteus::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.LEEDSICHTHYS.get(),
                 RenderLeedsichthys::new);
+        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.THALASSOMEDON.get(),
+                RenderThalassomedon::new);
 
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);

@@ -66,7 +66,6 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        //If it's moving in the water, swimming, play swim.
         if ((this.isDeadOrDying())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coelacanth.test", true));
             return PlayState.CONTINUE;
@@ -136,7 +135,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
                 .add(Attributes.ATTACK_KNOCKBACK, 2)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 2)
                 .add(Attributes.FOLLOW_RANGE, 20)
-                .add(Attributes.MAX_HEALTH, 30)
+                .add(Attributes.MAX_HEALTH, 200)
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
