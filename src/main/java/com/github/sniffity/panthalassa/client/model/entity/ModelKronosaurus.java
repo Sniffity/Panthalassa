@@ -52,4 +52,3 @@ public class ModelKronosaurus extends AnimatedGeoModel<EntityKronosaurus>
         return super.getBone(boneName);
     }
 }
-

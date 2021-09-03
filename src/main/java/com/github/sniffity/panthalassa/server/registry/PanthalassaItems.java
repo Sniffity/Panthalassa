@@ -81,5 +81,12 @@ public class PanthalassaItems {
 					0x1D2763,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> LEEDSICHTHYS_SPAWN_EGG = ITEMS.register("leedsichthys_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					() -> PanthalassaEntityTypes.LEEDSICHTHYS.get(),
+					0x5A451E,
+					0x3E3523,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 
 }
