@@ -55,6 +55,12 @@
         "weight": 2,
         "minCount": 1,
         "maxCount": 1
+      },
+      {
+        "type": "panthalassa:leedsichthys",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
       }
     ],
     "ambient": [],
