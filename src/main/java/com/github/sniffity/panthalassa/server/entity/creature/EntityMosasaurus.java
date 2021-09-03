@@ -67,13 +67,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         return this.factory;
     }
 
-/*
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_HOGLIN_DEATH;
-    }
-*/
-
     @Override
 
     public double getPassengersRidingOffset() {

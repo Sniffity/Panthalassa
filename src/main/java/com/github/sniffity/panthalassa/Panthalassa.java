@@ -55,8 +55,10 @@ public final class Panthalassa {
 		PanthalassaBiomes.BIOMES.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
+		PanthalassaSounds.SOUND_EVENTS.register(modBus);
 
-		PanthalassaPOI.POI.register(modBus);
+
+				PanthalassaPOI.POI.register(modBus);
 
 		forgeBus.register(PanthalassaDimension.PANTHALASSA);
 		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);

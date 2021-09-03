@@ -21,6 +21,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -39,7 +42,6 @@ import javax.annotation.Nullable;
 public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IMob {
     public static final int BLOCKED_DISTANCE = 2;
 
-
     private AnimationFactory factory = new AnimationFactory(this);
 
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
@@ -48,7 +50,6 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
         this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
     }
-
 
     @Override
     protected void defineSynchedData() {
@@ -65,8 +66,6 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
 
     }
 
-
-
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
@@ -77,12 +76,11 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         return this.factory;
     }
 
-/*
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_HOGLIN_DEATH;
+
+    @Nullable
+    protected SoundEvent getAmbientSound() {
+        return !this.isInWater() && this.onGround ? SoundEvents.TURTLE_AMBIENT_LAND : super.getAmbientSound();
     }
-*/
 
     @Nullable
     @Override
@@ -108,7 +106,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(0, new PanicGoal(this, 0.8D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.1, 30));

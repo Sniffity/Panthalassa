@@ -1,28 +1,22 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
-import net.minecraft.block.Blocks;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.*;
-import net.minecraftforge.fml.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -32,7 +26,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.util.*;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
@@ -41,12 +34,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public float adjustYaw;
     public float adjustment = 0.25F;
 
-
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
     protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
-
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -56,7 +47,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
 
     }
-
 
     @Override
     protected void defineSynchedData() {
@@ -84,19 +74,15 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         return this.factory;
     }
 
-/*
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_HOGLIN_DEATH;
+    protected SoundEvent getAmbientSound() {
+        return PanthalassaSounds.KRONOSAURUS_AMBIENT.get();
     }
-*/
 
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
-
 
     @Override
     public void tick() {
@@ -116,8 +102,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.handleAirSupply(i);
 
     }
-
-
 
     protected void handleAirSupply(int p_209207_1_) {
         if (this.isAlive() && !this.isInWaterOrBubble()) {
@@ -142,7 +126,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
                 .add(Attributes.MAX_HEALTH, 100)
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
-
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));

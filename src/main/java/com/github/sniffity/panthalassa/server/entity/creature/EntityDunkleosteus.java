@@ -15,6 +15,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -75,13 +77,6 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     public AnimationFactory getFactory() {
         return this.factory;
     }
-
-/*
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_HOGLIN_DEATH;
-    }
-*/
 
     @Nullable
     @Override

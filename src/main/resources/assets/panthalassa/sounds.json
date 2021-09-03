@@ -1,0 +1,20 @@
+{
+  "entity.creature.coelacanth.coelacanth_ambient": {
+    "sounds": [
+      "panthalassa:entity/creature/coelacanth/coelacanth_ambient"
+    ],
+    "subtitle": "subtitles.panthalassa.entity.creature.coelacanth.coelacanth_ambient"
+  },
+  "entity.creature.kronosaurus.kronosaurus_ambient": {
+    "sounds": [
+      "panthalassa:entity/creature/kronosaurus/kronosaurus_ambient"
+    ],
+    "subtitle": "subtitles.panthalassa.entity.creature.kronosaurus.kronosaurus_ambient"
+  },
+  "entity.creature.megalodon.megalodon_ambient": {
+    "sounds": [
+      "panthalassa:entity/creature/megalodon/megalodon_ambient"
+    ],
+    "subtitle": "subtitles.panthalassa.entity.creature.megalodon.megalodon_ambient"
+  }
+}

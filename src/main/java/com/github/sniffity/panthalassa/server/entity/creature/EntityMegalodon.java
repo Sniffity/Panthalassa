@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -14,6 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -58,6 +60,10 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return PanthalassaSounds.MEGALODON_AMBIENT.get();
     }
 
     @Override

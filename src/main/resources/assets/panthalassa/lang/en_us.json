@@ -51,6 +51,10 @@
     "entity.panthalassa.archelon": "Archelon",
     "entity.panthalassa.mosasaurus": "Mosasaurus",
     "entity.panthalassa.coelacanth": "Coelacanth",
-    "entity.panthalassa.dunkleosteus": "Dunkleosteus"
+    "entity.panthalassa.dunkleosteus": "Dunkleosteus",
+
+    "subtitles.panthalassa.entity.creature.coelacanth.coelacanth_ambient": "Coelacanth splashes.",
+    "subtitles.panthalassa.entity.creature.kronosaurus.kronosaurus_ambient": "Kronosaurus growls.",
+    "subtitles.panthalassa.entity.creature.megalodon.megalodon_ambient": "Megalodon splashes."
 
 }
