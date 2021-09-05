@@ -30,7 +30,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-public class EntityThalassomedon extends PanthalassaEntity implements IAnimatable, IMob {
+public class EntityBasilosaurus extends PanthalassaEntity implements IAnimatable, IMob {
 
     public static final int BLOCKED_DISTANCE = 2;
     public float prevYRot;
@@ -43,7 +43,7 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
     private AnimationFactory factory = new AnimationFactory(this);
 
 
-    public EntityThalassomedon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
+    public EntityBasilosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this);
@@ -60,12 +60,11 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if ((this.isDeadOrDying())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coelacanth.test", true));
+        if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.basilosaurus.test", true));
             return PlayState.CONTINUE;
         }
-        return PlayState.STOP;
-
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -76,10 +75,6 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
-    }
-
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.COELACANTH_AMBIENT.get();
     }
 
     @Nullable
@@ -123,7 +118,7 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
 
     }
 
-    public static AttributeModifierMap.MutableAttribute thalassomedonAttributes() {
+    public static AttributeModifierMap.MutableAttribute basilosaurusAttributes() {
         return MobEntity.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 35)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)

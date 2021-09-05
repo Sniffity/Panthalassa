@@ -4,19 +4,11 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.spawner.WorldEntitySpawner;
-import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -61,10 +53,10 @@ public class PanthalassaEntityTypes {
                     .sized(1.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "leedsichthys").toString()));
 
-    public static final RegistryObject<EntityType<EntityThalassomedon>> THALASSOMEDON = ENTITY_TYPES.register ("thalassomedon",()->
-            EntityType.Builder.of(EntityThalassomedon::new,EntityClassification.CREATURE)
+    public static final RegistryObject<EntityType<EntityBasilosaurus>> BASILOSAURUS = ENTITY_TYPES.register ("basilosaurus",()->
+            EntityType.Builder.of(EntityBasilosaurus::new,EntityClassification.CREATURE)
                     .sized(1.0F, 1.0F)
-                    .build(new ResourceLocation(Panthalassa.MODID, "thalassomedon").toString()));
+                    .build(new ResourceLocation(Panthalassa.MODID, "basilosaurus").toString()));
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
