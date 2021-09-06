@@ -5,11 +5,11 @@ issueTrackerURL="https://github.com/Sniffity/Panthalassa/issues"
 
 [[mods]]
 modId="panthalassa"
-version="0.1.0" 
+version="0.1.1"
 displayName="Panthalassa Mod"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/panthalassa"
 #logoFile="examplemod.png" #optional
-authors="Sniffity" #optional
+authors="Sniffity"
 description="Panthalassa is a mod for Minecraft 1.16 that adds prehistoric aquatic life to your world!"
 
 [[dependencies.panthalassa]] #optional
