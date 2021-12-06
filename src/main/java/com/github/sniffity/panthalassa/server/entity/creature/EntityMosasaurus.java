@@ -56,6 +56,10 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.breach", true));
             return PlayState.CONTINUE;
         }
+        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.attack", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
     }
 
