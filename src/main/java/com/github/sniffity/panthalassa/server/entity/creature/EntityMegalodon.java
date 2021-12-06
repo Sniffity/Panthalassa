@@ -59,6 +59,10 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
             return PlayState.CONTINUE;
         }
+        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.attack", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
     }
 
