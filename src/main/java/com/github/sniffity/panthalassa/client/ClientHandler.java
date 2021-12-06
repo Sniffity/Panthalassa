@@ -63,9 +63,7 @@ public class ClientHandler {
                 RenderDunkleosteus::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.LEEDSICHTHYS.get(),
                 RenderLeedsichthys::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.BASILOSAURUS.get(),
-                RenderBasilosaurus::new);
-
+        
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.AGII.get(),
