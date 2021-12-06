@@ -1,6 +1,6 @@
 {
   "name": "Manta Ray Submersible Vehicle",
-  "icon": "panthalassa:book/gen1.png",
+  "icon": "panthalassa:textures/item/mrsv_vehicle.png",
   "category": "panthalassa:vehicles",
   "sortnum": 0,
   "pages": [
