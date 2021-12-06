@@ -66,8 +66,8 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if ((this.isDeadOrDying())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.hold", true));
+        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.attack", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
