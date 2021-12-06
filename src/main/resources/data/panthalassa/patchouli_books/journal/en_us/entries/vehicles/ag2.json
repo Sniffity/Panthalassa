@@ -1,0 +1,21 @@
+{
+  "name": "Abyss Glider II Vehicle",
+  "icon": "panthalassa:book/gen1.png",
+  "category": "panthalassa:vehicles",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Abyss Glider II was one of the first vehicles to truly face the prehistoric inhabitants of the depths... Sturdy in design, this vehicle can withstand a heavy beating. The newest modification added to Abyss Gliders have attached retractable claws to them, specifically designed to transport live aquatic specimens, at a cost of speed."
+    },
+    {
+      "type": "patchouli:image",
+      "images":
+      [
+        "panthalassa:book/ag2.png"
+      ],
+      "border": true,
+      "text": "Is the risk worth taking?"
+    }
+  ]
+}
