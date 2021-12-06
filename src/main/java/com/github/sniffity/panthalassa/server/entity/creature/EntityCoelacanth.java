@@ -88,10 +88,6 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         return this.factory;
     }
 
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.GENERAL_AMBIENT.get();
-    }
-
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {

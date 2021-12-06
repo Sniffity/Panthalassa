@@ -11,7 +11,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class PanthalassaSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Panthalassa.MODID);
 
-    public static final RegistryObject<SoundEvent> GENERAL_AMBIENT = create("entity.creature.general.general_ambient");
     public static final RegistryObject<SoundEvent> KRONOSAURUS_AMBIENT = create("entity.creature.kronosaurus.kronosaurus_ambient");
 
     private static RegistryObject<SoundEvent> create(String name) {

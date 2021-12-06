@@ -62,10 +62,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         return PlayState.STOP;
     }
 
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.GENERAL_AMBIENT.get();
-    }
-
     @Override
     protected void defineSynchedData() {
         this.entityData.define(IS_BREACHING, Boolean.FALSE);

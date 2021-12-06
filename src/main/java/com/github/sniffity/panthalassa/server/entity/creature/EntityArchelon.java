@@ -76,12 +76,6 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
         return this.factory;
     }
 
-
-    @Nullable
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.GENERAL_AMBIENT.get();
-    }
-
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {

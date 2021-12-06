@@ -121,10 +121,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         }
     }
 
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.GENERAL_AMBIENT.get();
-    }
-
     public static AttributeModifierMap.MutableAttribute mosasaurusAttributes() {
         return MobEntity.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 30)

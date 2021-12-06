@@ -111,10 +111,6 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     }
 
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.GENERAL_AMBIENT.get();
-    }
-
     protected void handleAirSupply(int p_209207_1_) {
         if (this.isAlive() && !this.isInWaterOrBubble()) {
             this.setAirSupplyLocal(p_209207_1_ - 1);

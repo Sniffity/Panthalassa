@@ -61,10 +61,6 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
         super.defineSynchedData();
     }
 
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.GENERAL_AMBIENT.get();
-    }
-
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if ((this.getDeltaMovement().length()>20 && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dunkleosteus.test", true));
