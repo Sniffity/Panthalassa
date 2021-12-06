@@ -57,9 +57,8 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        //If it's out of the water, play bounce
-        if ((this.isOnGround()) && !(this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.test", true));
+        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.attack", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;

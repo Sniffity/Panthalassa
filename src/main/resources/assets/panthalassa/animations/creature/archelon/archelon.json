@@ -3,6 +3,19 @@
 	"animations": {
 		"animation.archelon.test": {
 			"loop": true
+		},
+		"animation.archelon.attack": {
+			"loop": true,
+			"animation_length": 0.56,
+			"bones": {
+				"bottomjaw": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.36": [17.5, 0, 0],
+						"0.56": [0, 0, 0]
+					}
+				}
+			}
 		}
 	}
 }
