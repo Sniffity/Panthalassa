@@ -63,7 +63,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if ((this.getDeltaMovement().length()>20 && this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dunkleosteus.test", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dunkleosteus.attack", true));
             return PlayState.CONTINUE;
         }
         return PlayState.CONTINUE;
