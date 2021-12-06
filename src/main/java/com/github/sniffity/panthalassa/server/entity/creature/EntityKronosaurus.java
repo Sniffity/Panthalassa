@@ -57,6 +57,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.attack", true));
+            return PlayState.CONTINUE;
+        }
         if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.idle", true));
             return PlayState.CONTINUE;

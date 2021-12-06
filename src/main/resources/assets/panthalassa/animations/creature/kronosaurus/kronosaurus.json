@@ -278,6 +278,25 @@
 					}
 				}
 			}
+		},
+		"animation.kronosaurus.attack": {
+			"animation_length": 1.04,
+			"bones": {
+				"neck_main": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.24": [-17.5, 0, 0],
+						"0.52": [0, 0, 0]
+					}
+				},
+				"bottomjaw1": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.24": [20, 0, 0],
+						"0.52": [0, 0, 0]
+					}
+				}
+			}
 		}
 	}
 }
