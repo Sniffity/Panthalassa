@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "x  ",
+    "   ",
+    "  x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:stone"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:panthalassa_loose_stone",
+    "count": 2
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "x  ",
+    "   ",
+    "  x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "panthalassa:panthalassa_loose_soil"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:panthalassa_soil",
+    "count": 2
+  }
+}

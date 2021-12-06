@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xy ",
+    "   ",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:sand"
+    },
+    "y":
+    {
+      "item": "minecraft:kelp"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:panthalassa_overgrown_sand",
+    "count": 2
+  }
+}

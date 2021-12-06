@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "x  ",
+    "   ",
+    "  x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "panthalassa:panthalassa_rock"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:ancient_rock",
+    "count": 2
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "x  ",
+    "   ",
+    "  x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:sand"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:panthalassa_sand",
+    "count": 2
+  }
+}
