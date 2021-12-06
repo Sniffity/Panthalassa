@@ -1,6 +1,6 @@
 {
   "name": "Panthalassa Journal",
-  "landing_text": "Multi pertransibunt et augebitur scientia...",
+  "landing_text": "Multi pertransibunt et augebitur scientia...$(br2)Fortune favours the bold. And it was boldness that led to the discovery of Panthalassa. An ancient, primordial sea, locked away for millions of years. Are you prepared to venture within? ",
   "version": 1,
   "show_progress": false,
   "model": "patchouli:book_cyan",
