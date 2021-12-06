@@ -1,4 +1,6 @@
 {
+    "itemGroup.group_panthalassa": "Panthalassa ",
+
     "item.panthalassa.hpr_glass_sphere": "HPR Glass Sphere",
     "item.panthalassa.hpr_vehicle_panel": "HPR Vehicle Panel",
     "item.panthalassa.hpr_vehicle_seat": "HPR Vehicle Seat",
@@ -30,7 +32,7 @@
     "block.panthalassa.panthalassa_overgrown_sand": "Panthalassa Overgrown Sand",
 
     "block.panthalassa.panthalassa_rock": "Panthalassa Rock",
-    "block.panthalassa.panthalassa_ancient_rock": "Panthalassa Ancient Rock",
+    "block.panthalassa.ancient_rock": "Panthalassa Ancient Rock",
 
     "block.panthalassa.primordial_stalk": "Primordial Stalk",
 
@@ -40,6 +42,7 @@
     "block.panthalassa.light_water": "Light Water",
     "block.panthalassa.light_air": "Light Air",
 
+    "block.panthalassa.panthalassa_water": "Panthalassa Water",
 
     "block.panthalassa.panthalassa_portal_frame": "Panthalassa Portal Frame",
     "block.panthalassa.panthalassa_portal": "Panthalassa Portal",

@@ -1,6 +1,6 @@
 {
   "name": "Panthalasa Dimension",
-  "description": "Introduction...",
-  "icon": "panthalassa:textures/block/panthalassa_portal.png",
+  "description": "Panthalassa is divided into three distinct biomes...",
+  "icon": "panthalassa:textures/block/primordial_stalk.png",
   "sortnum": 2
 }
