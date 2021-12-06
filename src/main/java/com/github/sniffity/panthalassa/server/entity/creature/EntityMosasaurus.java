@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -16,6 +17,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -117,6 +119,10 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         } else {
             this.setAirSupplyLocal(150);
         }
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return PanthalassaSounds.GENERAL_AMBIENT.get();
     }
 
     public static AttributeModifierMap.MutableAttribute mosasaurusAttributes() {

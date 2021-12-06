@@ -89,7 +89,7 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     }
 
     protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.COELACANTH_AMBIENT.get();
+        return PanthalassaSounds.GENERAL_AMBIENT.get();
     }
 
     @Nullable

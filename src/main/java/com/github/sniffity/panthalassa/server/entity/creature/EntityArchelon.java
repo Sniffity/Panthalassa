@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEsca
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -78,7 +79,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
 
     @Nullable
     protected SoundEvent getAmbientSound() {
-        return !this.isInWater() && this.onGround ? SoundEvents.TURTLE_AMBIENT_LAND : super.getAmbientSound();
+        return PanthalassaSounds.GENERAL_AMBIENT.get();
     }
 
     @Nullable

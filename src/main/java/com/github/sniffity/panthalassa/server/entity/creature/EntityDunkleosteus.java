@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -58,6 +59,10 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
         this.entityData.define(AIR_SUPPLY, 150);
 
         super.defineSynchedData();
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return PanthalassaSounds.GENERAL_AMBIENT.get();
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

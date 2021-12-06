@@ -63,7 +63,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     }
 
     protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.MEGALODON_AMBIENT.get();
+        return PanthalassaSounds.GENERAL_AMBIENT.get();
     }
 
     @Override

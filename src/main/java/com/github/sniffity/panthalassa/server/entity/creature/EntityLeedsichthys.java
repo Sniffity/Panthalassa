@@ -84,10 +84,6 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         return this.factory;
     }
 
-    protected SoundEvent getAmbientSound() {
-        return PanthalassaSounds.COELACANTH_AMBIENT.get();
-    }
-
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
@@ -113,6 +109,10 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         }
 
 
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return PanthalassaSounds.GENERAL_AMBIENT.get();
     }
 
     protected void handleAirSupply(int p_209207_1_) {
