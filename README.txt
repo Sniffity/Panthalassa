@@ -28,6 +28,7 @@ This mod was possible thanks to the help of many amazing individuals, to whom I 
 -BobMowzie
 -Innovative Pachyderm
 -TelepathicGrunt
+-Vitiate
 
 Additionally, many thanks to the amazing team of bug testers:
 -Bobbywick
