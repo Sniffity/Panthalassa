@@ -33,6 +33,10 @@ public class PanthalassaMeleeAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (!this.attacker.isInWater()){
+            return false;
+        }
+
         long i = this.attacker.level.getGameTime();
         if (i - this.lastCanUseCheck < 20L) {
             return false;
