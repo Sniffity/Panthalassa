@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.item.BlockItem;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,6 +36,7 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
+    Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
@@ -130,5 +132,8 @@ public class ClientHandler {
     }
 
 
+    public void setThirdPersonCamera() {
+        mc.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+    }
 }
 

@@ -33,6 +33,3 @@ public class PacketVehicleLights {
 
     public static void encode(PacketVehicleLights packet, PacketBuffer buffer) {}
 }
-
-
-

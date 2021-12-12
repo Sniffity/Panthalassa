@@ -1,6 +1,9 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
+import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch;
+import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleLights;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import net.minecraft.block.BlockState;
@@ -10,6 +13,7 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -24,10 +28,13 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
+
 import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -73,7 +80,6 @@ public class PanthalassaVehicle extends Entity {
     public BlockPos prevPos;
     public BlockState blockLightWater = PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState();
     public BlockState blockLightAir = PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState();
-    Minecraft mc = Minecraft.getInstance();
     public RegistryKey<World> prevDimension;
 
 
@@ -170,7 +176,7 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public ActionResultType interact(PlayerEntity player, Hand hand) {
         if (!this.level.isClientSide && canAddPassenger(this)) {
-            mc.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+            PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with((Supplier<ServerPlayerEntity>) player), new PacketCameraSwitch());
             return player.startRiding(this) ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {
             return ActionResultType.SUCCESS;
