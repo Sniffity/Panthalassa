@@ -72,7 +72,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 assert vehicle2 != null;
                 vehicle2.restoreFrom(vehicle);
                 vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
-                vehicle2.setDeltaMovement(vehicle.getDeltaMovement());
+                vehicle2.setDeltaMovement(0,0,0);
                 targetWorld.addFromAnotherDimension(vehicle2);
                 vehicle2.setPortalCooldown();
 
@@ -114,7 +114,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                         assert passenger2 != null;
                         passenger2.restoreFrom(passenger);
                         passenger2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), passenger.yRot, passenger.xRot);
-                        passenger2.setDeltaMovement(passenger.getDeltaMovement());
+                        passenger2.setDeltaMovement(0,0,0);
                         targetWorld.addFromAnotherDimension(passenger2);
 
                         passenger.remove();
@@ -165,7 +165,7 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
                     entity2.restoreFrom(entity);
                     entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
-                    entity2.setDeltaMovement(entity.getDeltaMovement());
+                    entity2.setDeltaMovement(0,0,0);
                     entity2.setPortalCooldown();
                     targetWorld.addFromAnotherDimension(entity2);
 
