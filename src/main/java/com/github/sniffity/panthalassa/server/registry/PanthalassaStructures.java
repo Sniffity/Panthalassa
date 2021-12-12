@@ -26,8 +26,8 @@ public class PanthalassaStructures {
     public static void setupStructures() {
         setupMapSpacingAndLand(
                 PANTHALASSA_LABORATORY.get(),
-                new StructureSeparationSettings(60,
-                        40,
+                new StructureSeparationSettings(20,
+                        10,
                         42424242),
                 true);
 
