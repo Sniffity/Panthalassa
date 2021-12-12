@@ -44,7 +44,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     public float adjustYaw;
     public float adjustment = 0.10F;
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityCoelacanth.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityLeedsichthys.class, DataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 

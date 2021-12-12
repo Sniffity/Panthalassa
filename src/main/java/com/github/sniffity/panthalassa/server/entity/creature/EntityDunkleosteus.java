@@ -40,7 +40,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     public float adjustment = 0.25F;
 
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityDunkleosteus.class, DataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
