@@ -52,13 +52,13 @@
     "creature": [
       {
         "type": "panthalassa:megalodon",
-        "weight": 2,
+        "weight": 4,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "panthalassa:leedsichthys",
-        "weight": 10,
+        "weight": 8,
         "minCount": 1,
         "maxCount": 1
       }
