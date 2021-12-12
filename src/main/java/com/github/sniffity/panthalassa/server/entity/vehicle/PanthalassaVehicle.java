@@ -176,10 +176,9 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public ActionResultType interact(PlayerEntity player, Hand hand) {
         if (!this.level.isClientSide && canAddPassenger(this)) {
-            PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with((Supplier<ServerPlayerEntity>) player), new PacketCameraSwitch());
-            return player.startRiding(this) ? ActionResultType.CONSUME : ActionResultType.PASS;
+            return player.startRiding(this) ? ActionResultType.sidedSuccess(level.isClientSide) : ActionResultType.PASS;
         } else {
-            return ActionResultType.SUCCESS;
+            return ActionResultType.sidedSuccess(level.isClientSide);
         }
     }
 
