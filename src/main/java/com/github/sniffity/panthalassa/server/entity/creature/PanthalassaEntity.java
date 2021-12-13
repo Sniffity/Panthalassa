@@ -31,6 +31,7 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     public boolean isLandNavigator;
 
     protected static final DataParameter<Boolean> IS_GROUND_NAVIGATOR = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> ATTACKING_STATE = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.BOOLEAN);
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -41,6 +42,8 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(IS_GROUND_NAVIGATOR, Boolean.FALSE);
+        this.entityData.define(ATTACKING_STATE, Boolean.FALSE);
+
         super.defineSynchedData();
     }
 
@@ -157,5 +160,14 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     public boolean getGroundNavigator() {
         return this.entityData.get(IS_GROUND_NAVIGATOR);
     }
+
+    public void setAttackingState(boolean isAttacking) {
+        this.entityData.set(ATTACKING_STATE,isAttacking);
+    }
+
+    public boolean getAttackingState() {
+        return this.entityData.get(ATTACKING_STATE);
+    }
+
 }
 

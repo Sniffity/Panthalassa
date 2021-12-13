@@ -2,6 +2,8 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 
 import java.util.EnumSet;
+
+import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -78,7 +80,6 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     @Override
     public void start() {
         this.attacker.getNavigation().moveTo(this.path, this.speedTowardsTarget);
-
         this.attacker.setAggressive(true);
         this.delayCounter = 0;
 
@@ -93,6 +94,9 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         }
 
         this.attacker.setAggressive(false);
+        ((PanthalassaEntity) this.attacker).setAttackingState(false);
+        System.out.println("setAttacking to FALSE");
+
         this.attacker.getNavigation().stop();
     }
 
@@ -130,6 +134,10 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         if (distToEnemySqr <= d0 && this.ticksUntilNextAttack <= 0) {
             this.resetAttackCooldown();
             this.attacker.swing(Hand.MAIN_HAND);
+            System.out.println("setAttacking to TRUE");
+            ((PanthalassaEntity) this.attacker).setAttackingState(true);
+            System.out.println(((PanthalassaEntity) this.attacker).getAttackingState());
+
             this.attacker.doHurtTarget(enemy);
         }
 

@@ -69,7 +69,7 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+        if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coelacanth.attack", true));
             return PlayState.CONTINUE;
         }

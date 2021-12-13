@@ -15,8 +15,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -32,21 +30,16 @@ import javax.annotation.Nullable;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, IMob, IBreachable {
 
-
     public static final int BLOCKED_DISTANCE = 3;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
     public float adjustment = 0.25F;
 
-
-
-
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final DataParameter<Boolean> IS_BREACHING = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> BREACH_COOLDOWN = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.FLOAT);
     protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityMegalodon.class, DataSerializers.INT);
-
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, World worldIn) {
         super(type, worldIn);
@@ -55,11 +48,15 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        System.out.println("Animations being tested");
+        System.out.println((this.getAttackingState()));
+
         if (getIsBreaching()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
             return PlayState.CONTINUE;
         }
-        if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+
+        if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.attack", true));
             return PlayState.CONTINUE;
         }
@@ -116,7 +113,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
         return this.factory;
     }
 
-
     @Override
     public double getPassengersRidingOffset() {
         return 0.2D;
@@ -127,7 +123,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
-
 
     public static AttributeModifierMap.MutableAttribute megalodonAttributes() {
         return MobEntity.createMobAttributes()
