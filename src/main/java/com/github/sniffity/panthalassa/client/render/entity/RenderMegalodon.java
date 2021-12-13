@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.client.render.entity;
 
 import com.github.sniffity.panthalassa.client.model.entity.ModelMegalodon;
+import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMegalodon;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -30,7 +31,7 @@ public class RenderMegalodon extends GeoEntityRenderer<EntityMegalodon> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(1.0F, 1.0F, 1.0F);
+        stackIn.scale(1.0F* PanthalassaClientConfig.megalodonSizeMultiplier.get().floatValue(), 1.0F* PanthalassaClientConfig.megalodonSizeMultiplier.get().floatValue(), 1.0F* PanthalassaClientConfig.megalodonSizeMultiplier.get().floatValue());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.client.render.entity;
 
 import com.github.sniffity.panthalassa.client.model.entity.ModelArchelon;
+import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -21,6 +22,7 @@ public class RenderArchelon extends GeoEntityRenderer<EntityArchelon> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(2.0F, 2.0F, 2.0F);
+        stackIn.scale(2.0F*PanthalassaClientConfig.archelonSizeMultiplier.get().floatValue(), 2.0F*PanthalassaClientConfig.archelonSizeMultiplier.get().floatValue(), 2.0F*PanthalassaClientConfig.archelonSizeMultiplier.get().floatValue());
     }
+
 }
