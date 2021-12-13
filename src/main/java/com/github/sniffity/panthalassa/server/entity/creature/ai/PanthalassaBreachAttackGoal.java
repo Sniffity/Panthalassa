@@ -156,7 +156,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!step1Done) {
             if (moveStep1()){
                 assert target != null;
-                //Necessary? Creates spinning?
                 attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
                 step1Done = true;
             }
