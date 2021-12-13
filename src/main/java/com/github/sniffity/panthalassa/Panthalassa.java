@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa;
 
+import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
@@ -21,9 +22,11 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,9 +59,7 @@ public final class Panthalassa {
 		PanthalassaFeatures.FEATURES.register(modBus);
 		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 		PanthalassaSounds.SOUND_EVENTS.register(modBus);
-
-
-				PanthalassaPOI.POI.register(modBus);
+		PanthalassaPOI.POI.register(modBus);
 
 		forgeBus.register(PanthalassaDimension.PANTHALASSA);
 		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
@@ -73,6 +74,9 @@ public final class Panthalassa {
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
 		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
 		forgeBus.addListener(EventPriority.HIGH, this::biomeModification);
+
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
+
 	}
 
 	private void setup(final FMLCommonSetupEvent event){
