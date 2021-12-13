@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.client.events;
 
+import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
@@ -27,8 +28,13 @@ public class RenderTickEvent {
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
+        if (!PanthalassaClientConfig.vehicleOverlayEnabled.get()) {
+            return;
+        }
+
         if (event.phase != TickEvent.Phase.END)
             return;
+
 
         Minecraft game = Minecraft.getInstance();
         if (!game.isWindowActive() || game.options.hideGui)

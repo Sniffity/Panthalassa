@@ -33,6 +33,11 @@ public class PanthalassaClientConfig {
         mosasaurusSizeMultiplier = builder
                 .defineInRange("mosasaurus_size_multiplier", 1.0D, 0.5D, 3.0D);
         builder.pop();
+
+        builder.push("Vehicle Overlay");
+        builder.comment("This will determine whether the vehicle overlays are enabled or not.");
+        vehicleOverlayEnabled = builder
+                .define("vehicle-overlay-enabled",true);
     }
 
 
@@ -44,5 +49,6 @@ public class PanthalassaClientConfig {
     public static ForgeConfigSpec.DoubleValue megalodonSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue mosasaurusSizeMultiplier;
 
-//DISABLE VEHICLE OVERLAY
+    public static ForgeConfigSpec.BooleanValue vehicleOverlayEnabled;
+
 }
