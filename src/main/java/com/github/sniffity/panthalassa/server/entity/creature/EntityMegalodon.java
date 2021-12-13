@@ -48,9 +48,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        System.out.println("Animations being tested");
-        System.out.println((this.getAttackingState()));
-
         if (getIsBreaching()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
             return PlayState.CONTINUE;
