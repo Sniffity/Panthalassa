@@ -57,6 +57,12 @@
         "maxCount": 1
       },
       {
+        "type": "panthalassa:coelacanth",
+        "weight": 20,
+        "minCount": 5,
+        "maxCount": 10
+      },
+      {
         "type": "panthalassa:leedsichthys",
         "weight": 8,
         "minCount": 1,
