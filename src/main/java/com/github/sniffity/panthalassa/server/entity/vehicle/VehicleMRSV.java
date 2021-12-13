@@ -37,7 +37,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
         super(type, world);
-        this.waterSpeed = 0.06F;
+        this.waterSpeed = 0.05F;
         this.landSpeed = 0.004F;
     }
 
