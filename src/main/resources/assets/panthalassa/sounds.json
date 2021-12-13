@@ -4,11 +4,5 @@
       "panthalassa:entity/creature/kronosaurus/kronosaurus_ambient"
     ],
     "subtitle": "subtitles.panthalassa.entity.creature.kronosaurus.kronosaurus_ambient"
-  },
-  "entity.creature.megalodon.megalodon_ambient": {
-    "sounds": [
-      "panthalassa:entity/creature/megalodon/general_ambient"
-    ],
-    "subtitle": "subtitles.panthalassa.entity.creature.general.general_ambient"
   }
 }
