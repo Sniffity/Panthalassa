@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 
 public class PanthalassaBreachAttackGoal extends Goal {
     protected final IBreachable panthalassaBreachableEntity;
@@ -27,6 +28,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     private double step1Ticks;
     private double step2Ticks;
     private double step3Ticks;
+    private double step4Ticks;
 
     public PanthalassaBreachAttackGoal(IBreachable creature, double speedIn) {
         this.panthalassaBreachableEntity = creature;
@@ -91,7 +93,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         else if (step2Ticks> 100) {
             return false;
         }
-        else if (step1Done && step2Done && step3Done) {
+        else if (step1Done && step2Done && step3Done && step4Done) {
             return false;
 
         } else if (!step1Done &&  (!attacker.isInWater())) {
@@ -148,7 +150,6 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!attacker.getPassengers().isEmpty()) {
             attacker.ejectPassengers();
         }
-
         attacker.getNavigation().stop();
     }
 
@@ -175,11 +176,10 @@ public class PanthalassaBreachAttackGoal extends Goal {
                     target.startRiding(attacker);
 
                 }
-                if (attacker.getDeltaMovement().y < 2.0D) {
-                    attacker.setDeltaMovement(attacker.getDeltaMovement().x,2.0D,attacker.getDeltaMovement().z);
+                if (attacker.getDeltaMovement().y < 1.20D) {
+                    attacker.setDeltaMovement(attacker.getDeltaMovement().x,1.20D,attacker.getDeltaMovement().z);
                 }
             }
-
         }
 
         if (step1Done && step2Done && !step3Done) {
@@ -200,12 +200,10 @@ public class PanthalassaBreachAttackGoal extends Goal {
             }
         }
 
-        /*
-        if (step1Done && step2Done && step3Done && !step4Done && attacker.isInWater()) {
-            attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,-2.0,0));
-            step4Done = true;
+        if (step1Done && step2Done && step3Done && this.attacker.isInWater()) {
+                step4Done = true;
+                attacker.getMoveControl().setWantedPosition(attacker.getX(),attacker.getY(),attacker.getZ(),0.35D);
         }
-         */
     }
 
     protected void crushVehicleandPassengers() {
