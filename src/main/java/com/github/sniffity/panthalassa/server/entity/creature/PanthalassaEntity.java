@@ -51,18 +51,15 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!(this instanceof IBreachable)) {
-            if (!this.isLandNavigator && this.isInWater() && this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR)) {
+        if (!this.isLandNavigator && this.isInWater() && this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR)) {
                 switchToLandNavigator(true);
-            }
+        }
 
-            else if (this.isLandNavigator && this.isInWater() && !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
-                switchToLandNavigator(false);
-            }
-
-            else if (!this.isInWater() && !this.isLandNavigator) {
-                switchToLandNavigator(true);
-            }
+        else if (this.isLandNavigator && this.isInWater() && !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
+               switchToLandNavigator(false);
+        }
+        else if (!this.isInWater() && !this.isLandNavigator) {
+            switchToLandNavigator(true);
         }
     }
 
