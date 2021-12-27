@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
+import com.github.sniffity.panthalassa.server.entity.creature.ai.IBreachable;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -50,16 +51,18 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.isLandNavigator && this.isInWater() && this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR)) {
-            switchToLandNavigator(true);
-        }
+        if (!(this instanceof IBreachable)) {
+            if (!this.isLandNavigator && this.isInWater() && this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR)) {
+                switchToLandNavigator(true);
+            }
 
-        else if (this.isLandNavigator && this.isInWater() && !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
-            switchToLandNavigator(false);
-        }
+            else if (this.isLandNavigator && this.isInWater() && !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
+                switchToLandNavigator(false);
+            }
 
-        else if (!this.isInWater() && !this.isLandNavigator) {
-            switchToLandNavigator(true);
+            else if (!this.isInWater() && !this.isLandNavigator) {
+                switchToLandNavigator(true);
+            }
         }
     }
 

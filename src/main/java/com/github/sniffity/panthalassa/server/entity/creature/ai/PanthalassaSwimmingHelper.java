@@ -45,6 +45,7 @@ public class PanthalassaSwimmingHelper extends MovementController {
     }
 
     public void tick () {
+
         if (this.entityPanthalassa.isEyeInFluid(FluidTags.WATER)) {
             this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
         }

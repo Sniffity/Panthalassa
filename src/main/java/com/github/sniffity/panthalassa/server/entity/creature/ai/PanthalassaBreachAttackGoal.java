@@ -91,7 +91,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         else if (step2Ticks> 100) {
             return false;
         }
-        else if (step1Done && step2Done && step3Done && step4Done) {
+        else if (step1Done && step2Done && step3Done) {
             return false;
 
         } else if (!step1Done &&  (!attacker.isInWater())) {
@@ -116,13 +116,13 @@ public class PanthalassaBreachAttackGoal extends Goal {
         LivingEntity target = attacker.getTarget();
         assert target != null;
         BlockPos strikePos = (target.blockPosition().below(10));
-        attacker.getNavigation().moveTo(strikePos.getX(),strikePos.getY(),strikePos.getZ(),speedTowardsTarget);return (attacker.distanceToSqr(target.getX(), target.getY() - 15, target.getZ()) <= 15);
+        attacker.getNavigation().moveTo(strikePos.getX(),strikePos.getY(),strikePos.getZ(),speedTowardsTarget);
+        return (attacker.distanceToSqr(target.getX(), target.getY() - 15, target.getZ()) <= 15);
     }
 
     public boolean moveStep2(){
         step2Ticks = ++step2Ticks;
         LivingEntity target = attacker.getTarget();
-        panthalassaBreachableEntity.setIsBreaching(true);
         assert target != null;
         attacker.getNavigation().moveTo(target.getX(),target.getY(),target.getZ(),speedTowardsTarget*4);
         return attacker.distanceTo(target) < 2.0F;
@@ -148,6 +148,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!attacker.getPassengers().isEmpty()) {
             attacker.ejectPassengers();
         }
+
+        attacker.getNavigation().stop();
     }
 
     @Override
@@ -158,37 +160,28 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 assert target != null;
                 attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
                 step1Done = true;
+                panthalassaBreachableEntity.setIsBreaching(true);
             }
         }
+
         if (step1Done && !step2Done) {
             assert target != null;
-            if (attacker.distanceTo(target) > 2.0F) {
-                if (moveStep2()) {
-                    step2Done = true;
-                    jumpStart = target.getY();
-                    if (target.getVehicle() != null) {
-                        target.getVehicle().startRiding(attacker);
-                    } else {
-                        target.startRiding(attacker);
-
-                    }
-                    if (attacker.getDeltaMovement().y < 2.0D) {
-                        attacker.setDeltaMovement(attacker.getDeltaMovement().x,2.0D,attacker.getDeltaMovement().z);
-                    }
-                }
-            } else {
+            if (moveStep2()) {
                 step2Done = true;
                 jumpStart = target.getY();
                 if (target.getVehicle() != null) {
                     target.getVehicle().startRiding(attacker);
                 } else {
                     target.startRiding(attacker);
+
                 }
                 if (attacker.getDeltaMovement().y < 2.0D) {
                     attacker.setDeltaMovement(attacker.getDeltaMovement().x,2.0D,attacker.getDeltaMovement().z);
                 }
             }
+
         }
+
         if (step1Done && step2Done && !step3Done) {
             step3Ticks = ++step3Ticks;
             if (attacker.getY() - jumpStart > 5) {
@@ -207,12 +200,12 @@ public class PanthalassaBreachAttackGoal extends Goal {
             }
         }
 
+        /*
         if (step1Done && step2Done && step3Done && !step4Done && attacker.isInWater()) {
-            step4Done = true;
-
             attacker.setDeltaMovement(attacker.getDeltaMovement().add(0,-2.0,0));
+            step4Done = true;
         }
-
+         */
     }
 
     protected void crushVehicleandPassengers() {
