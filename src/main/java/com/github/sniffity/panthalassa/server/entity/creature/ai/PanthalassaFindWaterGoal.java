@@ -14,6 +14,15 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.Random;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaFindWaterGoal <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed imitating the methods used in Ice and FIre SeaSerpentAIGetInWaterGoal,
+ * with permission from the mod's author Alexthe666. All due credit goes to him. Slight tweaks were made to the source code.
+ */
+
 public class PanthalassaFindWaterGoal extends Goal {
     private final PanthalassaEntity mob;
     private final float speed;
@@ -26,25 +35,32 @@ public class PanthalassaFindWaterGoal extends Goal {
     }
 
     public boolean canUse() {
-        if (this.mob.isInWater() && this.mob.level.getBlockState(this.mob.blockPosition().below()).canOcclude() && this.mob.level.getBlockState(this.mob.blockPosition().above()).is(Blocks.AIR)) {
-            targetPos = generateTarget();
-            return targetPos != null;
-        }
 
-        if (this.mob.isOnGround() && (!this.mob.isInWater())) {
+
+        if (this.mob.isOnGround() && !this.mob.level.getFluidState(this.mob.getEntity().blockPosition()).is(FluidTags.WATER)){
             targetPos = generateTarget();
             return targetPos != null;
+
         }
         return false;
+
     }
 
     public void start() {
 
         if (targetPos != null) {
-            Vector3d targetVector = new Vector3d ((double)targetPos.getX(), (double)targetPos.getY(), (double)targetPos.getZ()).subtract(mob.position()).normalize().scale(0.05);
-            this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), Math.max(speed,0.10D));
-            this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(targetVector));
+            this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
         }
+    }
+
+    @Override
+    public void tick(){
+        if (!this.mob.isInWater()) {
+            this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
+        } else {
+            this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed/2);
+        }
+
     }
 
     @Override
