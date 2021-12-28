@@ -27,6 +27,7 @@ public class PanthalassaFindWaterGoal extends Goal {
     private final PanthalassaEntity mob;
     private final float speed;
     private BlockPos targetPos;
+    private int tickCounter;
 
 
     public PanthalassaFindWaterGoal(PanthalassaEntity panthalassaEntity, float speedIn) {
@@ -34,23 +35,23 @@ public class PanthalassaFindWaterGoal extends Goal {
         this.speed = speedIn;
     }
 
+    @Override
     public boolean canUse() {
-
-
         if (this.mob.isOnGround() && !this.mob.isInWater()){
             targetPos = generateTarget();
             return targetPos != null;
-
+        }
+        if (this.mob.isInWater() && this.mob.level.getBlockState(this.mob.blockPosition().below()).canOcclude() && this.mob.level.getBlockState(this.mob.blockPosition().above()).is(Blocks.AIR)) {
+            targetPos = generateTarget();
+            return targetPos != null;
         }
         return false;
-
     }
 
+    @Override
     public void start() {
-
         if (targetPos != null) {
             this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
-            this.mob.getLookControl().setLookAt(targetPos.getX(), targetPos.getY(), targetPos.getZ());
 
         }
     }
@@ -60,10 +61,21 @@ public class PanthalassaFindWaterGoal extends Goal {
         if (this.mob.getNavigation().isDone()){
             return false;
         }
-        if (this.mob.isInWater()) {
+        if (this.mob.isInWater() && this.mob.level.getFluidState(this.mob.blockPosition().below()).is(FluidTags.WATER)) {
+            return false;
+        }
+
+        if (tickCounter > 200) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void tick(){
+        tickCounter = tickCounter++;
+        this.mob.getLookControl().setLookAt(this.mob.getDeltaMovement());
+
     }
 
     @Override
@@ -71,6 +83,7 @@ public class PanthalassaFindWaterGoal extends Goal {
         this.mob.getNavigation().stop();
         super.stop();
     }
+
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
