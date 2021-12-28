@@ -104,7 +104,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
                 .add(Attributes.KNOCKBACK_RESISTANCE, 2)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MAX_HEALTH, 60)
-                .add(Attributes.MOVEMENT_SPEED, (double) 0.8F);
+                .add(Attributes.MOVEMENT_SPEED, (double) 0.3F);
     }
 
     public void registerGoals() {
