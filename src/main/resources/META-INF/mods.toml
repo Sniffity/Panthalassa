@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/Sniffity/Panthalassa/issues"
 
 [[mods]]
 modId="panthalassa"
-version="0.5.0"
+version="${file.jarVersion}"
 displayName="Panthalassa Mod"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/panthalassa"
 #logoFile="examplemod.png" #optional

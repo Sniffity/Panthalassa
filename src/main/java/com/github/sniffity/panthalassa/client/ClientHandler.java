@@ -9,24 +9,23 @@ import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.item.BlockItem;
-import net.minecraft.world.biome.BiomeColors;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -43,38 +42,37 @@ public class ClientHandler {
         MinecraftForge.EVENT_BUS.register(new KeyInputEvent());
         MinecraftForge.EVENT_BUS.register(new RenderTickEvent());
         MinecraftForge.EVENT_BUS.register(new CameraSetupEvent());
-        registerEntityRenderers();
         registerKeybinds();
         registerBlockColors();
         registerItemColors();
         registerBlockRenderers();
     }
 
-    public static void registerEntityRenderers() {
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.KRONOSAURUS.get(),
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(PanthalassaEntityTypes.KRONOSAURUS,
                 RenderKronosaurus::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MEGALODON.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.MEGALODON,
                 RenderMegalodon::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.ARCHELON.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.ARCHELON,
                 RenderArchelon::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MOSASAURUS.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.MOSASAURUS,
                 RenderMosasaurus::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.COELACANTH.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.COELACANTH,
                 RenderCoelacanth::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.DUNKLEOSTEUS.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.DUNKLEOSTEUS,
                 RenderDunkleosteus::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.LEEDSICHTHYS.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.LEEDSICHTHYS,
                 RenderLeedsichthys::new);
-        
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.MRSV.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.MRSV,
                 RenderMRSV::new);
-        RenderingRegistry.registerEntityRenderingHandler(PanthalassaEntityTypes.AGII.get(),
+        event.registerEntityRenderer(PanthalassaEntityTypes.AGII,
                 RenderAGII::new);
     }
 
-    public static final KeyBinding KEY_VEHICLE_LIGHTS = new KeyBinding("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
-    public static final KeyBinding KEY_VEHICLE_SPECIAL = new KeyBinding("key.vehicle.special", GLFW.GLFW_KEY_Y, "key.panthalassa.category");
-    public static final KeyBinding KEY_VEHICLE_SONAR = new KeyBinding("key.vehicle.sonar", GLFW.GLFW_KEY_N, "key.panthalassa.category");
+    public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
+    public static final KeyMapping KEY_VEHICLE_SPECIAL = new KeyMapping("key.vehicle.special", GLFW.GLFW_KEY_Y, "key.panthalassa.category");
+    public static final KeyMapping KEY_VEHICLE_SONAR = new KeyMapping("key.vehicle.sonar", GLFW.GLFW_KEY_N, "key.panthalassa.category");
 
     public static void registerKeybinds() {
         ClientRegistry.registerKeyBinding(KEY_VEHICLE_LIGHTS);
@@ -85,7 +83,7 @@ public class ClientHandler {
 
 
     private static void render(Supplier<? extends Block> block, RenderType render) {
-        RenderTypeLookup.setRenderLayer(block.get(), render);
+        ItemBlockRenderTypes.setRenderLayer(block.get(), render);
     }
 
     public static void registerBlockRenderers() {
@@ -129,11 +127,6 @@ public class ClientHandler {
                 PanthalassaBlocks.KRETHROSS.get(),
                 PanthalassaBlocks.KRETHROSS_PLANT.get()
         );
-    }
-
-
-    public void setThirdPersonCamera() {
-        mc.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
     }
 }
 

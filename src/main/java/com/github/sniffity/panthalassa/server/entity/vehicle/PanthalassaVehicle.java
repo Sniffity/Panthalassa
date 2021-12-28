@@ -1,41 +1,39 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
-import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
-import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch;
-import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleLights;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.entity.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Panthalassa Mod - Class: PanthalassaVehicle <br></br?>
@@ -49,18 +47,18 @@ import java.util.stream.Collectors;
 
 public class PanthalassaVehicle extends Entity {
 
-    protected static final DataParameter<Float> MAX_HEALTH = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> HEALTH = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> ARMOR = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> NLF_DISTANCE = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Integer> FLOOR_DISTANCE = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
-    protected static final DataParameter<Boolean> LIGHTS_ON = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Float> SONAR_LAST_CHECK = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Integer> ENTRY_X = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
-    protected static final DataParameter<Integer> ENTRY_Z = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
-    protected static final DataParameter<Integer> LIGHT_X = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
-    protected static final DataParameter<Integer> LIGHT_Y = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
-    protected static final DataParameter<Integer> LIGHT_Z = EntityDataManager.defineId(PanthalassaVehicle.class, DataSerializers.INT);
+    protected static final EntityDataAccessor<Float> MAX_HEALTH = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> NLF_DISTANCE = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Integer> FLOOR_DISTANCE = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> LIGHTS_ON = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Float> SONAR_LAST_CHECK = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Integer> ENTRY_X = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> ENTRY_Z = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> LIGHT_X = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> LIGHT_Y = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> LIGHT_Z = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
 
     public float waterSpeed;
     public float landSpeed;
@@ -80,10 +78,10 @@ public class PanthalassaVehicle extends Entity {
     public BlockPos prevPos;
     public BlockState blockLightWater = PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState();
     public BlockState blockLightAir = PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState();
-    public RegistryKey<World> prevDimension;
+    public ResourceKey<Level> prevDimension;
 
 
-    public PanthalassaVehicle(EntityType<?> entityTypeIn, World worldIn) {
+    public PanthalassaVehicle(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
     }
 
@@ -103,41 +101,41 @@ public class PanthalassaVehicle extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT compound) {
-        if (compound.contains("MaxHealth", Constants.NBT.TAG_FLOAT)) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        if (compound.contains("MaxHealth")) {
             this.setMaxHealth(compound.getFloat("MaxHealth"));
         }
-        if (compound.contains("Health", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("Health")) {
             this.setHealth(compound.getFloat("Health"));
         }
-        if (compound.contains("Armor", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("Armor")) {
             this.setArmor(compound.getFloat("Armor"));
         }
-        if (compound.contains("NLFDistance", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("NLFDistance")) {
             this.setNLFDistance(compound.getFloat("NLFDistance"));
         }
-        if (compound.contains("FloorDistance", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("FloorDistance")) {
             this.setFloorDistance(compound.getInt("FloorDistance"));
         }
-        if (compound.contains("LightsOn", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("LightsOn")) {
             this.setLightsOn(compound.getBoolean("LightsOn"));
         }
-        if (compound.contains("SonarLastCheck", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("SonarLastCheck")) {
             this.setSonarLastCheck(compound.getFloat("SonarLastCheck"));
         }
-        if (compound.contains("LightX", Constants.NBT.TAG_INT)) {
+        if (compound.contains("LightX")) {
             this.setLightPosX(compound.getInt("LightX"));
         }
-        if (compound.contains("LightY", Constants.NBT.TAG_INT)) {
+        if (compound.contains("LightY")) {
             this.setLightPosY(compound.getInt("LightY"));
         }
-        if (compound.contains("LightZ", Constants.NBT.TAG_INT)) {
+        if (compound.contains("LightZ")) {
             this.setLightPosZ(compound.getInt("LightZ"));
         }
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) { {
+    protected void addAdditionalSaveData(CompoundTag compound) { {
             compound.putFloat("MaxHealth", this.getMaxHealth());
             compound.putFloat("Health", this.getHealth());
             compound.putFloat("Armor", this.getArmor());
@@ -169,16 +167,16 @@ public class PanthalassaVehicle extends Entity {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (!this.level.isClientSide && canAddPassenger(this)) {
-            return player.startRiding(this) ? ActionResultType.sidedSuccess(level.isClientSide) : ActionResultType.PASS;
+            return player.startRiding(this) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
         } else {
-            return ActionResultType.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
     }
 
@@ -223,14 +221,14 @@ public class PanthalassaVehicle extends Entity {
         if (!passengers.isEmpty()) {
             for (Entity passenger : passengers) {
                 LivingEntity currentPassenger = (LivingEntity) passenger;
-                currentPassenger.addEffect(new EffectInstance(Effects.WATER_BREATHING, 10, 0));
+                currentPassenger.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 10, 0));
             }
         }
 
         if (prevPos != null) {
-            Vector3d prevPosV = new Vector3d(prevPos.getX(), prevPos.getY(), prevPos.getZ());
+            Vec3 prevPosV = new Vec3(prevPos.getX(), prevPos.getY(), prevPos.getZ());
             BlockPos vehiclePos = this.blockPosition();
-            Vector3d vehiclePosV = new Vector3d(vehiclePos.getX(), vehiclePos.getY(), vehiclePos.getZ());
+            Vec3 vehiclePosV = new Vec3(vehiclePos.getX(), vehiclePos.getY(), vehiclePos.getZ());
             double distanceMoved = (prevPosV.subtract(vehiclePosV)).length();
             boolean hasLooped = false;
             BlockState vehiclePosBlockState = level.getBlockState(vehiclePos);
@@ -309,7 +307,7 @@ public class PanthalassaVehicle extends Entity {
             this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
         }
 
-        Vector3d vector3d = this.getDeltaMovement();
+        Vec3 vector3d = this.getDeltaMovement();
         double d1 = vector3d.x;
         double d3 = vector3d.y;
         double d5 = vector3d.z;
@@ -339,7 +337,7 @@ public class PanthalassaVehicle extends Entity {
         this.level.getProfiler().push("travel");
         this.moveStrafing *= 0.98F;
         this.moveForward *= 0.98F;
-        this.vehicleTravel(new Vector3d(this.moveStrafing, this.moveVertical, this.moveForward));
+        this.vehicleTravel(new Vec3(this.moveStrafing, this.moveVertical, this.moveForward));
         this.level.getProfiler().pop();
 
         this.level.getProfiler().push("push");
@@ -363,7 +361,7 @@ public class PanthalassaVehicle extends Entity {
         return !this.level.isClientSide;
     }
 
-    public void vehicleTravel(Vector3d vec3d) {
+    public void vehicleTravel(Vec3 vec3d) {
         if (isInWater()) {
             if (getControllingPassenger() instanceof LivingEntity) {
                 float speed = getTravelSpeed();
@@ -380,7 +378,7 @@ public class PanthalassaVehicle extends Entity {
                 if (entity.zza != 0 && (isUnderWater() || lookY < 0)) moveY = lookY;
                 setAIMoveSpeed(speed);
 
-                vec3d = new Vector3d(moveX, moveY, moveZ);
+                vec3d = new Vec3(moveX, moveY, moveZ);
 
             } else {
                 setDeltaMovement(getDeltaMovement().add(0, -0.003, 0));
@@ -402,7 +400,7 @@ public class PanthalassaVehicle extends Entity {
                 yRot = entity.yRot;
 
                 setAIMoveSpeed(speed);
-                vec3d = new Vector3d(moveX, moveY, moveZ);
+                vec3d = new Vec3(moveX, moveY, moveZ);
 
             }
             moveRelative(getAIMoveSpeed(), vec3d);
@@ -420,8 +418,8 @@ public class PanthalassaVehicle extends Entity {
             }
             double d0 = 0.08D;
             BlockPos blockpos = this.getBlockPosBelowThatAffectsMyMovement();
-            float f3 = this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getSlipperiness(level, this.getBlockPosBelowThatAffectsMyMovement(), this);
-            Vector3d vec5 = handleRelativeFrictionAndCalculateMovement(vec3d, f3);
+            float f3 = this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFriction(level, this.getBlockPosBelowThatAffectsMyMovement(), this);
+            Vec3 vec5 = handleRelativeFrictionAndCalculateMovement(vec3d, f3);
             double d2 = vec5.y;
             if (this.level.isClientSide && !this.level.hasChunkAt(blockpos)) {
                 if (this.getY() > 0.0D) {
@@ -436,7 +434,7 @@ public class PanthalassaVehicle extends Entity {
         }
     }
 
-    public Vector3d handleRelativeFrictionAndCalculateMovement(Vector3d vec3d, float d3) {
+    public Vec3 handleRelativeFrictionAndCalculateMovement(Vec3 vec3d, float d3) {
         this.moveRelative(this.getRelevantMoveFactor(d3), vec3d);
         this.setDeltaMovement(this.getDeltaMovement());
         this.move(MoverType.SELF, this.getDeltaMovement());
@@ -459,9 +457,9 @@ public class PanthalassaVehicle extends Entity {
                 float adjustedAmount = (((100 - this.getArmor()) / 100) > 0) ? amount * (((100 - this.getArmor()) / 100)) : 0;
                 this.setHealth(this.getHealth() - adjustedAmount);
 
-                boolean isCreativeMode = trueSource instanceof PlayerEntity && ((PlayerEntity) trueSource).isCreative();
+                boolean isCreativeMode = trueSource instanceof Player && ((Player) trueSource).isCreative();
                 if (isCreativeMode || this.getHealth() < 0.0F) {
-                    AxisAlignedBB searchArea = new AxisAlignedBB(this.getX() - 10, this.getY() - 10, this.getZ() - 10, this.getX() + 10, this.getY() + 10, this.getZ() + 10);
+                    AABB searchArea = new AABB(this.getX() - 10, this.getY() - 10, this.getZ() - 10, this.getX() + 10, this.getY() + 10, this.getZ() + 10);
                     Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
                             .map(pos -> new BlockPos(pos))
                             .filter(state -> (level.getBlockState(state) == PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState() || level.getBlockState(state) == PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState()))
@@ -479,7 +477,7 @@ public class PanthalassaVehicle extends Entity {
                         }
                     }
 
-                    this.remove();
+                    this.discard();
                 }
                 return true;
             }
@@ -513,11 +511,11 @@ public class PanthalassaVehicle extends Entity {
     }
 
     public float testNLFDistance(PanthalassaVehicle vehicle) {
-        List<Entity> entities = level.getEntities(vehicle, new AxisAlignedBB(vehicle.getX() - 20, vehicle.getY() - 20, vehicle.getZ() - 20, vehicle.getX() + 20, vehicle.getY() + 20, vehicle.getZ() + 20));
+        List<Entity> entities = level.getEntities(vehicle, new AABB(vehicle.getX() - 20, vehicle.getY() - 20, vehicle.getZ() - 20, vehicle.getX() + 20, vehicle.getY() + 20, vehicle.getZ() + 20));
         float closestDistance = 100F;
         if (entities.size() != 0) {
             for (Entity testEntity : entities) {
-                if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity)) {
+                if (testEntity instanceof LivingEntity && !(testEntity instanceof Player)) {
                     float distance = distanceTo(testEntity);
                     if (distance < closestDistance) {
                         closestDistance = distance;
@@ -539,7 +537,7 @@ public class PanthalassaVehicle extends Entity {
         return this.entityData.get(NLF_DISTANCE);
     }
 
-    public int testFloorDistance(PanthalassaVehicle vehicle, World world) {
+    public int testFloorDistance(PanthalassaVehicle vehicle, Level world) {
         BlockPos pos = vehicle.blockPosition();
         while (pos.getY() > 0) {
             if (!(world.getBlockState(pos).canOcclude())) {

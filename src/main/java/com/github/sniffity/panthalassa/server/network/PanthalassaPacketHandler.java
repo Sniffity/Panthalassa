@@ -5,9 +5,9 @@ import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleLights;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSonar;
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class PanthalassaPacketHandler {
 

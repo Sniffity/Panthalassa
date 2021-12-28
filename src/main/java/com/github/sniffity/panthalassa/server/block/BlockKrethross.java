@@ -1,22 +1,27 @@
 package com.github.sniffity.panthalassa.server.block;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
-import net.minecraft.block.*;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 
-public class BlockKrethross extends AbstractBodyPlantBlock implements ILiquidContainer {
-    public BlockKrethross(AbstractBlock.Properties p_i48782_1_) {
-        super(p_i48782_1_, Direction.UP, VoxelShapes.block(), true);
+import net.minecraft.world.level.block.GrowingPlantBodyBlock;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class BlockKrethross extends GrowingPlantBodyBlock implements LiquidBlockContainer {
+    public BlockKrethross(BlockBehaviour.Properties p_i48782_1_) {
+        super(p_i48782_1_, Direction.UP, Shapes.block(), true);
     }
 
-    protected AbstractTopPlantBlock getHeadBlock() {
+    protected GrowingPlantHeadBlock getHeadBlock() {
         return PanthalassaBlocks.KRETHROSS.get();
     }
 
@@ -24,11 +29,11 @@ public class BlockKrethross extends AbstractBodyPlantBlock implements ILiquidCon
         return Fluids.WATER.getSource(false);
     }
 
-    public boolean canPlaceLiquid(IBlockReader blockReader, BlockPos blockPos, BlockState blockState, Fluid fluid) {
+    public boolean canPlaceLiquid(BlockGetter blockReader, BlockPos blockPos, BlockState blockState, Fluid fluid) {
         return false;
     }
 
-    public boolean placeLiquid(IWorld world, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
+    public boolean placeLiquid(LevelAccessor world, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
         return false;
     }
 }

@@ -4,13 +4,13 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.Camera;
+import net.minecraft.client.CameraType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -32,9 +32,9 @@ public class CameraSetupEvent {
         Entity vehicle = mc.player.getVehicle();
         if (!(vehicle instanceof PanthalassaVehicle))
             return;
-        PointOfView view = mc.options.getCameraType();
+        CameraType view = mc.options.getCameraType();
 
-        if (view == PointOfView.THIRD_PERSON_BACK) {
+        if (view == CameraType.THIRD_PERSON_BACK) {
             if (vehicle instanceof VehicleMRSV) {
                 event.getInfo().move(-calcCameraDistance(8.0, vehicle), 1, 0);
             }
@@ -46,8 +46,8 @@ public class CameraSetupEvent {
     }
 
     public static double calcCameraDistance(double startingDistance, Entity vehicle) {
-        ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Vector3d position = info.getPosition().add(0, 1, 0);
+        Camera info = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vec3 position = info.getPosition().add(0, 1, 0);
         Vector3f view = info.getLookVector();
 
         for (int i = 0; i < 8; ++i) {
@@ -57,10 +57,10 @@ public class CameraSetupEvent {
             f = f * 0.1F;
             f1 = f1 * 0.1F;
             f2 = f2 * 0.1F;
-            Vector3d vector3d = position.add((double) f, (double) f1, (double) f2);
-            Vector3d vector3d1 = new Vector3d(position.x - (double) view.x() * startingDistance + (double) f + (double) f2, position.y - (double) view.y() * startingDistance + (double) f1, position.z - (double) view.z() * startingDistance + (double) f2);
-            RayTraceResult raytraceresult = vehicle.level.clip(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, vehicle));
-            if (raytraceresult.getType() != RayTraceResult.Type.MISS) {
+            Vec3 vector3d = position.add((double) f, (double) f1, (double) f2);
+            Vec3 vector3d1 = new Vec3(position.x - (double) view.x() * startingDistance + (double) f + (double) f2, position.y - (double) view.y() * startingDistance + (double) f1, position.z - (double) view.z() * startingDistance + (double) f2);
+            HitResult raytraceresult = vehicle.level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, vehicle));
+            if (raytraceresult.getType() != HitResult.Type.MISS) {
                 double d0 = raytraceresult.getLocation().distanceTo(position);
                 if (d0 < startingDistance) {
                     startingDistance = d0;

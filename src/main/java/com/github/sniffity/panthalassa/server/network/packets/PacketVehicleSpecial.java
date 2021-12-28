@@ -1,10 +1,10 @@
 package com.github.sniffity.panthalassa.server.network.packets;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -14,7 +14,7 @@ public class PacketVehicleSpecial {
     public static void handle(PacketVehicleSpecial packet, Supplier<NetworkEvent.Context> context) {
         if (context.get().getDirection().getReceptionSide().isServer()) {
             context.get().enqueueWork(() -> {
-                ServerPlayerEntity player = context.get().getSender();
+                ServerPlayer player = context.get().getSender();
                 if (player != null) {
                     Entity vehicle = player.getVehicle();
                     PanthalassaVehicle panthalassaVehicle = (PanthalassaVehicle) vehicle;
@@ -27,9 +27,9 @@ public class PacketVehicleSpecial {
         }
     }
 
-    public static PacketVehicleSpecial decode(PacketBuffer buffer) {
+    public static PacketVehicleSpecial decode(FriendlyByteBuf buffer) {
             return new PacketVehicleSpecial();
     }
 
-    public static void encode(PacketVehicleSpecial packet, PacketBuffer buffer) {}
+    public static void encode(PacketVehicleSpecial packet, FriendlyByteBuf buffer) {}
 }

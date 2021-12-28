@@ -2,15 +2,15 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
             return false;
         }
         //...and this target is floating on the water surface.
-        if (!this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below())).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathType.WATER)) {
+        if (!this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below())).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathComputationType.WATER)) {
             return false;
         }
         if (!attacker.isInWater()) {
@@ -89,11 +89,11 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 return false;
             }
             //If it still has a target, and the strike position below the target is unreachable, stop the Goal.
-            else if (!step1Done && !this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below(10))).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathType.WATER)) {
+            else if (!step1Done && !this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below(10))).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathComputationType.WATER)) {
                 return false;
             }
             //If it still has a target, and has reached its strike position, but the position at which the jump would begin is somehow unreachable, stop the Goal.
-            else if (step1Done && !step2Done && !this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below(1))).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathType.WATER)) {
+            else if (step1Done && !step2Done && !this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below(1))).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathComputationType.WATER)) {
                 return false;
             }
             //If it has reached the strike position, but has not started its jump yet, and it somehow leaves the water or the target gets too far, stop the Goal.
@@ -112,7 +112,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
             return false;
         }
         // If it has attacked the target but has not yet navigated to its end position, and it cannot reach the end position, stop the Goal.
-        if (step3Done && !step4Done && !this.attacker.level.getBlockState(strikePos).isPathfindable(this.attacker.level, strikePos, PathType.WATER)) {
+        if (step3Done && !step4Done && !this.attacker.level.getBlockState(strikePos).isPathfindable(this.attacker.level, strikePos, PathComputationType.WATER)) {
             return false;
         }
         // If it takes too long reaching the end position after the jump, stop the Goal.
@@ -136,7 +136,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     @Override
     public void stop() {
         LivingEntity target = attacker.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             attacker.setTarget(null);
         }
         attacker.setAggressive(false);
@@ -257,9 +257,9 @@ public class PanthalassaBreachAttackGoal extends Goal {
 
     protected void crushVehicleAndPassengers() {
         //Deal damage in an area close to the attacking entity. Attacks everything within its reach.
-        List<Entity> entities = attacker.level.getEntities(attacker, new AxisAlignedBB(attacker.getX() - 5, attacker.getY() - 3, attacker.getZ() - 5, attacker.getX() + 5, attacker.getY() + 10, attacker.getZ() + 5));
+        List<Entity> entities = attacker.level.getEntities(attacker, new AABB(attacker.getX() - 5, attacker.getY() - 3, attacker.getZ() - 5, attacker.getX() + 5, attacker.getY() + 10, attacker.getZ() + 5));
         if (!entities.isEmpty()) {
-                attacker.swing(Hand.MAIN_HAND);
+                attacker.swing(InteractionHand.MAIN_HAND);
                 for (Entity entity : entities) {
                     attacker.doHurtTarget(entity);
                 }

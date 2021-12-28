@@ -1,18 +1,16 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import java.util.EnumSet;
+import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.LeashKnotEntity;
-import net.minecraft.pathfinding.PathType;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-
-import static java.lang.Math.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public class PanthalassaRandomSwimmingGoal extends Goal {
 
@@ -57,7 +55,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                     return false;
                 }
             }
-            Vector3d vector3d = this.getPosition();
+            Vec3 vector3d = this.getPosition();
             if (vector3d == null) {
                 return false;
             } else {
@@ -71,37 +69,37 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     }
 
     @Nullable
-    protected Vector3d getPosition() {
-        Vector3d travelVector = new Vector3d(this.creature.getDeltaMovement().x(), this.creature.getDeltaMovement().y(), this.creature.getDeltaMovement().z());
-        Vector3d vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector);
+    protected Vec3 getPosition() {
+        Vec3 travelVector = new Vec3(this.creature.getDeltaMovement().x(), this.creature.getDeltaMovement().y(), this.creature.getDeltaMovement().z());
+        BlockPos target = RandomPos.generateRandomPosTowardDirection(this.creature,30,new Random(),new BlockPos(travelVector));
 
-        for (int i = 0; vector != null && !this.creature.level.getBlockState(new BlockPos(vector)).isPathfindable(this.creature.level, new BlockPos(vector), PathType.WATER) && i++ < 15;
-            vector = RandomPositionGenerator.getPosTowards(this.creature,30,20,travelVector))
+        for (int i = 0; target != null && !this.creature.level.getBlockState(new BlockPos(target)).isPathfindable(this.creature.level, new BlockPos(target), PathComputationType.WATER) && i++ < 15;
+             target = RandomPos.generateRandomPosTowardDirection(this.creature,30,new Random(),new BlockPos(travelVector)));
         {}
-        if (vector != null) {
+        if (target != null) {
 
-            Vector3d creaturePos = this.creature.position();
-            double distance = creaturePos.subtract(vector).length();
+            Vec3 creaturePos = this.creature.position();
+            double distance = creaturePos.subtract(Vec3.atCenterOf(target)).length();
 
             if (distance < 7) {
                 return null;
             }
 
             for (int i = 0; i <= avoidDistance; i++) {
-                if (!this.creature.level.getFluidState(new BlockPos(vector).north(i)).is(FluidTags.WATER)) {
-                    vector = null;
+                if (!this.creature.level.getFluidState(new BlockPos(target).north(i)).is(FluidTags.WATER)) {
+                    target = null;
                     break;
                 }
-                if (!this.creature.level.getFluidState(new BlockPos(vector).south(i)).is(FluidTags.WATER)) {
-                    vector = null;
+                if (!this.creature.level.getFluidState(new BlockPos(target).south(i)).is(FluidTags.WATER)) {
+                    target = null;
                     break;
                 }
-                if (!this.creature.level.getFluidState(new BlockPos(vector).east(i)).is(FluidTags.WATER)) {
-                    vector = null;
+                if (!this.creature.level.getFluidState(new BlockPos(target).east(i)).is(FluidTags.WATER)) {
+                    target = null;
                     break;
                 }
-                if (!this.creature.level.getFluidState(new BlockPos(vector).west(i)).is(FluidTags.WATER)) {
-                    vector = null;
+                if (!this.creature.level.getFluidState(new BlockPos(target).west(i)).is(FluidTags.WATER)) {
+                    target = null;
                     break;
                 }
             }
@@ -120,7 +118,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
 
  */
         }
-        return vector;
+        return Vec3.atCenterOf(target);
     }
 
     @Override

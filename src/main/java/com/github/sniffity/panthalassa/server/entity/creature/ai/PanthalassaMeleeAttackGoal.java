@@ -4,16 +4,16 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 import java.util.EnumSet;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.InteractionHand;
 
 public class PanthalassaMeleeAttackGoal extends Goal {
-    protected final CreatureEntity attacker;
+    protected final PathfinderMob attacker;
     private final double speedTowardsTarget;
     private final boolean longMemory;
     private Path path;
@@ -25,7 +25,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     private long lastCanUseCheck;
 
 
-    public PanthalassaMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory) {
+    public PanthalassaMeleeAttackGoal(PathfinderMob creature, double speedIn, boolean useLongMemory) {
         this.attacker = creature;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
@@ -73,7 +73,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         } else if (!this.attacker.isWithinRestriction(livingentity.blockPosition())) {
             return false;
         } else {
-            return !(livingentity instanceof PlayerEntity) || !livingentity.isSpectator() && !((PlayerEntity)livingentity).isCreative();
+            return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
         }
     }
 
@@ -89,7 +89,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     @Override
     public void stop() {
         LivingEntity livingentity = this.attacker.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
             this.attacker.setTarget((LivingEntity)null);
         }
 
@@ -109,7 +109,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
 
         this.delayCounter = Math.max(this.delayCounter - 1, 0);
 
-        if ((this.longMemory || this.attacker.getSensing().canSee(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRandom().nextFloat() < 0.05F)) {
+        if ((this.longMemory || this.attacker.getSensing().hasLineOfSight(livingentity)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRandom().nextFloat() < 0.05F)) {
             this.targetX = livingentity.getX();
             this.targetY = livingentity.getY();
             this.targetZ = livingentity.getZ();
@@ -132,7 +132,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         double d0 = this.getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0 && this.ticksUntilNextAttack <= 0) {
             this.resetAttackCooldown();
-            this.attacker.swing(Hand.MAIN_HAND);
+            this.attacker.swing(InteractionHand.MAIN_HAND);
             ((PanthalassaEntity) this.attacker).setAttackingState(true);
 
             this.attacker.doHurtTarget(enemy);

@@ -1,27 +1,23 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.fish.CodEntity;
-import net.minecraft.entity.passive.fish.SalmonEntity;
-import net.minecraft.entity.passive.fish.TropicalFishEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.animal.Cod;
+import net.minecraft.world.entity.animal.Salmon;
+import net.minecraft.world.entity.animal.TropicalFish;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -33,7 +29,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 
-public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, IMob {
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+
+public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, Enemy {
 
     public static final int BLOCKED_DISTANCE = 2;
     public static final float SCHOOL_SPEED = 1.0F;
@@ -44,17 +46,17 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     public float adjustYaw;
     public float adjustment = 0.10F;
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityLeedsichthys.class, DataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityLeedsichthys.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
 
-    public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, World worldIn) {
+    public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this);
-        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
-        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
 
     }
 
@@ -86,7 +88,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
@@ -125,8 +127,8 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     }
 
-    public static AttributeModifierMap.MutableAttribute leedsichthysAttributes() {
-        return MobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder leedsichthysAttributes() {
+        return Mob.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 20)
                 .add(Attributes.ATTACK_KNOCKBACK, 2)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 2)
@@ -142,7 +144,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(3, new PanthalassaMeleeAttackGoal(this, 1.3F, false));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof CodEntity || entity instanceof SalmonEntity || entity instanceof TropicalFishEntity)));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof Cod || entity instanceof Salmon || entity instanceof TropicalFish)));
     }
 
     public void setAirSupplyLocal(int airSupply) {

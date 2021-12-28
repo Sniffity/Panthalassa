@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.client.model.vehicle;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class ModelAGII extends AnimatedGeoModel<VehicleAGII>

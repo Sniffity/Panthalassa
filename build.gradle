@@ -5,41 +5,30 @@ buildscript {
         maven { url='https://repo.spongepowered.org/repository/maven-public/' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 
-
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-
-version = '0.5.0'
+version = "${mod_version}+${mc_version}"
 group = 'com.github.sniffity.panthalassa'
-archivesBaseName = 'panthalassa'
+archivesBaseName = "${modid}_forge"
 
-mixin {
-    add sourceSets.main, "panthalassa.refmap.json"
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
-
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: "official", version: "1.16.5"
+    mappings channel: "official", version: "${mc_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-   
-
 
     runs {
         client {
             workingDirectory project.file('run')
-            arg "-mixin.config=panthalassa.mixins.json"
-            property 'forge.logging.markers', 'REGISTRIES'
+            arg "-mixin.config=" + project.getProperty('modid') + ".mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.console.level', 'debug'
@@ -52,11 +41,9 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            arg "-mixin.config=panthalassa.mixins.json"
-            property 'forge.logging.markers', 'REGISTRIES'
+            arg "-mixin.config=" + project.getProperty('modid') + ".mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.console.level', 'debug'
             mods {
                 panthalassa {
                     source sourceSets.main
@@ -66,55 +53,16 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
             args '--mod', 'panthalassa', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            arg "-mixin.config=" + project.getProperty('modid') + ".mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 panthalassa  {
                     source sourceSets.main
                 }
             }
-        }
-    }
-}
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.2'
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.16.5:3.0.43')
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.1:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.1")
-    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
-}
-
-jar {
-    manifest {
-        attributes([
-            "Specification-Title": "panthalassa",
-            "Specification-Vendor": "panthalassaareus",
-            "Specification-Version": "1",
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"panthalassaareus",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "panthalassa.mixins.json"
-        ])
-    }
-}
-
-jar.finalizedBy('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
 }
@@ -126,3 +74,22 @@ repositories {
         url = "https://maven.blamejared.com"
     }
 }
+
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    if (System.getProperty("idea.sync.active") != "true") {
+        annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    }
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63:api")
+
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')}
+
+
+
+mixin {
+    add sourceSets.main, "${modid}.refmap.json"
+}
+
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'

@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -10,6 +10,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import javax.annotation.Nullable;
 
 import static java.lang.Math.PI;
+
 
 public class ModelArchelon extends AnimatedGeoModel<EntityArchelon>
 {

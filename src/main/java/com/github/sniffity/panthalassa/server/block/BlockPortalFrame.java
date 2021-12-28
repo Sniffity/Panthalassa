@@ -1,20 +1,13 @@
 package com.github.sniffity.panthalassa.server.block;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
-
-import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Panthalassa Mod - Class: BlockPortalFrame <br></br?>
@@ -40,7 +33,7 @@ public class BlockPortalFrame extends Block {
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (worldIn.hasNeighborSignal(pos)) {
             if (isPanthalassaPortal(worldIn.getBlockState(pos.offset(1, 0, 0))) ||
                     isPanthalassaPortal(worldIn.getBlockState(pos.offset(-1, 0, 0))) ||

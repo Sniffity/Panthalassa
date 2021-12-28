@@ -3,44 +3,48 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import java.util.Random;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.KelpTopBlock;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.KelpBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class FeatureAbyssalOvergrowthKelp extends Feature<NoFeatureConfig> {
-    public FeatureAbyssalOvergrowthKelp(Codec<NoFeatureConfig> p_i231967_1_) {
+public class FeatureAbyssalOvergrowthKelp extends Feature<NoneFeatureConfiguration> {
+    public FeatureAbyssalOvergrowthKelp(Codec<NoneFeatureConfiguration> p_i231967_1_) {
         super(p_i231967_1_);
     }
 
     @Override
-    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159446_) {
+        BlockPos pos = p_159446_.origin();
+        WorldGenLevel worldgenlevel = p_159446_.level();
+        Random rand = p_159446_.random();
+
+
         int i = 0;
         int kelp_limit = 128;
         double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockpos = new BlockPos(pos.getX(), r, pos.getZ());
-        if ((reader.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))&&(pos.getY()<kelp_limit)) {
+        if ((worldgenlevel.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()))&&(pos.getY()<kelp_limit)) {
             BlockState blockstate = Blocks.KELP.defaultBlockState();
             BlockState blockstate1 = Blocks.KELP_PLANT.defaultBlockState();
             int k = 1 + rand.nextInt(100);
 
             for(int l = 0; l <= k; ++l) {
-                if (reader.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && (reader.getBlockState(blockpos.above()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && blockstate1.canSurvive(reader, blockpos) && !reader.getBlockState(blockpos.below()).is(Blocks.KELP))) {
+                if (worldgenlevel.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && (worldgenlevel.getBlockState(blockpos.above()).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && blockstate1.canSurvive(worldgenlevel, blockpos) && !worldgenlevel.getBlockState(blockpos.below()).is(Blocks.KELP))) {
                     if (l == k) {
-                        reader.setBlock(blockpos, blockstate.setValue(KelpTopBlock.AGE, Integer.valueOf(rand.nextInt(4) + 20)), 2);
+                        worldgenlevel.setBlock(blockpos, blockstate.setValue(KelpBlock.AGE, Integer.valueOf(rand.nextInt(4) + 20)), 2);
                         ++i;
                     } else {
-                        reader.setBlock(blockpos, blockstate1, 2);
+                        worldgenlevel.setBlock(blockpos, blockstate1, 2);
                     }
                 } else if (l > 0) {
                     BlockPos blockpos1 = blockpos.below();
-                    if ((blockstate.canSurvive(reader, blockpos1) && !reader.getBlockState(blockpos1.below()).is(Blocks.KELP))) {
-                        reader.setBlock(blockpos1, blockstate.setValue(KelpTopBlock.AGE, Integer.valueOf(rand.nextInt(4) + 20)), 2);
+                    if ((blockstate.canSurvive(worldgenlevel, blockpos1) && !worldgenlevel.getBlockState(blockpos1.below()).is(Blocks.KELP))) {
+                        worldgenlevel.setBlock(blockpos1, blockstate.setValue(KelpBlock.AGE, Integer.valueOf(rand.nextInt(4) + 20)), 2);
                         ++i;
                     }
                     break;

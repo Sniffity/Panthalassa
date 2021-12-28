@@ -1,30 +1,37 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.creature.ai.IBreachable;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.DolphinLookController;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 
-import net.minecraft.pathfinding.SwimmerPathNavigator;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 
 import java.util.Random;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PathfinderMob;
 
 /**
  * Panthalassa Mod - Class: PanthalassaEntity <br></br?>
@@ -35,16 +42,16 @@ import java.util.Random;
  * with permission from the mod's creator Alexthe666. All credit goes to him.
  */
 
-public abstract class PanthalassaEntity extends CreatureEntity {
+public abstract class PanthalassaEntity extends PathfinderMob {
 
     public boolean isTryingToBreach;
     public boolean isLandNavigator;
 
-    protected static final DataParameter<Boolean> ATTACKING_STATE = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
+    public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.lookControl = new DolphinLookController(this, 10);
+        this.lookControl = new SmoothSwimmingLookControl(this, 10);
         this.switchToLandNavigator(false);
     }
 
@@ -74,7 +81,7 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         return true;
     }
 
-    public void travel(Vector3d travelVector) {
+    public void travel(Vec3 travelVector) {
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
@@ -101,7 +108,7 @@ public abstract class PanthalassaEntity extends CreatureEntity {
 
         if (flag) {
             if (i > 0) {
-                ((PlayerEntity) entityIn).knockback(i * 0.5F, MathHelper.sin(this.yRot * 0.017453292F), (-MathHelper.cos(this.yRot * 0.017453292F)));
+                ((Player) entityIn).knockback(i * 0.5F, Mth.sin(this.yRot * 0.017453292F), (-Mth.cos(this.yRot * 0.017453292F)));
             }
 
             int j = EnchantmentHelper.getFireAspect(this);
@@ -110,12 +117,12 @@ public abstract class PanthalassaEntity extends CreatureEntity {
                 entityIn.setSecondsOnFire(j * 4);
             }
 
-            if (entityIn instanceof PlayerEntity) {
-                PlayerEntity entityplayer = (PlayerEntity) entityIn;
+            if (entityIn instanceof Player) {
+                Player entityplayer = (Player) entityIn;
                 ItemStack itemstack = this.getMainHandItem();
                 ItemStack itemstack1 = entityplayer.isUsingItem() ? entityplayer.getUseItem() : ItemStack.EMPTY;
 
-                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
+                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.is(Items.SHIELD)) {
                     float f1 = 0.25F + EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
 
                     if (this.random.nextFloat() < f1) {
@@ -128,7 +135,7 @@ public abstract class PanthalassaEntity extends CreatureEntity {
         }
         return flag;
     }
-    public static boolean canPanthalassaEntitySpawn(EntityType<? extends PanthalassaEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+    public static boolean canPanthalassaEntitySpawn(EntityType<? extends PanthalassaEntity> type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
         if (pos.getY()>20 && pos.getY()<110) {
             return true;
         }
@@ -136,18 +143,18 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     }
 
     @Override
-    public boolean checkSpawnObstruction(IWorldReader p_205019_1_) {
+    public boolean checkSpawnObstruction(LevelReader p_205019_1_) {
         return p_205019_1_.containsAnyLiquid(this.getBoundingBox());
     }
 
     public void switchToLandNavigator(boolean isOnLand){
         if (isOnLand) {
-            this.moveControl = new MovementController(this);
-            this.navigation = new GroundPathNavigator(this, level);
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigation(this, level);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new PanthalassaSwimmingHelper(this);
-            this.navigation = new SwimmerPathNavigator(this, level);
+            this.navigation = new WaterBoundPathNavigation(this, level);
             this.isLandNavigator = false;
         }
     }

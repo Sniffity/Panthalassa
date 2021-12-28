@@ -5,11 +5,11 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.ChatFormatting;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.awt.*;
@@ -40,7 +40,7 @@ public class RenderTickEvent {
         if (!game.isWindowActive() || game.options.hideGui)
             return;
 
-        PlayerEntity player = game.player;
+        Player player = game.player;
         if (player == null)
             return;
 
@@ -48,30 +48,30 @@ public class RenderTickEvent {
         if (!(playerVehicle instanceof PanthalassaVehicle))
             return;
 
-        MatrixStack matrixStack = new MatrixStack();
+        PoseStack matrixStack = new PoseStack();
         PanthalassaVehicle vehicle = (PanthalassaVehicle) playerVehicle;
 
         String vehicleText;
         if (vehicle instanceof VehicleMRSV) {
             vehicleText = "MANTA RAY SUBMERSIBLE VEHICLE";
-            game.font.drawShadow(matrixStack, TextFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
         }
         if (vehicle instanceof VehicleAGII) {
             vehicleText = "ABYSS GLIDER II SUBMERSIBLE VEHICLE";
-            game.font.drawShadow(matrixStack, TextFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
         }
 
         String vehicleIntegrity;
         if (vehicle.getMaxHealth() != 0) {
             vehicleIntegrity = new DecimalFormat("00").format((vehicle.getHealth() / vehicle.getMaxHealth()) * 100);
             if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>50){
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.GREEN + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.GREEN + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
             } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>20){
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.YELLOW + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.YELLOW + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
             } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>0){
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.RED + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.RED + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
             } else {
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Vehicle Integrity: " + TextFormatting.DARK_PURPLE + "processing...", 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.DARK_PURPLE + "processing...", 10, 25, Color.WHITE.getRGB());
             }
         }
 
@@ -81,7 +81,7 @@ public class RenderTickEvent {
         } else {
             depth = new DecimalFormat("0").format(vehicle.blockPosition().getY());
         }
-        game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Depth: " + TextFormatting.YELLOW + depth, 10, 35, Color.WHITE.getRGB());
+        game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Depth: " + ChatFormatting.YELLOW + depth, 10, 35, Color.WHITE.getRGB());
 
 
         double x = vehicle.getEntryX();
@@ -90,14 +90,14 @@ public class RenderTickEvent {
         String entryZText = new DecimalFormat("0").format(z);
 
         if (x != 0) {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry X: " + TextFormatting.YELLOW + entryXText, 10, 55, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry X: " + ChatFormatting.YELLOW + entryXText, 10, 55, Color.WHITE.getRGB());
         } else {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry X: " + TextFormatting.YELLOW + "???", 10, 55, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry X: " + ChatFormatting.YELLOW + "???", 10, 55, Color.WHITE.getRGB());
         }
         if (z != 0){
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry Z" + TextFormatting.YELLOW + entryZText, 10, 65, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z" + ChatFormatting.YELLOW + entryZText, 10, 65, Color.WHITE.getRGB());
         } else {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Entry Z" + TextFormatting.YELLOW + "???", 10, 65, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z" + ChatFormatting.YELLOW + "???", 10, 65, Color.WHITE.getRGB());
         }
 
         double nlfDistance;
@@ -106,13 +106,13 @@ public class RenderTickEvent {
         nlfDistanceText = new DecimalFormat("0").format(nlfDistance);
 
             if (nlfDistance>10) {
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.GREEN + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "NLF Distance: " + ChatFormatting.GREEN + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
             } else if (nlfDistance>5){
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.YELLOW + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "NLF Distance: " + ChatFormatting.YELLOW + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
             } else if (nlfDistance>=0) {
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.RED + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "NLF Distance: " + ChatFormatting.RED + nlfDistanceText, 10, 220, Color.WHITE.getRGB());
             } else {
-                game.font.drawShadow(matrixStack, TextFormatting.AQUA + "NLF Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 220, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "NLF Distance: " + ChatFormatting.DARK_PURPLE + "processing...", 10, 220, Color.WHITE.getRGB());
         }
 
         int floorDistance;
@@ -121,13 +121,13 @@ public class RenderTickEvent {
         floorDistanceText = new DecimalFormat("0").format(floorDistance);
 
         if (floorDistance>20) {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.GREEN + floorDistanceText, 10, 230, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Floor Distance: " + ChatFormatting.GREEN + floorDistanceText, 10, 230, Color.WHITE.getRGB());
         } else if (floorDistance>10) {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.YELLOW + floorDistanceText, 10, 230, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Floor Distance: " + ChatFormatting.YELLOW + floorDistanceText, 10, 230, Color.WHITE.getRGB());
         } else if (floorDistance>=0) {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.RED + floorDistanceText, 10, 230, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Floor Distance: " + ChatFormatting.RED + floorDistanceText, 10, 230, Color.WHITE.getRGB());
         } else {
-            game.font.drawShadow(matrixStack, TextFormatting.AQUA + "Floor Distance: " + TextFormatting.DARK_PURPLE + "processing...", 10, 230, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Floor Distance: " + ChatFormatting.DARK_PURPLE + "processing...", 10, 230, Color.WHITE.getRGB());
         }
     }
 }

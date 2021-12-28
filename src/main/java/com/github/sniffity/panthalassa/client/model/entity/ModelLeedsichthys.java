@@ -1,10 +1,9 @@
 package com.github.sniffity.panthalassa.client.model.entity;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityKronosaurus;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityLeedsichthys;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -12,6 +11,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import javax.annotation.Nullable;
 
 import static java.lang.Math.PI;
+
 
 public class ModelLeedsichthys extends AnimatedGeoModel<EntityLeedsichthys>
 {
@@ -34,7 +34,7 @@ public class ModelLeedsichthys extends AnimatedGeoModel<EntityLeedsichthys>
     public void setLivingAnimations(EntityLeedsichthys entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
-            (this.getAnimationProcessor().getBone("body")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z)))));
+            (this.getAnimationProcessor().getBone("body")).setRotationX( (float) (Mth.atan2((entity.getDeltaMovement().y),Mth.sqrt((float) ((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z))))));
         }
         (this.getAnimationProcessor().getBone("bodymid1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
         (this.getAnimationProcessor().getBone("bodymid2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);

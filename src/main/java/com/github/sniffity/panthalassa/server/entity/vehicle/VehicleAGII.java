@@ -1,20 +1,19 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -25,23 +24,24 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
+
 public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     public float deltaRotation;
 
-    protected static final DataParameter<Boolean> NET_ACTIVATED = EntityDataManager.defineId(VehicleAGII.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> NET_CATCH = EntityDataManager.defineId(VehicleAGII.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> NET_ACTIVATED = SynchedEntityData.defineId(VehicleAGII.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> NET_CATCH = SynchedEntityData.defineId(VehicleAGII.class, EntityDataSerializers.BOOLEAN);
 
-    public VehicleAGII(EntityType<? extends PanthalassaVehicle> type, World world) {
+    public VehicleAGII(EntityType<? extends PanthalassaVehicle> type, Level world) {
         super(type, world);
         this.waterSpeed = 0.04F;
         this.landSpeed = 0.004F;
     }
 
-    public VehicleAGII(World p_i1705_1_, double x, double y, double z) {
+    public VehicleAGII(Level p_i1705_1_, double x, double y, double z) {
         this(PanthalassaEntityTypes.AGII.get(), p_i1705_1_);
         this.setPos(x, y, z);
-        this.setDeltaMovement(Vector3d.ZERO);
+        this.setDeltaMovement(Vec3.ZERO);
         this.xo = x;
         this.yo = y;
         this.zo = z;
@@ -59,11 +59,11 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT compound) {
-        if (compound.contains("netActivated", Constants.NBT.TAG_BYTE)) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        if (compound.contains("netActivated")) {
             this.setNetActivated(compound.getBoolean("netActivated"));
         }
-        if (compound.contains("netCatch", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("netCatch")) {
             this.setNetCatch(compound.getBoolean("netCatch"));
         }
 
@@ -71,7 +71,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         {
             compound.putBoolean("netActivated", this.getNetActivated());
 
@@ -136,11 +136,11 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         if (getNetCatch()) {
             if (passengers.size() > 1) {
                 LivingEntity netTarget = (LivingEntity) passengers.get(1);
-                netTarget.addEffect(new EffectInstance(Effects.WEAKNESS, 20, 20));
+                netTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 20, 20));
             }
         }
         if (!this.getPassengers().isEmpty()) {
-            if (!(this.getPassengers().get(0) instanceof PlayerEntity)){
+            if (!(this.getPassengers().get(0) instanceof Player)){
                 this.ejectPassengers();
                 setNetCatch(false);
             }
@@ -173,11 +173,11 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     public boolean attemptNet(PanthalassaVehicle vehicle) {
         if (!getNetCatch() && getNetActivated()) {
-            List<Entity> entities = level.getEntities(vehicle, new AxisAlignedBB(vehicle.getX() - 5, vehicle.getY() - 5, vehicle.getZ() - 5, vehicle.getX() + 5, vehicle.getY() + 5, vehicle.getZ() + 5));
+            List<Entity> entities = level.getEntities(vehicle, new AABB(vehicle.getX() - 5, vehicle.getY() - 5, vehicle.getZ() - 5, vehicle.getX() + 5, vehicle.getY() + 5, vehicle.getZ() + 5));
             float closestDistance = 100F;
             if (entities.size() != 0) {
                 for (Entity testEntity : entities) {
-                    if (testEntity instanceof LivingEntity && !(testEntity instanceof PlayerEntity) && testEntity.getVehicle() == null) {
+                    if (testEntity instanceof LivingEntity && !(testEntity instanceof Player) && testEntity.getVehicle() == null) {
                         float distance = distanceTo(testEntity);
                         if (distance < closestDistance) {
                             closestDistance = distance;
@@ -244,7 +244,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
                 }
             }
 
-            Vector3d vector3d = (new Vector3d((double)f, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+            Vec3 vector3d = (new Vec3((double)f, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
             passenger.setPos(this.getX() + vector3d.x, this.getY() + (double)f1+f2, this.getZ() + vector3d.z);
             passenger.yRot += this.deltaRotation;
             passenger.setYHeadRot((passenger.getYHeadRot() + this.deltaRotation));

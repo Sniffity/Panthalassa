@@ -2,20 +2,18 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -27,24 +25,34 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, IMob, ISchoolable {
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+
+public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
     public float adjustment = 0.25F;
 
-    protected static final DataParameter<Integer> AIR_SUPPLY = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.INT);
-    protected static final DataParameter<Boolean> LEADER = EntityDataManager.defineId(EntityKronosaurus.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, World worldIn) {
+    public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.noCulling = true;
         this.moveControl = new PanthalassaSwimmingHelper(this);
-        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
-        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
 
     }
 
@@ -84,7 +92,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, CompoundNBT compound) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
@@ -121,8 +129,8 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     }
 
-    public static AttributeModifierMap.MutableAttribute kronosaurusAttributes() {
-        return MobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder kronosaurusAttributes() {
+        return Mob.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 20)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
@@ -138,8 +146,8 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof PlayerEntity) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)) ));
     }
 

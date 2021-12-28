@@ -5,32 +5,32 @@ import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.world.teleporter.PanthalassaTeleporter;
 import com.github.sniffity.panthalassa.server.world.teleporter.TeleporterLogic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
@@ -46,9 +46,9 @@ import java.util.Set;
  * UltraAmplifiedDimension and The Twilight Forest mods implement their own respective teleportation systems.
  */
 
-public class BlockPortal extends Block implements ITileEntityProvider {
+public class BlockPortal extends Block implements EntityBlock {
 
-    private static final VoxelShape portalShape = VoxelShapes.box(0.0D, 0.0, 0.0D, 1.0D, 1.0D, 1.0D);
+    private static final VoxelShape portalShape = Shapes.box(0.0D, 0.0, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockPortal() {
         super(Properties.of(
@@ -60,13 +60,13 @@ public class BlockPortal extends Block implements ITileEntityProvider {
                 .randomTicks());
     }
 
-    public static void changeDimension(ServerWorld initialWorld, Entity entity, BlockPos portalBlockPos, PanthalassaTeleporter teleporter) {
+    public static void changeDimension(ServerLevel initialWorld, Entity entity, BlockPos portalBlockPos, PanthalassaTeleporter teleporter) {
 
         // If portal block is connected to a portal in other dimension already, just teleport right away
-        TileEntity tileEntity = initialWorld.getBlockEntity(portalBlockPos);
-        if (tileEntity instanceof BlockPortalTileEntity) {
-            BlockPortalTileEntity portalTE = (BlockPortalTileEntity) tileEntity;
-            ServerWorld targetWorld = initialWorld.getServer().getLevel(portalTE.destinationWorld);
+        BlockEntity tileEntity = initialWorld.getBlockEntity(portalBlockPos);
+        if (tileEntity instanceof BlockPortalBlockEntity) {
+            BlockPortalBlockEntity portalTE = (BlockPortalBlockEntity) tileEntity;
+            ServerLevel targetWorld = initialWorld.getServer().getLevel(portalTE.destinationWorld);
             if (targetWorld != null && portalTE.destinationPos != null && targetWorld.getBlockState(portalTE.destinationPos).is(PanthalassaBlocks.PORTAL.get())) {
                 TeleporterLogic.teleport(entity, targetWorld, initialWorld, portalTE.destinationPos);
                 return;
@@ -74,8 +74,8 @@ public class BlockPortal extends Block implements ITileEntityProvider {
         }
 
         // Portal block is unlinked. Time to create new portal and link the two together.
-        RegistryKey<World> targetWorldKey = initialWorld.dimension() == PanthalassaDimension.PANTHALASSA ? World.OVERWORLD : PanthalassaDimension.PANTHALASSA;
-        ServerWorld targetWorld = initialWorld.getServer().getLevel(targetWorldKey);
+        ResourceKey<Level> targetWorldKey = initialWorld.dimension() == PanthalassaDimension.PANTHALASSA ? Level.OVERWORLD : PanthalassaDimension.PANTHALASSA;
+        ServerLevel targetWorld = initialWorld.getServer().getLevel(targetWorldKey);
 
         if (targetWorld != null) {
             TeleporterLogic.teleportAndCreatePortal(entity, portalBlockPos, targetWorld, initialWorld, teleporter);
@@ -86,33 +86,33 @@ public class BlockPortal extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public TileEntity newBlockEntity(IBlockReader blockReader) {
-        return new BlockPortalTileEntity();
+    public BlockEntity newBlockEntity(BlockGetter blockReader) {
+        return new BlockPortalBlockEntity();
     }
 
     @Override
-    public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
+    public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
         return 5.0F;
     }
 
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (!worldIn.isClientSide() && trySpawnPortal(worldIn, pos)) {
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
     }
 
     @Override
     @Nonnull
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return portalShape;
     }
 
     @Override
     @Nonnull
-    public VoxelShape getCollisionShape(@Nonnull BlockState state, @Nonnull IBlockReader reader, @Nonnull BlockPos pos, @Nonnull ISelectionContext context) {
-        return VoxelShapes.empty();
+    public VoxelShape getCollisionShape(@Nonnull BlockState state, @Nonnull BlockGetter reader, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
+        return Shapes.empty();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
         return false;
     }
 
-    public boolean trySpawnPortal(World world, BlockPos pos) {
+    public boolean trySpawnPortal(Level world, BlockPos pos) {
         BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
 
         if (check.match) {
@@ -131,7 +131,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
         }
     }
 
-    public boolean tryDestoyPortal(World world, BlockPos pos) {
+    public boolean tryDestoyPortal(Level world, BlockPos pos) {
         BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
         if (check.match) {
             check.destroyPortalBlocks();
@@ -142,7 +142,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public void neighborChanged(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
+    public void neighborChanged(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock, @Nonnull BlockPos neighborPos, boolean isMoving) {
         BlockPortal.matchShapeSize check = new BlockPortal.matchShapeSize(world, pos);
         if (neighborBlock == this || check.isPanthalassaPortalFrame(neighborBlock.defaultBlockState())) {
             if (!check.match) {
@@ -152,20 +152,20 @@ public class BlockPortal extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public void entityInside(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity entity) {
-        if (world instanceof ServerWorld && !entity.isOnPortalCooldown()) {
-            changeDimension((ServerWorld) world, entity, pos, new PanthalassaTeleporter((ServerWorld) world));
+    public void entityInside(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, @Nonnull Entity entity) {
+        if (world instanceof ServerLevel && !entity.isOnPortalCooldown()) {
+            changeDimension((ServerLevel) world, entity, pos, new PanthalassaTeleporter((ServerLevel) world));
         }
     }
 
     public static class matchShapeSize {
-        private final IWorld world;
+        private final LevelAccessor world;
         public boolean match = true;
         BlockPos centerPosition;
         float minPortalFrameRadius = 6.1f;
         float maxPortalFrameRadius = 7.5f;
 
-        public matchShapeSize(IWorld world, BlockPos pos, boolean createPortal) {
+        public matchShapeSize(LevelAccessor world, BlockPos pos, boolean createPortal) {
             this.world = world;
             if (createPortal) {
                 centerPosition = pos;
@@ -183,12 +183,12 @@ public class BlockPortal extends Block implements ITileEntityProvider {
             }
         }
 
-        public matchShapeSize(IWorld world, BlockPos pos) {
+        public matchShapeSize(LevelAccessor world, BlockPos pos) {
             this(world, pos, false);
         }
 
-        public static void recursivelyFindPortalPositions(IWorld world, BlockPos portalCenter, BlockPos currentOffset, Set<BlockPos> savedOffsets) {
-            BlockPos.Mutable mutable = new BlockPos.Mutable();
+        public static void recursivelyFindPortalPositions(LevelAccessor world, BlockPos portalCenter, BlockPos currentOffset, Set<BlockPos> savedOffsets) {
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             for (Direction side : Direction.Plane.HORIZONTAL) {
                 // Check if we hit frame or not in world space
                 mutable.set(portalCenter).move(currentOffset).move(side);
@@ -245,7 +245,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
         public boolean checkIfValidPortalFrame(BlockPos pos) {
             float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
             float maxRadiusSq = maxPortalFrameRadius * maxPortalFrameRadius;
-            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             for (int x = (int) -maxPortalFrameRadius; x < maxPortalFrameRadius; x++) {
                 for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
                     int distSq = x * x + z * z;
@@ -268,7 +268,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
         public void createPortalFrame() {
             float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
             float maxRadiusSq = maxPortalFrameRadius * maxPortalFrameRadius;
-            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             for (int x = (int) -maxPortalFrameRadius; x < maxPortalFrameRadius; x++) {
                 for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
                     int distSq = x * x + z * z;
@@ -277,7 +277,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
                         this.world.setBlock(mutable, PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 
                         // Helps prevent portal frame from sticking out over ledges
-                        if (((ServerWorld) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
+                        if (((ServerLevel) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
                             while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK)) {
                                 this.world.setBlock(mutable, PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
                             }
@@ -289,7 +289,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
 
         public void createPortalCenter() {
             float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
-            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             for (int x = (int) -minPortalFrameRadius; x < minPortalFrameRadius; x++) {
                 for (int z = (int) -minPortalFrameRadius; z < minPortalFrameRadius; z++) {
                     int distSq = x * x + z * z;
@@ -297,13 +297,13 @@ public class BlockPortal extends Block implements ITileEntityProvider {
                         mutable.set(this.centerPosition).move(x, 0, z);
                         this.world.setBlock(mutable, PanthalassaBlocks.PORTAL.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 
-                        TileEntity tileEntity = this.world.getBlockEntity(mutable);
-                        if (tileEntity instanceof BlockPortalTileEntity) {
-                            ((BlockPortalTileEntity) tileEntity).offsetFromCenter = new BlockPos(x, 0, z);
+                        BlockEntity tileEntity = this.world.getBlockEntity(mutable);
+                        if (tileEntity instanceof BlockPortalBlockEntity) {
+                            ((BlockPortalBlockEntity) tileEntity).offsetFromCenter = new BlockPos(x, 0, z);
                         }
 
                         // Helps create some space for mobs to swim into portal
-                        if (((ServerWorld) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
+                        if (((ServerLevel) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
                             while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK) && mutable.getY() < this.centerPosition.getY() + 7) {
                                 this.world.setBlock(mutable, Blocks.WATER.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
                             }
@@ -313,10 +313,10 @@ public class BlockPortal extends Block implements ITileEntityProvider {
             }
         }
 
-        public void linkPortalCenters(IWorld otherWorld, BlockPos centerOfOtherPortal) {
+        public void linkPortalCenters(LevelAccessor otherWorld, BlockPos centerOfOtherPortal) {
             float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
-            BlockPos.Mutable mutable1 = new BlockPos.Mutable();
-            BlockPos.Mutable mutable2 = new BlockPos.Mutable();
+            BlockPos.MutableBlockPos mutable1 = new BlockPos.MutableBlockPos();
+            BlockPos.MutableBlockPos mutable2 = new BlockPos.MutableBlockPos();
             for (int x = (int) -maxPortalFrameRadius; x < maxPortalFrameRadius; x++) {
                 for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
                     int distSq = x * x + z * z;
@@ -324,11 +324,11 @@ public class BlockPortal extends Block implements ITileEntityProvider {
                         mutable1.set(this.centerPosition).move(x, 0, z);
                         mutable2.set(centerOfOtherPortal).move(x, 0, z);
 
-                        TileEntity tileEntity1 = this.world.getBlockEntity(mutable1);
-                        TileEntity tileEntity2 = otherWorld.getBlockEntity(mutable2);
-                        if (tileEntity1 instanceof BlockPortalTileEntity && tileEntity2 instanceof BlockPortalTileEntity) {
-                            BlockPortalTileEntity portal1 = ((BlockPortalTileEntity) tileEntity1);
-                            BlockPortalTileEntity portal2 = ((BlockPortalTileEntity) tileEntity2);
+                        BlockEntity tileEntity1 = this.world.getBlockEntity(mutable1);
+                        BlockEntity tileEntity2 = otherWorld.getBlockEntity(mutable2);
+                        if (tileEntity1 instanceof BlockPortalBlockEntity && tileEntity2 instanceof BlockPortalBlockEntity) {
+                            BlockPortalBlockEntity portal1 = ((BlockPortalBlockEntity) tileEntity1);
+                            BlockPortalBlockEntity portal2 = ((BlockPortalBlockEntity) tileEntity2);
 
                             portal1.destinationPos = portal2.getBlockPos();
                             portal1.destinationWorld = portal2.getLevel().dimension();

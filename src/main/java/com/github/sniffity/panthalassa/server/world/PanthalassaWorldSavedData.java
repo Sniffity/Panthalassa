@@ -1,19 +1,20 @@
 package com.github.sniffity.panthalassa.server.world;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.server.TicketType;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.world.level.saveddata.SavedData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,23 +28,28 @@ import java.util.UUID;
  * UltraAmplifiedDimension and The Twilight Forest mods implement their own respective teleportation systems.
  */
 
-public class PanthalassaWorldSavedData extends WorldSavedData {
-
+public class PanthalassaWorldSavedData extends SavedData {
 
     public static final String DATA_KEY = Panthalassa.MODID + ":world_data";
+    private static final PanthalassaWorldSavedData CLIENT_DUMMY = new PanthalassaWorldSavedData(null);
+
+    public PanthalassaWorldSavedData(CompoundTag tag) {}
+
+
     private List<PlayerTeleportEntry> playerTeleportQueue = new ArrayList<>();
     private List<EntityTeleportEntry> entityTeleportQueue = new ArrayList<>();
     private List<VehicleCompundTeleportEntry> vehicleCompundTeleportQueue = new ArrayList<>();
 
-    public PanthalassaWorldSavedData() {
-        super(DATA_KEY);
-    }
 
-    public static PanthalassaWorldSavedData get(ServerWorld world) {
-        return world.getDataStorage().computeIfAbsent(PanthalassaWorldSavedData::new, DATA_KEY);
-    }
+    public static PanthalassaWorldSavedData get(Level world) {
+        if (!(world instanceof ServerLevel)) {
+            return CLIENT_DUMMY;
+        }
 
-    public static void tick(ServerWorld world) {
+        DimensionDataStorage storage = ((ServerLevel)world).getDataStorage();
+        return storage.get(PanthalassaWorldSavedData::new, DATA_KEY);
+    }
+    public static void tick(ServerLevel world) {
         MinecraftServer server = world.getServer();
         PanthalassaWorldSavedData data = get(world);
 
@@ -58,9 +64,9 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
         for (VehicleCompundTeleportEntry entry : compoundList) {
             Entity vehicle = entry.entity;
-            ServerWorld targetWorld = server.getLevel(entry.targetWorld);
-            ServerWorld originalWorld = server.getLevel(entry.originalWorld);
-            Vector3d targetVec = entry.targetVec;
+            ServerLevel targetWorld = server.getLevel(entry.targetWorld);
+            ServerLevel originalWorld = server.getLevel(entry.originalWorld);
+            Vec3 targetVec = entry.targetVec;
 
             if (targetWorld != null && vehicle != null) {
                 Entity vehicle2 = vehicle.getType().create(targetWorld);
@@ -72,22 +78,22 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                 assert vehicle2 != null;
                 vehicle2.restoreFrom(vehicle);
                 vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
-                vehicle2.setDeltaMovement(0,0,0);
-                targetWorld.addFromAnotherDimension(vehicle2);
+                vehicle2.setDeltaMovement(0, 0, 0);
+                targetWorld.addDuringTeleport(vehicle2);
                 vehicle2.setPortalCooldown();
 
-                vehicle.remove();
+                vehicle.discard();
 
                 assert originalWorld != null;
                 originalWorld.resetEmptyTime();
                 targetWorld.resetEmptyTime();
 
-                while (vehicle.getPassengers().size()>0) {
+                while (vehicle.getPassengers().size() > 0) {
                     Entity passenger = vehicle.getPassengers().get(0);
                     passenger.stopRiding();
 
-                    if (passenger instanceof PlayerEntity) {
-                        ServerPlayerEntity player = (ServerPlayerEntity) passenger;
+                    if (passenger instanceof Player) {
+                        ServerPlayer player = (ServerPlayer) passenger;
                         ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());
                         targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, passenger.getId());
                         originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
@@ -114,10 +120,10 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
                         assert passenger2 != null;
                         passenger2.restoreFrom(passenger);
                         passenger2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), passenger.yRot, passenger.xRot);
-                        passenger2.setDeltaMovement(0,0,0);
-                        targetWorld.addFromAnotherDimension(passenger2);
+                        passenger2.setDeltaMovement(0, 0, 0);
+                        targetWorld.addDuringTeleport(passenger2);
 
-                        passenger.remove();
+                        passenger.discard();
 
                         originalWorld.resetEmptyTime();
                         targetWorld.resetEmptyTime();
@@ -129,90 +135,86 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
         }
 
         for (PlayerTeleportEntry entry : playerList) {
-            ServerPlayerEntity player = server.getPlayerList().getPlayer(entry.playerUUID);
-            ServerWorld targetWorld = server.getLevel(entry.targetWorld);
+            ServerPlayer player = server.getPlayerList().getPlayer(entry.playerUUID);
+            ServerLevel targetWorld = server.getLevel(entry.targetWorld);
             if (player != null && targetWorld != null) {
                 ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
                 targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, player.getId());
 
-                    player.fallDistance = 0;
-                    player.yo = 0;
-                    player.teleportTo(
-                            targetWorld,
-                            entry.targetVec.x(),
-                            entry.targetVec.y() + 0.2D,
-                            entry.targetVec.z(),
-                            entry.yaw,
-                            entry.pitch);
-                    player.setPortalCooldown();
-                }
-            }
-
-            for (EntityTeleportEntry entry : entityList) {
-                Entity entity = entry.entity;
-                ServerWorld targetWorld = server.getLevel(entry.targetWorld);
-                ServerWorld originalWorld = server.getLevel(entry.originalWorld);
-                BlockPos targetBlock = entry.targetBlock;
-
-                assert targetWorld != null;
-                assert originalWorld != null;
-
-                Entity entity2 = entity.getType().create(targetWorld);
-
-                if (entity2 != null) {
-                    ChunkPos entityChunkpos = new ChunkPos(entity.blockPosition());
-                    targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, entity.getId());
-
-                    entity2.restoreFrom(entity);
-                    entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
-                    entity2.setDeltaMovement(0,0,0);
-                    entity2.setPortalCooldown();
-                    targetWorld.addFromAnotherDimension(entity2);
-
-                    entity.remove();
-
-                    originalWorld.resetEmptyTime();
-                    targetWorld.resetEmptyTime();
-                }
+                player.fallDistance = 0;
+                player.yo = 0;
+                player.teleportTo(
+                        targetWorld,
+                        entry.targetVec.x(),
+                        entry.targetVec.y() + 0.2D,
+                        entry.targetVec.z(),
+                        entry.yaw,
+                        entry.pitch);
+                player.setPortalCooldown();
             }
         }
 
+        for (EntityTeleportEntry entry : entityList) {
+            Entity entity = entry.entity;
+            ServerLevel targetWorld = server.getLevel(entry.targetWorld);
+            ServerLevel originalWorld = server.getLevel(entry.originalWorld);
+            BlockPos targetBlock = entry.targetBlock;
 
-        public void addPlayerTP (PlayerEntity player, RegistryKey < World > destination, Vector3d targetVec,float yaw,
-        float pitch){
-            this.playerTeleportQueue.add(new PlayerTeleportEntry(PlayerEntity.createPlayerUUID(player.getGameProfile()), destination, targetVec, yaw, pitch));
+            assert targetWorld != null;
+            assert originalWorld != null;
+
+            Entity entity2 = entity.getType().create(targetWorld);
+
+            if (entity2 != null) {
+                ChunkPos entityChunkpos = new ChunkPos(entity.blockPosition());
+                targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, entity.getId());
+
+                entity2.restoreFrom(entity);
+                entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
+                entity2.setDeltaMovement(0, 0, 0);
+                entity2.setPortalCooldown();
+                targetWorld.addDuringTeleport(entity2);
+
+                entity.discard();
+
+                originalWorld.resetEmptyTime();
+                targetWorld.resetEmptyTime();
+            }
         }
+    }
 
 
-        public void addEntityTP (Entity
-        entity, RegistryKey < World > destination, RegistryKey < World > origin, Vector3d targetVec,float yaw,
-        float pitch){
-            this.entityTeleportQueue.add(new EntityTeleportEntry(entity, destination, origin, targetVec, yaw, pitch));
-        }
+    public void addPlayerTP(Player player, ResourceKey<Level> destination, Vec3 targetVec, float yaw,
+                            float pitch) {
+        this.playerTeleportQueue.add(new PlayerTeleportEntry(Player.createPlayerUUID(player.getGameProfile()), destination, targetVec, yaw, pitch));
+    }
 
-        public void addCompoundTP (Entity
-        compoundEntity, RegistryKey < World > destination, RegistryKey < World > origin, Vector3d targetVec,float yaw,
-        float pitch){
-            this.vehicleCompundTeleportQueue.add(new VehicleCompundTeleportEntry(compoundEntity, destination, origin, targetVec, yaw, pitch));
-        }
 
-        @Override
-        public void load (CompoundNBT nbt){
-        }
+    public void addEntityTP(Entity
+                                    entity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw,
+                            float pitch) {
+        this.entityTeleportQueue.add(new EntityTeleportEntry(entity, destination, origin, targetVec, yaw, pitch));
+    }
 
-        @Override
-        public CompoundNBT save (CompoundNBT compound){
-            return null;
-        }
+    public void addCompoundTP(Entity
+                                      compoundEntity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw,
+                              float pitch) {
+        this.vehicleCompundTeleportQueue.add(new VehicleCompundTeleportEntry(compoundEntity, destination, origin, targetVec, yaw, pitch));
+    }
+
+    @Override
+    public CompoundTag save (CompoundTag compound){
+        return null;
+    }
 
         static class PlayerTeleportEntry {
             final UUID playerUUID;
-            final RegistryKey<World> targetWorld;
-            final Vector3d targetVec;
+            final ResourceKey<Level> targetWorld;
+            final Vec3 targetVec;
             final float yaw;
             final float pitch;
 
-            public PlayerTeleportEntry(UUID playerUUID, RegistryKey<World> targetWorld, Vector3d targetVec, float yaw, float pitch) {
+            public PlayerTeleportEntry(UUID playerUUID, ResourceKey<Level> targetWorld, Vec3 targetVec, float yaw, float pitch) {
                 this.playerUUID = playerUUID;
                 this.targetWorld = targetWorld;
                 this.targetVec = targetVec;
@@ -224,15 +226,15 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
 
         static class EntityTeleportEntry {
             final Entity entity;
-            final RegistryKey<World> targetWorld;
-            final RegistryKey<World> originalWorld;
+            final ResourceKey<Level> targetWorld;
+            final ResourceKey<Level> originalWorld;
             final BlockPos targetBlock;
             final float yaw;
             final float pitch;
-            final Vector3d targetVec;
+            final Vec3 targetVec;
 
 
-            public EntityTeleportEntry(Entity entity, RegistryKey<World> targetWorld, RegistryKey<World> originalWorld, Vector3d targetVec, float yaw, float pitch) {
+            public EntityTeleportEntry(Entity entity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
                 this.entity = entity;
                 this.targetWorld = targetWorld;
                 this.originalWorld = originalWorld;
@@ -247,14 +249,14 @@ public class PanthalassaWorldSavedData extends WorldSavedData {
         static class VehicleCompundTeleportEntry {
             final Entity entity;
 
-            final RegistryKey<World> targetWorld;
-            final RegistryKey<World> originalWorld;
+            final ResourceKey<Level> targetWorld;
+            final ResourceKey<Level> originalWorld;
             final BlockPos targetBlock;
-            final Vector3d targetVec;
+            final Vec3 targetVec;
             final float yaw;
             final float pitch;
 
-            public VehicleCompundTeleportEntry(Entity compoundEntity, RegistryKey<World> targetWorld, RegistryKey<World> originalWorld, Vector3d targetVec, float yaw, float pitch) {
+            public VehicleCompundTeleportEntry(Entity compoundEntity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
                 this.entity = compoundEntity;
                 this.targetWorld = targetWorld;
                 this.originalWorld = originalWorld;

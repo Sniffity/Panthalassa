@@ -3,13 +3,14 @@ package com.github.sniffity.panthalassa.client.render.vehicle;
 import com.github.sniffity.panthalassa.client.model.vehicle.ModelMRSV;
 import com.github.sniffity.panthalassa.client.render.PanthalassaVehicleRenderer;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.BlockPos;
 
 
 public class RenderMRSV extends PanthalassaVehicleRenderer<VehicleMRSV>{
 
-        public RenderMRSV(EntityRendererManager renderManager) {
+        public RenderMRSV(EntityRendererProvider.Context renderManager) {
             super(renderManager, new ModelMRSV());
             this.shadowRadius = 1.0F;
         }

@@ -1,14 +1,13 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -30,21 +29,21 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
-    protected static final DataParameter<Boolean> IS_BOOSTING = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Float> BOOST_COOLDOWN = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> BOOSTING_TIMER = EntityDataManager.defineId(VehicleMRSV.class, DataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Boolean> IS_BOOSTING = SynchedEntityData.defineId(VehicleMRSV.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Float> BOOST_COOLDOWN = SynchedEntityData.defineId(VehicleMRSV.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> BOOSTING_TIMER = SynchedEntityData.defineId(VehicleMRSV.class, EntityDataSerializers.FLOAT);
 
 
-    public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, World world) {
+    public VehicleMRSV(EntityType<? extends PanthalassaVehicle> type, Level world) {
         super(type, world);
         this.waterSpeed = 0.05F;
         this.landSpeed = 0.004F;
     }
 
-    public VehicleMRSV(World p_i1705_1_, double x, double y, double z) {
+    public VehicleMRSV(Level p_i1705_1_, double x, double y, double z) {
         this(PanthalassaEntityTypes.MRSV.get(), p_i1705_1_);
         this.setPos(x, y, z);
-        this.setDeltaMovement(Vector3d.ZERO);
+        this.setDeltaMovement(Vec3.ZERO);
         this.xo = x;
         this.yo = y;
         this.zo = z;
@@ -62,23 +61,23 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT compound) {
-        if (compound.contains("isBoosting", Constants.NBT.TAG_BYTE)) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        if (compound.contains("isBoosting")) {
             this.setIsBoosting(compound.getBoolean("isBoosting"));
         }
 
-        if (compound.contains("boostCooldown", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("boostCooldown")) {
             this.setBoostCooldown(compound.getFloat("boostCooldown"));
         }
 
-        if (compound.contains("boostingTimer", Constants.NBT.TAG_FLOAT)) {
+        if (compound.contains("boostingTimer")) {
             this.setBoostingTimer(compound.getFloat("boostingTimer"));
         }
         super.readAdditionalSaveData(compound);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         {
             compound.putBoolean("isBoosting", this.getIsBoosting());
             compound.putFloat("boostCooldown", this.getBoostCooldown());

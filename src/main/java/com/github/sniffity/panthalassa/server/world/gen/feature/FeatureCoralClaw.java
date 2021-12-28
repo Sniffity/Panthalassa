@@ -2,24 +2,24 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.feature.CoralFeature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.CoralFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class FeatureCoralClaw extends FeatureAbstractCoral {
-    public FeatureCoralClaw(Codec<NoFeatureConfig> p_i231939_1_) {
+public class FeatureCoralClaw extends CoralFeature {
+    public FeatureCoralClaw(Codec<NoneFeatureConfiguration> p_i231939_1_) {
         super(p_i231939_1_);
     }
 
-    protected boolean placeFeature(IWorld p_204623_1_, Random p_204623_2_, BlockPos p_204623_3_, BlockState p_204623_4_) {
+    protected boolean placeFeature(LevelAccessor p_204623_1_, Random p_204623_2_, BlockPos p_204623_3_, BlockState p_204623_4_) {
         double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockposAdjusted = new BlockPos(p_204623_3_.getX(),r,p_204623_3_.getZ());
         if (!this.placeCoralBlock(p_204623_1_, p_204623_2_, blockposAdjusted, p_204623_4_)) {
@@ -31,7 +31,7 @@ public class FeatureCoralClaw extends FeatureAbstractCoral {
             Collections.shuffle(list, p_204623_2_);
 
             for(Direction direction1 : list.subList(0, i)) {
-                BlockPos.Mutable blockpos$mutable = blockposAdjusted.mutable();
+                BlockPos.MutableBlockPos blockpos$mutable = blockposAdjusted.mutable();
                 int j = p_204623_2_.nextInt(2) + 1;
                 blockpos$mutable.move(direction1);
                 int k;
@@ -46,7 +46,7 @@ public class FeatureCoralClaw extends FeatureAbstractCoral {
                     k = p_204623_2_.nextInt(3) + 3;
                 }
 
-                for(int l = 0; l < j && this.placeSecondaryCoralBlock(p_204623_1_, p_204623_2_, blockpos$mutable, p_204623_4_); ++l) {
+                for(int l = 0; l < j && this.placeCoralBlock(p_204623_1_, p_204623_2_, blockpos$mutable, p_204623_4_); ++l) {
                     blockpos$mutable.move(direction2);
                 }
 
@@ -55,7 +55,7 @@ public class FeatureCoralClaw extends FeatureAbstractCoral {
 
                 for(int i1 = 0; i1 < k; ++i1) {
                     blockpos$mutable.move(direction);
-                    if (!this.placeSecondaryCoralBlock(p_204623_1_, p_204623_2_, blockpos$mutable, p_204623_4_)) {
+                    if (!this.placeCoralBlock(p_204623_1_, p_204623_2_, blockpos$mutable, p_204623_4_)) {
                         break;
                     }
 

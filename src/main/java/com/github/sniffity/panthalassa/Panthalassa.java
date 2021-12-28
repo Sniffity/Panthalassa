@@ -5,35 +5,40 @@ import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
-import com.mojang.serialization.Codec;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.FlatChunkGenerator;
-import net.minecraft.world.server.ServerWorld;
+import com.google.common.collect.HashMultimap;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.FlatLevelSource;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 @Mod(Panthalassa.MODID)
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -50,14 +55,14 @@ public final class Panthalassa {
 		PanthalassaBlocks.BLOCKS.register(modBus);
 		PanthalassaItems.ITEMS.register(modBus);
 
-		PanthalassaTileEntities.TILE_ENTITY_TYPES.register(modBus);
+		PanthalassaBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
 
 		PanthalassaStructures.STRUCTURES.register(modBus);
 
-		PanthalassaBiomes.BIOMES.register(modBus);
+		//	PanthalassaBiomes.BIOMES.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
-		PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
+		//	PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 		PanthalassaSounds.SOUND_EVENTS.register(modBus);
 		PanthalassaPOI.POI.register(modBus);
 
@@ -73,13 +78,12 @@ public final class Panthalassa {
 
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
 		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
-		forgeBus.addListener(EventPriority.HIGH, this::biomeModification);
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
 
 	}
 
-	private void setup(final FMLCommonSetupEvent event){
+	private void setup(final FMLCommonSetupEvent event) {
 		PanthalassaPacketHandler.register();
 
 		event.enqueueWork(() -> {
@@ -88,10 +92,6 @@ public final class Panthalassa {
 			PanthalassaEntityTypes.spawnPlacements();
 			PanthalassaDimension.registerDimensionAccessories();
 		});
-	}
-
-	public void biomeModification (final BiomeLoadingEvent event) {
-			event.getGeneration().getStructures().add(() -> PanthalassaConfiguredStructures.CONFIGURED_PANTHALASSA_LABORATORY);
 	}
 
 	private void registerEntityAttributes(EntityAttributeCreationEvent event) {
@@ -105,31 +105,49 @@ public final class Panthalassa {
 
 	}
 
-	private static Method GETCODEC_METHOD;
 	public void addDimensionalSpacing(final WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerWorld){
-			ServerWorld serverWorld = (ServerWorld)event.getWorld();
-			if (serverWorld.getLevel().dimension() != World.OVERWORLD) {
+		if (event.getWorld() instanceof ServerLevel serverLevel) {
+			ChunkGenerator chunkGenerator = serverLevel.getChunkSource().getGenerator();
+			if (chunkGenerator instanceof FlatLevelSource && serverLevel.dimension().equals(Level.OVERWORLD)) {
 				return;
 			}
 
-			try {
-				if(GETCODEC_METHOD == null) GETCODEC_METHOD = ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
-				ResourceLocation cgRL = Registry.CHUNK_GENERATOR.getKey((Codec<? extends ChunkGenerator>) GETCODEC_METHOD.invoke(serverWorld.getChunkSource().generator));
-				if(cgRL != null && cgRL.getNamespace().equals("terraforged")) return;
-			}
-			catch(Exception e){
-				Panthalassa.LOGGER.error("Was unable to check if " + serverWorld.dimension().location() + " is using Terraforged's ChunkGenerator.");
+			HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> PanthalassaStructureMultiMap = new HashMap<>();
+
+			StructureSettings worldStructureConfig = chunkGenerator.getSettings();
+
+			for (Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
+				// Skip all ocean, end, nether, and none category biomes.
+				// You can do checks for other traits that the biome has.
+				Biome.BiomeCategory biomeCategory = biomeEntry.getValue().getBiomeCategory();
+				if (biomeCategory == Biome.BiomeCategory.OCEAN) {
+					associateBiomeToConfiguredStructure(PanthalassaStructureMultiMap, PanthalassaConfiguredStructures.CONFIGURED_PANTHALASSA_LABORATORY, biomeEntry.getKey());
+				}
 			}
 
-
-			if(serverWorld.getChunkSource().getGenerator() instanceof FlatChunkGenerator &&
-					serverWorld.dimension().equals(World.OVERWORLD)){
-				return;
-			}
 		}
 	}
 
+
+	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
+		STStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
+		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = STStructureToMultiMap.get(configuredStructureFeature.feature);
+		if(configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
+			Panthalassa.LOGGER.debug("""
+                    Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
+                    This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
+                    The two conflicting ConfiguredStructures are: {}, {}
+                    The biome that is attempting to be shared: {}
+                """,
+					BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
+					BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biomeRegistryKey).findFirst().get().getKey()),
+					biomeRegistryKey
+			);
+		}
+		else{
+			configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
+		}
+	}
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
 		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {

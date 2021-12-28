@@ -1,21 +1,20 @@
 package com.github.sniffity.panthalassa.client.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.awt.Color;
 import java.util.Collections;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.LightType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import com.mojang.math.Vector3f;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimatableModel;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -30,20 +29,20 @@ import software.bernie.geckolib3.util.AnimationUtils;
 public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends EntityRenderer<T> implements IGeoRenderer<T> {
     private final AnimatedGeoModel<T> modelProvider;
 
-    protected PanthalassaVehicleRenderer(EntityRendererManager renderManager, AnimatedGeoModel<T> modelProvider) {
+    protected PanthalassaVehicleRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> modelProvider) {
         super(renderManager);
         this.modelProvider = modelProvider;
     }
 
-    public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelLocation(entityIn));
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((-entityIn.yRot)+180));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-entityIn.xRot));
-        Minecraft.getInstance().textureManager.bind(this.getTextureLocation(entityIn));
-        Color renderColor = this.getRenderColor(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn);
-        RenderType renderType = this.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, this.getTextureLocation(entityIn));
-        this.render(model, entityIn, partialTicks, renderType, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, getPackedOverlay(entityIn, 0.0F), (float)renderColor.getRed() / 255.0F, (float)renderColor.getGreen() / 255.0F, (float)renderColor.getBlue() / 255.0F, (float)renderColor.getAlpha() / 255.0F);
+        Minecraft.getInstance().textureManager.bindForSetup(this.getTextureLocation(entityIn));
+        Color renderColor = this.getRenderColor(entityIn, partialTicks, matrixStackIn, bufferIn, (VertexConsumer)null, packedLightIn);
+        RenderType renderType = this.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (VertexConsumer)null, packedLightIn, this.getTextureLocation(entityIn));
+        this.render(model, entityIn, partialTicks, renderType, matrixStackIn, bufferIn, (VertexConsumer)null, packedLightIn, getPackedOverlay(entityIn, 0.0F), (float)renderColor.getRed() / 255.0F, (float)renderColor.getGreen() / 255.0F, (float)renderColor.getBlue() / 255.0F, (float)renderColor.getAlpha() / 255.0F);
         float lastLimbDistance = 0.0F;
         float limbSwing = 0.0F;
         EntityModelData entityModelData = new EntityModelData();

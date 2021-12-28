@@ -1,28 +1,20 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
-import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.block.BlockPortalTileEntity;
+import com.github.sniffity.panthalassa.server.block.BlockPortalBlockEntity;
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaPOI;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.village.PointOfInterest;
-import net.minecraft.village.PointOfInterestManager;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.server.level.ServerLevel;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PanthalassaEscapeGoal extends Goal {
 
@@ -45,18 +37,18 @@ public class PanthalassaEscapeGoal extends Goal {
             return false;
         } else {
             int searchRadius = 10;
-            PointOfInterestManager pointofinterestmanager = ((ServerWorld) creature.level).getPoiManager();
-            Optional<PointOfInterest> portalPOI = pointofinterestmanager.getInRange(
+            PoiManager pointofinterestmanager = ((ServerLevel) creature.level).getPoiManager();
+            Optional<PoiRecord> portalPOI = pointofinterestmanager.getInRange(
                     (pointOfInterestType) -> pointOfInterestType == PanthalassaPOI.PANTHALASSA_POI_PORTAL.get(),
                     creature.blockPosition(),
                     searchRadius,
-                    PointOfInterestManager.Status.ANY)
+                    PoiManager.Occupancy.ANY)
                     .findFirst();
 
             if (portalPOI.isPresent()) {
-                BlockPortalTileEntity tempTE = getPortalTE(creature.level, portalPOI.get().getPos());
+                BlockPortalBlockEntity tempTE = getPortalTE(creature.level, portalPOI.get().getPos());
                 if (tempTE != null) {
-                    BlockPortalTileEntity centerTE = getPortalTE(creature.level, portalPOI.get().getPos().subtract(tempTE.offsetFromCenter));
+                    BlockPortalBlockEntity centerTE = getPortalTE(creature.level, portalPOI.get().getPos().subtract(tempTE.offsetFromCenter));
                     if (centerTE != null) {
                         this.targetPos = centerTE.getBlockPos();
                         return true;
@@ -95,9 +87,9 @@ public class PanthalassaEscapeGoal extends Goal {
     @Override
     public void tick(){
         if (creature.distanceToSqr(targetPos.getX(),targetPos.getY(),targetPos.getZ())<50) {
-            Vector3d creaturePos = new Vector3d(creature.getX(),creature.getY(),creature.getZ());
-            Vector3d target = new Vector3d(targetPos.getX(),targetPos.getY(),targetPos.getZ());
-            Vector3d trajectory = target.subtract(creaturePos).normalize();
+            Vec3 creaturePos = new Vec3(creature.getX(),creature.getY(),creature.getZ());
+            Vec3 target = new Vec3(targetPos.getX(),targetPos.getY(),targetPos.getZ());
+            Vec3 trajectory = target.subtract(creaturePos).normalize();
             creature.setDeltaMovement(creature.getDeltaMovement().add(trajectory.x,trajectory.y,trajectory.z));
         }
         tickCounter = tickCounter ++;
@@ -110,10 +102,10 @@ public class PanthalassaEscapeGoal extends Goal {
         super.stop();
     }
 
-    private BlockPortalTileEntity getPortalTE(IWorld world, BlockPos pos) {
-        TileEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof BlockPortalTileEntity) {
-            return (BlockPortalTileEntity) tileEntity;
+    private BlockPortalBlockEntity getPortalTE(LevelAccessor world, BlockPos pos) {
+        BlockEntity tileEntity = world.getBlockEntity(pos);
+        if (tileEntity instanceof BlockPortalBlockEntity) {
+            return (BlockPortalBlockEntity) tileEntity;
         }
         return null;
     }

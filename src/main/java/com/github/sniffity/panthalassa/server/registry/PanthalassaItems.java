@@ -2,15 +2,13 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
-import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.item.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.ItemMRSV;
 import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 
 public class PanthalassaItems {

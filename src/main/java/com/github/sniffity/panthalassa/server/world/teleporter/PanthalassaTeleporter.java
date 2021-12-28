@@ -2,19 +2,19 @@ package com.github.sniffity.panthalassa.server.world.teleporter;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.block.BlockPortal;
-import com.github.sniffity.panthalassa.server.block.BlockPortalTileEntity;
+import com.github.sniffity.panthalassa.server.block.BlockPortalBlockEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
-import net.minecraft.block.PortalInfo;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.TeleportationRepositioner;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.BlockUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.ITeleporter;
 
 import javax.annotation.Nonnull;
@@ -32,32 +32,32 @@ import java.util.Optional;
 
 public class PanthalassaTeleporter implements ITeleporter {
 
-    protected final ServerWorld world;
+    protected final ServerLevel world;
 
-    public PanthalassaTeleporter(ServerWorld worldIn) {
+    public PanthalassaTeleporter(ServerLevel worldIn) {
         this.world = worldIn;
     }
 
     @Nullable
-    public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, BlockPos portalBlockPos) {
+    public PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, BlockPos portalBlockPos) {
 
-        Optional<TeleportationRepositioner.Result> result = makePortalFromPos(destWorld, entity.level, portalBlockPos);
+        Optional<BlockUtil.FoundRectangle> result = makePortalFromPos(destWorld, entity.level, portalBlockPos);
 
         if (result.isPresent()) {
             BlockPos startPos = result.get().minCorner;
             if (destWorld.dimension() == PanthalassaDimension.PANTHALASSA) {
-                return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY(), startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
+                return new PortalInfo(new Vec3(startPos.getX(), startPos.getY(), startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
             } else {
                 destWorld.getChunk(new BlockPos(startPos.getX(), startPos.getY(), startPos.getZ()));
-                return new PortalInfo(new Vector3d(startPos.getX(), startPos.getY(), startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
+                return new PortalInfo(new Vec3(startPos.getX(), startPos.getY(), startPos.getZ()), entity.getDeltaMovement(), entity.yRot, entity.xRot);
             }
         }
         return null;
     }
 
 
-    private boolean checkRegionForPlacement(BlockPos potentialPos, World world) {
-        BlockPos.Mutable check = new BlockPos.Mutable();
+    private boolean checkRegionForPlacement(BlockPos potentialPos, Level world) {
+        BlockPos.MutableBlockPos check = new BlockPos.MutableBlockPos();
         for (int x = -8; x < 9; ++x) {
             for (int y = -1; y > -5; --y) {
                 for (int z = -8; z < 9; ++z) {
@@ -71,12 +71,12 @@ public class PanthalassaTeleporter implements ITeleporter {
         return true;
     }
 
-    public Optional<TeleportationRepositioner.Result> makePortalFromPos(ServerWorld destWorld, World originalWorld, @Nonnull BlockPos originalPosition) {
-        if (destWorld.dimension() == World.OVERWORLD) {
+    public Optional<BlockUtil.FoundRectangle> makePortalFromPos(ServerLevel destWorld, Level originalWorld, @Nonnull BlockPos originalPosition) {
+        if (destWorld.dimension() == Level.OVERWORLD) {
             Panthalassa.LOGGER.warn("Corresponding Overworld Portal not found!");
             Panthalassa.LOGGER.warn("Teleporting to spawn");
             BlockPos spawnPoint = new BlockPos(destWorld.getSharedSpawnPos().getX(), destWorld.getSharedSpawnPos().getY(), destWorld.getSharedSpawnPos().getZ());
-            return Optional.of(new TeleportationRepositioner.Result(spawnPoint.immutable(), 1, 1));
+            return Optional.of(new BlockUtil.FoundRectangle(spawnPoint.immutable(), 1, 1));
         }
 
         BlockPos destPosition = new BlockPos(originalPosition.getX(), destWorld.getHeight() - 5, originalPosition.getZ());
@@ -85,21 +85,21 @@ public class PanthalassaTeleporter implements ITeleporter {
         BlockPortal.matchShapeSize portalMatch = new BlockPortal.matchShapeSize(destWorld, destPosition, true);
 
         // Link the two portal's portal blocks together by finding center of original portal
-        BlockPortalTileEntity tempTE = getPortalTE(originalWorld, originalPosition);
+        BlockPortalBlockEntity tempTE = getPortalTE(originalWorld, originalPosition);
         if (tempTE != null) {
-            BlockPortalTileEntity centerTE = getPortalTE(originalWorld, originalPosition.subtract(tempTE.offsetFromCenter));
+            BlockPortalBlockEntity centerTE = getPortalTE(originalWorld, originalPosition.subtract(tempTE.offsetFromCenter));
             if (centerTE != null) {
                 portalMatch.linkPortalCenters(originalWorld, centerTE.getBlockPos());
             }
         }
 
-        return Optional.of(new TeleportationRepositioner.Result(destPosition.immutable(), 15, 1));
+        return Optional.of(new BlockUtil.FoundRectangle(destPosition.immutable(), 15, 1));
     }
 
-    private BlockPos getValidPortalLocation(ServerWorld destWorld, BlockPos originalPosition, BlockPos destPosition) {
+    private BlockPos getValidPortalLocation(ServerLevel destWorld, BlockPos originalPosition, BlockPos destPosition) {
         int newSpotOffset = 16;
         int radiusCheckLimit = 500;
-        BlockPos.Mutable currentPosition = new BlockPos.Mutable().set(destPosition);
+        BlockPos.MutableBlockPos currentPosition = new BlockPos.MutableBlockPos().set(destPosition);
 
         for (int currentRadius = 0; currentRadius <= radiusCheckLimit; currentRadius += newSpotOffset) {
             for (int x = -currentRadius; x <= currentRadius; x += newSpotOffset) {
@@ -126,10 +126,10 @@ public class PanthalassaTeleporter implements ITeleporter {
         return new BlockPos(originalPosition.getX(), 64, originalPosition.getZ());
     }
 
-    private BlockPortalTileEntity getPortalTE(IWorld world, BlockPos pos) {
-        TileEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof BlockPortalTileEntity) {
-            return (BlockPortalTileEntity) tileEntity;
+    private BlockPortalBlockEntity getPortalTE(LevelAccessor world, BlockPos pos) {
+        BlockEntity tileEntity = world.getBlockEntity(pos);
+        if (tileEntity instanceof BlockPortalBlockEntity) {
+            return (BlockPortalBlockEntity) tileEntity;
         } else {
             Panthalassa.LOGGER.error("Panthalassa: Failed to grab portal block entity from entity position for connecting the two portals");
         }

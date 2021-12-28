@@ -2,13 +2,15 @@ package com.github.sniffity.panthalassa.server.world.dimension;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.NoiseChunkGenerator;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
 import java.util.function.Supplier;
 
 /**
@@ -20,22 +22,24 @@ import java.util.function.Supplier;
  * random seeds.
  */
 
-public class PanthalassaChunkGenerator extends NoiseChunkGenerator {
+public class PanthalassaChunkGenerator extends NoiseBasedChunkGenerator {
 
-    public static final Codec<PanthalassaChunkGenerator> CODEC = RecordCodecBuilder.create(
-            (instance) -> instance.group(
-                    BiomeProvider.CODEC.fieldOf("biome_source")
-                            .forGetter((chunkGenerator) -> chunkGenerator.biomeSource),
-                    Codec.LONG.fieldOf("seed")
-                            .orElseGet(SeedBearer::provideSeed)
-                            .forGetter((chunkGenerator) -> chunkGenerator.seed),
-                    DimensionSettings.CODEC.fieldOf("settings")
-                            .forGetter((chunkGenerator) -> chunkGenerator.settings))
-                    .apply(instance, instance.stable(PanthalassaChunkGenerator::new)));
+    public static final Codec<PanthalassaChunkGenerator> CODEC = RecordCodecBuilder.create((p_188643_) -> {
+        return p_188643_.group(RegistryLookupCodec.create(Registry.NOISE_REGISTRY).forGetter((p_188716_) -> {
+            return p_188716_.noises;
+        }), BiomeSource.CODEC.fieldOf("biome_source").forGetter((p_188711_) -> {
+            return p_188711_.biomeSource;
+        }), Codec.LONG.fieldOf("seed").stable().forGetter((p_188690_) -> {
+            return p_188690_.seed;
+        }), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((p_188652_) -> {
+            return p_188652_.settings;
+        })).apply(p_188643_, p_188643_.stable(PanthalassaChunkGenerator::new));
+    });
 
-    public PanthalassaChunkGenerator(BiomeProvider biomeProvider, long seed, Supplier<DimensionSettings> dimensionSettingsSupplier) {
-        super(biomeProvider, seed, dimensionSettingsSupplier);
+    public PanthalassaChunkGenerator(Registry<NormalNoise.NoiseParameters> p_188609_, BiomeSource p_188610_, long p_188611_, Supplier<NoiseGeneratorSettings> p_188612_) {
+        super(p_188609_, p_188610_, p_188610_, p_188611_, p_188612_);
     }
+
 
     @Override
     protected Codec<? extends ChunkGenerator> codec() {
@@ -44,7 +48,7 @@ public class PanthalassaChunkGenerator extends NoiseChunkGenerator {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ChunkGenerator withSeed(long seed) {
-        return new PanthalassaChunkGenerator(this.biomeSource.withSeed(seed), seed, this.settings);
+    public ChunkGenerator withSeed(long p_64374_) {
+        return new PanthalassaChunkGenerator(this.noises, this.biomeSource.withSeed(p_64374_), p_64374_, this.settings);
     }
 }

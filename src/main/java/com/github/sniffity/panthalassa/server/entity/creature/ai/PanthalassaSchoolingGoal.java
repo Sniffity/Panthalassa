@@ -1,13 +1,13 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class PanthalassaSchoolingGoal extends Goal {
     float schoolSpeed;
     float schoolMaxSize;
     float schoolAvoidRadius;
-    List<PanthalassaEntity> school;
+    List<? extends PanthalassaEntity> school;
     PanthalassaEntity leader;
 
 
@@ -87,18 +87,18 @@ public class PanthalassaSchoolingGoal extends Goal {
 
     @Override
     public void start() {
-        processLeader(school);
+        processLeader((List<PanthalassaEntity>) school);
     }
 
 
     @Override
     public void tick() {
         //Instantiate vectors we will be working with...
-        Vector3d attract = new Vector3d(0, 0, 0);
-        Vector3d repel = new Vector3d(0, 0, 0);
-        Vector3d follow;
-        Vector3d avoid = new Vector3d(0, 0, 0);
-        Vector3d newMovement;
+        Vec3 attract = new Vec3(0, 0, 0);
+        Vec3 repel = new Vec3(0, 0, 0);
+        Vec3 follow;
+        Vec3 avoid = new Vec3(0, 0, 0);
+        Vec3 newMovement;
 
         //Remove this PanthalassaEntity from the school for operations...
         this.school.remove(panthalassaEntity);
@@ -144,13 +144,13 @@ public class PanthalassaSchoolingGoal extends Goal {
 
           if (this.leader != null) {
                 if (!panthalassaSchoolableEntity.getIsLeader()) {
-                    panthalassaEntity.lookAt(EntityAnchorArgument.Type.EYES, panthalassaEntity.position().add(panthalassaEntity.getDeltaMovement()));
+                    panthalassaEntity.lookAt(EntityAnchorArgument.Anchor.EYES, panthalassaEntity.position().add(panthalassaEntity.getDeltaMovement()));
                 }
             }
         }
     }
 
-    protected void processLeader(List<PanthalassaEntity> school) {
+    protected void processLeader(List<? extends PanthalassaEntity>  school) {
         //Iterate over the school, find the leader, identify its status as leader.
         for (int i = 0; i < school.size(); i++) {
             PanthalassaEntity testEntity = school.get(i);
@@ -161,9 +161,9 @@ public class PanthalassaSchoolingGoal extends Goal {
         }
     }
 
-    protected Vector3d processRepel(List<PanthalassaEntity> school) {
+    protected Vec3 processRepel(List<? extends PanthalassaEntity>  school) {
 
-        Vector3d separation = new Vector3d(0, 0, 0);
+        Vec3 separation = new Vec3(0, 0, 0);
         //Create a new list to store PanthalassaEntity that are too close to THIS PanthalassaEntity....
         List<PanthalassaEntity> closeEntities = new ArrayList<>();
         int schoolSize = school.size();
@@ -178,7 +178,7 @@ public class PanthalassaSchoolingGoal extends Goal {
         }
         //If there are no close PanthalassaEntity, return a zero-vector. No adjustment will be made for avoidance.
         if (closeEntities.isEmpty()) {
-            return new Vector3d(0, 0, 0);
+            return new Vec3(0, 0, 0);
         }
 
         //Given that the list is not empty...
@@ -187,7 +187,7 @@ public class PanthalassaSchoolingGoal extends Goal {
             PanthalassaEntity testEntity = school.get(i);
             //For each PanthalassaEntity create a vector...
             //This vector points from the CURRENT PanthalassaEntity being analyzed to THIS PanthalassaEntity
-            Vector3d difference = panthalassaEntity.position().subtract(testEntity.position());
+            Vec3 difference = panthalassaEntity.position().subtract(testEntity.position());
             //For this vector, normalize it to get a direction..
             //Then scale it down, its length will depend inversely on the distance to THIS PanthalassaEntity
             separation = separation.add(difference.normalize().scale(1.0f / difference.length()));
@@ -198,7 +198,7 @@ public class PanthalassaSchoolingGoal extends Goal {
         //Get an average to scale this vector...
         separation = separation.scale(1.0f / closeSize);
         //This vector will be scaled by SCHOOL_SPEED, which is a factor that scales all school "operations"
-        Vector3d target = separation.normalize().scale(schoolSpeed);
+        Vec3 target = separation.normalize().scale(schoolSpeed);
         //From this vector, subtract the velocity vector of the PanthalassaEntity...
 
         //This creates a new Vector, attraction, that will attempt to adjust position away from center of group...
@@ -206,11 +206,11 @@ public class PanthalassaSchoolingGoal extends Goal {
         return target.subtract(panthalassaEntity.getDeltaMovement());
     }
 
-    protected Vector3d processFollow(List<PanthalassaEntity> school) {
+    protected Vec3 processFollow(List<? extends PanthalassaEntity>  school) {
         //We will proceed to set the speed of the followers in school to match that of the leader...
         //Once again, by this point, we only have a single leader, each PanthalassaEntity will search the leader closes to it
         int size = school.size();
-        Vector3d speedVector = new Vector3d(0, 0, 0);
+        Vec3 speedVector = new Vec3(0, 0, 0);
 
         for (int i = 0; i < size && i < 4; i++) {
             PanthalassaEntity testEntity = school.get(i);
@@ -221,7 +221,7 @@ public class PanthalassaSchoolingGoal extends Goal {
         //Vector3d averageSpeed = speedVector.scale(1.0f / (float) size);
         //This vector will be scaled by SCHOOL_SPEED, which is a factor that scales all school "operations"
         //Vector3d target = (speedVector.subtract(this.position())).normalize().scale(SCHOOL_SPEED);
-        Vector3d target = (speedVector.normalize().scale(schoolSpeed));
+        Vec3 target = (speedVector.normalize().scale(schoolSpeed));
         //From this vector, subtract the velocity vector of the PanthalassaEntity...
 
         //This creates a new Vector, follow, that will attempt to adjust speed of THIS PanthalassaEntity to the speed of the group...
@@ -229,9 +229,9 @@ public class PanthalassaSchoolingGoal extends Goal {
         return target.subtract(panthalassaEntity.getDeltaMovement());
     }
 
-    protected Vector3d processAvoid(PanthalassaEntity entityIn) {
+    protected Vec3 processAvoid(PanthalassaEntity entityIn) {
         //Once all school vectors have been calculated perform a check around it, 7 block radius.
-        AxisAlignedBB searchArea = new AxisAlignedBB(entityIn.getX() - 3, entityIn.getY() - 3, entityIn.getZ() - 3, entityIn.getX() + 3, entityIn.getY() + 3, entityIn.getZ() + 3);
+        AABB searchArea = new AABB(entityIn.getX() - 3, entityIn.getY() - 3, entityIn.getZ() - 3, entityIn.getX() + 3, entityIn.getY() + 3, entityIn.getZ() + 3);
         //Filter only the blocks that canOcclude, solid blocks and air itself, to avoid floating on the surface of the water...
         Set<BlockPos> set = BlockPos.betweenClosedStream(searchArea)
                 .map(pos -> new BlockPos(pos))
@@ -256,11 +256,11 @@ public class PanthalassaSchoolingGoal extends Goal {
                 }
             }
 
-            Vector3d targetAwayFromClosestPos = (entityIn.position()).subtract(closestPos.getX(), closestPos.getY(), closestPos.getZ());
+            Vec3 targetAwayFromClosestPos = (entityIn.position()).subtract(closestPos.getX(), closestPos.getY(), closestPos.getZ());
             targetAwayFromClosestPos = targetAwayFromClosestPos.normalize();
             return targetAwayFromClosestPos.subtract(entityIn.getDeltaMovement());
         }
-        return new Vector3d(0,0,0);
+        return new Vec3(0,0,0);
     }
 
     @Override
@@ -270,7 +270,7 @@ public class PanthalassaSchoolingGoal extends Goal {
     }
 
     protected float rotlerp(float p_75639_1_, float p_75639_2_, float p_75639_3_) {
-        float f = MathHelper.wrapDegrees(p_75639_2_ - p_75639_1_);
+        float f = Mth.wrapDegrees(p_75639_2_ - p_75639_1_);
         if (f > p_75639_3_) {
             f = p_75639_3_;
         }

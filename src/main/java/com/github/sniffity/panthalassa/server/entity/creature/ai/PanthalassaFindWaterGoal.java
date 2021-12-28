@@ -1,16 +1,10 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.pathfinding.PathType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
 
 import java.util.Random;
 
