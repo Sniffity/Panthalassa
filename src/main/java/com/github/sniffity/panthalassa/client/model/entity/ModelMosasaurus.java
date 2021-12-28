@@ -34,7 +34,7 @@ public class ModelMosasaurus extends AnimatedGeoModel<EntityMosasaurus>
     @Override
     public void setLivingAnimations(EntityMosasaurus entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (entity.isInWater() || !entity.isOnGround()) {
+        if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
             (this.getAnimationProcessor().getBone("torso")).setRotationX( (float) (MathHelper.atan2((entity.getDeltaMovement().y),MathHelper.sqrt((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z))*5)));
         }
         (this.getAnimationProcessor().getBone("lower_torso")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*4.0F);

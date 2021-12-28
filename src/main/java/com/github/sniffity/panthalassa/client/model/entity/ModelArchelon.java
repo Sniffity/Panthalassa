@@ -31,7 +31,7 @@ public class ModelArchelon extends AnimatedGeoModel<EntityArchelon>
     @Override
     public void setLivingAnimations(EntityArchelon entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (entity.isInWater() || !entity.isOnGround()) {
+        if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
             (this.getAnimationProcessor().getBone("shell")).setRotationX(-(float) (entity.xRot*(PI/180.0F)));
         }
     }
