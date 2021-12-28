@@ -36,10 +36,10 @@ public class CameraSetupEvent {
 
         if (view == CameraType.THIRD_PERSON_BACK) {
             if (vehicle instanceof VehicleMRSV) {
-                event.getInfo().move(-calcCameraDistance(8.0, vehicle), 1, 0);
+                event.getCamera().move(-calcCameraDistance(8.0, vehicle), 1, 0);
             }
             if (vehicle instanceof VehicleAGII) {
-                event.getInfo().move(-calcCameraDistance(12.0, vehicle), 1, 0);
+                event.getCamera().move(-calcCameraDistance(12.0, vehicle), 1, 0);
 
             }
         }

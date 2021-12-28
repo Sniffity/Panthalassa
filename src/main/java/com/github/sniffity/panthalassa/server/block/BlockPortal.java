@@ -31,7 +31,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.util.Constants;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -86,8 +86,8 @@ public class BlockPortal extends Block implements EntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockGetter blockReader) {
-        return new BlockPortalBlockEntity();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new BlockPortalBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class BlockPortal extends Block implements EntityBlock {
         }
 
         boolean isWaterOrPortal(BlockState state) {
-            return (state.getFluidState().is(FluidTags.WATER) || state.getBlockState() == PanthalassaBlocks.PORTAL.get().defaultBlockState());
+            return (state.getFluidState().is(FluidTags.WATER) || state == PanthalassaBlocks.PORTAL.get().defaultBlockState());
         }
 
         int centerPortal(BlockPos pos, Direction direction) {
@@ -238,7 +238,7 @@ public class BlockPortal extends Block implements EntityBlock {
             recursivelyFindPortalPositions(this.world, this.centerPosition, BlockPos.ZERO, portalPositionsOffsets);
 
             for (BlockPos pos : portalPositionsOffsets) {
-                this.world.setBlock(centerPosition.offset(pos), Blocks.WATER.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                this.world.setBlock(centerPosition.offset(pos), Blocks.WATER.defaultBlockState(), (1 << 1));
             }
         }
 
@@ -274,12 +274,12 @@ public class BlockPortal extends Block implements EntityBlock {
                     int distSq = x * x + z * z;
                     if (distSq > minRadiusSq && distSq < maxRadiusSq) {
                         mutable.set(this.centerPosition).move(x, 0, z);
-                        this.world.setBlock(mutable, PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                        this.world.setBlock(mutable, PanthalassaBlocks.PORTAL_FRAME.get().defaultBlockState(), (1 << 1));
 
                         // Helps prevent portal frame from sticking out over ledges
                         if (((ServerLevel) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
                             while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK)) {
-                                this.world.setBlock(mutable, PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                                this.world.setBlock(mutable, PanthalassaBlocks.PANTHALASSA_ROCK.get().defaultBlockState(), (1 << 1));
                             }
                         }
                     }
@@ -295,7 +295,7 @@ public class BlockPortal extends Block implements EntityBlock {
                     int distSq = x * x + z * z;
                     if (distSq <= minRadiusSq) {
                         mutable.set(this.centerPosition).move(x, 0, z);
-                        this.world.setBlock(mutable, PanthalassaBlocks.PORTAL.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                        this.world.setBlock(mutable, PanthalassaBlocks.PORTAL.get().defaultBlockState(), (1 << 1));
 
                         BlockEntity tileEntity = this.world.getBlockEntity(mutable);
                         if (tileEntity instanceof BlockPortalBlockEntity) {
@@ -305,7 +305,7 @@ public class BlockPortal extends Block implements EntityBlock {
                         // Helps create some space for mobs to swim into portal
                         if (((ServerLevel) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
                             while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK) && mutable.getY() < this.centerPosition.getY() + 7) {
-                                this.world.setBlock(mutable, Blocks.WATER.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                                this.world.setBlock(mutable, Blocks.WATER.defaultBlockState(), (1 << 1));
                             }
                         }
                     }

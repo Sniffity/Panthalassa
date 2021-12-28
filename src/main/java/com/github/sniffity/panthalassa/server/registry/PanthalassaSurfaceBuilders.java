@@ -1,9 +1,6 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.world.gen.surfacebuilders.AbyssalOvergrowth;
-import com.github.sniffity.panthalassa.server.world.gen.surfacebuilders.AncientCaverns;
-import com.github.sniffity.panthalassa.server.world.gen.surfacebuilders.PrimevalExpanse;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.resources.ResourceLocation;

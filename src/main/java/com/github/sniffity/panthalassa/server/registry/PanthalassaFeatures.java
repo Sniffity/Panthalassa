@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.world.gen.feature.*;
+import net.minecraft.world.level.levelgen.feature.FossilFeatureConfiguration;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -47,8 +48,8 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<ColumnFeatureConfiguration>> ANCIENT_COLUMNS =
             FEATURES.register("ancient_column", () -> new FeatureAncientColumn(ColumnFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FOSSILS =
-            FEATURES.register("fossils", () -> new FeatureFossils(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<FossilFeatureConfiguration>> FOSSILS =
+            FEATURES.register("fossils", () -> new FeatureFossils(FossilFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<BlockStateConfiguration>> PANTHALASSA_ROCKS =
             FEATURES.register("panthalassa_rocks", () -> new FeaturePanthalassaRocks(BlockStateConfiguration.CODEC));

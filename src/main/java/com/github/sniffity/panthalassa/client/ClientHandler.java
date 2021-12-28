@@ -50,23 +50,23 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(PanthalassaEntityTypes.KRONOSAURUS,
+        event.registerEntityRenderer(PanthalassaEntityTypes.KRONOSAURUS.get(),
                 RenderKronosaurus::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.MEGALODON,
+        event.registerEntityRenderer(PanthalassaEntityTypes.MEGALODON.get(),
                 RenderMegalodon::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.ARCHELON,
+        event.registerEntityRenderer(PanthalassaEntityTypes.ARCHELON.get(),
                 RenderArchelon::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.MOSASAURUS,
+        event.registerEntityRenderer(PanthalassaEntityTypes.MOSASAURUS.get(),
                 RenderMosasaurus::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.COELACANTH,
+        event.registerEntityRenderer(PanthalassaEntityTypes.COELACANTH.get(),
                 RenderCoelacanth::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.DUNKLEOSTEUS,
+        event.registerEntityRenderer(PanthalassaEntityTypes.DUNKLEOSTEUS.get(),
                 RenderDunkleosteus::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.LEEDSICHTHYS,
+        event.registerEntityRenderer(PanthalassaEntityTypes.LEEDSICHTHYS.get(),
                 RenderLeedsichthys::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.MRSV,
+        event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.AGII,
+        event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),
                 RenderAGII::new);
     }
 
