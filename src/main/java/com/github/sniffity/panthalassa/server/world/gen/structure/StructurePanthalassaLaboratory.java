@@ -117,11 +117,6 @@ public class StructurePanthalassaLaboratory extends Structure<NoFeatureConfig> {
             }
 
             this.calculateBoundingBox();
-
-            Panthalassa.LOGGER.log(Level.DEBUG, "Laboratory at " +
-                    this.pieces.get(0).getBoundingBox().x0 + " " +
-                    this.pieces.get(0).getBoundingBox().y0 + " " +
-                    this.pieces.get(0).getBoundingBox().z0);
         }
     }
 }
