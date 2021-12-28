@@ -104,11 +104,11 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, IM
                 .add(Attributes.KNOCKBACK_RESISTANCE, 2)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MAX_HEALTH, 60)
-                .add(Attributes.MOVEMENT_SPEED, (double) 1.0F);
+                .add(Attributes.MOVEMENT_SPEED, (double) 0.8F);
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanicGoal(this, 0.8D));
+        this.goalSelector.addGoal(0, new PanicGoal(this, 0.3D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.1, 30));
