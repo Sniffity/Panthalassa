@@ -39,49 +39,49 @@ public class PanthalassaItems {
 
 	public static final RegistryObject<Item> KRONOSAURUS_SPAWN_EGG = ITEMS.register("kronosaurus_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.KRONOSAURUS.get(),
+					PanthalassaEntityTypes.KRONOSAURUS,
 							0x232E75,
 							0xC0C3DA,
 					(new Item.Properties().tab(PanthalassaItemGroup.GROUP))));
 
 	public static final RegistryObject<Item> MEGALODON_SPAWN_EGG = ITEMS.register("megalodon_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.MEGALODON.get(),
+					PanthalassaEntityTypes.MEGALODON,
 					0xB3B4B9,
 					0xD1D4E7,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> ARCHELON_SPAWN_EGG = ITEMS.register("archelon_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.ARCHELON.get(),
+					PanthalassaEntityTypes.ARCHELON,
 					0x462C10,
 					0xD39049,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> MOSASAURUS_SPAWN_EGG = ITEMS.register("mosasaurus_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.MOSASAURUS.get(),
+					PanthalassaEntityTypes.MOSASAURUS,
 					0x54C07C,
 					0xCDE8D7,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> COELACANTH_SPAWN_EGG = ITEMS.register("coelacanth_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.COELACANTH.get(),
+					PanthalassaEntityTypes.COELACANTH,
 					0x075B25,
 					0x11371F,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> DUNKLEOSTEUS_SPAWN_EGG = ITEMS.register("dunkleosteus_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.DUNKLEOSTEUS.get(),
+					PanthalassaEntityTypes.DUNKLEOSTEUS,
 					0x060F46,
 					0x1D2763,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> LEEDSICHTHYS_SPAWN_EGG = ITEMS.register("leedsichthys_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
-					() -> PanthalassaEntityTypes.LEEDSICHTHYS.get(),
+					PanthalassaEntityTypes.LEEDSICHTHYS,
 					0x5A451E,
 					0x3E3523,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
