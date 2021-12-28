@@ -134,10 +134,10 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, I
     @Override
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
-        this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0));
-        this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.0, false));
-        this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0F));
+        this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, entity -> (entity instanceof PlayerEntity && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
