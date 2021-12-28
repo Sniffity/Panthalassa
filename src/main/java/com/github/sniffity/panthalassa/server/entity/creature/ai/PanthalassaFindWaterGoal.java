@@ -74,7 +74,6 @@ public class PanthalassaFindWaterGoal extends Goal {
     @Override
     public void tick(){
         tickCounter = tickCounter++;
-        this.mob.getLookControl().setLookAt(this.mob.getDeltaMovement());
 
     }
 
