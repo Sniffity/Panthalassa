@@ -54,19 +54,20 @@ public class PanthalassaFindWaterGoal extends Goal {
     }
 
     @Override
-    public void tick(){
-        if (!this.mob.isInWater()) {
-            this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
-        } else {
-            this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed/2);
+    public boolean canContinueToUse() {
+        if (this.mob.getNavigation().isDone()){
+            return false;
         }
-
+        if (this.mob.level.getFluidState(new BlockPos(this.mob.position())).is(FluidTags.WATER)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public boolean canContinueToUse() {
-        return !this.mob.getNavigation().isDone() && targetPos != null && !this.mob.level.getFluidState(new BlockPos(this.mob.position())).is(FluidTags.WATER);
-
+    public void stop() {
+        this.mob.getNavigation().stop();
+        super.stop();
     }
 
     public BlockPos generateTarget() {
