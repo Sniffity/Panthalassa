@@ -138,9 +138,9 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
-        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(3, new PanthalassaMeleeAttackGoal(this, 1.3, false));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(3, new PanthalassaMeleeAttackGoal(this, 1.3F, false));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof CodEntity || entity instanceof SalmonEntity || entity instanceof TropicalFishEntity)));
     }

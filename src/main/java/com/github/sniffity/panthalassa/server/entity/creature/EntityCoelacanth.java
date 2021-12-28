@@ -143,9 +143,9 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanicGoal(this, 0.7D));
         this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, SCHOOL_SPEED, SCHOOL_MAX_SIZE, SCHOOL_AVOID_RADIUS));
-        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9, 10, BLOCKED_DISTANCE));
-        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3, false));
+        this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
+        this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3F, false));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof CodEntity || entity instanceof SalmonEntity || entity instanceof TropicalFishEntity)));
     }
 
