@@ -31,7 +31,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     public boolean isTryingToBreach;
     public boolean isLandNavigator;
 
-    protected static final DataParameter<Boolean> IS_GROUND_NAVIGATOR = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> ATTACKING_STATE = EntityDataManager.defineId(PanthalassaEntity.class, DataSerializers.BOOLEAN);
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, World worldIn) {
@@ -42,7 +41,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(IS_GROUND_NAVIGATOR, Boolean.FALSE);
         this.entityData.define(ATTACKING_STATE, Boolean.FALSE);
 
         super.defineSynchedData();
@@ -67,13 +65,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     public boolean canBreatheUnderwater() {
         return true;
     }
-
-    /*
-    public PathNavigator createNavigation(World worldIn) {
-        return new SwimmerPathNavigator(this, worldIn);
-    }
-
-     */
 
     public void travel(Vector3d travelVector) {
         if (this.isEffectiveAi() && this.isInWater()) {
@@ -151,14 +142,6 @@ public abstract class PanthalassaEntity extends CreatureEntity {
             this.navigation = new SwimmerPathNavigator(this, level);
             this.isLandNavigator = false;
         }
-    }
-
-    public void setGroundNavigator(boolean groundNavigator) {
-        this.entityData.set(IS_GROUND_NAVIGATOR,groundNavigator);
-    }
-
-    public boolean getGroundNavigator() {
-        return this.entityData.get(IS_GROUND_NAVIGATOR);
     }
 
     public void setAttackingState(boolean isAttacking) {
