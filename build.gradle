@@ -8,6 +8,7 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+
     }
 }
 
@@ -84,7 +85,8 @@ dependencies {
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63")
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63:api")
 
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')}
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
+}
 
 
 
