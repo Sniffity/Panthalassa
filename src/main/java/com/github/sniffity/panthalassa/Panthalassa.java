@@ -49,22 +49,25 @@ public final class Panthalassa {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public Panthalassa() {
-		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
-		PanthalassaBlocks.BLOCKS.register(modBus);
-		PanthalassaItems.ITEMS.register(modBus);
+		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
+		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
+
+		modBus.addListener(this::setup);
+		modBus.addListener(this::registerEntityAttributes);
 
 		PanthalassaBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);
-
+		PanthalassaItems.ITEMS.register(modBus);
+		PanthalassaBlocks.BLOCKS.register(modBus);
 		PanthalassaStructures.STRUCTURES.register(modBus);
-
-		//	PanthalassaBiomes.BIOMES.register(modBus);
-		PanthalassaFeatures.FEATURES.register(modBus);
-		//	PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 		PanthalassaSounds.SOUND_EVENTS.register(modBus);
 		PanthalassaPOI.POI.register(modBus);
+
+		//	PanthalassaBiomes.BIOMES.register(modBus);
+		//	PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 
 		forgeBus.register(PanthalassaDimension.PANTHALASSA);
 		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
@@ -72,12 +75,8 @@ public final class Panthalassa {
 
 		GeckoLib.initialize();
 		forgeBus.register(this);
-		modBus.addListener(this::setup);
-		modBus.addListener(this::registerEntityAttributes);
 
 
-		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
-		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
 
@@ -117,8 +116,6 @@ public final class Panthalassa {
 			StructureSettings worldStructureConfig = chunkGenerator.getSettings();
 
 			for (Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
-				// Skip all ocean, end, nether, and none category biomes.
-				// You can do checks for other traits that the biome has.
 				Biome.BiomeCategory biomeCategory = biomeEntry.getValue().getBiomeCategory();
 				if (biomeCategory == Biome.BiomeCategory.OCEAN) {
 					associateBiomeToConfiguredStructure(PanthalassaStructureMultiMap, PanthalassaConfiguredStructures.CONFIGURED_PANTHALASSA_LABORATORY, biomeEntry.getKey());
@@ -154,10 +151,5 @@ public final class Panthalassa {
 			event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(PanthalassaItemGroup.GROUP))
 					.setRegistryName(block.getRegistryName()));
 		});
-	}
-
-	@SubscribeEvent
-	public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
-		ItemPanthalassaSpawnEgg.initUnaddedEggs();
 	}
 }
