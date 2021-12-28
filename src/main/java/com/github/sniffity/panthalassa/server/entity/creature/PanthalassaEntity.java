@@ -26,6 +26,15 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaEntity <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The methods for switching between land and water navigators was taken from Ice and Fire Sea Serpents mobs,
+ * with permission from the mod's creator Alexthe666. All credit goes to him.
+ */
+
 public abstract class PanthalassaEntity extends CreatureEntity {
 
     public boolean isTryingToBreach;
@@ -49,18 +58,17 @@ public abstract class PanthalassaEntity extends CreatureEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.isLandNavigator && this.isInWater() && this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR)) {
-                switchToLandNavigator(true);
-        }
 
-        else if (this.isLandNavigator && this.isInWater() && !(this.level.getBlockState(this.blockPosition().below()).canOcclude() && this.level.getBlockState(this.blockPosition().above()).is(Blocks.AIR))) {
-               switchToLandNavigator(false);
+        boolean ground = !this.isInLava() && !this.isInWater() && this.isOnGround();
+
+        if (!ground && this.isLandNavigator) {
+            switchToLandNavigator(false);
         }
-        else if (!this.isInWater() && !this.isLandNavigator) {
+        if (ground && !this.isLandNavigator) {
             switchToLandNavigator(true);
         }
-    }
 
+    }
 
     public boolean canBreatheUnderwater() {
         return true;
