@@ -65,6 +65,7 @@ public final class Panthalassa {
 		PanthalassaStructures.STRUCTURES.register(modBus);
 		PanthalassaSounds.SOUND_EVENTS.register(modBus);
 		PanthalassaPOI.POI.register(modBus);
+		PanthalassaFeatures.FEATURES.register(modBus);
 
 		//	PanthalassaBiomes.BIOMES.register(modBus);
 		//	PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
@@ -75,8 +76,6 @@ public final class Panthalassa {
 
 		GeckoLib.initialize();
 		forgeBus.register(this);
-
-
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
 

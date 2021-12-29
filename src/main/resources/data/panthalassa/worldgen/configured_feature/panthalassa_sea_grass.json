@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:seagrass",
+  "type": "panthalassa:panthalassa_sea_grass",
   "config": {
     "probability": 0.8
   }

@@ -1,9 +1,9 @@
 {
-  "feature": "oanthalassa:ancient_pillars",
+  "feature": "panthalassa:ancient_pillars",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 10
+      "count": 256
     },
     {
       "type": "minecraft:in_square"

@@ -1,5 +1,5 @@
 {
-  "feature": "panthalassa:panthalassa_seagrass",
+  "feature": "panthalassa:panthalassa_sea_grass",
   "placement": [
     {
       "type": "minecraft:in_square"
@@ -10,7 +10,7 @@
     },
     {
       "type": "minecraft:count",
-      "count": 80
+      "count": 200
     },
     {
       "type": "minecraft:biome"

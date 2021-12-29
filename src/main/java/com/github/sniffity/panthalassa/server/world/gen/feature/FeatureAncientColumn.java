@@ -27,12 +27,10 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
         Random rand = p_159446_.random();
         ColumnFeatureConfiguration columnfeatureconfiguration = p_159446_.config();
 
-
         double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockpos1 = new BlockPos(p_241855_4_.getX(), r, p_241855_4_.getZ());
 
-        int i = worldgenlevel.getSeaLevel();
-        if (!canPlaceAt(worldgenlevel, i, blockpos1.mutable())) {
+        if (!canPlaceAt(worldgenlevel, blockpos1.mutable())) {
             return false;
         } else {
             int j = columnfeatureconfiguration.height().sample(rand);
@@ -44,7 +42,7 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
             for(BlockPos blockpos : BlockPos.randomBetweenClosed(rand, l, blockpos1.getX() - k, blockpos1.getY(), blockpos1.getZ() - k, blockpos1.getX() + k, blockpos1.getY(), blockpos1.getZ() + k)) {
                 int i1 = j - blockpos.distManhattan(blockpos1);
                 if (i1 >= 0) {
-                    flag1 |= this.placeColumn(worldgenlevel, i, blockpos1, i1, columnfeatureconfiguration.reach().sample(rand));
+                    flag1 |= this.placeColumn(worldgenlevel, blockpos1, i1, columnfeatureconfiguration.reach().sample(rand));
                 }
             }
 
@@ -52,17 +50,17 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
         }
     }
 
-    private boolean placeColumn(LevelAccessor p_236248_1_, int p_236248_2_, BlockPos p_236248_3_, int p_236248_4_, int p_236248_5_) {
+    private boolean placeColumn(LevelAccessor p_236248_1_, BlockPos p_236248_3_, int p_236248_4_, int p_236248_5_) {
         boolean flag = false;
 
         for(BlockPos blockpos : BlockPos.betweenClosed(p_236248_3_.getX() - p_236248_5_, p_236248_3_.getY(), p_236248_3_.getZ() - p_236248_5_, p_236248_3_.getX() + p_236248_5_, p_236248_3_.getY(), p_236248_3_.getZ() + p_236248_5_)) {
             int i = blockpos.distManhattan(p_236248_3_);
-            BlockPos blockpos1 = isWater(p_236248_1_, p_236248_2_, blockpos) ? findSurface(p_236248_1_, p_236248_2_, blockpos.mutable(), i) : findWater(p_236248_1_, blockpos.mutable(), i);
+            BlockPos blockpos1 = isWater(p_236248_1_, blockpos) ? findSurface(p_236248_1_, blockpos.mutable(), i) : findWater(p_236248_1_, blockpos.mutable(), i);
             if (blockpos1 != null) {
                 int j = p_236248_4_ - i / 2;
 
                 for(BlockPos.MutableBlockPos blockpos$mutable = blockpos1.mutable(); j >= 0; --j) {
-                    if (isWater(p_236248_1_, p_236248_2_, blockpos$mutable)) {
+                    if (isWater(p_236248_1_, blockpos$mutable)) {
                         this.setBlock(p_236248_1_, blockpos$mutable, Blocks.BASALT.defaultBlockState());
                         blockpos$mutable.move(Direction.UP);
                         flag = true;
@@ -81,10 +79,10 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
     }
 
     @Nullable
-    private static BlockPos findSurface(LevelAccessor p_236246_0_, int p_236246_1_, BlockPos.MutableBlockPos p_236246_2_, int p_236246_3_) {
+    private static BlockPos findSurface(LevelAccessor p_236246_0_, BlockPos.MutableBlockPos p_236246_2_, int p_236246_3_) {
         while(p_236246_2_.getY() > 1 && p_236246_3_ > 0) {
             --p_236246_3_;
-            if (canPlaceAt(p_236246_0_, p_236246_1_, p_236246_2_)) {
+            if (canPlaceAt(p_236246_0_, p_236246_2_)) {
                 return p_236246_2_;
             }
 
@@ -94,14 +92,11 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
         return null;
     }
 
-    private static boolean canPlaceAt(LevelAccessor p_242762_0_, int p_242762_1_, BlockPos.MutableBlockPos p_242762_2_) {
-        if (!isWater(p_242762_0_, p_242762_1_, p_242762_2_)) {
-            return false;
-        } else {
-            BlockState blockState = p_242762_0_.getBlockState(p_242762_2_.move(Direction.DOWN));
-            p_242762_2_.move(Direction.UP);
-            return !blockState.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
-        }
+    private static boolean canPlaceAt(LevelAccessor p_242762_0_, BlockPos.MutableBlockPos p_242762_2_) {
+        BlockState blockState = p_242762_0_.getBlockState(p_242762_2_.move(Direction.DOWN));
+        p_242762_2_.move(Direction.UP);
+        return blockState.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
+
     }
 
     @Nullable
@@ -119,7 +114,7 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
         return null;
     }
 
-    private static boolean isWater(LevelAccessor p_236247_0_, int p_236247_1_, BlockPos p_236247_2_) {
+    private static boolean isWater(LevelAccessor p_236247_0_, BlockPos p_236247_2_) {
         BlockState blockstate = p_236247_0_.getBlockState(p_236247_2_);
         return blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
     }

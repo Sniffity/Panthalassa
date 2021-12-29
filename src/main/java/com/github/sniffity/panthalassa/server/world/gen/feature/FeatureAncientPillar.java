@@ -1,6 +1,6 @@
 package com.github.sniffity.panthalassa.server.world.gen.feature;
 
-
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import java.util.Random;
 import net.minecraft.world.level.block.Blocks;
@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -27,7 +26,7 @@ public class FeatureAncientPillar extends Feature<NoneFeatureConfiguration> {
         double r = Math.floor(Math.random()*(81)+20);
         BlockPos blockpos = new BlockPos(pos.getX(), r, pos.getZ());
 
-        if (worldgenlevel.isWaterAt(blockpos) && !worldgenlevel.isWaterAt(blockpos.above())) {
+        if (worldgenlevel.getBlockState(blockpos).is(PanthalassaBlocks.PANTHALASSA_WATER.get()) && !worldgenlevel.getBlockState(blockpos.above()).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
             BlockPos.MutableBlockPos blockpos$mutable = blockpos.mutable();
             BlockPos.MutableBlockPos blockpos$mutable1 = blockpos.mutable();
             boolean flag = true;
@@ -36,7 +35,7 @@ public class FeatureAncientPillar extends Feature<NoneFeatureConfiguration> {
             boolean flag3 = true;
 
 
-            while(worldgenlevel.isWaterAt(blockpos$mutable)) {
+            while(worldgenlevel.getBlockState(blockpos$mutable).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                 if (worldgenlevel.isOutsideBuildHeight(blockpos$mutable)) {
                     return true;
                 }
@@ -58,13 +57,13 @@ public class FeatureAncientPillar extends Feature<NoneFeatureConfiguration> {
             BlockPos.MutableBlockPos blockpos$mutable2 = new BlockPos.MutableBlockPos();
 
             for(int i = -3; i < 4; ++i) {
-                for(int j = -3; j < 4; ++j) {
+                for (int j = -3; j < 4; ++j) {
                     int k = Mth.abs(i) * Mth.abs(j);
                     if (rand.nextInt(10) < 10 - k) {
                         blockpos$mutable2.set(blockpos$mutable.offset(i, 0, j));
                         int l = 3;
 
-                        while(worldgenlevel.isWaterAt(blockpos$mutable1.setWithOffset(blockpos$mutable2, Direction.DOWN))) {
+                        while (worldgenlevel.getBlockState(blockpos$mutable1.setWithOffset(blockpos$mutable2, Direction.DOWN)).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                             blockpos$mutable2.move(Direction.DOWN);
                             --l;
                             if (l <= 0) {
@@ -72,8 +71,11 @@ public class FeatureAncientPillar extends Feature<NoneFeatureConfiguration> {
                             }
                         }
 
-                        if (!worldgenlevel.isWaterAt(blockpos$mutable1.setWithOffset(blockpos$mutable2, Direction.DOWN))) {
-                            worldgenlevel.setBlock(blockpos$mutable2, Blocks.BASALT.defaultBlockState(), 2);
+
+                        if (!worldgenlevel.getBlockState(blockpos$mutable1.setWithOffset(blockpos$mutable2, Direction.DOWN)).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
+                            {
+                                worldgenlevel.setBlock(blockpos$mutable2, Blocks.BASALT.defaultBlockState(), 2);
+                            }
                         }
                     }
                 }
