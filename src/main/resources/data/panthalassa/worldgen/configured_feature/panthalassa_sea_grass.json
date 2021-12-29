@@ -1,28 +1,6 @@
 {
-  "type": "minecraft:decorated",
+  "type": "minecraft:seagrass",
   "config": {
-    "decorator": {
-      "type": "minecraft:count_noise_biased",
-      "config": {
-        "noise_to_count_ratio": 100,
-        "noise_factor": 1,
-        "noise_offset": 4
-      }
-    },
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        },
-        "feature": {
-          "type": "panthalassa:panthalassa_sea_grass",
-          "config": {
-            "probability": 0.8
-          }
-        }
-      }
-    }
+    "probability": 0.8
   }
 }

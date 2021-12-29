@@ -1,20 +1,12 @@
 {
-  "type": "minecraft:decorated",
+  "type": "panthalassa:ancient_column",
   "config": {
-    "decorator": {
-      "type": "minecraft:count_multilayer",
-      "config": {
-        "count": 4
-      }
-    },
-    "feature": {
-      "type": "panthalassa:ancient_column",
-      "config": {
-        "reach": 1,
-        "height": {
-          "base": 1,
-          "spread": 3
-        }
+    "reach": 1,
+    "height": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 4
       }
     }
   }

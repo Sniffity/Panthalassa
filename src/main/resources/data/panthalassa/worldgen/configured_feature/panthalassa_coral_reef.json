@@ -1,50 +1,28 @@
 {
-  "type": "minecraft:decorated",
+  "type": "minecraft:simple_random_selector",
   "config": {
-    "decorator": {
-      "type": "minecraft:count_noise_biased",
-      "config": {
-        "noise_to_count_ratio": 20,
-        "noise_factor": 400,
-        "noise_offset": 5
-      }
-    },
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "decorator": {
-          "type": "minecraft:square",
+    "features": [
+      {
+        "feature": {
+          "type": "panthalassa:panthalassa_coral_tree",
           "config": {}
         },
+        "placement": []
+      },
+      {
         "feature": {
-          "type": "minecraft:decorated",
-          "config": {
-            "decorator": {
-              "type": "minecraft:top_solid_heightmap",
-              "config": {}
-            },
-            "feature": {
-              "type": "minecraft:simple_random_selector",
-              "config": {
-                "features": [
-                  {
-                    "type": "panthalassa:panthalassa_coral_tree",
-                    "config": {}
-                  },
-                  {
-                    "type": "panthalassa:panthalassa_coral_claw",
-                    "config": {}
-                  },
-                  {
-                    "type": "panthalassa:panthalassa_coral_mushroom",
-                    "config": {}
-                  }
-                ]
-              }
-            }
-          }
-        }
+          "type": "panthalassa:panthalassa_coral_claw",
+          "config": {}
+        },
+        "placement": []
+      },
+      {
+        "feature": {
+          "type": "panthalassa:panthalassa_coral_mushroom",
+          "config": {}
+        },
+        "placement": []
       }
-    }
+    ]
   }
 }

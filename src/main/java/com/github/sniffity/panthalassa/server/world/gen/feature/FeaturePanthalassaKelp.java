@@ -12,8 +12,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class FeatureAbyssalOvergrowthKelp extends Feature<NoneFeatureConfiguration> {
-    public FeatureAbyssalOvergrowthKelp(Codec<NoneFeatureConfiguration> p_i231967_1_) {
+public class FeaturePanthalassaKelp extends Feature<NoneFeatureConfiguration> {
+    public FeaturePanthalassaKelp(Codec<NoneFeatureConfiguration> p_i231967_1_) {
         super(p_i231967_1_);
     }
 

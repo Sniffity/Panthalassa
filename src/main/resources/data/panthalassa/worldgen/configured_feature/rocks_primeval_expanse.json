@@ -1,30 +1,8 @@
 {
-  "type": "minecraft:decorated",
+  "type": "panthalassa:panthalassa_rocks",
   "config": {
-    "decorator": {
-      "type": "minecraft:count_noise_biased",
-      "config": {
-        "noise_to_count_ratio": 1,
-        "noise_factor": 1,
-        "noise_offset": 2
-      }
-    },
-    "feature": {
-      "type": "minecraft:decorated",
-      "config": {
-        "decorator": {
-          "type": "minecraft:square",
-          "config": {}
-        },
-        "feature": {
-          "type": "panthalassa:panthalassa_rocks",
-          "config": {
-            "state": {
-              "Name": "panthalassa:panthalassa_rock"
-            }
-          }
-        }
-      }
+    "state": {
+      "Name": "panthalassa:panthalassa_rock"
     }
   }
 }

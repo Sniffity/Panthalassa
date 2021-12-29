@@ -21,11 +21,10 @@ public class PanthalassaFeatures {
             FEATURES.register("primeval_expanse_kelp", () -> new FeaturePrimevalExpanseKelp(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> ABYSSAL_OVERGROWTH_KELP =
-            FEATURES.register("abyssal_overgrowth_kelp", () -> new FeatureAbyssalOvergrowthKelp(NoneFeatureConfiguration.CODEC));
+            FEATURES.register("panthalassa_kelp", () -> new FeaturePanthalassaKelp(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> KRETHROSS =
             FEATURES.register("krethross", () -> new FeatureKrethross(NoneFeatureConfiguration.CODEC));
-
 
     public static final RegistryObject<Feature<ProbabilityFeatureConfiguration>> PANTHALASSA_SEA_GRASS =
             FEATURES.register("panthalassa_sea_grass", () -> new FeaturePanthalassaSeaGrass(ProbabilityFeatureConfiguration.CODEC));
