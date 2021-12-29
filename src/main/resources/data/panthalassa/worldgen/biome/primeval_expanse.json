@@ -1,12 +1,9 @@
 {
-  "scale": 0.2,
-  "depth": 0.1,
   "precipitation": "none",
   "category": "none",
   "temperature": 2.0,
   "downfall": 0.0,
   "player_spawn_friendly": false,
-  "creature_spawn_probability": 0.05,
   "effects": {
     "sky_color": 8103167,
     "fog_color": 12638463,
@@ -19,12 +16,8 @@
       "offset": 2
     }
   },
-  "surface_builder": "panthalassa:primeval_expanse",
   "carvers": {
     "air": [
-    ],
-    "liquid":
-    [
     ]
   },
   "features": [
@@ -37,15 +30,9 @@
     [],
     [],
     [
-      "panthalassa:panthalassa_sea_grass",
-      "panthalassa:kelp_primeval_expanse",
-      "panthalassa:fossils",
-      "panthalassa:rocks_primeval_expanse"
 
     ],
     []
-  ],
-  "starts": [
   ],
   "spawners": {
     "monster": [],
@@ -70,6 +57,9 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+
     "water_creature": [],
     "water_ambient": [],
     "misc": []

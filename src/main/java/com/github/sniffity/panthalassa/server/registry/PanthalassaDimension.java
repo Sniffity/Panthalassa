@@ -29,6 +29,6 @@ public class PanthalassaDimension {
 
     public static void registerDimensionAccessories() {
         Registry.register(Registry.CHUNK_GENERATOR, name("chunk_generator"), PanthalassaChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, name("biome_provider"), PanthalassaBiomeSource.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, name("biome_source"), PanthalassaBiomeSource.CODEC);
     }
 }

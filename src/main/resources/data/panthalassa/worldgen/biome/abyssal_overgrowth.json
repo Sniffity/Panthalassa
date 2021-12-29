@@ -1,6 +1,4 @@
 {
-  "scale": 0.2,
-  "depth": 0.1,
   "precipitation": "none",
   "category": "none",
   "temperature": 2.0,
@@ -18,12 +16,8 @@
       "offset": 2
     }
   },
-  "surface_builder": "panthalassa:abyssal_overgrowth",
   "carvers": {
     "air": [
-    ],
-    "liquid":
-    [
     ]
   },
   "features": [
@@ -36,14 +30,9 @@
     [],
     [],
     [
-      "panthalassa:panthalassa_coral_reef",
-      "panthalassa:primordial_stalks",
-      "panthalassa:kelp_abyssal_overgrowth",
-      "panthalassa:panthalassa_sea_grass"
+
     ],
     []
-  ],
-  "starts": [
   ],
   "spawners": {
     "monster": [],
@@ -68,6 +57,9 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+
     "water_creature": [],
     "water_ambient": [],
     "misc": []

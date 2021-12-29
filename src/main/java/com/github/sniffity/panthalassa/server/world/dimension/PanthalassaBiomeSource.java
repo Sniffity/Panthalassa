@@ -31,8 +31,6 @@ public class PanthalassaBiomeSource extends MultiNoiseBiomeSource {
             })).apply(p_187070_, p_187070_.stable(PanthalassaBiomeSource::new));
         });
 
-
-
         public final Climate.ParameterList<Supplier<Biome>> parameters;
         public final Optional<net.minecraft.world.level.biome.MultiNoiseBiomeSource.PresetInstance> preset;
 

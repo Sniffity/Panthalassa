@@ -18,7 +18,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 version = "${mod_version}+${mc_version}"
 group = 'com.github.sniffity.panthalassa'
-archivesBaseName = "${modid}_forge"
+archivesBaseName = "${modid}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 

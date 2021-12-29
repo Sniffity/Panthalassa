@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.world;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.ibm.icu.impl.Pair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,8 +51,13 @@ public class PanthalassaWorldSavedData extends SavedData {
         return storage.get(PanthalassaWorldSavedData::new, DATA_KEY);
     }
     public static void tick(ServerLevel world) {
+
         MinecraftServer server = world.getServer();
         PanthalassaWorldSavedData data = get(world);
+
+        if (data == null) {
+            return;
+        }
 
         List<PlayerTeleportEntry> playerList = data.playerTeleportQueue;
         List<EntityTeleportEntry> entityList = data.entityTeleportQueue;

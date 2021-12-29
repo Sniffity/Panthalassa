@@ -1,6 +1,4 @@
 {
-  "scale": 0.2,
-  "depth": 0.2,
   "precipitation": "none",
   "category": "none",
   "temperature": 2.0,
@@ -18,12 +16,8 @@
       "offset": 2
     }
   },
-  "surface_builder": "panthalassa:ancient_caverns",
   "carvers": {
     "air": [
-    ],
-    "liquid":
-    [
     ]
   },
   "features": [
@@ -31,21 +25,14 @@
     [],
     [],
     [],
+    [],
+    [],
+    [],
+    [],
     [
-      "panthalassa:ancient_pillars",
-      "panthalassa:ancient_columns_large",
-      "panthalassa:ancient_columns_small",
-      "panthalassa:panthalassa_sea_grass",
-      "panthalassa:krethross_ancient_caverns"
-    ],
-    [],
-    [],
-    [],
-    [],
-    []
-  ],
 
-  "starts": [
+    ],
+    []
   ],
   "spawners": {
     "monster": [],
@@ -70,6 +57,9 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+
     "water_creature": [],
     "water_ambient": [],
     "misc": []
