@@ -66,33 +66,31 @@
         },
         "then_run": {
           "type": "minecraft:sequence",
-          "sequence":
-          [
+          "sequence": [
             {
               "type": "minecraft:condition",
               "if_true": {
                 "type": "minecraft:stone_depth",
                 "offset": 0,
                 "surface_type": "ceiling",
-                "add_surface_depth": false,
+                "add_surface_depth": true,
                 "add_surface_secondary_depth": false
               },
               "then_run": {
                 "type": "minecraft:sequence",
-                "sequence":
-                [
+                "sequence": [
                   {
                     "type": "minecraft:condition",
                     "if_true": {
                       "type": "minecraft:noise_threshold",
-                      "noise": "minecraft:erosion",
-                      "min_threshold": 0,
-                      "max_threshold": 0.5
+                      "noise": "minecraft:surface",
+                      "min_threshold": 0.21212121212121213,
+                      "max_threshold": 1.7976931348623157E308
                     },
                     "then_run": {
                       "type": "minecraft:block",
                       "result_state": {
-                        "Name": "minecraft:emerald_block"
+                        "Name": "panthalassa:panthalassa_stone"
                       }
                     }
                   },
@@ -100,15 +98,218 @@
                     "type": "minecraft:condition",
                     "if_true": {
                       "type": "minecraft:noise_threshold",
-                      "noise": "minecraft:erosion",
-                      "min_threshold": 0.5,
-                      "max_threshold": 1
+                      "noise": "minecraft:surface",
+                      "min_threshold": -0.11515151515151514,
+                      "max_threshold": 1.7976931348623157E308
                     },
                     "then_run": {
                       "type": "minecraft:block",
                       "result_state": {
-                        "Name": "minecraft:gold_block"
+                        "Name": "panthalassa:panthalassa_loose_stone"
                       }
+                    }
+                  },
+                  {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "panthalassa:panthalassa_coarse_stone"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "minecraft:sequence",
+              "sequence": [
+                {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:noise_threshold",
+                    "noise": "minecraft:surface",
+                    "min_threshold": 0.21212121212121213,
+                    "max_threshold": 1.7976931348623157E308
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "panthalassa:panthalassa_soil"
+                    }
+                  }
+                },
+                {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:noise_threshold",
+                    "noise": "minecraft:surface",
+                    "min_threshold": -0.11515151515151514,
+                    "max_threshold": 1.7976931348623157E308
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "panthalassa:panthalassa_coarse_soil"
+                    }
+                  }
+                },
+                {
+                  "type": "minecraft:block",
+                  "result_state": {
+                    "Name": "panthalassa:panthalassa_loose_soil"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:biome",
+          "biome_is": [
+            "panthalassa:abyssal_overgrowth"
+          ]
+        },
+        "then_run": {
+          "type": "minecraft:sequence",
+          "sequence": [
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "offset": 0,
+                "surface_type": "ceiling",
+                "add_surface_depth": true,
+                "add_surface_secondary_depth": false
+              },
+              "then_run": {
+                "type": "minecraft:sequence",
+                "sequence": [
+                  {
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:noise_threshold",
+                      "noise": "minecraft:surface",
+                      "min_threshold": 0.21212121212121213,
+                      "max_threshold": 1.7976931348623157E308
+                    },
+                    "then_run": {
+                      "type": "minecraft:block",
+                      "result_state": {
+                        "Name": "panthalassa:panthalassa_stone"
+                      }
+                    }
+                  },
+                  {
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:noise_threshold",
+                      "noise": "minecraft:surface",
+                      "min_threshold": -0.11515151515151514,
+                      "max_threshold": 1.7976931348623157E308
+                    },
+                    "then_run": {
+                      "type": "minecraft:block",
+                      "result_state": {
+                        "Name": "panthalassa:panthalassa_loose_stone"
+                      }
+                    }
+                  },
+                  {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "panthalassa:panthalassa_coarse_stone"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "minecraft:sequence",
+              "sequence": [
+                {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:noise_threshold",
+                    "noise": "minecraft:surface",
+                    "min_threshold": -0.11515151515151514,
+                    "max_threshold": 1.7976931348623157E308
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "panthalassa:panthalassa_overgrown_sand"
+                    }
+                  }
+                },
+                {
+                  "type": "minecraft:block",
+                  "result_state": {
+                    "Name": "panthalassa:panthalassa_sand"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:biome",
+          "biome_is": [
+            "panthalassa:ancient_caverns"
+          ]
+        },
+        "then_run": {
+          "type": "minecraft:sequence",
+          "sequence": [
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "offset": 0,
+                "surface_type": "ceiling",
+                "add_surface_depth": true,
+                "add_surface_secondary_depth": false
+              },
+              "then_run": {
+                "type": "minecraft:sequence",
+                "sequence": [
+                  {
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:noise_threshold",
+                      "noise": "minecraft:surface",
+                      "min_threshold": 0.21212121212121213,
+                      "max_threshold": 1.7976931348623157E308
+                    },
+                    "then_run": {
+                      "type": "minecraft:block",
+                      "result_state": {
+                        "Name": "panthalassa:panthalassa_stone"
+                      }
+                    }
+                  },
+                  {
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:noise_threshold",
+                      "noise": "minecraft:surface",
+                      "min_threshold": -0.11515151515151514,
+                      "max_threshold": 1.7976931348623157E308
+                    },
+                    "then_run": {
+                      "type": "minecraft:block",
+                      "result_state": {
+                        "Name": "panthalassa:panthalassa_loose_stone"
+                      }
+                    }
+                  },
+                  {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "panthalassa:panthalassa_coarse_stone"
                     }
                   }
                 ]
@@ -117,18 +318,10 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "minecraft:diamond_block"
+                "Name": "panthalassa:ancient_Rock"
               }
             }
           ]
-
-        }
-      },
-      {
-        "type": "minecraft:block",
-
-        "result_state": {
-          "Name": "minecraft:coal_block"
         }
       }
     ]
@@ -139,13 +332,13 @@
     }
   },
   "noise": {
+    "size_horizontal": 1,
+    "size_vertical": 2,
     "terrain_shaper": {
       "offset": 0.0,
       "factor": 0.0,
       "jaggedness": 0.0
     },
-    "size_horizontal": 1,
-    "size_vertical": 2,
     "sampling": {
       "xz_scale": 1.0,
       "y_scale": 3.0,
