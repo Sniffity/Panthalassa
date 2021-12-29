@@ -4,19 +4,16 @@
     "decorator": {
       "type": "minecraft:count_multilayer",
       "config": {
-        "count": 30
+        "count": 4
       }
     },
     "feature": {
       "type": "panthalassa:ancient_column",
       "config": {
-        "reach": {
-          "base": 2,
-          "spread": 1
-        },
+        "reach": 1,
         "height": {
-          "base": 5,
-          "spread": 5
+          "base": 1,
+          "spread": 3
         }
       }
     }
