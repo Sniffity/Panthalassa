@@ -74,6 +74,12 @@ repositories {
     maven {
         url = "https://maven.blamejared.com"
     }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 
@@ -84,8 +90,10 @@ dependencies {
     }
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63")
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63:api")
-
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
+
+    runtimeOnly fg.deobf("curse.maven:cyanide-541676:3545771")
+
 }
 
 
