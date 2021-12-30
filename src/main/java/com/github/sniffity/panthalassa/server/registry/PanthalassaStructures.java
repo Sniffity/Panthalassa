@@ -36,19 +36,10 @@ public class PanthalassaStructures {
     public static <F extends StructureFeature<?>> void setupMapSpacingAndLand(
             F structure,
             StructureFeatureConfiguration structureSeparationSettings,
-            boolean transformSurroundingLand) {
+            boolean transformSurroundingLand ){
 
         StructureFeature.STRUCTURES_REGISTRY.put(structure.getRegistryName().toString(), structure);
 
-        /*
-        if (transformSurroundingLand) {
-            Structure.NOISE_AFFECTING_FEATURES =
-                    ImmutableList.<Structure<?>>builder()
-                            .addAll(Structure.NOISE_AFFECTING_FEATURES)
-                            .add(structure)
-                            .build();
-        }
-*/
 
         StructureSettings.DEFAULTS =
                 ImmutableMap.<StructureFeature<?>, StructureFeatureConfiguration>builder()

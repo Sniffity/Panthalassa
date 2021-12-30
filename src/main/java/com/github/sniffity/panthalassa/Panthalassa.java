@@ -6,6 +6,8 @@ import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -37,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,10 +112,10 @@ public final class Panthalassa {
 			if (chunkGenerator instanceof FlatLevelSource && serverLevel.dimension().equals(Level.OVERWORLD)) {
 				return;
 			}
+			StructureSettings worldStructureConfig = chunkGenerator.getSettings();
+
 
 			HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> PanthalassaStructureMultiMap = new HashMap<>();
-
-			StructureSettings worldStructureConfig = chunkGenerator.getSettings();
 
 			for (Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
 				Biome.BiomeCategory biomeCategory = biomeEntry.getValue().getBiomeCategory();
@@ -122,13 +124,26 @@ public final class Panthalassa {
 				}
 			}
 
+			ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
+			worldStructureConfig.configuredStructures.entrySet().stream().filter(entry -> !PanthalassaStructureMultiMap.containsKey(entry.getKey())).forEach(tempStructureToMultiMap::put);
+
+			PanthalassaStructureMultiMap.forEach((key, value) -> tempStructureToMultiMap.put(key, ImmutableMultimap.copyOf(value)));
+
+			worldStructureConfig.configuredStructures = tempStructureToMultiMap.build();
+
+
+			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(worldStructureConfig.structureConfig());
+			tempMap.putIfAbsent(PanthalassaStructures.PANTHALASSA_LABORATORY.get(), StructureSettings.DEFAULTS.get(PanthalassaStructures.PANTHALASSA_LABORATORY.get()));
+			worldStructureConfig.structureConfig = tempMap;
+
 		}
+
+
 	}
 
-
-	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> STStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
-		STStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
-		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = STStructureToMultiMap.get(configuredStructureFeature.feature);
+	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> PanthalassaStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
+		PanthalassaStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
+		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = PanthalassaStructureToMultiMap.get(configuredStructureFeature.feature);
 		if(configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
 			Panthalassa.LOGGER.debug("""
                     Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.

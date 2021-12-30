@@ -23,7 +23,6 @@ import java.util.Optional;
 
 public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfiguration> {
 
-
     public StructurePanthalassaLaboratory(Codec<JigsawConfiguration> codec) {
         super(codec, StructurePanthalassaLaboratory::createPiecesGenerator, PostPlacementProcessor.NONE);
     }
