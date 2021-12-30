@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import com.mojang.math.Vector3d;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -102,7 +103,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                 }
             }
 
-        return Vec3.atCenterOf(targetBlockPos);
+        return targetVec;
 
         }
         return null;
