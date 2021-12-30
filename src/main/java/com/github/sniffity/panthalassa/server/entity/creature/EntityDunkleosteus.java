@@ -68,7 +68,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dunkleosteus.attack", true));
             return PlayState.CONTINUE;
         }
-        return PlayState.CONTINUE;
+        return PlayState.STOP;
     }
 
     @Override

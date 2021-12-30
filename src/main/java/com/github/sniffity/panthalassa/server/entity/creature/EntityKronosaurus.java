@@ -73,7 +73,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.idle", true));
             return PlayState.CONTINUE;
         }
-        return PlayState.CONTINUE;
+        return PlayState.STOP;
     }
 
     @Override
