@@ -252,7 +252,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         //A tick counter is implemented to stop the Goal if this takes too long. This avoids the creature getting stuck forever if something does not work out.
         step4Ticks = ++step4Ticks;
         attacker.getNavigation().moveTo(strikePos.getX(),strikePos.getY(),strikePos.getZ(),speedTowardsTarget);
-        return (attacker.distanceToSqr(strikePos.getX(), strikePos.getY(), strikePos.getZ()) <= 20);
+        return (attacker.distanceToSqr(strikePos.getX(), strikePos.getY(), strikePos.getZ()) <= 10);
     }
 
     protected void crushVehicleAndPassengers() {
