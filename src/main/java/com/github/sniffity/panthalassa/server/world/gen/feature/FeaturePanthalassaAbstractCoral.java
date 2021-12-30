@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
@@ -29,10 +28,8 @@ public abstract class FeaturePanthalassaAbstractCoral extends Feature<NoneFeatur
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159536_) {
         Random rand = p_159536_.random();
         WorldGenLevel worldgenlevel = p_159536_.level();
-        BlockPos blockpos = p_159536_.origin();
-
         BlockState blockstate = BlockTags.CORAL_BLOCKS.getRandomElement(rand).defaultBlockState();
-        return this.placeFeature(worldgenlevel, rand, blockpos, blockstate);
+        return this.placeFeature(worldgenlevel, rand, p_159536_.origin(), blockstate);
     }
 
     protected abstract boolean placeFeature(LevelAccessor p_204623_1_, Random p_204623_2_, BlockPos p_204623_3_, BlockState p_204623_4_);
@@ -63,6 +60,38 @@ public abstract class FeaturePanthalassaAbstractCoral extends Feature<NoneFeatur
                     }
                 }
             }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean placeSecondaryCoralBlock(LevelAccessor p_204624_1_, Random p_204624_2_, BlockPos p_204624_3_, BlockState p_204624_4_) {
+        BlockState blockstate = p_204624_1_.getBlockState(p_204624_3_);
+        FluidState fluidState = p_204624_1_.getFluidState(p_204624_3_);
+        BlockPos blockposAbove = p_204624_3_.above();
+        BlockState blockstateAbove = p_204624_1_.getBlockState(blockposAbove);
+        FluidState fluidStateAbove = p_204624_1_.getFluidState(blockposAbove);
+
+
+        if (((blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get()))) || blockstate.is(BlockTags.CORALS) && (blockstateAbove.is(PanthalassaBlocks.PANTHALASSA_WATER.get()))){
+            p_204624_1_.setBlock(p_204624_3_, p_204624_4_, 3);
+            if (p_204624_2_.nextFloat() < 0.25F) {
+                p_204624_1_.setBlock(blockposAbove, BlockTags.CORALS.getRandomElement(p_204624_2_).defaultBlockState(), 2);
+            } else if (p_204624_2_.nextFloat() < 0.05F) {
+                p_204624_1_.setBlock(blockposAbove, Blocks.SEA_PICKLE.defaultBlockState().setValue(SeaPickleBlock.PICKLES, Integer.valueOf(p_204624_2_.nextInt(4) + 1)), 2);
+            }
+
+            for(Direction direction : Direction.Plane.HORIZONTAL) {
+                if (p_204624_2_.nextFloat() < 0.2F) {
+                    BlockPos blockpos1 = p_204624_3_.relative(direction);
+                    if (p_204624_1_.getBlockState(blockpos1).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
+                        BlockState blockstate1 = BlockTags.WALL_CORALS.getRandomElement(p_204624_2_).defaultBlockState().setValue(BaseCoralWallFanBlock.FACING, direction);
+                        p_204624_1_.setBlock(blockpos1, blockstate1, 2);
+                    }
+                }
+            }
+
             return true;
         } else {
             return false;
