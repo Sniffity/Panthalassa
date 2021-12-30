@@ -39,7 +39,10 @@
   ],
   "spawners": {
     "monster": [],
-    "creature": [
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [
       {
         "type": "panthalassa:kronosaurus",
         "weight": 10,
@@ -59,10 +62,6 @@
         "maxCount": 1
       }
     ],
-    "ambient": [],
-    "axolotls": [],
-    "underground_water_creature": [],
-
     "water_creature": [],
     "water_ambient": [],
     "misc": []

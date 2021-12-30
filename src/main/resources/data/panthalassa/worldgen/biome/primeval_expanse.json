@@ -38,7 +38,10 @@
   ],
   "spawners": {
     "monster": [],
-    "creature": [
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [
       {
         "type": "panthalassa:megalodon",
         "weight": 4,
@@ -58,9 +61,6 @@
         "maxCount": 1
       }
     ],
-    "ambient": [],
-    "axolotls": [],
-    "underground_water_creature": [],
 
     "water_creature": [],
     "water_ambient": [],
