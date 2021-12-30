@@ -32,11 +32,12 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
         return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
 
-    protected static boolean isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
+    protected static int isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         BlockPos centerOfChunk = context.chunkPos().getWorldPosition();
         int landHeight = context.chunkGenerator().getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
         NoiseColumn columnOfBlocks = context.chunkGenerator().getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ(), context.heightAccessor());
         BlockState topBlock = columnOfBlocks.getBlock(landHeight);
+        BlockPos centerPos;
         if (topBlock.getFluidState().is(FluidTags.WATER)) {
             int i = 0;
             while (!topBlock.canOcclude()) {
@@ -44,16 +45,24 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
                 topBlock = columnOfBlocks.getBlock(centerOfChunk.above(landHeight - i).getY());
             }
             float yHeight = (centerOfChunk.above(landHeight - i).getY());
-            return yHeight <= 42;
+
+            int x = centerOfChunk.getX() * 16;
+            int z = centerOfChunk.getZ() * 16;
+            centerPos = new BlockPos(x, yHeight, z);
+
+
+            return (int) yHeight;
         }
-        return false;
+        return 100;
     }
 
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
 
-        if (!StructurePanthalassaLaboratory.isFeatureChunk(context)) {
+        int yHeight = StructurePanthalassaLaboratory.isFeatureChunk(context);
+        if (!(yHeight<=42)) {
             return Optional.empty();
         }
+
 
         JigsawConfiguration newConfig = new JigsawConfiguration(
                 () -> context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
@@ -72,15 +81,17 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
                 context.structureManager(),
                 context.registryAccess()
         );
+
         BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0);
+        BlockPos blockpos1 = new BlockPos(blockpos.getX(),yHeight,blockpos.getZ());
 
         Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
                 JigsawPlacement.addPieces(
                         newContext,
                         PoolElementStructurePiece::new,
-                        blockpos,
+                        blockpos1,
                         false,
-                        true
+                        false
                 );
 
 
