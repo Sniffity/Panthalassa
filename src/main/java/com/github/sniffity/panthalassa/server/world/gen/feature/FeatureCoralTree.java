@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class FeatureCoralTree extends FeaturePanthalassaCoral {
+public class FeatureCoralTree extends FeaturePanthalassaAbstractCoral {
     public FeatureCoralTree(Codec<NoneFeatureConfiguration> p_i231942_1_) {
         super(p_i231942_1_);
     }

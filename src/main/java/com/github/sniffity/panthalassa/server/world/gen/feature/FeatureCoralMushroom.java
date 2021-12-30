@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 import java.util.Random;
 
-public class FeatureCoralMushroom extends FeaturePanthalassaCoral {
+public class FeatureCoralMushroom extends FeaturePanthalassaAbstractCoral {
     public FeatureCoralMushroom(Codec<NoneFeatureConfiguration> p_i231941_1_) {
         super(p_i231941_1_);
     }
