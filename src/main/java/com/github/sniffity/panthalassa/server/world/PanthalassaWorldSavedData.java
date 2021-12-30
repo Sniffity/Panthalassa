@@ -95,7 +95,6 @@ public class PanthalassaWorldSavedData extends SavedData {
                 targetWorld.addDuringTeleport(vehicle2);
                 vehicle2.setPortalCooldown();
 
-                vehicle.discard();
 
                 assert originalWorld != null;
                 originalWorld.resetEmptyTime();
@@ -144,6 +143,7 @@ public class PanthalassaWorldSavedData extends SavedData {
                         passenger2.setPortalCooldown();
                     }
                 }
+                vehicle.discard();
             }
         }
 
@@ -207,8 +207,8 @@ public class PanthalassaWorldSavedData extends SavedData {
         this.entityTeleportQueue.add(new EntityTeleportEntry(entity, destination, origin, targetVec, yaw, pitch));
     }
 
-    public void addCompoundTP(Entity compoundEntity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw, float pitch) {
-        this.vehicleCompundTeleportQueue.add(new VehicleCompundTeleportEntry(compoundEntity, destination, origin, targetVec, yaw, pitch));
+    public void addCompoundTP(Entity vehicle, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw, float pitch) {
+        this.vehicleCompundTeleportQueue.add(new VehicleCompundTeleportEntry(vehicle, destination, origin, targetVec, yaw, pitch));
     }
 
     @Override
@@ -266,8 +266,9 @@ public class PanthalassaWorldSavedData extends SavedData {
         final Vec3 targetVec;
         final float yaw;
         final float pitch;
-        public VehicleCompundTeleportEntry(Entity compoundEntity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
-            this.entity = compoundEntity;
+
+        public VehicleCompundTeleportEntry(Entity vehicle, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
+            this.entity = vehicle;
             this.targetWorld = targetWorld;
             this.originalWorld = originalWorld;
             this.targetVec = targetVec;
