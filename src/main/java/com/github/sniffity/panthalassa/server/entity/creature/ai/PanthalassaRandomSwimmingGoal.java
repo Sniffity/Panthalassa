@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -70,36 +71,37 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
 
     @Nullable
     protected Vec3 getPosition() {
-        Vec3 travelVector = new Vec3(this.creature.getDeltaMovement().x(), this.creature.getDeltaMovement().y(), this.creature.getDeltaMovement().z());
-        BlockPos target = RandomPos.generateRandomPosTowardDirection(this.creature,30,new Random(),new BlockPos(travelVector));
+        Vec3 targetVec =  BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7);
 
-        for (int i = 0; target != null && !this.creature.level.getBlockState(new BlockPos(target)).isPathfindable(this.creature.level, new BlockPos(target), PathComputationType.WATER) && i++ < 15;
-             target = RandomPos.generateRandomPosTowardDirection(this.creature,30,new Random(),new BlockPos(travelVector)));
+        BlockPos targetBlockPos = new BlockPos(BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7));
+
+        for (int i = 0; targetBlockPos != null && !this.creature.level.getBlockState(new BlockPos(targetBlockPos)).isPathfindable(this.creature.level, new BlockPos(targetBlockPos), PathComputationType.WATER) && i++ < 15;
+             targetBlockPos = new BlockPos(BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7)));
         {}
-        if (target != null) {
+        if (targetBlockPos != null) {
 
             Vec3 creaturePos = this.creature.position();
-            double distance = creaturePos.subtract(Vec3.atCenterOf(target)).length();
+            double distance = creaturePos.subtract(Vec3.atCenterOf(targetBlockPos)).length();
 
             if (distance < 7) {
                 return null;
             }
 
             for (int i = 0; i <= avoidDistance; i++) {
-                if (!this.creature.level.getFluidState(new BlockPos(target).north(i)).is(FluidTags.WATER)) {
-                    target = null;
+                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).north(i)).is(FluidTags.WATER)) {
+                    targetBlockPos = null;
                     break;
                 }
-                if (!this.creature.level.getFluidState(new BlockPos(target).south(i)).is(FluidTags.WATER)) {
-                    target = null;
+                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).south(i)).is(FluidTags.WATER)) {
+                    targetBlockPos = null;
                     break;
                 }
-                if (!this.creature.level.getFluidState(new BlockPos(target).east(i)).is(FluidTags.WATER)) {
-                    target = null;
+                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).east(i)).is(FluidTags.WATER)) {
+                    targetBlockPos = null;
                     break;
                 }
-                if (!this.creature.level.getFluidState(new BlockPos(target).west(i)).is(FluidTags.WATER)) {
-                    target = null;
+                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).west(i)).is(FluidTags.WATER)) {
+                    targetBlockPos = null;
                     break;
                 }
             }
@@ -118,7 +120,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
 
  */
         }
-        return Vec3.atCenterOf(target);
+        return Vec3.atCenterOf(targetBlockPos);
     }
 
     @Override
