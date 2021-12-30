@@ -43,7 +43,7 @@
       {
         "type": "panthalassa:kronosaurus",
         "weight": 10,
-        "minCount": 3,
+        "minCount": 1,
         "maxCount": 3
       },
       {
