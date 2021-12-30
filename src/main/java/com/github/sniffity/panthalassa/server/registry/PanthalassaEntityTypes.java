@@ -67,7 +67,6 @@ public class PanthalassaEntityTypes {
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_2_submersible_vehicle").toString()));
 
     public static void spawnPlacements() {
-
         Heightmap.Types.MOTION_BLOCKING_NO_LEAVES.isOpaque = (state) -> {
             return (state.getMaterial().blocksMotion() || !state.getFluidState().isEmpty()) && !(state.getBlock() == PanthalassaBlocks.PANTHALASSA_WATER.get());
         };
