@@ -32,10 +32,14 @@ import java.util.UUID;
 public class PanthalassaWorldSavedData extends SavedData {
 
     public static final String DATA_KEY = Panthalassa.MODID + ":world_data";
-    private static final PanthalassaWorldSavedData CLIENT_DUMMY = new PanthalassaWorldSavedData(null);
+    private static final PanthalassaWorldSavedData CLIENT_DUMMY = new PanthalassaWorldSavedData();
 
-    public PanthalassaWorldSavedData(CompoundTag tag) {}
+    public PanthalassaWorldSavedData() {
+    }
 
+    public static PanthalassaWorldSavedData create() {
+        return new PanthalassaWorldSavedData();
+    }
 
     private List<PlayerTeleportEntry> playerTeleportQueue = new ArrayList<>();
     private List<EntityTeleportEntry> entityTeleportQueue = new ArrayList<>();
@@ -48,8 +52,11 @@ public class PanthalassaWorldSavedData extends SavedData {
         }
 
         DimensionDataStorage storage = ((ServerLevel)world).getDataStorage();
-        return storage.get(PanthalassaWorldSavedData::new, DATA_KEY);
+        return storage.computeIfAbsent(PanthalassaWorldSavedData::load, PanthalassaWorldSavedData::new, DATA_KEY);
     }
+
+
+
     public static void tick(ServerLevel world) {
 
         MinecraftServer server = world.getServer();
@@ -196,15 +203,11 @@ public class PanthalassaWorldSavedData extends SavedData {
     }
 
 
-    public void addEntityTP(Entity
-                                    entity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw,
-                            float pitch) {
+    public void addEntityTP(Entity entity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw, float pitch) {
         this.entityTeleportQueue.add(new EntityTeleportEntry(entity, destination, origin, targetVec, yaw, pitch));
     }
 
-    public void addCompoundTP(Entity
-                                      compoundEntity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw,
-                              float pitch) {
+    public void addCompoundTP(Entity compoundEntity, ResourceKey<Level> destination, ResourceKey<Level> origin, Vec3 targetVec, float yaw, float pitch) {
         this.vehicleCompundTeleportQueue.add(new VehicleCompundTeleportEntry(compoundEntity, destination, origin, targetVec, yaw, pitch));
     }
 
@@ -213,63 +216,64 @@ public class PanthalassaWorldSavedData extends SavedData {
         return null;
     }
 
-        static class PlayerTeleportEntry {
-            final UUID playerUUID;
-            final ResourceKey<Level> targetWorld;
-            final Vec3 targetVec;
-            final float yaw;
-            final float pitch;
+    public static PanthalassaWorldSavedData load(CompoundTag tag) {
+        PanthalassaWorldSavedData data = create();
+        return data;
+    }
 
-            public PlayerTeleportEntry(UUID playerUUID, ResourceKey<Level> targetWorld, Vec3 targetVec, float yaw, float pitch) {
-                this.playerUUID = playerUUID;
-                this.targetWorld = targetWorld;
-                this.targetVec = targetVec;
-                this.yaw = yaw;
-                this.pitch = pitch;
-            }
+
+    static class PlayerTeleportEntry {
+        final UUID playerUUID;
+        final ResourceKey<Level> targetWorld;
+        final Vec3 targetVec;
+        final float yaw;
+        final float pitch;
+
+        public PlayerTeleportEntry(UUID playerUUID, ResourceKey<Level> targetWorld, Vec3 targetVec, float yaw, float pitch) {
+            this.playerUUID = playerUUID;
+            this.targetWorld = targetWorld;
+            this.targetVec = targetVec;
+            this.yaw = yaw;
+            this.pitch = pitch;
         }
+    }
+
+    static class EntityTeleportEntry {
+        final Entity entity;
+        final ResourceKey<Level> targetWorld;
+        final ResourceKey<Level> originalWorld;
+        final BlockPos targetBlock;
+        final float yaw;
+        final float pitch;
+        final Vec3 targetVec;
 
 
-        static class EntityTeleportEntry {
-            final Entity entity;
-            final ResourceKey<Level> targetWorld;
-            final ResourceKey<Level> originalWorld;
-            final BlockPos targetBlock;
-            final float yaw;
-            final float pitch;
-            final Vec3 targetVec;
-
-
-            public EntityTeleportEntry(Entity entity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
-                this.entity = entity;
-                this.targetWorld = targetWorld;
-                this.originalWorld = originalWorld;
-                this.targetBlock = new BlockPos(targetVec.x(), targetVec.y(), targetVec.z());
-                this.targetVec = targetVec;
-                this.yaw = yaw;
-                this.pitch = pitch;
-            }
+        public EntityTeleportEntry(Entity entity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
+            this.entity = entity;
+            this.targetWorld = targetWorld;
+            this.originalWorld = originalWorld;
+            this.targetBlock = new BlockPos(targetVec.x(), targetVec.y(), targetVec.z());
+            this.targetVec = targetVec;this.yaw = yaw;
+            this.pitch = pitch;
         }
+    }
 
-
-        static class VehicleCompundTeleportEntry {
-            final Entity entity;
-
-            final ResourceKey<Level> targetWorld;
-            final ResourceKey<Level> originalWorld;
-            final BlockPos targetBlock;
-            final Vec3 targetVec;
-            final float yaw;
-            final float pitch;
-
-            public VehicleCompundTeleportEntry(Entity compoundEntity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
-                this.entity = compoundEntity;
-                this.targetWorld = targetWorld;
-                this.originalWorld = originalWorld;
-                this.targetVec = targetVec;
-                this.targetBlock = new BlockPos(targetVec.x(), targetVec.y(), targetVec.z());
-                this.yaw = yaw;
-                this.pitch = pitch;
-            }
+    static class VehicleCompundTeleportEntry {
+        final Entity entity;
+        final ResourceKey<Level> targetWorld;
+        final ResourceKey<Level> originalWorld;
+        final BlockPos targetBlock;
+        final Vec3 targetVec;
+        final float yaw;
+        final float pitch;
+        public VehicleCompundTeleportEntry(Entity compoundEntity, ResourceKey<Level> targetWorld, ResourceKey<Level> originalWorld, Vec3 targetVec, float yaw, float pitch) {
+            this.entity = compoundEntity;
+            this.targetWorld = targetWorld;
+            this.originalWorld = originalWorld;
+            this.targetVec = targetVec;
+            this.targetBlock = new BlockPos(targetVec.x(), targetVec.y(), targetVec.z());
+            this.yaw = yaw;
+            this.pitch = pitch;
+        }
     }
 }
