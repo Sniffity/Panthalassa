@@ -45,21 +45,21 @@
     "underground_water_creature": [
       {
         "type": "panthalassa:dunkleosteus",
-        "weight": 10,
+        "weight": 20,
         "minCount": 1,
         "maxCount": 3
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 15,
+        "weight": 30,
         "minCount": 5,
         "maxCount": 10
       },
       {
         "type": "panthalassa:archelon",
-        "weight": 10,
+        "weight": 20,
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 2
       }
     ],
 

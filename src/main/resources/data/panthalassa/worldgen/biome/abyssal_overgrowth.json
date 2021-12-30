@@ -45,19 +45,19 @@
     "underground_water_creature": [
       {
         "type": "panthalassa:kronosaurus",
-        "weight": 10,
+        "weight": 20,
         "minCount": 1,
         "maxCount": 3
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 20,
+        "weight": 40,
         "minCount": 5,
         "maxCount": 10
       },
       {
         "type": "panthalassa:mosasaurus",
-        "weight": 5,
+        "weight": 10,
         "minCount": 1,
         "maxCount": 1
       }
