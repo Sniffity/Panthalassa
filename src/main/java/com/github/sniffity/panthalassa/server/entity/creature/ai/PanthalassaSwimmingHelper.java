@@ -2,11 +2,8 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 
 public class PanthalassaSwimmingHelper extends MoveControl {
