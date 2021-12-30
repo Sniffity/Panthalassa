@@ -95,7 +95,7 @@ public class FeatureAncientColumn extends Feature<ColumnFeatureConfiguration> {
     private static boolean canPlaceAt(LevelAccessor p_242762_0_, BlockPos.MutableBlockPos p_242762_2_) {
         BlockState blockState = p_242762_0_.getBlockState(p_242762_2_.move(Direction.DOWN));
         p_242762_2_.move(Direction.UP);
-        return blockState.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
+        return !blockState.is(PanthalassaBlocks.PANTHALASSA_WATER.get());
 
     }
 
