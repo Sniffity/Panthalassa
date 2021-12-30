@@ -7,14 +7,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.levelgen.feature.CoralFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class FeatureCoralClaw extends CoralFeature {
+public class FeatureCoralClaw extends FeaturePanthalassaCoral {
     public FeatureCoralClaw(Codec<NoneFeatureConfiguration> p_i231939_1_) {
         super(p_i231939_1_);
     }

@@ -7,14 +7,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.levelgen.feature.CoralFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class FeatureCoralTree extends CoralFeature {
+public class FeatureCoralTree extends FeaturePanthalassaCoral {
     public FeatureCoralTree(Codec<NoneFeatureConfiguration> p_i231942_1_) {
         super(p_i231942_1_);
     }
@@ -23,7 +22,7 @@ public class FeatureCoralTree extends CoralFeature {
         double r = Math.floor(Math.random() * (81) + 20);
         BlockPos blockposAdjusted = new BlockPos(p_204623_3_.getX(), r, p_204623_3_.getZ());
 
-        if (p_204623_1_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get())) {
+        if (p_204623_1_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get()) || p_204623_1_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_OVERGROWN_SAND.get())) {
 
             BlockPos.MutableBlockPos blockpos$mutable = blockposAdjusted.mutable();
             int i = p_204623_2_.nextInt(3) + 1;
