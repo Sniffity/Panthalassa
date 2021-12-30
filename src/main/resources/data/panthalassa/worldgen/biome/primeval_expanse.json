@@ -44,19 +44,19 @@
     "underground_water_creature": [
       {
         "type": "panthalassa:megalodon",
-        "weight": 2,
+        "weight": 8,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 10,
+        "weight": 40,
         "minCount": 5,
         "maxCount": 10
       },
       {
         "type": "panthalassa:leedsichthys",
-        "weight": 4,
+        "weight": 16,
         "minCount": 1,
         "maxCount": 1
       }
