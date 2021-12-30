@@ -42,10 +42,10 @@ public class PanthalassaFeatures {
             FEATURES.register("panthalassa_coral_tree", () -> new FeatureCoralTree(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> ANCIENT_PILLARS =
-            FEATURES.register("ancient_pillar", () -> new FeatureAncientPillar(NoneFeatureConfiguration.CODEC));
+            FEATURES.register("ancient_pillars", () -> new FeatureAncientPillar(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<ColumnFeatureConfiguration>> ANCIENT_COLUMNS =
-            FEATURES.register("ancient_column", () -> new FeatureAncientColumn(ColumnFeatureConfiguration.CODEC));
+            FEATURES.register("ancient_columns", () -> new FeatureAncientColumn(ColumnFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<FossilFeatureConfiguration>> FOSSILS =
             FEATURES.register("fossils", () -> new FeatureFossils(FossilFeatureConfiguration.CODEC));
