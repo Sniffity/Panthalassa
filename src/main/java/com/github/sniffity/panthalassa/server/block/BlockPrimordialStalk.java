@@ -54,45 +54,42 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
         if (p_196271_1_.getValue(WATERLOGGED)) {
             p_196271_4_.getFluidTicks().hasScheduledTick(p_196271_5_, Fluids.WATER);
         }
-        if (!this.canSurvive(p_196271_4_, p_196271_5_)) {
+        if (!p_196271_1_.canSurvive(p_196271_4_, p_196271_5_)) {
             p_196271_4_.getBlockTicks().hasScheduledTick(p_196271_5_, this);
             return super.updateShape(p_196271_1_, p_196271_2_, p_196271_3_, p_196271_4_, p_196271_5_, p_196271_6_);
         } else {
-            boolean flag = p_196271_3_.getBlock() == this || p_196271_3_.is(PanthalassaBlocks.PRIMORDIAL_STALK.get()) || p_196271_2_ == Direction.DOWN && p_196271_3_.is(PanthalassaBlocks.PANTHALASSA_SAND.get());
+            boolean flag = p_196271_3_.getBlock() == this || p_196271_3_.is(PanthalassaBlocks.PRIMORDIAL_STALK.get()) || p_196271_2_ == Direction.DOWN && (p_196271_3_.is(PanthalassaBlocks.PANTHALASSA_SAND.get()));
             return p_196271_1_.setValue(PROPERTY_BY_DIRECTION.get(p_196271_2_), Boolean.valueOf(flag));
         }
     }
 
 
-    public void tick(BlockState p_225534_1_, ServerLevel p_225534_2_, BlockPos p_225534_3_, Random p_225534_4_) {
-        if (!this.canSurvive(p_225534_2_, p_225534_3_)) {
-            p_225534_2_.destroyBlock(p_225534_3_, true);
+    public void tick(BlockState p_51714_, ServerLevel p_51715_, BlockPos p_51716_, Random p_51717_) {
+        if (!p_51714_.canSurvive(p_51715_, p_51716_)) {
+            p_51715_.destroyBlock(p_51716_, true);
         }
 
     }
-
-    public boolean canSurvive(LevelReader p_196260_2_, BlockPos p_196260_3_) {
-        BlockState blockstate = p_196260_2_.getBlockState(p_196260_3_.below());
-        boolean flag = !p_196260_2_.getBlockState(p_196260_3_.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
+    public boolean canSurvive(BlockState p_51724_, LevelReader p_51725_, BlockPos p_51726_) {
+        BlockState blockstate = p_51725_.getBlockState(p_51726_.below());
+        boolean flag = !p_51725_.getBlockState(p_51726_.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
 
         for(Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos blockpos = p_196260_3_.relative(direction);
-            Block block = p_196260_2_.getBlockState(blockpos).getBlock();
-            if (block == this) {
+            BlockPos blockpos = p_51726_.relative(direction);
+            BlockState blockstate1 = p_51725_.getBlockState(blockpos);
+            if (blockstate1.is(this)) {
                 if (flag) {
                     return false;
                 }
 
-                Block block1 = p_196260_2_.getBlockState(blockpos.below()).getBlock();
-                if (block1 == this || block1 == PanthalassaBlocks.PANTHALASSA_SAND.get()) {
+                BlockState blockstate2 = p_51725_.getBlockState(blockpos.below());
+                if (blockstate2.is(this) || blockstate2.is(PanthalassaBlocks.PANTHALASSA_SAND.get())) {
                     return true;
                 }
             }
         }
 
-        Block block2 = blockstate.getBlock();
-        return block2 == this || block2 == PanthalassaBlocks.PANTHALASSA_SAND.get();
-    }
+        return blockstate.is(this) || blockstate.is(Blocks.END_STONE);    }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
         p_206840_1_.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
