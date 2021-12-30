@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.tags.FluidTags;
@@ -73,12 +72,9 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     protected Vec3 getPosition() {
         Vec3 targetVec =  BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7);
 
-        BlockPos targetBlockPos = new BlockPos(BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7));
 
-        for (int i = 0; targetBlockPos != null && !this.creature.level.getBlockState(new BlockPos(targetBlockPos)).isPathfindable(this.creature.level, new BlockPos(targetBlockPos), PathComputationType.WATER) && i++ < 15;
-             targetBlockPos = new BlockPos(BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7)));
-        {}
-        if (targetBlockPos != null) {
+        if (targetVec != null) {
+            BlockPos targetBlockPos = new BlockPos(targetVec);
 
             Vec3 creaturePos = this.creature.position();
             double distance = creaturePos.subtract(Vec3.atCenterOf(targetBlockPos)).length();
@@ -105,22 +101,11 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
                     break;
                 }
             }
-/*
-            if (vector != null) {
-                if (!this.creature.level.getFluidState(new BlockPos(vector).above(1)).is(FluidTags.WATER)) {
-                    vector = vector.add(0, -3, 0);
-                } else if (!this.creature.level.getFluidState(new BlockPos(vector).above(2)).is(FluidTags.WATER)) {
-                    vector = vector.add(0, -2, 0);
-                } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(1)).is(FluidTags.WATER)) {
-                    vector = vector.add(0, +3, 0);
-                } else if (!this.creature.level.getFluidState(new BlockPos(vector).below(2)).is(FluidTags.WATER)) {
-                    vector = vector.add(0, +2, 0);
-                }
-            }
 
- */
-        }
         return Vec3.atCenterOf(targetBlockPos);
+
+        }
+        return null;
     }
 
     @Override
