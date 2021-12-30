@@ -54,7 +54,7 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
         if (p_196271_1_.getValue(WATERLOGGED)) {
             p_196271_4_.getFluidTicks().hasScheduledTick(p_196271_5_, Fluids.WATER);
         }
-        if (!p_196271_1_.canSurvive(p_196271_4_, p_196271_5_)) {
+        if (!this.canSurvive(p_196271_4_, p_196271_5_)) {
             p_196271_4_.getBlockTicks().hasScheduledTick(p_196271_5_, this);
             return super.updateShape(p_196271_1_, p_196271_2_, p_196271_3_, p_196271_4_, p_196271_5_, p_196271_6_);
         } else {
@@ -65,13 +65,13 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
 
 
     public void tick(BlockState p_225534_1_, ServerLevel p_225534_2_, BlockPos p_225534_3_, Random p_225534_4_) {
-        if (!p_225534_1_.canSurvive(p_225534_2_, p_225534_3_)) {
+        if (!this.canSurvive(p_225534_2_, p_225534_3_)) {
             p_225534_2_.destroyBlock(p_225534_3_, true);
         }
 
     }
 
-    public boolean canSurvive(BlockState p_196260_1_, LevelReader p_196260_2_, BlockPos p_196260_3_) {
+    public boolean canSurvive(LevelReader p_196260_2_, BlockPos p_196260_3_) {
         BlockState blockstate = p_196260_2_.getBlockState(p_196260_3_.below());
         boolean flag = !p_196260_2_.getBlockState(p_196260_3_.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
 
