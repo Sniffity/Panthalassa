@@ -43,7 +43,7 @@ public abstract class FeaturePanthalassaAbstractCoral extends Feature<NoneFeatur
         BlockPos blockposBelow = p_204624_3_.below();
         BlockState blockstateBelow = p_204624_1_.getBlockState(blockposBelow);
 
-        if (((blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get())) && (blockstateBelow.is(PanthalassaBlocks.PANTHALASSA_SAND.get()))) || blockstate.is(BlockTags.CORALS) && (blockStateAbove.is(PanthalassaBlocks.PANTHALASSA_WATER.get()))){
+        if (((blockstate.is(PanthalassaBlocks.PANTHALASSA_WATER.get())) && (((blockstateBelow.is(PanthalassaBlocks.PANTHALASSA_SAND.get()))) || ((blockstateBelow.is(PanthalassaBlocks.PANTHALASSA_OVERGROWN_SAND.get())))) || blockstate.is(BlockTags.CORALS) && (blockStateAbove.is(PanthalassaBlocks.PANTHALASSA_WATER.get())))){
             p_204624_1_.setBlock(p_204624_3_, p_204624_4_, 3);
             if (p_204624_2_.nextFloat() < 0.25F) {
                 p_204624_1_.setBlock(blockposAbove, BlockTags.CORALS.getRandomElement(p_204624_2_).defaultBlockState(), 2);

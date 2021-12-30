@@ -22,38 +22,39 @@ public class FeatureCoralTree extends FeaturePanthalassaAbstractCoral {
         double r = Math.floor(Math.random() * (81) + 20);
         BlockPos blockposAdjusted = new BlockPos(p_65492_.getX(), r, p_65492_.getZ());
 
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = blockposAdjusted.mutable();
-        int i = p_65491_.nextInt(3) + 1;
+        if (p_65490_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get()) || p_65490_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_OVERGROWN_SAND.get())) {
+            BlockPos.MutableBlockPos blockpos$mutableblockpos = blockposAdjusted.mutable();
+            int i = p_65491_.nextInt(3) + 1;
 
-        for(int j = 0; j < i; ++j) {
-            if (!this.placeSecondaryCoralBlock(p_65490_, p_65491_, blockpos$mutableblockpos, p_65493_)) {
-                return true;
+            for (int j = 0; j < i; ++j) {
+                if (!this.placeSecondaryCoralBlock(p_65490_, p_65491_, blockpos$mutableblockpos, p_65493_)) {
+                    return true;
+                }
+
+                blockpos$mutableblockpos.move(Direction.UP);
             }
 
-            blockpos$mutableblockpos.move(Direction.UP);
-        }
+            BlockPos blockpos = blockpos$mutableblockpos.immutable();
+            int k = p_65491_.nextInt(3) + 2;
+            List<Direction> list = Lists.newArrayList(Direction.Plane.HORIZONTAL);
+            Collections.shuffle(list, p_65491_);
 
-        BlockPos blockpos = blockpos$mutableblockpos.immutable();
-        int k = p_65491_.nextInt(3) + 2;
-        List<Direction> list = Lists.newArrayList(Direction.Plane.HORIZONTAL);
-        Collections.shuffle(list, p_65491_);
+            for (Direction direction : list.subList(0, k)) {
+                blockpos$mutableblockpos.set(blockpos);
+                blockpos$mutableblockpos.move(direction);
+                int l = p_65491_.nextInt(5) + 2;
+                int i1 = 0;
 
-        for(Direction direction : list.subList(0, k)) {
-            blockpos$mutableblockpos.set(blockpos);
-            blockpos$mutableblockpos.move(direction);
-            int l = p_65491_.nextInt(5) + 2;
-            int i1 = 0;
-
-            for(int j1 = 0; j1 < l && this.placeSecondaryCoralBlock(p_65490_, p_65491_, blockpos$mutableblockpos, p_65493_); ++j1) {
-                ++i1;
-                blockpos$mutableblockpos.move(Direction.UP);
-                if (j1 == 0 || i1 >= 2 && p_65491_.nextFloat() < 0.25F) {
-                    blockpos$mutableblockpos.move(direction);
-                    i1 = 0;
+                for (int j1 = 0; j1 < l && this.placeSecondaryCoralBlock(p_65490_, p_65491_, blockpos$mutableblockpos, p_65493_); ++j1) {
+                    ++i1;
+                    blockpos$mutableblockpos.move(Direction.UP);
+                    if (j1 == 0 || i1 >= 2 && p_65491_.nextFloat() < 0.25F) {
+                        blockpos$mutableblockpos.move(direction);
+                        i1 = 0;
+                    }
                 }
             }
         }
-
         return true;
     }
 }
