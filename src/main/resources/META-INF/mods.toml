@@ -1,5 +1,5 @@
 modLoader="javafml" 
-loaderVersion="[36,)" 
+loaderVersion="[39,)"
 license="custom"
 issueTrackerURL="https://github.com/Sniffity/Panthalassa/issues"
 
@@ -10,18 +10,15 @@ displayName="Panthalassa Mod"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/panthalassa"
 #logoFile="examplemod.png" #optional
 authors="Sniffity"
-description="Panthalassa is a mod for Minecraft 1.16 that adds prehistoric aquatic life to your world!"
+description="Panthalassa is a mod for Minecraft 1.18.1 that adds prehistoric aquatic life to your world!"
 
 [[dependencies.panthalassa]] #optional
-    modId="forge" 
-    mandatory=true 
-    versionRange="[36,)" 
-    ordering="NONE"
-    side="BOTH"
+    modId="forge"
+    mandatory=true
+    versionRange="[39.0.0,)"
 
 [[dependencies.panthalssa]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3,1.16.5)"
-    ordering="NONE"
-    side="BOTH"
+    versionRange="[1.18.1,)"
+
