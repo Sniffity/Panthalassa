@@ -58,7 +58,7 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
 
         JigsawConfiguration newConfig = new JigsawConfiguration(
                 () -> context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                        .get(new ResourceLocation(Panthalassa.MODID, "run_down_house/start_pool")),
+                        .get(new ResourceLocation(Panthalassa.MODID, "panthalassa_laboratory/start_pool")),
                 10
         );
 
