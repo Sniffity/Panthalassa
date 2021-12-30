@@ -44,9 +44,6 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> ANCIENT_PILLARS =
             FEATURES.register("ancient_pillars", () -> new FeatureAncientPillar(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<ColumnFeatureConfiguration>> ANCIENT_COLUMNS =
-            FEATURES.register("ancient_columns", () -> new FeatureAncientColumn(ColumnFeatureConfiguration.CODEC));
-
     public static final RegistryObject<Feature<FossilFeatureConfiguration>> FOSSILS =
             FEATURES.register("fossils", () -> new FeatureFossils(FossilFeatureConfiguration.CODEC));
 

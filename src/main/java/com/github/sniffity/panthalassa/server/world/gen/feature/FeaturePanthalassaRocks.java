@@ -40,7 +40,11 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateConfiguration> {
                             &&
                             !(worldgenlevel.getBlockState(pos0.below()) == PanthalassaBlocks.PANTHALASSA_COARSE_SOIL.get().defaultBlockState())
                             &&
-                            !(worldgenlevel.getBlockState(pos0.below()) == PanthalassaBlocks.PANTHALASSA_LOOSE_SOIL.get().defaultBlockState()))
+                            !(worldgenlevel.getBlockState(pos0.below()) == PanthalassaBlocks.PANTHALASSA_LOOSE_SOIL.get().defaultBlockState())
+                            &&
+                            !(worldgenlevel.getBlockState(pos0.below()) == PanthalassaBlocks.ANCIENT_ROCK.get().defaultBlockState())
+
+                    )
                      {
                         break label46;
                     }

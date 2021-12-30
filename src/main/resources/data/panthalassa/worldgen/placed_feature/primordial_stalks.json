@@ -1,12 +1,12 @@
 {
-  "feature": "panthalassa:krethross",
+  "feature": "panthalassa:primordial_stalks",
   "placement": [
     {
       "type": "minecraft:in_square"
     },
     {
       "type": "minecraft:noise_based_count",
-      "noise_to_count_ratio": 128,
+      "noise_to_count_ratio": 64,
       "noise_factor": 1,
       "noise_offset": 5
 

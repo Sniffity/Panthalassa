@@ -1,0 +1,17 @@
+{
+  "feature": "panthalassa:panthalassa_coral_reef",
+  "placement": [
+    {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 20,
+      "noise_factor": 400,
+      "noise_offset": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
