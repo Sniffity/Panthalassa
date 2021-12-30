@@ -12,13 +12,19 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/panthalassa"
 authors="Sniffity"
 description="Panthalassa is a mod for Minecraft 1.18.1 that adds prehistoric aquatic life to your world!"
 
-[[dependencies.panthalassa]] #optional
+[[dependencies.panthalassa]]
     modId="forge"
     mandatory=true
     versionRange="[39.0.0,)"
 
-[[dependencies.panthalssa]]
+[[dependencies.panthalassa]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.18.1,)"
 
+[[dependencies.panthalassa]]
+    modId="geckolib3"
+    mandatory=true
+    versionRange="[3.0.3,)"
+    ordering="BEFORE"
+    side="BOTH"
