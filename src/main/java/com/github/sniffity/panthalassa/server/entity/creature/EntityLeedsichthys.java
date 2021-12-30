@@ -54,7 +54,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this);
+        this.moveControl = new PanthalassaSwimmingHelper(this, 85, 0.02F, 0.1F, true);;
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
 

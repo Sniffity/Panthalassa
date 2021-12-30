@@ -153,7 +153,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
             this.navigation = new GroundPathNavigation(this, level);
             this.isLandNavigator = true;
         } else {
-            this.moveControl = new PanthalassaSwimmingHelper(this);
+            this.moveControl = new PanthalassaSwimmingHelper(this, 85, 0.02F, 0.1F, true);
             this.navigation = new WaterBoundPathNavigation(this, level);
             this.isLandNavigator = false;
         }

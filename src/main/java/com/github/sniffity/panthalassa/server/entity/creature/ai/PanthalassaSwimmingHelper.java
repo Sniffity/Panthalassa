@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -9,119 +10,73 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 
 public class PanthalassaSwimmingHelper extends MoveControl {
-
-
+    private int maxTurnX;
+    private int maxTurnY;
+    private final float inWaterSpeedModifier;
+    private final float outsideWaterSpeedModifier;
+    private final boolean applyGravity;
 
     private final PanthalassaEntity entityPanthalassa;
 
-    public PanthalassaSwimmingHelper(PanthalassaEntity entity) {
-        super(entity);
-        this.entityPanthalassa = entity;
+    public PanthalassaSwimmingHelper(Mob p_148070_, int p_148071_, float p_148073_, float p_148074_, boolean p_148075_) {
+        super(p_148070_);
+        this.entityPanthalassa = (PanthalassaEntity) p_148070_;
+        this.maxTurnX = p_148071_;
+        this.inWaterSpeedModifier = p_148073_;
+        this.outsideWaterSpeedModifier = p_148074_;
+        this.applyGravity = p_148075_;
+
+
     }
 
-    public boolean getBlockedAbove(int distance) {
-        return (!this.entityPanthalassa.level.getFluidState(new BlockPos(entityPanthalassa.blockPosition()).above(distance)).is(FluidTags.WATER) && !this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition().above(distance))).is(Blocks.AIR));
-    }
-
-    public boolean getBlockedNorth(int distance) {
-        return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).north(distance)).canOcclude();
-    }
-
-    public boolean getBlockedEast(int distance) {
-        return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).east(distance)).canOcclude();
-    }
-
-
-    public boolean getBlockedWest(int distance) {
-        return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).west(distance)).canOcclude();
-    }
-
-    public boolean getBlockedSouth(int distance) {
-        return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).south(distance)).canOcclude();
-    }
-
-    public boolean getBlockedBelow(int distance) {
-        return this.entityPanthalassa.level.getBlockState(new BlockPos(entityPanthalassa.blockPosition()).below(distance)).canOcclude();
-    }
-
-    public void tick () {
-
-        if (this.entityPanthalassa.isEyeInFluid(FluidTags.WATER)) {
-            this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
+    public void tick() {
+        if (this.applyGravity && this.mob.isInWater()) {
+            this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
         }
 
-        if (this.operation == MoveControl.Operation.MOVE_TO && !this.entityPanthalassa.getNavigation().isDone()) {
-            double d0 = this.wantedX - this.entityPanthalassa.getX();
-            double d1 = this.wantedY - this.entityPanthalassa.getY();
-            double d2 = this.wantedZ - this.entityPanthalassa.getZ();
-
+        if (this.operation == MoveControl.Operation.MOVE_TO && !this.mob.getNavigation().isDone()) {
+            double d0 = this.wantedX - this.mob.getX();
+            double d1 = this.wantedY - this.mob.getY();
+            double d2 = this.wantedZ - this.mob.getZ();
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-            if (d3 < (double) 2.5000003E-7F) {
+            if (d3 < (double)2.5000003E-7F) {
                 this.mob.setZza(0.0F);
             } else {
-                float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
                 if (this.entityPanthalassa.isTryingToBreach) {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 90);
+                    this.maxTurnY=90;
                 } else if ((this.entityPanthalassa.getTarget() != null)) {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 15.0F);
+                    this.maxTurnY=15;
                 } else {
-                    this.entityPanthalassa.yRot = this.rotlerp(this.entityPanthalassa.yRot, f, 3.0F);
+                    this.maxTurnY=3;
                 }
-                this.entityPanthalassa.yBodyRot = this.entityPanthalassa.yRot;
-                this.entityPanthalassa.yHeadRot = this.entityPanthalassa.yRot;
-                float f1 = (float) (this.speedModifier * this.entityPanthalassa.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                if (this.entityPanthalassa.isInWater()) {
-                    this.entityPanthalassa.setSpeed(f1 * 0.02F);
-                    float f2 = -((float) (Mth.atan2(d1, (double) Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
-                    f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
-                    this.entityPanthalassa.xRot = this.rotlerp(this.entityPanthalassa.xRot, f2, 5.0F);
-                    float f3 = Mth.cos(this.entityPanthalassa.xRot * ((float) Math.PI / 180F));
-                    float f4 = Mth.sin(this.entityPanthalassa.xRot * ((float) Math.PI / 180F));
-                    this.entityPanthalassa.zza = f3 * f1;
-                    this.entityPanthalassa.yya = -f4 * f1;
-                } else {
-                    this.entityPanthalassa.setSpeed(f1 * 0.1F);
-                }
-            }
-        }/* else if (this.entityPanthalassa.getTarget() == null && this.entityPanthalassa.isInWater()) {
-            this.entityPanthalassa.setSpeed(1.0F);
-            this.entityPanthalassa.setXxa(0.0F);
-            this.entityPanthalassa.setYya(0.00F);
-            this.entityPanthalassa.setZza(0.005F);
-        }*/
-        /*
-        for (int i = 0; i <= blockedDistance; i++) {
-            if (this.entityPanthalassa.isInWater() && !this.entityPanthalassa.isAggressive()) {
+                this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, (float)this.maxTurnY));
+                this.mob.yBodyRot = this.mob.getYRot();
+                this.mob.yHeadRot = this.mob.getYRot();
+                float f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                if (this.mob.isInWater()) {
+                    this.mob.setSpeed(f1 * this.inWaterSpeedModifier);
+                    double d4 = Math.sqrt(d0 * d0 + d2 * d2);
+                    if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
+                        float f2 = -((float)(Mth.atan2(d1, d4) * (double)(180F / (float)Math.PI)));
+                        f2 = Mth.clamp(Mth.wrapDegrees(f2), (float)(-this.maxTurnX), (float)this.maxTurnX);
+                        this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f2, 5.0F));
+                    }
 
-                if (getBlockedNorth(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, +0.05D));
-                    break;
+                    float f4 = Mth.cos(this.mob.getXRot() * ((float)Math.PI / 180F));
+                    float f3 = Mth.sin(this.mob.getXRot() * ((float)Math.PI / 180F));
+                    this.mob.zza = f4 * f1;
+                    this.mob.yya = -f3 * f1;
+                } else {
+                    this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier);
                 }
-                if (getBlockedSouth(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.0D, -0.05D));
-                    break;
-                }
-                if (getBlockedWest(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(+0.05D, 0.0D, 0.0D));
-                    break;
-                }
-                if (getBlockedEast(i)) {
-                    this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(-0.05D, 0.0D, 0.0D));
-                    break;
-                }
-                for (int j = 0; j<=2; j++) {
-                    if (getBlockedAbove(i)) {
-                        this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
-                        break;
-                    }
-                    if (getBlockedBelow(j)) {
-                        this.entityPanthalassa.setDeltaMovement(this.entityPanthalassa.getDeltaMovement().add(0.0D, 0.05D, 0.0D));
-                        break;
-                    }
-                }
+
             }
+        } else {
+            this.mob.setSpeed(0.0F);
+            this.mob.setXxa(0.0F);
+            this.mob.setYya(0.0F);
+            this.mob.setZza(0.0F);
         }
-
-         */
     }
 }
