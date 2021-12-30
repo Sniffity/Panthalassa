@@ -41,6 +41,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     public float adjustment = 0.25F;
 
     private AnimationFactory factory = new AnimationFactory(this);
+    protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> IS_BREACHING = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> BREACH_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
@@ -52,7 +53,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getIsBreaching()) {
+        if (getBreachState()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
             return PlayState.CONTINUE;
         }
@@ -66,6 +67,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(BREACH_STATE, Boolean.FALSE);
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         this.entityData.define(AIR_SUPPLY, 150);
@@ -151,12 +153,22 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     }
 
     @Override
-    public void setIsBreaching(boolean breaching) {
+    public void setBreachState(boolean breaching) {
+        this.entityData.set(BREACH_STATE,breaching);
+    }
+
+    @Override
+    public boolean getBreachState() {
+        return this.entityData.get(BREACH_STATE);
+    }
+
+    @Override
+    public void setBreaching(boolean breaching) {
         this.entityData.set(IS_BREACHING,breaching);
     }
 
     @Override
-    public boolean getIsBreaching() {
+    public boolean getBreaching() {
         return this.entityData.get(IS_BREACHING);
     }
 

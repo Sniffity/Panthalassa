@@ -130,7 +130,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
     @Override
     public void start() {
         attacker.setAggressive(true);
-        attacker.isTryingToBreach = true;
+        panthalassaBreachableEntity.setBreaching(true);
     }
 
     @Override
@@ -140,8 +140,8 @@ public class PanthalassaBreachAttackGoal extends Goal {
             attacker.setTarget(null);
         }
         attacker.setAggressive(false);
-        attacker.isTryingToBreach = false;
-        panthalassaBreachableEntity.setIsBreaching(false);
+        panthalassaBreachableEntity.setBreaching(false);
+        panthalassaBreachableEntity.setBreachState(false);
         panthalassaBreachableEntity.setBreachCooldown(600);
         if (!attacker.getPassengers().isEmpty()) {
             attacker.ejectPassengers();
@@ -166,7 +166,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
                 step1Done = true;
                 //Set the Breaching Data Parameter to true, for animations to work.
-                panthalassaBreachableEntity.setIsBreaching(true);
+                panthalassaBreachableEntity.setBreachState(true);
             }
         }
 
@@ -201,7 +201,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 if (!attacker.getPassengers().isEmpty()) {
                     attacker.ejectPassengers();
                 }
-                panthalassaBreachableEntity.setIsBreaching(false);
+                panthalassaBreachableEntity.setBreachState(false);
                 step3Done = true;
             }
             //Alternatively, if it somehow returns to the water after jumping out without reaching such a height, just perform the attack at this point.

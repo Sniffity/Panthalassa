@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.util.Mth;
+import software.bernie.geckolib3.core.IAnimatable;
 
 public class PanthalassaSwimmingHelper extends MoveControl {
     private int maxTurnX;
@@ -40,7 +41,7 @@ public class PanthalassaSwimmingHelper extends MoveControl {
                 this.mob.setZza(0.0F);
             } else {
                 float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                if (this.entityPanthalassa.isTryingToBreach) {
+                if (this.entityPanthalassa instanceof IAnimatable && ((IBreachable) this.entityPanthalassa).getBreaching()) {
                     this.maxTurnY=90;
                 } else if ((this.entityPanthalassa.getTarget() != null)) {
                     this.maxTurnY=15;

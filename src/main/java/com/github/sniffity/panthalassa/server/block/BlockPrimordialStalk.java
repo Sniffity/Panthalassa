@@ -55,7 +55,7 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
             p_196271_4_.getFluidTicks().hasScheduledTick(p_196271_5_, Fluids.WATER);
         }
         if (!p_196271_1_.canSurvive(p_196271_4_, p_196271_5_)) {
-            p_196271_4_.getBlockTicks().hasScheduledTick(p_196271_5_, this);
+            p_196271_4_.scheduleTick(p_196271_5_, this, 1);
             return super.updateShape(p_196271_1_, p_196271_2_, p_196271_3_, p_196271_4_, p_196271_5_, p_196271_6_);
         } else {
             boolean flag = p_196271_3_.getBlock() == this || p_196271_3_.is(PanthalassaBlocks.PRIMORDIAL_STALK.get()) || p_196271_2_ == Direction.DOWN && (p_196271_3_.is(PanthalassaBlocks.PANTHALASSA_SAND.get()));
@@ -71,6 +71,7 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
 
     }
     public boolean canSurvive(BlockState p_51724_, LevelReader p_51725_, BlockPos p_51726_) {
+
         BlockState blockstate = p_51725_.getBlockState(p_51726_.below());
         boolean flag = !p_51725_.getBlockState(p_51726_.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
 
@@ -88,8 +89,8 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
                 }
             }
         }
-
-        return blockstate.is(this) || blockstate.is(Blocks.END_STONE);    }
+        return blockstate.is(this) || blockstate.is(PanthalassaBlocks.PANTHALASSA_SAND.get());
+    }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
         p_206840_1_.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);

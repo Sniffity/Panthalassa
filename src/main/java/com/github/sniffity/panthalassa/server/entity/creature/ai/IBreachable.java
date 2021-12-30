@@ -4,9 +4,13 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 public interface IBreachable
 
 {
-    void setIsBreaching(boolean breaching);
+    void setBreachState(boolean breaching);
 
-    boolean getIsBreaching();
+    boolean getBreachState();
+
+    void setBreaching(boolean breaching);
+
+    boolean getBreaching();
 
     void setBreachCooldown(float breachCooldown);
 
