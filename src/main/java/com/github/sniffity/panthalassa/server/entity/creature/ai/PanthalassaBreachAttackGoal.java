@@ -242,7 +242,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         assert target != null;
         attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
         attacker.getNavigation().moveTo(target.getX(),target.getY(),target.getZ(),speedTowardsTarget*4);
-        return attacker.distanceTo(target) < 2.0F;
+        return attacker.distanceTo(target) < 4.0F;
     }
 
     public boolean moveStep4(){
