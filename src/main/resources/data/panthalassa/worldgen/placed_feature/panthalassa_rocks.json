@@ -1,12 +1,12 @@
 {
-  "feature": "panthalassa:ancient_columns_small",
+  "feature": "panthalassa:panthalassa_sea_grass",
   "placement": [
     {
       "type": "minecraft:in_square"
     },
     {
       "type": "minecraft:noise_based_count",
-      "noise_to_count_ratio": 32,
+      "noise_to_count_ratio": 64,
       "noise_factor": 1,
       "noise_offset": 5
 

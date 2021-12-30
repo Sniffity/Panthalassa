@@ -5,13 +5,13 @@
       "type": "minecraft:in_square"
     },
     {
-      "type": "minecraft:heightmap",
-      "heightmap": "OCEAN_FLOOR_WG"
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 256,
+      "noise_factor": 1,
+      "noise_offset": 5
+
     },
-    {
-      "type": "minecraft:count",
-      "count": 200
-    },
+
     {
       "type": "minecraft:biome"
     }

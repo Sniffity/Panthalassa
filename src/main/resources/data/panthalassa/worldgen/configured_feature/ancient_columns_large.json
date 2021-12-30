@@ -1,5 +1,5 @@
 {
-  "type": "panthalassa:ancient_column",
+  "type": "panthalassa:ancient_columns",
   "config": {
     "reach": {
       "type": "minecraft:uniform",
