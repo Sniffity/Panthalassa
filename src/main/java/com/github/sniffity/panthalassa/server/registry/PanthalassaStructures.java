@@ -1,11 +1,10 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaLaboratory;
 import com.google.common.collect.ImmutableMap;
+import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaLaboratory;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;

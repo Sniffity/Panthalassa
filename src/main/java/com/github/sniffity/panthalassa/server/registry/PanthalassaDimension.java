@@ -2,7 +2,6 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.world.PanthalassaWorldSavedData;
-import com.github.sniffity.panthalassa.server.world.dimension.PanthalassaBiomeSource;
 import com.github.sniffity.panthalassa.server.world.dimension.PanthalassaChunkGenerator;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +28,5 @@ public class PanthalassaDimension {
 
     public static void registerDimensionAccessories() {
         Registry.register(Registry.CHUNK_GENERATOR, name("chunk_generator"), PanthalassaChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, name("biome_source"), PanthalassaBiomeSource.CODEC);
     }
 }
