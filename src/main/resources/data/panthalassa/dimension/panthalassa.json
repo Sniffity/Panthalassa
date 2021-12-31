@@ -13,10 +13,10 @@
             "offset": 0.0,
             "continentalness": 0.0,
             "humidity": 0.0,
-            "depth": -0.4,
+            "depth": 0.0,
             "weirdness": [
               -0.1,
-              1
+              0.1
             ],
             "temperature": [
               -0.1,
@@ -31,14 +31,14 @@
             "offset": 0.0,
             "continentalness": 0.0,
             "humidity": 0.0,
-            "depth": -0.3,
+            "depth": -0.1,
             "weirdness": [
-              -0.6,
-              -0.4
+              -0.3,
+              -0.1
             ],
             "temperature": [
-              0.4,
-              0.6
+              0.1,
+              0.3
             ]
           }
         },
@@ -49,14 +49,14 @@
             "offset": 0.0,
             "continentalness": 0.0,
             "humidity": 0.0,
-            "depth": -0.5,
+            "depth": 0.1,
             "weirdness": [
-              0.4,
-              0.6
+              0.1,
+              0.3
             ],
             "temperature": [
-              -0.6,
-              -0.4
+              -0.3,
+              -0.1
             ]
           }
         }
