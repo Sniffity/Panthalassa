@@ -8,7 +8,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.ColumnFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.minecraftforge.registries.RegistryObject;
@@ -49,4 +48,8 @@ public class PanthalassaFeatures {
 
     public static final RegistryObject<Feature<BlockStateConfiguration>> PANTHALASSA_ROCKS =
             FEATURES.register("panthalassa_rocks", () -> new FeaturePanthalassaRocks(BlockStateConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PANTHALASSA_ICE_SPIKES =
+            FEATURES.register("panthalassa_ice_spikes", () -> new FeaturePanthalassaIceSpikes(NoneFeatureConfiguration.CODEC));
+
 }
