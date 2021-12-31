@@ -46,7 +46,7 @@ public class PanthalassaSwimmingHelper extends MoveControl {
                 } else if ((this.entityPanthalassa.getTarget() != null)) {
                     this.maxTurnY=15;
                 } else {
-                    this.maxTurnY=3;
+                    this.maxTurnY=7;
                 }
                 this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, (float)this.maxTurnY));
                 this.mob.yBodyRot = this.mob.getYRot();

@@ -6,8 +6,11 @@ import javax.annotation.Nullable;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.mojang.math.Vector3d;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
@@ -71,34 +74,33 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
 
     @Nullable
     protected Vec3 getPosition() {
-        Vec3 targetVec =  BehaviorUtils.getRandomSwimmablePos(this.creature, 10, 7);
-
+        Vec3 targetVec =  BehaviorUtils.getRandomSwimmablePos(this.creature, 30, 20);
 
         if (targetVec != null) {
             BlockPos targetBlockPos = new BlockPos(targetVec);
 
             Vec3 creaturePos = this.creature.position();
-            double distance = creaturePos.subtract(Vec3.atCenterOf(targetBlockPos)).length();
+            double distance = creaturePos.subtract(targetVec).length();
 
-            if (distance < 7) {
+            if (distance < 10) {
                 return null;
             }
 
             for (int i = 0; i <= avoidDistance; i++) {
                 if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).north(i)).is(FluidTags.WATER)) {
-                    targetBlockPos = null;
+                    targetVec = null;
                     break;
                 }
                 if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).south(i)).is(FluidTags.WATER)) {
-                    targetBlockPos = null;
+                    targetVec = null;
                     break;
                 }
                 if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).east(i)).is(FluidTags.WATER)) {
-                    targetBlockPos = null;
+                    targetVec = null;
                     break;
                 }
                 if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).west(i)).is(FluidTags.WATER)) {
-                    targetBlockPos = null;
+                    targetVec = null;
                     break;
                 }
             }
@@ -120,6 +122,17 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     @Override
     public void start() {
         this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
+        BlockPos target = new BlockPos(this.x,this.y,this.z);
+        LeashFenceKnotEntity marker = new LeashFenceKnotEntity(this.creature.level,target);
+        creature.level.addFreshEntity(marker);
+    }
+
+    @Override
+    public void tick(){
+        LightningBolt entity = EntityType.LIGHTNING_BOLT.create(this.creature.level);
+        entity.moveTo(this.x,this.y,this.z);
+        entity.setVisualOnly(true);
+        this.creature.level.addFreshEntity(entity);
     }
 
     @Override
