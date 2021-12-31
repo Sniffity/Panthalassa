@@ -41,7 +41,7 @@ public class PanthalassaSwimmingHelper extends MoveControl {
                 this.mob.setZza(0.0F);
             } else {
                 float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                if (this.entityPanthalassa instanceof IAnimatable && ((IBreachable) this.entityPanthalassa).getBreaching()) {
+                if (this.entityPanthalassa instanceof IBreachable && ((IBreachable) this.entityPanthalassa).getBreaching()) {
                     this.maxTurnY=90;
                 } else if ((this.entityPanthalassa.getTarget() != null)) {
                     this.maxTurnY=15;
