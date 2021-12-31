@@ -49,7 +49,7 @@ public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
         StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setRotation(rotation).setBoundingBox(mutableboundingbox).setRandom(rand).addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR);
         Vec3i vec3i = structuretemplate.getSize(rotation);
         BlockPos blockpos = blockpos0.offset(-vec3i.getX() / 2, 0, -vec3i.getZ() / 2);
-        int j = rand.nextInt(16 - blockpos.getX());
+        int j = blockpos0.getY();
 
         for(int k = 0; k < vec3i.getX(); ++k) {
             for(int l = 0; l < vec3i.getZ(); ++l) {
