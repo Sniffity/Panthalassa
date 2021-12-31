@@ -51,9 +51,9 @@
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 40,
-        "minCount": 5,
-        "maxCount": 10
+        "weight": 30,
+        "minCount": 3,
+        "maxCount": 6
       },
       {
         "type": "panthalassa:mosasaurus",
