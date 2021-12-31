@@ -44,7 +44,6 @@ import net.minecraft.world.entity.PathfinderMob;
 
 public abstract class PanthalassaEntity extends PathfinderMob {
 
-    public boolean isTryingToBreach;
     public boolean isLandNavigator;
 
     protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);
@@ -58,7 +57,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(ATTACKING_STATE, Boolean.FALSE);
-
         super.defineSynchedData();
     }
 
