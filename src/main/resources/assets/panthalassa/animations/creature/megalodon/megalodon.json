@@ -39,6 +39,36 @@
 					}
 				}
 			}
+		},
+		"animation.megalodon.breaching": {
+			"loop": true,
+			"bones": {
+				"head": {
+					"rotation": {
+						"vector": [-22.5, 0, 0]
+					}
+				},
+				"topjaw": {
+					"position": {
+						"vector": [0, -2, 0]
+					}
+				},
+				"bottomhead": {
+					"rotation": {
+						"vector": [20, 0, 0]
+					}
+				},
+				"bottomsnout": {
+					"rotation": {
+						"vector": [40, 0, 0]
+					}
+				},
+				"bottomjaw": {
+					"position": {
+						"vector": [0, 3, 0]
+					}
+				}
+			}
 		}
 	}
 }
