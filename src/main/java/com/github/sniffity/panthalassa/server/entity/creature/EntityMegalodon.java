@@ -32,19 +32,22 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
+import java.util.Random;
+
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
 
     public static final int BLOCKED_DISTANCE = 3;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public float adjustment = 0.25F;
+    public float adjustment = 0.15F;
 
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> IS_BREACHING = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> BREACH_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -53,15 +56,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getBreachState()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
-            return PlayState.CONTINUE;
-        }
-
-        if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.attack", true));
-            return PlayState.CONTINUE;
-        }
         return PlayState.STOP;
     }
 
@@ -71,6 +65,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         this.entityData.define(AIR_SUPPLY, 150);
+        this.entityData.define(TEXTURE_VARIANT, 0);
 
         super.defineSynchedData();
     }
@@ -124,6 +119,8 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
+        int textureVariant = (int) (Math.random()*3);
+        this.setTextureVariant(textureVariant);
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
@@ -189,4 +186,13 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     public int getAirSupplyLocal() {
         return this.entityData.get(AIR_SUPPLY);
     }
+
+    public void setTextureVariant(int textureVariant) {
+        this.entityData.set(TEXTURE_VARIANT,textureVariant);
+    }
+
+    public int getTextureVariant() {
+        return this.entityData.get(TEXTURE_VARIANT);
+    }
+
 }
