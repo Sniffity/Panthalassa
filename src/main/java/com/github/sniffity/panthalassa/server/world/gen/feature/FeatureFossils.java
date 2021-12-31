@@ -78,14 +78,22 @@ public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
             return false;
         }
 
-        BlockPos blockpos2 = new BlockPos(blockpos1.getX(), blockpos1.getY()-2, blockpos1.getZ());
+        if (countEmptyCorners(worldgenlevel, structuretemplate.getBoundingBox(placementsettings, blockpos1)) > fossilfeatureconfiguration.maxEmptyCornersAllowed) {
+            return false;
+        } else {
+            placementsettings.clearProcessors();
+            fossilfeatureconfiguration.fossilProcessors.get().list().forEach((p_159795_) -> {
+                placementsettings.addProcessor(p_159795_);
+            });
+            structuretemplate.placeInWorld(worldgenlevel, blockpos1, blockpos1, placementsettings, rand, 4);
+            placementsettings.clearProcessors();
+            fossilfeatureconfiguration.overlayProcessors.get().list().forEach((p_159792_) -> {
+                placementsettings.addProcessor(p_159792_);
+            });
+            structuretemplate.placeInWorld(worldgenlevel, blockpos1, blockpos1, placementsettings, rand, 4);
+            return true;
+        }
 
-        BlockRotProcessor integrityprocessor = new BlockRotProcessor(0.9F);
-        placementsettings.clearProcessors().addProcessor(integrityprocessor);
-        structuretemplate1.placeInWorld(worldgenlevel, blockpos2, blockpos2, placementsettings, rand, 4);
-        placementsettings.popProcessor(integrityprocessor);
-
-        return true;
     }
 
     private static int countEmptyCorners(WorldGenLevel p_159782_, BoundingBox p_159783_) {
