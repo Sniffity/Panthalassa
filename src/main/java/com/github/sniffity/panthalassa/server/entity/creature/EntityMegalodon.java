@@ -19,7 +19,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
-import java.util.Random;
 
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
 
@@ -40,7 +38,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public float adjustment = 0.15F;
+    public float adjustment = 0.10F;
 
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
