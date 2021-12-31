@@ -38,7 +38,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public float adjustment = 0.35F;
+    public float adjustment = 0.15F;
 
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
