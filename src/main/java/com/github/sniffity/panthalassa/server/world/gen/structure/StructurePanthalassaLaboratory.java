@@ -94,11 +94,6 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
                         false
                 );
 
-
-        if(structurePiecesGenerator.isPresent()) {
-            Panthalassa.LOGGER.log(Level.DEBUG, "Laboratory located at " + blockpos);
-        }
-
         return structurePiecesGenerator;
     }
 }
