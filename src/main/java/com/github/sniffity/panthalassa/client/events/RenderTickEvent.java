@@ -95,9 +95,9 @@ public class RenderTickEvent {
             game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry X: " + ChatFormatting.YELLOW + "???", 10, 55, Color.WHITE.getRGB());
         }
         if (z != 0){
-            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z" + ChatFormatting.YELLOW + entryZText, 10, 65, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z: " + ChatFormatting.YELLOW + entryZText, 10, 65, Color.WHITE.getRGB());
         } else {
-            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z" + ChatFormatting.YELLOW + "???", 10, 65, Color.WHITE.getRGB());
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z: " + ChatFormatting.YELLOW + "???", 10, 65, Color.WHITE.getRGB());
         }
 
         double nlfDistance;
