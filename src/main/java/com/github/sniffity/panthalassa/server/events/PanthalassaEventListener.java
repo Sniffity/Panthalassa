@@ -114,7 +114,7 @@ public class PanthalassaEventListener {
      }
 
     @SubscribeEvent
-    public void onEntityMountEvent (EntityMountEvent event) {
+    public static void onEntityMountEvent (EntityMountEvent event) {
         if (event.getEntityMounting() instanceof Player) {
             Supplier<ServerPlayer> player = (Supplier<ServerPlayer>) event.getEntity();
             if (event.isMounting() && event.getEntityBeingMounted() instanceof PanthalassaVehicle) {
