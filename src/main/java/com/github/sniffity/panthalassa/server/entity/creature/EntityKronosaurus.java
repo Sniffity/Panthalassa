@@ -95,27 +95,32 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
-        List<? extends PanthalassaEntity> school = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(10));
-        boolean flag = false;
-        if (school.isEmpty()){
-            this.setLeader(true);
-        } else {
-            for (int i = 0; i < school.size(); i++) {
-                PanthalassaEntity testEntity = school.get(i);
-                if (((ISchoolable) testEntity).getIsLeader()) {
-                    flag = true;
-                    break;
-                }
-            }
-        }
-        if (!flag){
-            this.setLeader(true);
-        }
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
     @Override
     public void tick() {
+        /*
+        if (!this.getIsLeader()){
+            List<? extends PanthalassaEntity> school = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(10));
+            boolean flag = false;
+            if (school.isEmpty()){
+                this.setLeader(true);
+            } else {
+                for (int i = 0; i < school.size(); i++) {
+                    PanthalassaEntity testEntity = school.get(i);
+                    if (((ISchoolable) testEntity).getIsLeader()) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if (!flag){
+                this.setLeader(true);
+            }
+        }
+         */
+
         super.tick();
         deltaYRot = this.yRot - prevYRot;
         prevYRot = this.yRot;
@@ -160,7 +165,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
-        this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, 0.7F, 5));
+        //this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, 0.7F, 5));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));

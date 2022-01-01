@@ -234,49 +234,6 @@ public class PanthalassaSchoolingGoal extends Goal {
     }
 
     protected Vec3 processAvoid(PanthalassaEntity entityIn) {
-        //Cast a series of vectors that generate a spherical surface
-        this.collisionVectors();
-        List<Vec3> viableDirections = new ArrayList<>();
-        //Analyze those vectors, from the target
-        for (int i = 0; i < directions.length; i++) {
-            //Position this vector relative to the entity...
-            //Skip those vectors which produce too great an angle with the entity's movement vector.
-            //Since the entity is looking where it's going, this will ensure we only take vectors that are pointing in the general direction towards where the entity is moving.
-            float vecAngle = (float) (Math.acos(entityIn.position().add(directions[i]).dot(entityIn.getDeltaMovement())) * Math.PI / 180);
-            if (vecAngle > 50) {
-                continue;
-            }
-            //For those vectors which are not skipped, check for a collision...
-            HitResult raytraceresult = entityIn.level.clip(new ClipContext(entityIn.position(), entityIn.position().add(directions[i]).normalize().scale(rayTraceLength), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, entityIn));
-            if (!(raytraceresult.getType() == HitResult.Type.BLOCK)) {
-                //If it does not collide, add it to a new Vector array.
-                viableDirections.add(entityIn.position().add(directions[i]));
-            }
-        }
-
-        //If this new Vector array has no elements, no directions will result in avoidance. Return a 0 vector.
-        if (viableDirections.isEmpty()){
-            return new Vec3(0,0,0);
-            //Else, get the average x, y and z positions from all vectors in the Array. This will give us the average avoid direction...
-        } else {
-            float xDir = 0;
-            float yDir = 0;
-            float zDir = 0;
-            for (int i = 0; i < viableDirections.size(); i++) {
-                xDir = ((float) (xDir + viableDirections.get(i).x));
-                yDir = ((float) (yDir + viableDirections.get(i).y));
-                zDir = ((float) (zDir + viableDirections.get(i).z));
-            }
-            xDir = xDir/viableDirections.size();
-            yDir = yDir/viableDirections.size();
-            zDir = zDir/viableDirections.size();
-            //Return the average avoid direction...
-            return new Vec3(xDir,yDir,zDir);
-        }
-    }
-
-
-        /*
         //Once all school vectors have been calculated perform a check around it, 7 block radius.
         AABB searchArea = new AABB(entityIn.getX() - 3, entityIn.getY() - 3, entityIn.getZ() - 3, entityIn.getX() + 3, entityIn.getY() + 3, entityIn.getZ() + 3);
         //Filter only the blocks that canOcclude, solid blocks and air itself, to avoid floating on the surface of the water...
@@ -308,8 +265,10 @@ public class PanthalassaSchoolingGoal extends Goal {
             return targetAwayFromClosestPos.subtract(entityIn.getDeltaMovement());
         }
         return new Vec3(0,0,0);
+    }
 
-         */
+
+
 
 
     @Override
