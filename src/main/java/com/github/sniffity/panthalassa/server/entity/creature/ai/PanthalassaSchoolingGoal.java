@@ -42,7 +42,7 @@ public class PanthalassaSchoolingGoal extends Goal {
     PanthalassaEntity leader;
 
 
-    public PanthalassaSchoolingGoal(PanthalassaEntity creatureIn, float movementSpeedIn, float schoolMaxSize, float schoolAvoidRadius) {
+    public PanthalassaSchoolingGoal(PanthalassaEntity creatureIn, float movementSpeedIn, float schoolMaxSize) {
         this.panthalassaEntity = creatureIn;
         this.panthalassaSchoolableEntity = (ISchoolable) creatureIn;
         this.schoolSpeed = movementSpeedIn;
