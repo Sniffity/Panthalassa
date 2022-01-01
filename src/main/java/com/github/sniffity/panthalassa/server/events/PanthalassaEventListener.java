@@ -4,8 +4,11 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.block.BlockPortalBlockEntity;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
+import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
+import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
@@ -18,11 +21,15 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
+
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID)
 
@@ -105,6 +112,17 @@ public class PanthalassaEventListener {
             }
         }
      }
+
+    @SubscribeEvent
+    public void onEntityMountEvent (EntityMountEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Supplier<ServerPlayer> player = (Supplier<ServerPlayer>) event.getEntity();
+            if (event.isMounting() && event.getEntityBeingMounted() instanceof PanthalassaVehicle) {
+                PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(player), new PacketCameraSwitch());
+
+            }
+        }
+    }
 
 }
 
