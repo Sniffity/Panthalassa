@@ -115,11 +115,10 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public void onEntityMountEvent (EntityMountEvent event) {
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntityMounting() instanceof Player) {
             Supplier<ServerPlayer> player = (Supplier<ServerPlayer>) event.getEntity();
             if (event.isMounting() && event.getEntityBeingMounted() instanceof PanthalassaVehicle) {
                 PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(player), new PacketCameraSwitch());
-
             }
         }
     }
