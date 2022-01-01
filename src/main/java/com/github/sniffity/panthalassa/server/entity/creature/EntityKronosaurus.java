@@ -35,6 +35,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
+import java.util.List;
+
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
     public float prevYRot;
@@ -93,6 +95,22 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
+        List<? extends PanthalassaEntity> school = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(10));
+        boolean flag = false;
+        if (school.isEmpty()){
+            this.setLeader(true);
+        } else {
+            for (int i = 0; i < school.size(); i++) {
+                PanthalassaEntity testEntity = school.get(i);
+                if (((ISchoolable) testEntity).getIsLeader()) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        if (!flag){
+            this.setLeader(true);
+        }
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 

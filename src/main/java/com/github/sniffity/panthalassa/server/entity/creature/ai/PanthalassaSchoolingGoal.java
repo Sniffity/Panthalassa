@@ -1,15 +1,18 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 
+import javax.xml.crypto.dsig.Transform;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +35,9 @@ public class PanthalassaSchoolingGoal extends Goal {
     float schoolSpeed;
     float schoolMaxSize;
     float schoolAvoidRadius;
+    float rayTraceLength = 10;
+    int numViewDirections = 300;
+    Vec3[] directions;
     List<? extends PanthalassaEntity> school;
     PanthalassaEntity leader;
 
@@ -42,7 +48,6 @@ public class PanthalassaSchoolingGoal extends Goal {
         this.schoolSpeed = movementSpeedIn;
         this.schoolMaxSize = schoolMaxSize;
         this.schoolAvoidRadius = schoolMaxSize;
-
     }
 
     @Override
@@ -162,9 +167,8 @@ public class PanthalassaSchoolingGoal extends Goal {
     }
 
     protected Vec3 processRepel(List<? extends PanthalassaEntity>  school) {
-
         Vec3 separation = new Vec3(0, 0, 0);
-        //Create a new list to store PanthalassaEntity that are too close to THIS PanthalassaEntity....
+        //Create a new list to store PanthalassaEntity that are close to THIS PanthalassaEntity....
         List<PanthalassaEntity> closeEntities = new ArrayList<>();
         int schoolSize = school.size();
         for (int i = 0; i < schoolSize && i < 4; i++) {
@@ -230,6 +234,49 @@ public class PanthalassaSchoolingGoal extends Goal {
     }
 
     protected Vec3 processAvoid(PanthalassaEntity entityIn) {
+        //Cast a series of vectors that generate a spherical surface
+        this.collisionVectors();
+        List<Vec3> viableDirections = new ArrayList<>();
+        //Analyze those vectors, from the target
+        for (int i = 0; i < directions.length; i++) {
+            //Position this vector relative to the entity...
+            //Skip those vectors which produce too great an angle with the entity's movement vector.
+            //Since the entity is looking where it's going, this will ensure we only take vectors that are pointing in the general direction towards where the entity is moving.
+            float vecAngle = (float) (Math.acos(entityIn.position().add(directions[i]).dot(entityIn.getDeltaMovement())) * Math.PI / 180);
+            if (vecAngle > 50) {
+                continue;
+            }
+            //For those vectors which are not skipped, check for a collision...
+            HitResult raytraceresult = entityIn.level.clip(new ClipContext(entityIn.position(), entityIn.position().add(directions[i]).normalize().scale(rayTraceLength), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, entityIn));
+            if (!(raytraceresult.getType() == HitResult.Type.BLOCK)) {
+                //If it does not collide, add it to a new Vector array.
+                viableDirections.add(entityIn.position().add(directions[i]));
+            }
+        }
+
+        //If this new Vector array has no elements, no directions will result in avoidance. Return a 0 vector.
+        if (viableDirections.isEmpty()){
+            return new Vec3(0,0,0);
+            //Else, get the average x, y and z positions from all vectors in the Array. This will give us the average avoid direction...
+        } else {
+            float xDir = 0;
+            float yDir = 0;
+            float zDir = 0;
+            for (int i = 0; i < viableDirections.size(); i++) {
+                xDir = ((float) (xDir + viableDirections.get(i).x));
+                yDir = ((float) (yDir + viableDirections.get(i).y));
+                zDir = ((float) (zDir + viableDirections.get(i).z));
+            }
+            xDir = xDir/viableDirections.size();
+            yDir = yDir/viableDirections.size();
+            zDir = zDir/viableDirections.size();
+            //Return the average avoid direction...
+            return new Vec3(xDir,yDir,zDir);
+        }
+    }
+
+
+        /*
         //Once all school vectors have been calculated perform a check around it, 7 block radius.
         AABB searchArea = new AABB(entityIn.getX() - 3, entityIn.getY() - 3, entityIn.getZ() - 3, entityIn.getX() + 3, entityIn.getY() + 3, entityIn.getZ() + 3);
         //Filter only the blocks that canOcclude, solid blocks and air itself, to avoid floating on the surface of the water...
@@ -261,7 +308,9 @@ public class PanthalassaSchoolingGoal extends Goal {
             return targetAwayFromClosestPos.subtract(entityIn.getDeltaMovement());
         }
         return new Vec3(0,0,0);
-    }
+
+         */
+
 
     @Override
     public void stop() {
@@ -287,6 +336,23 @@ public class PanthalassaSchoolingGoal extends Goal {
         }
 
         return f1;
+    }
+
+    protected void collisionVectors(){
+        directions = new Vec3[this.numViewDirections];
+        float goldenRatio = (float) (1 + Math.sqrt (5)) / 2;
+        float angleIncrement = Mth.PI * 2 * goldenRatio;
+
+        for (int i = 0; i < numViewDirections; i++) {
+            float t = (float) i / numViewDirections;
+            float inclination = (float) Math.acos (1 - 2 * t);
+            float azimuth = angleIncrement * i;
+
+            float x = (float) (Math.sin (inclination) * Math.cos (azimuth));
+            float y = (float) (Math.sin (inclination) * Math.sin (azimuth));
+            float z = (float) (Math.cos (inclination));
+            directions[i] = new Vec3 (x, y, z);
+        }
     }
 }
 
