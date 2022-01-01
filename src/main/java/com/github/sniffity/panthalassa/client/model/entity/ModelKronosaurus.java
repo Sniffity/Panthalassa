@@ -30,7 +30,7 @@ public class ModelKronosaurus extends AnimatedGeoModel<EntityKronosaurus>
     @Override
     public void setLivingAnimations(EntityKronosaurus entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
+        if (entity.isInWater() || !entity.isOnGround()) {
             (this.getAnimationProcessor().getBone("torso")).setRotationX( (float) (Mth.atan2((entity.getDeltaMovement().y),Mth.sqrt((float) ((entity.getDeltaMovement().x)*(entity.getDeltaMovement().x)+(entity.getDeltaMovement().z)*(entity.getDeltaMovement().z))))));
         }
         (this.getAnimationProcessor().getBone("lower_torso")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
