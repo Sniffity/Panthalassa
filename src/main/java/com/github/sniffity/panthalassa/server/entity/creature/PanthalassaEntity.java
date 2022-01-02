@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -53,8 +54,10 @@ public abstract class PanthalassaEntity extends PathfinderMob {
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.noCulling = true;
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
-        this.switchToLandNavigator(false);
+        this.switchNavigators(false);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     @Override
@@ -67,13 +70,10 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public void tick() {
         super.tick();
 
-        boolean ground = !this.isInLava() && !this.isInWater() && this.isOnGround();
-
-        if (!ground && this.isLandNavigator) {
-            switchToLandNavigator(false);
-        }
-        if (ground && !this.isLandNavigator) {
-            switchToLandNavigator(true);
+        if ((this.isInWater() || this.isInLava()) && this.isLandNavigator){
+            switchNavigators(false);
+        } else if (this.isOnGround() && !this.isLandNavigator) {
+            switchNavigators(true);
         }
 
         prevRotationPitch = rotationPitch;
@@ -150,7 +150,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         return p_205019_1_.containsAnyLiquid(this.getBoundingBox());
     }
 
-    public void switchToLandNavigator(boolean isOnLand){
+    public void switchNavigators(boolean isOnLand){
         if (isOnLand) {
             this.moveControl = new MoveControl(this);
             this.navigation = new GroundPathNavigation(this, level);

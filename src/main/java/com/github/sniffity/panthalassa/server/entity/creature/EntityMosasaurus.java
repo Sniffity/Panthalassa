@@ -47,11 +47,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.noCulling = true;
-        this.moveControl = new PanthalassaSwimmingHelper(this, 85, 0.02F, 0.1F, true);;
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
-
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -182,6 +177,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public boolean getBreaching() {
         return this.entityData.get(IS_BREACHING);
     }
+
     @Override
     public void setBreachCooldown(float breachCooldown) {
         this.entityData.set(BREACH_COOLDOWN,breachCooldown);

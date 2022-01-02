@@ -43,9 +43,6 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
 
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.noCulling = true;
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
     }
 
     @Override

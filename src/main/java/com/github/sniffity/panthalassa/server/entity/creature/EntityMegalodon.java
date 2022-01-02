@@ -49,8 +49,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.noCulling = true;
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
