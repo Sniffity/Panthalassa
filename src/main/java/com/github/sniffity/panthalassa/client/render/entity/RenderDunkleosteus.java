@@ -22,6 +22,6 @@ public class RenderDunkleosteus extends GeoEntityRenderer<EntityDunkleosteus> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(1.5F*PanthalassaClientConfig.dunkleosteusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.dunkleosteusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.dunkleosteusSizeMultiplier.get().floatValue());
+        stackIn.scale(1.0F*PanthalassaClientConfig.dunkleosteusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.dunkleosteusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.dunkleosteusSizeMultiplier.get().floatValue());
     }
 }
