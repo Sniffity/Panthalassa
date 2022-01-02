@@ -9,6 +9,9 @@ import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch
 import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import net.minecraft.Util;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -81,35 +84,12 @@ public class PanthalassaEventListener {
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
+            Player player = (Player) event.getEntity();
             BlockState blockstate = event.getPlacedBlock();
             if (blockstate.getBlock() == PanthalassaBlocks.PORTAL.get()) {
-                BlockPos blockPos = event.getPos();
-                Level world = entity.level;
-                float minPortalFrameRadius = 6.1f;
-                float maxPortalFrameRadius = 7.5f;
-                float minRadiusSq = minPortalFrameRadius * minPortalFrameRadius;
-                BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-                for (int x = (int) -minPortalFrameRadius; x < minPortalFrameRadius; x++) {
-                    for (int z = (int) -minPortalFrameRadius; z < minPortalFrameRadius; z++) {
-                        int distSq = x * x + z * z;
-                        if (distSq <= minRadiusSq) {
-                            mutable.set(blockPos).move(x, 0, z);
-                            world.setBlock(mutable, PanthalassaBlocks.PORTAL.get().defaultBlockState(), (1 << 1));
+                event.setCanceled(true);
+                player.sendMessage(new TranslatableComponent("block.panthalassa.panthalassa_portal.message"), Util.NIL_UUID);
 
-                            BlockEntity tileEntity = world.getBlockEntity(mutable);
-                            if (tileEntity instanceof BlockPortalBlockEntity) {
-                                ((BlockPortalBlockEntity) tileEntity).offsetFromCenter = new BlockPos(x, 0, z);
-                            }
-
-                            // Helps create some space for mobs to swim into portal
-                            if (((ServerLevel) world).dimension() == PanthalassaDimension.PANTHALASSA) {
-                                while (mutable.move(Direction.UP).getY() < world.getHeight() && !world.getBlockState(mutable).is(Blocks.BEDROCK) && mutable.getY() < blockPos.getY() + 7) {
-                                    world.setBlock(mutable, Blocks.WATER.defaultBlockState(), (1 << 1));
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
      }
