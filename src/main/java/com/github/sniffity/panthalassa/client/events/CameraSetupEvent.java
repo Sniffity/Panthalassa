@@ -6,6 +6,7 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -33,13 +34,28 @@ public class CameraSetupEvent {
         if (!(vehicle instanceof PanthalassaVehicle))
             return;
         CameraType view = mc.options.getCameraType();
+        float yCamera;
 
         if (view == CameraType.THIRD_PERSON_BACK) {
+            if (vehicle.level.getBlockState(new BlockPos(vehicle.position()).above()).canOcclude()) {
+                yCamera = -4.0F;
+            }
+            else {
+                yCamera = 1.0F;
+            }
+
             if (vehicle instanceof VehicleMRSV) {
-                event.getCamera().move(-calcCameraDistance(8.0, vehicle), 1, 0);
+                event.getCamera().move(-calcCameraDistance(8.0, vehicle), yCamera, 0);
             }
             if (vehicle instanceof VehicleAGII) {
-                event.getCamera().move(-calcCameraDistance(12.0, vehicle), 1, 0);
+                event.getCamera().move(-calcCameraDistance(12.0, vehicle), yCamera, 0);
+
+            }
+        } else {
+            //TODO: First person camera
+            if (vehicle instanceof VehicleMRSV) {
+            }
+            if (vehicle instanceof VehicleAGII) {
 
             }
         }
@@ -63,7 +79,11 @@ public class CameraSetupEvent {
             if (raytraceresult.getType() != HitResult.Type.MISS) {
                 double d0 = raytraceresult.getLocation().distanceTo(position);
                 if (d0 < startingDistance) {
-                    startingDistance = d0;
+                    if (d0<0.2){
+                        startingDistance = d0-3.0F;
+                    } else {
+                        startingDistance = d0-1.5F;
+                    }
                 }
             }
         }
