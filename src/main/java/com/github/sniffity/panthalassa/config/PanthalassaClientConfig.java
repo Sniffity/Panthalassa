@@ -32,6 +32,8 @@ public class PanthalassaClientConfig {
                 .defineInRange("megalodon_size_multiplier", 1.0D, 0.5D, 3.0D);
         mosasaurusSizeMultiplier = builder
                 .defineInRange("mosasaurus_size_multiplier", 1.0D, 0.5D, 3.0D);
+        giantOrthoconeSizeMultiplier = builder
+                .defineInRange("giant_orthocone_size_multiplier", 1.0D, 0.5D, 3.0D);
         builder.pop();
 
         builder.push("Vehicle Overlay");
@@ -48,7 +50,7 @@ public class PanthalassaClientConfig {
     public static ForgeConfigSpec.DoubleValue leedsichthysSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue megalodonSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue mosasaurusSizeMultiplier;
-
+    public static ForgeConfigSpec.DoubleValue giantOrthoconeSizeMultiplier;
     public static ForgeConfigSpec.BooleanValue vehicleOverlayEnabled;
 
 }

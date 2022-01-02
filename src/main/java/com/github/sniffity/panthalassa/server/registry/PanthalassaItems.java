@@ -86,5 +86,11 @@ public class PanthalassaItems {
 					0x3E3523,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> GIANT_ORTHOCONE_SPAWN_EGG = ITEMS.register("giant_orthocone_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.GIANT_ORTHOCONE,
+					0x3e1010,
+					0xb78685,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 }

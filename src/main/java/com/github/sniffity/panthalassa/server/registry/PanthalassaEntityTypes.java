@@ -53,6 +53,11 @@ public class PanthalassaEntityTypes {
                     .sized(1.8F, 1.2F)
                     .build(new ResourceLocation(Panthalassa.MODID, "leedsichthys").toString()));
 
+    public static final RegistryObject<EntityType<EntityGiantOrthocone>> GIANT_ORTHOCONE = ENTITY_TYPES.register ("giant_orthocone",()->
+            EntityType.Builder.of(EntityGiantOrthocone::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+                    .sized(1.8F, 1.2F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone").toString()));
+
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
                     .<VehicleMRSV>of(VehicleMRSV::new,MobCategory.MISC)
@@ -74,6 +79,7 @@ public class PanthalassaEntityTypes {
         SpawnPlacements.register(ARCHELON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
         SpawnPlacements.register(LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
         SpawnPlacements.register(DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
 
     }
 

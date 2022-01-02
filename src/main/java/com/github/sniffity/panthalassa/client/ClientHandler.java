@@ -64,6 +64,8 @@ public class ClientHandler {
                 RenderDunkleosteus::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.LEEDSICHTHYS.get(),
                 RenderLeedsichthys::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(),
+                RenderGiantOrthocone::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),

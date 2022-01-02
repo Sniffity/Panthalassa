@@ -19,6 +19,7 @@
     "item.panthalassa.coelacanth_spawn_egg": "Coelacanth Spawn Egg",
     "item.panthalassa.dunkleosteus_spawn_egg": "Dunkleosteus Spawn Egg",
     "item.panthalassa.leedsichthys_spawn_egg": "Leedsichthys Spawn Egg",
+    "item.panthalassa.giant_orthocone_spawn_egg": "Giant Orthocone Spawn Egg",
 
     "block.panthalassa.panthalassa_soil": "Panthalassa Soil",
     "block.panthalassa.panthalassa_coarse_soil": "Panthalassa Coarse Soil",
@@ -58,6 +59,7 @@
     "entity.panthalassa.coelacanth": "Coelacanth",
     "entity.panthalassa.dunkleosteus": "Dunkleosteus",
     "entity.panthalassa.leedsichthys": "Leedsichthys",
+    "entity.panthalassa.giant_orthocone": "Giant Orthocone",
 
     "subtitles.panthalassa.entity.creature.kronosaurus.kronosaurus_ambient": "Kronosaurus growls.",
 
