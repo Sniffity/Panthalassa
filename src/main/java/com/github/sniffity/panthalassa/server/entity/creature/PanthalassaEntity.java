@@ -74,6 +74,16 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public void tick() {
         super.tick();
 
+        deltaYRot = this.yRot - prevYRot;
+        prevYRot = this.yRot;
+        if (adjustYaw > deltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
+        }
+
         if ((this.isInWater() || this.isInLava()) && this.isLandNavigator){
             switchNavigators(false);
         } else if (this.isOnGround() && !this.isLandNavigator) {

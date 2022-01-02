@@ -85,21 +85,9 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     @Override
     public void tick() {
         super.tick();
+
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
-
-        deltaYRot = this.yRot - prevYRot;
-        prevYRot = this.yRot;
-        if (adjustYaw > deltaYRot) {
-            adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, deltaYRot);
-        } else if (adjustYaw < deltaYRot) {
-            adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYRot);
-        }
-
-
     }
 
     protected void handleAirSupply(int p_209207_1_) {

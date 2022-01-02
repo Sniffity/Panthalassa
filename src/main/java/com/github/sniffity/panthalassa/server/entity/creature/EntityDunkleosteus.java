@@ -11,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.Difficulty;
@@ -36,11 +35,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 
 public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable, Enemy {
     public static final int BLOCKED_DISTANCE = 3;
-    public float prevYRot;
-    public float deltaYRot;
-    public float adjustYaw;
-    public float adjustment = 0.25F;
-
 
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
@@ -50,13 +44,14 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public EntityDunkleosteus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.adjustment = 0.35F;
+
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(TEXTURE_VARIANT, 0);
-
         super.defineSynchedData();
     }
 
@@ -90,20 +85,9 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     @Override
     public void tick() {
         super.tick();
-        deltaYRot = this.yRot - prevYRot;
-        prevYRot = this.yRot;
-        if (adjustYaw > deltaYRot) {
-            adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, deltaYRot);
-        } else if (adjustYaw < deltaYRot) {
-            adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYRot);
-        }
-
 
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
     }
 
 

@@ -95,18 +95,8 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     @Override
     public void tick() {
         super.tick();
+
         setBreachCooldown((getBreachCooldown())-1);
-
-        deltaYRot = this.yRot - prevYRot;
-        prevYRot = this.yRot;
-        if (adjustYaw > deltaYRot) {
-            adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, deltaYRot);
-        } else if (adjustYaw < deltaYRot) {
-            adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYRot);
-        }
-
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
     }

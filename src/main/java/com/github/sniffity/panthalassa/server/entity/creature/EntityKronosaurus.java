@@ -92,40 +92,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     @Override
     public void tick() {
-        /*
-        if (!this.getIsLeader()){
-            List<? extends PanthalassaEntity> school = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(10));
-            boolean flag = false;
-            if (school.isEmpty()){
-                this.setLeader(true);
-            } else {
-                for (int i = 0; i < school.size(); i++) {
-                    PanthalassaEntity testEntity = school.get(i);
-                    if (((ISchoolable) testEntity).getIsLeader()) {
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-            if (!flag){
-                this.setLeader(true);
-            }
-        }
-         */
-
         super.tick();
-        deltaYRot = this.yRot - prevYRot;
-        prevYRot = this.yRot;
-        if (adjustYaw > deltaYRot) {
-            adjustYaw = adjustYaw - adjustment;
-            adjustYaw = Math.max(adjustYaw, deltaYRot);
-        } else if (adjustYaw < deltaYRot) {
-            adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYRot);
-        }
+
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
     }
 
     protected void handleAirSupply(int p_209207_1_) {
