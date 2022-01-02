@@ -78,8 +78,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
 
         prevRotationPitch = rotationPitch;
         rotationPitch = (float)(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z)))));
-
-
     }
 
     public boolean canBreatheUnderwater() {
