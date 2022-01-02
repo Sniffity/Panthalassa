@@ -43,6 +43,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
 
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -59,6 +60,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     @Override
     protected void defineSynchedData() {
         this.entityData.define(AIR_SUPPLY, 150);
+        this.entityData.define(TEXTURE_VARIANT, 0);
 
         super.defineSynchedData();
     }
@@ -84,6 +86,8 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
+        int textureVariant = (int) (Math.random()*3);
+        this.setTextureVariant(textureVariant);
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
@@ -150,6 +154,14 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public int getAirSupplyLocal() {
         return this.entityData.get(AIR_SUPPLY);
+    }
+
+    public void setTextureVariant(int textureVariant) {
+        this.entityData.set(TEXTURE_VARIANT,textureVariant);
+    }
+
+    public int getTextureVariant() {
+        return this.entityData.get(TEXTURE_VARIANT);
     }
 
 }

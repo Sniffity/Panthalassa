@@ -21,7 +21,13 @@ public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
 
     @Override
     public ResourceLocation getTextureLocation(EntityDunkleosteus object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/creature/dunkleosteus/dunkleosteus.png");
+        if (object.getTextureVariant() == 0){
+            return new ResourceLocation(Panthalassa.MODID,"textures/creature/dunkleosteus/dunkleosteus_blue.png");
+        } else if (object.getTextureVariant() == 1) {
+            return new ResourceLocation(Panthalassa.MODID,"textures/creature/dunkleosteus/dunkleosteus_brown.png");
+        } else {
+            return new ResourceLocation(Panthalassa.MODID,"textures/creature/dunkleosteus/dunkleosteus_green.png");
+        }
     }
 
     @Override
@@ -33,11 +39,13 @@ public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
     public void setLivingAnimations(EntityDunkleosteus entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
-            (this.getAnimationProcessor().getBone("main")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
+            (this.getAnimationProcessor().getBone("neck")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
-        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("lower_body_3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("upper_body_1")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*5.0F);
+        (this.getAnimationProcessor().getBone("body")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
+        (this.getAnimationProcessor().getBone("tail1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
+        (this.getAnimationProcessor().getBone("tail2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
+        (this.getAnimationProcessor().getBone("tail3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
+        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*5.0F);
     }
 
     @Override
