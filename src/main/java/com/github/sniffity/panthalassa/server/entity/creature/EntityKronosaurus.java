@@ -97,15 +97,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
-
-        if (this.goalSelector !=null) {
-            List<String> goals = this.goalSelector.getRunningGoals().map(goal -> goal.getGoal().toString()).collect(Collectors.toList());
-            if (!goals.isEmpty()) {
-                System.out.println("Goals: " + goals);
-            }
-        }
-        System.out.println("Is Land Navigator: " + this.isLandNavigator);
-        System.out.print("DeltaMovement Size: " + this.getDeltaMovement().length());
     }
 
     protected void handleAirSupply(int p_209207_1_) {
