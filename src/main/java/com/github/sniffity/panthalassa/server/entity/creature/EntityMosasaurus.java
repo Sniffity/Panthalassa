@@ -32,10 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
-    public float prevYRot;
-    public float deltaYRot;
-    public float adjustYaw;
-    public float adjustment = 0.35F;
     public static final int BLOCKED_DISTANCE = 3;
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -47,6 +43,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.adjustment = 0.35F;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

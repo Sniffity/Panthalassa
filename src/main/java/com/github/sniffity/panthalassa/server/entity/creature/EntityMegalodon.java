@@ -35,10 +35,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
 
     public static final int BLOCKED_DISTANCE = 3;
-    public float prevYRot;
-    public float deltaYRot;
-    public float adjustYaw;
-    public float adjustment = 0.15F;
 
     private AnimationFactory factory = new AnimationFactory(this);
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
@@ -49,6 +45,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.adjustment = 0.15F;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -79,7 +76,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
             adjustYaw = adjustYaw + adjustment;
             adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
-
 
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
@@ -190,5 +186,4 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     public int getTextureVariant() {
         return this.entityData.get(TEXTURE_VARIANT);
     }
-
 }

@@ -48,6 +48,10 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public boolean isLandNavigator;
     public float rotationPitch;
     public float prevRotationPitch;
+    public float prevYRot;
+    public float deltaYRot;
+    public float adjustYaw;
+    public float adjustment;
 
 
     protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);

@@ -40,11 +40,6 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public static final float SCHOOL_SPEED = 1.0F;
     public static final float SCHOOL_AVOID_RADIUS = 10.0F;
     public static int SCHOOL_MAX_SIZE = 4;
-    public float prevYRot;
-    public float deltaYRot;
-    public float adjustYaw;
-    public float adjustment = 0.10F;
-
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityCoelacanth.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityCoelacanth.class, EntityDataSerializers.BOOLEAN);
 
@@ -53,6 +48,7 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
 
     public EntityCoelacanth(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.adjustment = 0.10F;
     }
 
     @Override

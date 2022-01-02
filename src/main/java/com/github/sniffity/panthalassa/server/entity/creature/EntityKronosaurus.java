@@ -40,11 +40,6 @@ import java.util.List;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
-    public float prevYRot;
-    public float deltaYRot;
-    public float adjustYaw;
-    public float adjustment = 0.25F;
-
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.BOOLEAN);
 
@@ -52,6 +47,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.adjustment = 0.25F;
     }
 
     @Override

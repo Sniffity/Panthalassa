@@ -38,14 +38,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, Enemy {
 
     public static final int BLOCKED_DISTANCE = 2;
-    public static final float SCHOOL_SPEED = 1.0F;
-    public static final float SCHOOL_AVOID_RADIUS = 10.0F;
-    public static int SCHOOL_MAX_SIZE = 4;
-    public float prevYRot;
-    public float deltaYRot;
-    public float adjustYaw;
-    public float adjustment = 0.10F;
-
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityLeedsichthys.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -53,6 +45,8 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.adjustment = 0.10F;
+
     }
 
     @Override
