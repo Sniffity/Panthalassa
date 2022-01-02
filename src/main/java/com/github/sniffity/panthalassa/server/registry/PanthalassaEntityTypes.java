@@ -45,12 +45,12 @@ public class PanthalassaEntityTypes {
 
     public static final RegistryObject<EntityType<EntityDunkleosteus>> DUNKLEOSTEUS = ENTITY_TYPES.register ("dunkleosteus",()->
             EntityType.Builder.of(EntityDunkleosteus::new,MobCategory.UNDERGROUND_WATER_CREATURE)
-                    .sized(1.5F, 1.0F)
+                    .sized(1.5F, 1.3F)
                     .build(new ResourceLocation(Panthalassa.MODID, "dunkleosteus").toString()));
 
     public static final RegistryObject<EntityType<EntityLeedsichthys>> LEEDSICHTHYS = ENTITY_TYPES.register ("leedsichthys",()->
             EntityType.Builder.of(EntityLeedsichthys::new,MobCategory.UNDERGROUND_WATER_CREATURE)
-                    .sized(2.0F, 1.0F)
+                    .sized(1.8F, 1.2F)
                     .build(new ResourceLocation(Panthalassa.MODID, "leedsichthys").toString()));
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
