@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraftforge.common.Tags;
 
 /**
  * Panthalassa Mod - Class: PanthalassaEntity <br></br?>
@@ -63,7 +66,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.noCulling = true;
-        this.lookControl = new SmoothSwimmingLookControl(this, 10);
         this.switchNavigators(false);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
@@ -97,8 +99,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         // If the rotation looks choppy (adjusts too fast), decrease adjustment
         // If the entity seems to "dislocate", reduce the multipliers for bone rotation in the Model class.
         // Reducing rotation multiplier in model class can also reduce choppiness, at the cost of how wide the bone rotation is.
-
-
         if (adjustYaw > deltaYRot) {
             adjustYaw = adjustYaw - adjustment;
             adjustYaw = Math.max(adjustYaw, deltaYRot);
@@ -107,16 +107,28 @@ public abstract class PanthalassaEntity extends PathfinderMob {
             adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
 
-
-        if ((this.isInWater() || this.isInLava()) && this.isLandNavigator){
-            switchNavigators(false);
-        } else if (this.isOnGround() && !this.isLandNavigator) {
-            switchNavigators(true);
-        }
-
-
         prevRotationPitch = rotationPitch;
         rotationPitch = (float)(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z)))));
+
+        //NAVIGATOR SWITCH OPERATIONS
+        //All entities require a land navigator, to have them not get stuck in 1-block-deep water
+        //If it's using the land naviagtor....
+        if (this.isLandNavigator) {
+            //...and it's in swimmable water (meaning, at least two blocks deep), switch to water navigator
+            if (this.isInWater() && !this.level.getBlockState(blockPosition().below()).canOcclude()) {
+                switchNavigators(false);
+            }
+            //If it's not using the land navigator....
+        } else {
+            //...and it's in 1-block-deep water, switch to land navigator
+            if (this.isInWater() && this.level.getBlockState(blockPosition().below()).canOcclude() && this.level.getBlockState(blockPosition().above()).is(Blocks.AIR)) {
+                switchNavigators(true);
+            }
+            //...else, if it's not in water and it's on the ground, switch to land navigator
+            else if (!this.isInWater() && this.isOnGround()) {
+                switchNavigators(true);
+            }
+        }
     }
 
     public boolean canBreatheUnderwater() {
@@ -196,18 +208,22 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public void checkDespawn() {
     }
 
+    //TODO: Add look controls
     public void switchNavigators(boolean isOnLand){
         if (isOnLand) {
             this.moveControl = new MoveControl(this);
+            this.lookControl = new LookControl(this);
             this.navigation = new GroundPathNavigation(this, level);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new PanthalassaSwimmingHelper(this, 85, 0.02F, 0.1F, true);
+            this.lookControl = new SmoothSwimmingLookControl(this, 10);
             this.navigation = new WaterBoundPathNavigation(this, level);
             this.isLandNavigator = false;
         }
     }
 
+    //Attacking state used for purposes of attack animations
     public void setAttackingState(boolean isAttacking) {
         this.entityData.set(ATTACKING_STATE,isAttacking);
     }
@@ -216,6 +232,4 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         return this.entityData.get(ATTACKING_STATE);
     }
 
-
 }
-

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
 
+import java.util.EnumSet;
 import java.util.Random;
 
 /**
@@ -23,18 +24,20 @@ public class PanthalassaFindWaterGoal extends Goal {
     private BlockPos targetPos;
     private int tickCounter;
 
-
     public PanthalassaFindWaterGoal(PanthalassaEntity panthalassaEntity, float speedIn) {
         this.mob = panthalassaEntity;
         this.speed = speedIn;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
+        //canUse if it's on ground, outside of the water...
         if (this.mob.isOnGround() && !this.mob.isInWater()){
             targetPos = generateTarget();
             return targetPos != null;
         }
+        //canUse if it's in 1-block-deep water
         if (this.mob.isInWater() && this.mob.level.getBlockState(this.mob.blockPosition().below()).canOcclude() && this.mob.level.getBlockState(this.mob.blockPosition().above()).is(Blocks.AIR)) {
             targetPos = generateTarget();
             return targetPos != null;
@@ -46,7 +49,6 @@ public class PanthalassaFindWaterGoal extends Goal {
     public void start() {
         if (targetPos != null) {
             this.mob.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
-
         }
     }
 
@@ -55,7 +57,7 @@ public class PanthalassaFindWaterGoal extends Goal {
         if (this.mob.getNavigation().isDone()){
             return false;
         }
-        if (this.mob.isInWater() && this.mob.level.getFluidState(this.mob.blockPosition().below()).is(FluidTags.WATER)) {
+        if (this.mob.isInWater() && this.mob.level.getFluidState(this.mob.blockPosition().above()).is(FluidTags.WATER)) {
             return false;
         }
 
@@ -76,7 +78,6 @@ public class PanthalassaFindWaterGoal extends Goal {
         this.mob.getNavigation().stop();
         super.stop();
     }
-
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;

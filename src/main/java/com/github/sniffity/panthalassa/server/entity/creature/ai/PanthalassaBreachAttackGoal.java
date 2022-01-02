@@ -65,6 +65,10 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!attacker.level.getBlockState(targetAbove).is(Blocks.AIR)){
             return false;
         }
+        //If it's somehow using the landNavigator, do not use goals. Goal only makes sense for waterNavigator.
+        if (this.attacker.isLandNavigator) {
+            return false;
+        }
 
         return true;
         }
@@ -121,6 +125,11 @@ public class PanthalassaBreachAttackGoal extends Goal {
         }
         //If it has finished all the steps, stop the Goal.
         if (step4Done) {
+            return false;
+        }
+
+        //If it's somehow using the landNavigator, do stop goal. Goal only makes sense for waterNavigator.
+        if (this.attacker.isLandNavigator) {
             return false;
         }
         //Else continue the Goal.

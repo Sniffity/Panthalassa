@@ -16,22 +16,16 @@ public class PanthalassaSwimmingHelper extends MoveControl {
 
     private final PanthalassaEntity entityPanthalassa;
 
-    public PanthalassaSwimmingHelper(Mob p_148070_, int p_148071_, float p_148073_, float p_148074_, boolean p_148075_) {
-        super(p_148070_);
-        this.entityPanthalassa = (PanthalassaEntity) p_148070_;
-        this.maxTurnX = p_148071_;
-        this.inWaterSpeedModifier = p_148073_;
-        this.outsideWaterSpeedModifier = p_148074_;
-        this.applyGravity = p_148075_;
-
-
+    public PanthalassaSwimmingHelper(Mob panthalassaEntity, int maxTurnX, float inWaterSpeedModifier, float outsideWaterSpeedModifier, boolean applyGravity) {
+        super(panthalassaEntity);
+        this.entityPanthalassa = (PanthalassaEntity) panthalassaEntity;
+        this.maxTurnX = maxTurnX;
+        this.inWaterSpeedModifier = inWaterSpeedModifier;
+        this.outsideWaterSpeedModifier = outsideWaterSpeedModifier;
+        this.applyGravity = applyGravity;
     }
 
     public void tick() {
-        if (this.applyGravity && this.mob.isInWater()) {
-            this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
-        }
-
         if (this.operation == MoveControl.Operation.MOVE_TO && !this.mob.getNavigation().isDone()) {
             double d0 = this.wantedX - this.mob.getX();
             double d1 = this.wantedY - this.mob.getY();

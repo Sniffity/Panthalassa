@@ -37,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
@@ -96,6 +97,15 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
+
+        if (this.goalSelector !=null) {
+            List<String> goals = this.goalSelector.getRunningGoals().map(goal -> goal.getGoal().toString()).collect(Collectors.toList());
+            if (!goals.isEmpty()) {
+                System.out.println("Goals: " + goals);
+            }
+        }
+        System.out.println("Is Land Navigator: " + this.isLandNavigator);
+        System.out.print("DeltaMovement Size: " + this.getDeltaMovement().length());
     }
 
     protected void handleAirSupply(int p_209207_1_) {
@@ -108,8 +118,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         } else {
             this.setAirSupplyLocal(150);
         }
-
-
     }
 
     public static AttributeSupplier.Builder kronosaurusAttributes() {

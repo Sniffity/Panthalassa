@@ -23,10 +23,13 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     private int delayCounter;
     private int ticksUntilNextAttack;
     private long lastCanUseCheck;
+    private PanthalassaEntity panthalassaEntity;
 
 
     public PanthalassaMeleeAttackGoal(PathfinderMob creature, double speedIn, boolean useLongMemory) {
         this.attacker = creature;
+        this.panthalassaEntity = (PanthalassaEntity) creature;
+
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -36,6 +39,10 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     @Override
     public boolean canUse() {
         if (!this.attacker.isInWater()){
+            return false;
+        }
+
+        if (this.panthalassaEntity.isLandNavigator) {
             return false;
         }
 
@@ -66,15 +73,20 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         LivingEntity livingentity = this.attacker.getTarget();
         if (livingentity == null) {
             return false;
-        } else if (!livingentity.isAlive()) {
-            return false;
-        } else if (!this.longMemory) {
-            return !this.attacker.getNavigation().isDone();
-        } else if (!this.attacker.isWithinRestriction(livingentity.blockPosition())) {
-            return false;
-        } else {
-            return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
         }
+        if (!livingentity.isAlive()) {
+            return false;
+        }
+        if (!this.longMemory) {
+            return !this.attacker.getNavigation().isDone();
+        }
+        if (!this.attacker.isWithinRestriction(livingentity.blockPosition())) {
+            return false;
+        }
+        if (this.panthalassaEntity.isLandNavigator) {
+            return false;
+        }
+        return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
     }
 
     @Override

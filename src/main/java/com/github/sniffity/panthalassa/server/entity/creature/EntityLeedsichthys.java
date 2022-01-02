@@ -81,7 +81,6 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
-
     @Override
     public void tick() {
         super.tick();
@@ -100,8 +99,6 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         } else {
             this.setAirSupplyLocal(150);
         }
-
-
     }
 
     public static AttributeSupplier.Builder leedsichthysAttributes() {
@@ -114,9 +111,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
-
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(3, new PanthalassaMeleeAttackGoal(this, 1.3F, false));

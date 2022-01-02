@@ -45,7 +45,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.adjustment = 0.25F;
+        this.adjustment = 0.15F;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -118,7 +118,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     @Override
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0F));
         this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));

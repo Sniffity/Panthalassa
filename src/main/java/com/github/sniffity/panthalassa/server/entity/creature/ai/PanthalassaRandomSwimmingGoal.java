@@ -48,6 +48,9 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         } if (this.creature.getTarget() != null){
             return false;
         }
+        if (this.creature.isLandNavigator) {
+            return false;
+        }
         if (!this.creature.isInWater()) {
             return false;
         } else {
@@ -116,7 +119,9 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         if (this.creature.distanceToSqr(this.x,this.y,this.z) < 50) {
             return false;
         }
-
+        if (this.creature.isLandNavigator) {
+            return false;
+        }
         return !this.creature.getNavigation().isDone() && !this.creature.isVehicle();
     }
     @Override

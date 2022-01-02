@@ -33,6 +33,10 @@ public class PanthalassaEscapeGoal extends Goal {
         if (creature.level.dimension() != PanthalassaDimension.PANTHALASSA) {
             return false;
         }
+        if (this.creature.isLandNavigator) {
+            return false;
+        }
+
         if (this.creature.isVehicle()) {
             return false;
         } else {
@@ -98,7 +102,6 @@ public class PanthalassaEscapeGoal extends Goal {
     @Override
     public void stop() {
         this.creature.getNavigation().stop();
-        tickCounter = 0;
         super.stop();
     }
 
