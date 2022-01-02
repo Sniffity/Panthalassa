@@ -3,7 +3,6 @@ package com.github.sniffity.panthalassa.client.model.entity;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityDunkleosteus;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -41,11 +40,11 @@ public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
             (this.getAnimationProcessor().getBone("neck")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
-        (this.getAnimationProcessor().getBone("body")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*5.0F);
+        (this.getAnimationProcessor().getBone("body")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
+        (this.getAnimationProcessor().getBone("tail1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
+        (this.getAnimationProcessor().getBone("tail2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
+        (this.getAnimationProcessor().getBone("tail3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
+        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*3.0F);
     }
 
     @Override

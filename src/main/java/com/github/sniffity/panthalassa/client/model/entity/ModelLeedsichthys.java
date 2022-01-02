@@ -3,7 +3,6 @@ package com.github.sniffity.panthalassa.client.model.entity;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityLeedsichthys;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
