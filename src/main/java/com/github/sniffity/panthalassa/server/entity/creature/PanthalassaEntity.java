@@ -45,6 +45,9 @@ import net.minecraft.world.entity.PathfinderMob;
 public abstract class PanthalassaEntity extends PathfinderMob {
 
     public boolean isLandNavigator;
+    public float rotationPitch;
+    public float prevRotationPitch;
+
 
     protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -72,6 +75,10 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         if (ground && !this.isLandNavigator) {
             switchToLandNavigator(true);
         }
+
+        prevRotationPitch = rotationPitch;
+        rotationPitch = (float)(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z)))));
+
 
     }
 

@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
@@ -131,8 +132,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
             adjustYaw = adjustYaw + adjustment;
             adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
-
-
         int i = this.getAirSupplyLocal();
         this.handleAirSupply(i);
 

@@ -35,8 +35,8 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     @Override
     public void setLivingAnimations(EntityMegalodon entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (entity.isInWater() || !entity.isOnGround()) {
-            (this.getAnimationProcessor().getBone("neck")).setRotationX(((float) Mth.atan2((entity.getDeltaMovement().y), Mth.sqrt((float) ((entity.getDeltaMovement().x) * (entity.getDeltaMovement().x) + (entity.getDeltaMovement().z) * (entity.getDeltaMovement().z))))));
+        if ((entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) || entity.getBreaching()) {
+            (this.getAnimationProcessor().getBone("neck")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
         (this.getAnimationProcessor().getBone("tail1")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 5.0F);
         (this.getAnimationProcessor().getBone("tail2")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 5.0F);
