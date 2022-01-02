@@ -18,43 +18,43 @@ public class PanthalassaEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Panthalassa.MODID);
 
     public static final RegistryObject<EntityType<EntityKronosaurus>> KRONOSAURUS = ENTITY_TYPES.register ("kronosaurus",()->
-            EntityType.Builder.of(EntityKronosaurus::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityKronosaurus::new,MobCategory.CREATURE)
                     .sized(1.0F, 1.0F)
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
     public static final RegistryObject<EntityType<EntityMegalodon>> MEGALODON = ENTITY_TYPES.register ("megalodon",()->
-            EntityType.Builder.of(EntityMegalodon::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityMegalodon::new,MobCategory.CREATURE)
                     .sized(1.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon").toString()));
 
     public static final RegistryObject<EntityType<EntityArchelon>> ARCHELON = ENTITY_TYPES.register ("archelon",()->
-            EntityType.Builder.of(EntityArchelon::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityArchelon::new,MobCategory.CREATURE)
                     .sized(2.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "archelon").toString()));
 
     public static final RegistryObject<EntityType<EntityMosasaurus>> MOSASAURUS = ENTITY_TYPES.register ("mosasaurus",()->
-            EntityType.Builder.of(EntityMosasaurus::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityMosasaurus::new,MobCategory.CREATURE)
                     .sized(1.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "mosasaurus").toString()));
 
     public static final RegistryObject<EntityType<EntityCoelacanth>> COELACANTH = ENTITY_TYPES.register ("coelacanth",()->
-            EntityType.Builder.of(EntityCoelacanth::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityCoelacanth::new,MobCategory.CREATURE)
                     .sized(1.0F, 1.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "coelacanth").toString()));
 
     public static final RegistryObject<EntityType<EntityDunkleosteus>> DUNKLEOSTEUS = ENTITY_TYPES.register ("dunkleosteus",()->
-            EntityType.Builder.of(EntityDunkleosteus::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityDunkleosteus::new,MobCategory.CREATURE)
                     .sized(1.5F, 1.3F)
                     .build(new ResourceLocation(Panthalassa.MODID, "dunkleosteus").toString()));
 
     public static final RegistryObject<EntityType<EntityLeedsichthys>> LEEDSICHTHYS = ENTITY_TYPES.register ("leedsichthys",()->
-            EntityType.Builder.of(EntityLeedsichthys::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityLeedsichthys::new,MobCategory.CREATURE)
                     .sized(1.8F, 1.2F)
                     .build(new ResourceLocation(Panthalassa.MODID, "leedsichthys").toString()));
 
     public static final RegistryObject<EntityType<EntityGiantOrthocone>> GIANT_ORTHOCONE = ENTITY_TYPES.register ("giant_orthocone",()->
-            EntityType.Builder.of(EntityGiantOrthocone::new,MobCategory.UNDERGROUND_WATER_CREATURE)
+            EntityType.Builder.of(EntityGiantOrthocone::new,MobCategory.CREATURE)
                     .sized(1.8F, 1.2F)
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone").toString()));
 
