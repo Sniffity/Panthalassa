@@ -6,6 +6,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch;
+import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +29,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.function.Supplier;
 
@@ -59,7 +61,6 @@ public class PanthalassaEventListener {
             }
         }
     }
-
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
@@ -115,13 +116,10 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public static void onEntityMountEvent (EntityMountEvent event) {
-        if (event.getEntityMounting() instanceof Player) {
-            Supplier<ServerPlayer> player = (Supplier<ServerPlayer>) event.getEntity();
+        if (event.getEntityMounting() instanceof ServerPlayer serverPlayer) {
             if (event.isMounting() && event.getEntityBeingMounted() instanceof PanthalassaVehicle) {
-                PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(player), new PacketCameraSwitch());
+                PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PacketCameraSwitch());
             }
         }
     }
-
 }
-

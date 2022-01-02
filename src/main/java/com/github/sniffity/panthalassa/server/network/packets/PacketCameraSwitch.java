@@ -15,6 +15,7 @@ public class PacketCameraSwitch {
         if (context.get().getDirection().getReceptionSide().isClient()) {
             Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
         }
+        context.get().setPacketHandled(true);
     }
 
     public static PacketCameraSwitch decode(FriendlyByteBuf buffer) {
