@@ -80,18 +80,11 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     public void tick() {
         super.tick();
         setCrushCooldown((getCrushCooldown())-1);
-        if (this.goalSelector !=null) {
-            List<String> goals = this.goalSelector.getRunningGoals().map(goal -> goal.getGoal().toString()).collect(Collectors.toList());
-            if (!goals.isEmpty()) {
-                System.out.println("Goals: " + goals);
-            }
-        }
-        System.out.println("Is Land Navigator: " + this.isLandNavigator);
     }
 
     public static AttributeSupplier.Builder giantOrthoconeAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 1)
+                .add(Attributes.ATTACK_DAMAGE, 15)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.ARMOR, 15)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
@@ -123,7 +116,6 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     @Override
     public void setCrushingState(boolean isCrushing) {
         this.entityData.set(CRUSHING_STATE,isCrushing);
-
     }
 
     @Override
