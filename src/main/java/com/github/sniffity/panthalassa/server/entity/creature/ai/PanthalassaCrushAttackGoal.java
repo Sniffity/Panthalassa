@@ -38,7 +38,7 @@ public class PanthalassaCrushAttackGoal extends Goal {
     @Override
     public boolean canUse() {
         //Do not attempt Goal if creature is not in water...
-        if (!this.attacker.isInWater() || !this.attacker.level.getBlockState(new BlockPos(attacker.position()).below()).is(Blocks.WATER)) {
+        if (!this.attacker.isInWater() && !this.attacker.level.getBlockState(new BlockPos(attacker.position()).below()).is(Blocks.WATER)) {
             return false;
         }
 

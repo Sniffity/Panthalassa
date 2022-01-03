@@ -47,7 +47,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
         if (!this.attacker.level.getBlockState(new BlockPos(target.blockPosition().below())).isPathfindable(this.attacker.level, new BlockPos(target.blockPosition().below()), PathComputationType.WATER)) {
             return false;
         }
-        if (!this.attacker.isInWater() || !this.attacker.level.getBlockState(new BlockPos(attacker.position()).below()).is(Blocks.WATER)) {
+        if (!this.attacker.isInWater() && !this.attacker.level.getBlockState(new BlockPos(attacker.position()).below()).is(Blocks.WATER)) {
             return false;
         }
         //Cooldown must have reset for the Goal to be usable.

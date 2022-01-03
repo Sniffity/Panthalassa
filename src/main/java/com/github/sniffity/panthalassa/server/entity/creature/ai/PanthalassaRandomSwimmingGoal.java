@@ -52,7 +52,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         if (this.creature.isLandNavigator) {
             return false;
         }
-        if (!this.creature.isInWater() || !this.creature.level.getBlockState(new BlockPos(creature.position()).below()).is(Blocks.WATER)) {
+        if (!this.creature.isInWater() && !this.creature.level.getBlockState(new BlockPos(creature.position()).below()).is(Blocks.WATER)) {
             return false;
         } else {
             if (!this.mustUpdate) {
