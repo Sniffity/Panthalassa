@@ -1,9 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaFindWaterGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,7 +8,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -30,10 +26,15 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
-public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatable, Enemy {
+public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatable, Enemy, ICrushable {
     public static final int BLOCKED_DISTANCE = 3;
+
+    protected static final EntityDataAccessor<Float> CRUSH_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Boolean> CRUSHING_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -46,6 +47,9 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(CRUSH_COOLDOWN, 0.00F);
+        this.entityData.define(CRUSHING_STATE, false);
+
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -72,15 +76,22 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
-
     @Override
     public void tick() {
         super.tick();
+        setCrushCooldown((getCrushCooldown())-1);
+        if (this.goalSelector !=null) {
+            List<String> goals = this.goalSelector.getRunningGoals().map(goal -> goal.getGoal().toString()).collect(Collectors.toList());
+            if (!goals.isEmpty()) {
+                System.out.println("Goals: " + goals);
+            }
+        }
+        System.out.println("Is Land Navigator: " + this.isLandNavigator);
     }
 
     public static AttributeSupplier.Builder giantOrthoconeAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 20)
+                .add(Attributes.ATTACK_DAMAGE, 1)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.ARMOR, 15)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
@@ -90,11 +101,33 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(0, new PanthalassaCrushAttackGoal(this, 1.7F));
+        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 1.7F, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityDunkleosteus) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
+    }
+
+    @Override
+    public void setCrushCooldown(float crushCooldown) {
+        this.entityData.set(CRUSH_COOLDOWN,crushCooldown);
+    }
+
+    @Override
+    public float getCrushCooldown() {
+        return this.entityData.get(CRUSH_COOLDOWN);
+    }
+
+    @Override
+    public void setCrushingState(boolean isCrushing) {
+        this.entityData.set(CRUSHING_STATE,isCrushing);
+
+    }
+
+    @Override
+    public boolean getCrushingState() {
+        return this.entityData.get(CRUSHING_STATE);
     }
 }

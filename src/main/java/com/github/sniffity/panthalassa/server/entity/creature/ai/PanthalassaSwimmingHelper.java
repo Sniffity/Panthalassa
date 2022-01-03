@@ -1,10 +1,12 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Blocks;
 
 public class PanthalassaSwimmingHelper extends MoveControl {
     private int maxTurnX;
@@ -45,7 +47,7 @@ public class PanthalassaSwimmingHelper extends MoveControl {
                 this.mob.yBodyRot = this.mob.getYRot();
                 this.mob.yHeadRot = this.mob.getYRot();
                 float f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                if (this.mob.isInWater()) {
+                if (this.mob.isInWater() || this.mob.level.getBlockState(new BlockPos(mob.position()).below()).is(Blocks.WATER)) {
                     this.mob.setSpeed(f1 * this.inWaterSpeedModifier);
                     double d4 = Math.sqrt(d0 * d0 + d2 * d2);
                     if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
