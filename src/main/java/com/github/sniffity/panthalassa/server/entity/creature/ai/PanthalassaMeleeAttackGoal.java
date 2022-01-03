@@ -4,10 +4,12 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 import java.util.EnumSet;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +31,6 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     public PanthalassaMeleeAttackGoal(PathfinderMob creature, double speedIn, boolean useLongMemory) {
         this.attacker = creature;
         this.panthalassaEntity = (PanthalassaEntity) creature;
-
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -38,7 +39,7 @@ public class PanthalassaMeleeAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!this.attacker.isInWater()){
+        if (!this.attacker.isInWater() || !this.attacker.level.getBlockState(new BlockPos(attacker.position()).below()).is(Blocks.WATER)){
             return false;
         }
 

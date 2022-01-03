@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
@@ -51,7 +52,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
         if (this.creature.isLandNavigator) {
             return false;
         }
-        if (!this.creature.isInWater()) {
+        if (!this.creature.isInWater() || !this.creature.level.getBlockState(new BlockPos(creature.position()).below()).is(Blocks.WATER)) {
             return false;
         } else {
             if (!this.mustUpdate) {
