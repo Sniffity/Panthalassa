@@ -20,10 +20,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
 import javax.annotation.Nullable;
-
-
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -39,7 +36,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.adjustment = 0.10F;
+        this.adjustment = 0.25F;
         this.canBreatheOutsideWater = false;
     }
 

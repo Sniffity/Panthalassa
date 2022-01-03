@@ -42,7 +42,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.adjustment = 0.35F;
+        this.adjustment = 0.25F;
         this.canBreatheOutsideWater = false;
     }
 

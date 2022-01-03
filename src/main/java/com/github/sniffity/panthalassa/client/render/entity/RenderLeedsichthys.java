@@ -22,6 +22,6 @@ public class RenderLeedsichthys extends GeoEntityRenderer<EntityLeedsichthys> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        stackIn.scale(1.5F* PanthalassaClientConfig.leedsichthysSizeMultiplier.get().floatValue(), 1.5F* PanthalassaClientConfig.leedsichthysSizeMultiplier.get().floatValue(), 1.5F* PanthalassaClientConfig.leedsichthysSizeMultiplier.get().floatValue());
+        stackIn.scale(1.2F* PanthalassaClientConfig.leedsichthysSizeMultiplier.get().floatValue(), 1.5F* PanthalassaClientConfig.leedsichthysSizeMultiplier.get().floatValue(), 1.5F* PanthalassaClientConfig.leedsichthysSizeMultiplier.get().floatValue());
     }
 }

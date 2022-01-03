@@ -38,9 +38,11 @@ public class ModelCoelacanth extends AnimatedGeoModel<EntityCoelacanth> {
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
             (this.getAnimationProcessor().getBone("main_body")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
-        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 5.0F);
-        (this.getAnimationProcessor().getBone("lower_body_2")).setRotationY((float) (entity.adjustYaw * (PI / 180.0F)) * 5.0F);
-        (this.getAnimationProcessor().getBone("head_1")).setRotationY((float) (-entity.adjustYaw * (PI / 180.0F)) * 5.0F);
+        float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
+
+        (this.getAnimationProcessor().getBone("lower_body_1")).setRotationY(setYawValue * 5.0F);
+        (this.getAnimationProcessor().getBone("lower_body_2")).setRotationY(setYawValue * 5.0F);
+        (this.getAnimationProcessor().getBone("head_1")).setRotationY(-setYawValue * 5.0F);
     }
 
     @Override
