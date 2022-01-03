@@ -23,9 +23,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
 import javax.annotation.Nullable;
-
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -42,7 +40,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public EntityDunkleosteus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.adjustment = 0.35F;
+        this.adjustment = 0.30F;
         this.canBreatheOutsideWater = false;
     }
 
@@ -73,18 +71,15 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
-        int textureVariant = (int) (Math.random()*3);
+        int textureVariant = (int) (Math.random() * 3);
         this.setTextureVariant(textureVariant);
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
-
 
     @Override
     public void tick() {
         super.tick();
     }
-
-
 
     public static AttributeSupplier.Builder dunkleosteusAttributes() {
         return Mob.createMobAttributes()
@@ -96,22 +91,20 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 
-
     public void registerGoals() {
         this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityDunkleosteus) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityDunkleosteus) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))));
     }
 
     public void setTextureVariant(int textureVariant) {
-        this.entityData.set(TEXTURE_VARIANT,textureVariant);
+        this.entityData.set(TEXTURE_VARIANT, textureVariant);
     }
 
     public int getTextureVariant() {
         return this.entityData.get(TEXTURE_VARIANT);
     }
-
 }

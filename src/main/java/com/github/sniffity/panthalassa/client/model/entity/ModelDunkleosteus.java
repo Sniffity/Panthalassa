@@ -40,11 +40,12 @@ public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
             (this.getAnimationProcessor().getBone("neck")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
-        (this.getAnimationProcessor().getBone("body")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
-        (this.getAnimationProcessor().getBone("tail1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
-        (this.getAnimationProcessor().getBone("tail2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
-        (this.getAnimationProcessor().getBone("tail3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*3.0F);
-        (this.getAnimationProcessor().getBone("head")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*3.0F);
+        float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
+        (this.getAnimationProcessor().getBone("body")).setRotationY((setYawValue)*3.0F);
+        (this.getAnimationProcessor().getBone("tail1")).setRotationY((setYawValue)*3.0F);
+        (this.getAnimationProcessor().getBone("tail2")).setRotationY((setYawValue)*3.0F);
+        (this.getAnimationProcessor().getBone("tail3")).setRotationY((setYawValue)*3.0F);
+        (this.getAnimationProcessor().getBone("head")).setRotationY(-(setYawValue)*3.0F);
     }
 
     @Override
