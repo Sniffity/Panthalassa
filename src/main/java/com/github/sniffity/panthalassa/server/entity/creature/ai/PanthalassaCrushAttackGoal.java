@@ -140,26 +140,26 @@ public class PanthalassaCrushAttackGoal extends Goal {
         this.attacker.getNavigation().stop();
     }
 
+
     @Override
     public void tick() {
-        //Step 1, look to start crushing....
         if (!this.step1Done) {
-            //Increase tick counter for step1, if this gets too high, goal will be stopped...
-            ++step1Ticks;
-            //Mimic attack goal here, move to target with conditions...
-            LivingEntity livingentity = this.attacker.getTarget();
-            this.attacker.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
-            double d0 = this.attacker.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
+            LivingEntity target = this.attacker.getTarget();
+            if (target != null) {
+                if (moveStep1()) {
+                    if (target.getVehicle() != null) {
+                        target.getVehicle().startRiding(attacker);
+                        this.target = target.getVehicle();
+                    } else {
+                        target.startRiding(attacker);
+                        this.target = target;
+                    }
+                    this.crushingEntity.setCrushingState(true);
+                    this.step1Done = true;
 
-            if ((this.attacker.getSensing().hasLineOfSight(livingentity)) && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || livingentity.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0D)) {
-                this.targetX = livingentity.getX();
-                this.targetY = livingentity.getY();
-                this.targetZ = livingentity.getZ();
-                this.attacker.getNavigation().moveTo(livingentity, this.speedTowardsTarget);
+
+                }
             }
-
-            //Attempt to crush, will only work if target is close...
-            this.attemptCrushing(livingentity, d0);
         }
         //This section will get called a total of 6 times. Meaning, while crushing, the entity will deal damage 6 times, with intervals in between...
         if (step1Done) {
@@ -171,25 +171,16 @@ public class PanthalassaCrushAttackGoal extends Goal {
         }
     }
 
-    protected void attemptCrushing (LivingEntity enemy, double distToEnemySqr) {
-        //Check for vehicles, if target has a vehicle, it will crush the vehicle, else it will crush the target...
-        Entity vehicle = enemy.getVehicle();
-        if (attacker.distanceTo(enemy) < 2.0) {
-            if (vehicle != null) {
-                if (vehicle.startRiding(this.attacker)){
-                    //Set local target variable which will be used in next step to identify who to deal damage to...
-                    this.crushingEntity.setCrushingState(true);
-                    this.step1Done = true;
-                    this.target = vehicle;
-                }
-            } else {
-                if (enemy.startRiding(this.attacker)) {
-                    //Set local target variable which will be used in next step to identify who to deal damage to...
-                    this.target = enemy;
-                    this.crushingEntity.setCrushingState(true);
-                    this.step1Done = true;
-                }
-            }
-        }
+    public boolean moveStep1(){
+        //Creature will attempt to move to the target, from the StrikePosition.
+        // If this position is unreachable, the Goal will be stopped in canContinueToUse().
+        //A tick counter is implemented to stop the Goal if this takes too long. This avoids the creature getting stuck forever if something does not work out.
+        step1Ticks = ++step1Ticks;
+        LivingEntity target = attacker.getTarget();
+        assert target != null;
+        attacker.getLookControl().setLookAt(target.getX(), target.getY(), target.getZ());
+        attacker.getNavigation().moveTo(target.getX(),target.getY(),target.getZ(),speedTowardsTarget*4);
+        return attacker.distanceTo(target) < 4.0F;
     }
+
 }
