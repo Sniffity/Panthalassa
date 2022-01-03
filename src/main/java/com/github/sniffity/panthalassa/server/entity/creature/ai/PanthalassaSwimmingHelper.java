@@ -5,7 +5,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.IAnimatable;
 
 public class PanthalassaSwimmingHelper extends MoveControl {
     private int maxTurnX;
