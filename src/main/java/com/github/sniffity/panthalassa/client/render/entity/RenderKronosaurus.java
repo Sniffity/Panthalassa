@@ -24,12 +24,9 @@ public class RenderKronosaurus extends GeoEntityRenderer<EntityKronosaurus> {
                             float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
-        if (animatable.getIsLeader()) {
-            stackIn.scale(1.2F* PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.2F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.2F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue());
-        } else {
-            stackIn.scale(1.0F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.0F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.0F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue());
 
-        }
+            stackIn.scale(1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue());
+
     }
 
     @Override

@@ -32,14 +32,14 @@ public class ModelKronosaurus extends AnimatedGeoModel<EntityKronosaurus>
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
             (this.getAnimationProcessor().getBone("torso")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
-        (this.getAnimationProcessor().getBone("lower_torso")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail_section_1")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail_section_2")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail_section_3")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("tail_section_4")).setRotationY((float)(entity.adjustYaw*(PI/180.0F))*5.0F);
-        (this.getAnimationProcessor().getBone("neck")).setRotationY((float)(-entity.adjustYaw*(PI/180.0F))*5.0F);
-
+        float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
+        (this.getAnimationProcessor().getBone("lower_torso")).setRotationY(setYawValue*5.0F);
+        (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotationY(setYawValue*5.0F);
+        (this.getAnimationProcessor().getBone("tail_section_1")).setRotationY(setYawValue*5.0F);
+        (this.getAnimationProcessor().getBone("tail_section_2")).setRotationY(setYawValue*5.0F);
+        (this.getAnimationProcessor().getBone("tail_section_3")).setRotationY(setYawValue*5.0F);
+        (this.getAnimationProcessor().getBone("tail_section_4")).setRotationY(setYawValue*5.0F);
+        (this.getAnimationProcessor().getBone("neck")).setRotationY(-setYawValue*5.0F);
     }
 
     @Override
