@@ -62,6 +62,8 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public float adjustYaw;
     public float adjustment;
     public boolean canBreatheOutsideWater;
+    public float prevSetYaw;
+    public float setYaw;
 
 
     protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);
@@ -100,11 +102,14 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         //The max and min functions ensure that adjustYaw doesn't overshoot deltaYRot...
         //Thus, adjustment will determine --how fast-- the pieces of the entity's model change their rotation.
         //The multiplying factor in the corresponding entity's model will determine --how far-- they rotate.
+        //We store the prevAdjustYaw value and use this and the current adjustYaw value for partial tick methods.
         //Troubleshooting:
         // If the rotation "lags behind" (does not change directions fast enough) increase adjustment.
         // If the rotation looks choppy (adjusts too fast), decrease adjustment
         // If the entity seems to "dislocate", reduce the multipliers for bone rotation in the Model class.
         // Reducing rotation multiplier in model class can also reduce choppiness, at the cost of how wide the bone rotation is.
+        prevSetYaw = setYaw;
+
         if (adjustYaw > deltaYRot) {
             adjustYaw = adjustYaw - adjustment;
             adjustYaw = Math.max(adjustYaw, deltaYRot);
@@ -112,6 +117,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
             adjustYaw = adjustYaw + adjustment;
             adjustYaw = Math.min(adjustYaw, deltaYRot);
         }
+        setYaw = (float) (adjustYaw*(PI/180.0F));
 
         prevRotationPitch = rotationPitch;
         rotationPitch = (float)((PI/180.0F)*(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z))))));

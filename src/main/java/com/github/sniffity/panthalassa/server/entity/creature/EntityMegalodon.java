@@ -42,7 +42,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.adjustment = 0.175F;
+        this.adjustment = 0.25F;
         this.canBreatheOutsideWater = false;
     }
 
@@ -63,7 +63,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
         super.tick();
         setBreachCooldown((getBreachCooldown())-1);
     }
-
 
     @Override
     public void registerControllers(AnimationData data) {
