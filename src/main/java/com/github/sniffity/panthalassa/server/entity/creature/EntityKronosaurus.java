@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
-    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -49,13 +48,12 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     public EntityKronosaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.adjustment = 0.25F;
+        this.canBreatheOutsideWater = false;
     }
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(LEADER, Boolean.FALSE);
-
         super.defineSynchedData();
     }
 
@@ -94,21 +92,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Override
     public void tick() {
         super.tick();
-
-        int i = this.getAirSupplyLocal();
-        this.handleAirSupply(i);
-    }
-
-    protected void handleAirSupply(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupplyLocal(p_209207_1_ - 1);
-            if (this.getAirSupplyLocal() == -20) {
-                this.setAirSupplyLocal(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirSupplyLocal(150);
-        }
     }
 
     public static AttributeSupplier.Builder kronosaurusAttributes() {
@@ -131,14 +114,6 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)) ));
-    }
-
-    public void setAirSupplyLocal(int airSupply) {
-        this.entityData.set(AIR_SUPPLY,airSupply);
-    }
-
-    public int getAirSupplyLocal() {
-        return this.entityData.get(AIR_SUPPLY);
     }
 
     public void setLeader(boolean leaderStatus) {

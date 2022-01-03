@@ -40,7 +40,6 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public static final float SCHOOL_SPEED = 1.0F;
     public static final float SCHOOL_AVOID_RADIUS = 10.0F;
     public static int SCHOOL_MAX_SIZE = 4;
-    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityCoelacanth.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityCoelacanth.class, EntityDataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -49,11 +48,11 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public EntityCoelacanth(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.adjustment = 0.10F;
+        this.canBreatheOutsideWater = false;
     }
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(LEADER, Boolean.FALSE);
 
 
@@ -90,23 +89,9 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public void tick() {
         super.tick();
 
-        int i = this.getAirSupplyLocal();
-        this.handleAirSupply(i);
     }
 
-    protected void handleAirSupply(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupplyLocal(p_209207_1_ - 1);
-            if (this.getAirSupplyLocal() == -20) {
-                this.setAirSupplyLocal(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirSupplyLocal(150);
-        }
 
-
-    }
 
     public static AttributeSupplier.Builder coelacanthAttributes() {
         return Mob.createMobAttributes()
@@ -126,14 +111,6 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3F, false));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof Cod || entity instanceof Salmon || entity instanceof TropicalFish)));
-    }
-
-    public void setAirSupplyLocal(int airSupply) {
-        this.entityData.set(AIR_SUPPLY,airSupply);
-    }
-
-    public int getAirSupplyLocal() {
-        return this.entityData.get(AIR_SUPPLY);
     }
 
     public void setLeader(boolean leaderStatus) {

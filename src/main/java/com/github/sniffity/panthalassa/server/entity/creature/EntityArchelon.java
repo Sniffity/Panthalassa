@@ -38,6 +38,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
 
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.canBreatheOutsideWater = false;
     }
 
     @Override

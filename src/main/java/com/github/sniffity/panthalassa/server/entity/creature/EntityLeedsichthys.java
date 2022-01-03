@@ -38,7 +38,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, Enemy {
 
     public static final int BLOCKED_DISTANCE = 2;
-    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityLeedsichthys.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -46,13 +45,11 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.adjustment = 0.10F;
-
+        this.canBreatheOutsideWater = false;
     }
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 150);
-
         super.defineSynchedData();
     }
 
@@ -84,21 +81,6 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     @Override
     public void tick() {
         super.tick();
-
-        int i = this.getAirSupplyLocal();
-        this.handleAirSupply(i);
-    }
-
-    protected void handleAirSupply(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupplyLocal(p_209207_1_ - 1);
-            if (this.getAirSupplyLocal() == -20) {
-                this.setAirSupplyLocal(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirSupplyLocal(150);
-        }
     }
 
     public static AttributeSupplier.Builder leedsichthysAttributes() {
@@ -118,13 +100,4 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof Cod || entity instanceof Salmon || entity instanceof TropicalFish)));
     }
-
-    public void setAirSupplyLocal(int airSupply) {
-        this.entityData.set(AIR_SUPPLY,airSupply);
-    }
-
-    public int getAirSupplyLocal() {
-        return this.entityData.get(AIR_SUPPLY);
-    }
-
 }

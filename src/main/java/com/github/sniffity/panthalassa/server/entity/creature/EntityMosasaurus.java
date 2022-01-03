@@ -36,7 +36,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> BREACH_COOLDOWN = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> IS_BREACHING = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.BOOLEAN);
@@ -44,6 +43,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.adjustment = 0.35F;
+        this.canBreatheOutsideWater = false;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -84,10 +84,8 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(BREACH_STATE, Boolean.FALSE);
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
-
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         super.defineSynchedData();
     }
@@ -95,22 +93,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     @Override
     public void tick() {
         super.tick();
-
         setBreachCooldown((getBreachCooldown())-1);
-        int i = this.getAirSupplyLocal();
-        this.handleAirSupply(i);
-    }
-
-    protected void handleAirSupply(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupplyLocal(p_209207_1_ - 1);
-            if (this.getAirSupplyLocal() == -20) {
-                this.setAirSupplyLocal(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirSupplyLocal(150);
-        }
     }
 
     public static AttributeSupplier.Builder mosasaurusAttributes() {
@@ -135,14 +118,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityMosasaurus) && !(entity instanceof EntityArchelon)));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
         super.registerGoals();
-    }
-
-    public void setAirSupplyLocal(int airSupply) {
-        this.entityData.set(AIR_SUPPLY,airSupply);
-    }
-
-    public int getAirSupplyLocal() {
-        return this.entityData.get(AIR_SUPPLY);
     }
 
     @Override

@@ -35,19 +35,16 @@ import javax.annotation.Nullable;
 public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatable, Enemy {
     public static final int BLOCKED_DISTANCE = 3;
 
-    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
-
     private AnimationFactory factory = new AnimationFactory(this);
 
 
     public EntityGiantOrthocone(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
+        this.canBreatheOutsideWater = false;
     }
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(AIR_SUPPLY, 150);
         super.defineSynchedData();
     }
 
@@ -79,23 +76,6 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     @Override
     public void tick() {
         super.tick();
-
-        int i = this.getAirSupplyLocal();
-        this.handleAirSupply(i);
-    }
-
-
-
-    protected void handleAirSupply(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupplyLocal(p_209207_1_ - 1);
-            if (this.getAirSupplyLocal() == -20) {
-                this.setAirSupplyLocal(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirSupplyLocal(150);
-        }
     }
 
     public static AttributeSupplier.Builder giantOrthoconeAttributes() {
@@ -116,13 +96,5 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityDunkleosteus) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
-    }
-
-    public void setAirSupplyLocal(int airSupply) {
-        this.entityData.set(AIR_SUPPLY,airSupply);
-    }
-
-    public int getAirSupplyLocal() {
-        return this.entityData.get(AIR_SUPPLY);
     }
 }

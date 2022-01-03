@@ -40,12 +40,12 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> IS_BREACHING = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> BREACH_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
         this.adjustment = 0.15F;
+        this.canBreatheOutsideWater = false;
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -57,31 +57,15 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
         this.entityData.define(BREACH_STATE, Boolean.FALSE);
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
-        this.entityData.define(AIR_SUPPLY, 150);
         this.entityData.define(TEXTURE_VARIANT, 0);
-
         super.defineSynchedData();
     }
 
     public void tick() {
         super.tick();
-
         setBreachCooldown((getBreachCooldown())-1);
-        int i = this.getAirSupplyLocal();
-        this.handleAirSupply(i);
     }
 
-    protected void handleAirSupply(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubble()) {
-            this.setAirSupplyLocal(p_209207_1_ - 1);
-            if (this.getAirSupplyLocal() == -20) {
-                this.setAirSupplyLocal(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirSupplyLocal(150);
-        }
-    }
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -158,14 +142,6 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     @Override
     public float getBreachCooldown() {
         return this.entityData.get(BREACH_COOLDOWN);
-    }
-
-    public void setAirSupplyLocal(int airSupply) {
-        this.entityData.set(AIR_SUPPLY,airSupply);
-    }
-
-    public int getAirSupplyLocal() {
-        return this.entityData.get(AIR_SUPPLY);
     }
 
     public void setTextureVariant(int textureVariant) {

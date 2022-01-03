@@ -59,9 +59,11 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public float deltaYRot;
     public float adjustYaw;
     public float adjustment;
+    public boolean canBreatheOutsideWater;
 
 
     protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.INT);
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -73,6 +75,8 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(ATTACKING_STATE, Boolean.FALSE);
+        this.entityData.define(AIR_SUPPLY, 150);
+
         super.defineSynchedData();
     }
 
@@ -129,8 +133,14 @@ public abstract class PanthalassaEntity extends PathfinderMob {
                 switchNavigators(true);
             }
         }
+
+        if (!this.canBreatheOutsideWater) {
+            this.handleAirSupply(this.getAirSupplyLocal());
+
+        }
     }
 
+    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
@@ -208,7 +218,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public void checkDespawn() {
     }
 
-    //TODO: Add look controls
     public void switchNavigators(boolean isOnLand){
         if (isOnLand) {
             this.moveControl = new MoveControl(this);
@@ -223,6 +232,18 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         }
     }
 
+    protected void handleAirSupply(int p_209207_1_) {
+        if (this.isAlive() && !this.isInWaterOrBubble()) {
+            this.setAirSupplyLocal(p_209207_1_ - 1);
+            if (this.getAirSupplyLocal() == -20) {
+                this.setAirSupplyLocal(0);
+                this.hurt(DamageSource.DROWN, 2.0F);
+            }
+        } else {
+            this.setAirSupplyLocal(150);
+        }
+    }
+
     //Attacking state used for purposes of attack animations
     public void setAttackingState(boolean isAttacking) {
         this.entityData.set(ATTACKING_STATE,isAttacking);
@@ -232,4 +253,11 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         return this.entityData.get(ATTACKING_STATE);
     }
 
+    public void setAirSupplyLocal(int airSupply) {
+        this.entityData.set(AIR_SUPPLY,airSupply);
+    }
+
+    public int getAirSupplyLocal() {
+        return this.entityData.get(AIR_SUPPLY);
+    }
 }
