@@ -38,10 +38,10 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
             (this.getAnimationProcessor().getBone("neck")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
-        (this.getAnimationProcessor().getBone("tail1")).setRotationY((float) (setYawValue) * 4.0F);
-        (this.getAnimationProcessor().getBone("tail2")).setRotationY((float) (setYawValue) * 4.0F);
-        (this.getAnimationProcessor().getBone("tail3")).setRotationY((float) (setYawValue) * 4.0F);
-        (this.getAnimationProcessor().getBone("head")).setRotationY((float) (-setYawValue) * 2.0F);
+        (this.getAnimationProcessor().getBone("tail1")).setRotationY((setYawValue) * 4.0F);
+        (this.getAnimationProcessor().getBone("tail2")).setRotationY((setYawValue) * 4.0F);
+        (this.getAnimationProcessor().getBone("tail3")).setRotationY((setYawValue) * 4.0F);
+        (this.getAnimationProcessor().getBone("head")).setRotationY((-setYawValue) * 2.0F);
     }
 
 
