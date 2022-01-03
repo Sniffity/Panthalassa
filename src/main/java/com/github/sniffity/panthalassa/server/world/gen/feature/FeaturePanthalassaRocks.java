@@ -30,7 +30,7 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateConfiguration> {
             }
             pos0 = new BlockPos(pos0.getX(), pos0.getY(), pos0.getZ());
             label46: {
-                if (pos0.getY() > 3) {
+                if (pos0.getY() > 20) {
                     if (worldgenlevel.getBlockState(pos0.below()).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
                         break label46;
                     }
