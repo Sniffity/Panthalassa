@@ -45,6 +45,8 @@
 
     "block.panthalassa.panthalassa_water": "Panthalassa Water",
 
+    "block.panthalassa.frostgrass": "Frostgrass",
+
     "block.panthalassa.panthalassa_portal_frame": "Panthalassa Portal Frame",
     "block.panthalassa.panthalassa_portal": "Panthalassa Portal",
     "block.panthalassa.panthalassa_portal.message": "Blocked attempt to manually place a Panthalassa Portal Block - this can cause issues with Panthalassa's Portal functioning.\nIf you want to manually place a portal, please build a circle of diameter 15 with Panthalassa Portal Frames, fill the inside with water and apply a strong Redstone Signal to one of the N/S/E/W edges...",

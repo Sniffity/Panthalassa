@@ -95,6 +95,7 @@ public class ClientHandler {
 
         render(PanthalassaBlocks.KRETHROSS, cutout);
         render(PanthalassaBlocks.KRETHROSS_PLANT, cutout);
+        render(PanthalassaBlocks.FROSTGRASS, cutout);
 
     }
 
@@ -105,7 +106,9 @@ public class ClientHandler {
         colors.register((state, world, pos, tint) ->
                         world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : new Color(63, 101, 145).getRGB(),
                 PanthalassaBlocks.KRETHROSS.get(),
-                PanthalassaBlocks.KRETHROSS_PLANT.get()
+                PanthalassaBlocks.KRETHROSS_PLANT.get(),
+                PanthalassaBlocks.FROSTGRASS.get()
+
 
         );
 
@@ -117,17 +120,21 @@ public class ClientHandler {
 
         iColors.register((stack, tint) -> bColors.getColor(((BlockItem) stack.getItem()).getBlock().defaultBlockState(), null, null, 0),
                 PanthalassaBlocks.KRETHROSS.get(),
-                PanthalassaBlocks.KRETHROSS_PLANT.get()
+                PanthalassaBlocks.KRETHROSS_PLANT.get(),
+                PanthalassaBlocks.FROSTGRASS.get()
+
         );
 
         iColors.register((stack, tint) -> {
-                    if(tint == 0) {
-                        return new Color(91, 117, 91).getRGB();
-                    }
-                    return -1;
-                },
+            if(tint == 0) {
+                return new Color(91, 117, 91).getRGB();
+            }
+            return -1;
+            },
                 PanthalassaBlocks.KRETHROSS.get(),
-                PanthalassaBlocks.KRETHROSS_PLANT.get()
+                PanthalassaBlocks.KRETHROSS_PLANT.get().asItem(),
+                PanthalassaBlocks.FROSTGRASS.get()
+
         );
     }
 }

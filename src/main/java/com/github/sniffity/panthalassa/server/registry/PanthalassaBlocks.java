@@ -3,18 +3,13 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.block.*;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.minecraft.world.level.block.AirBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.GrowingPlantBlock;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -117,5 +112,12 @@ public class PanthalassaBlocks {
                     .randomTicks()
                     .instabreak()
                     .lightLevel((n) -> 15)
+                    .sound(SoundType.WET_GRASS)));
+
+    public static final RegistryObject<BushBlock> FROSTGRASS = BLOCKS.register("frostgrass",
+            () -> new BlockFrostgrass(BlockBehaviour.Properties.of(Material.WATER_PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
                     .sound(SoundType.WET_GRASS)));
 }

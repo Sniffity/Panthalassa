@@ -1,0 +1,19 @@
+{
+  "feature": "panthalassa:frostgrass",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 256,
+      "noise_factor": 1,
+      "noise_offset": 5
+
+    },
+
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

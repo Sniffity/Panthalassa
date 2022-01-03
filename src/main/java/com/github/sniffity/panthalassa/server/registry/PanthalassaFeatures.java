@@ -52,4 +52,7 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> PANTHALASSA_ICE_SPIKES =
             FEATURES.register("panthalassa_ice_spikes", () -> new FeaturePanthalassaIceSpikes(NoneFeatureConfiguration.CODEC));
 
+    public static final RegistryObject<Feature<ProbabilityFeatureConfiguration>> FROSTGRASS =
+            FEATURES.register("frostgrass", () -> new FeatureFrostgrass(ProbabilityFeatureConfiguration.CODEC));
+
 }
