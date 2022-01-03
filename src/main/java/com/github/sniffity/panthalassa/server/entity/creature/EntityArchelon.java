@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaPanicGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -97,7 +98,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanicGoal(this, 0.3D));
+        this.goalSelector.addGoal(0, new PanthalassaPanicGoal(this, 0.3D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.1, 30));
