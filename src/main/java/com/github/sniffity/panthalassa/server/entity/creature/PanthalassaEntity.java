@@ -38,6 +38,8 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraftforge.common.Tags;
 
+import static java.lang.Math.PI;
+
 /**
  * Panthalassa Mod - Class: PanthalassaEntity <br></br?>
  *
@@ -112,7 +114,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         }
 
         prevRotationPitch = rotationPitch;
-        rotationPitch = (float)(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z)))));
+        rotationPitch = (float)((PI/180.0F)*(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z))))));
 
         //NAVIGATOR SWITCH OPERATIONS
         //All entities require a land navigator, to have them not get stuck in 1-block-deep water
