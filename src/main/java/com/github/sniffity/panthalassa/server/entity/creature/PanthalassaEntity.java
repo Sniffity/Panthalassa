@@ -136,7 +136,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
 
         if (!this.canBreatheOutsideWater) {
             this.handleAirSupply(this.getAirSupplyLocal());
-
         }
     }
 
