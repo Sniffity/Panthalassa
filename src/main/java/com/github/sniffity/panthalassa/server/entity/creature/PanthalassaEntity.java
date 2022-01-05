@@ -120,8 +120,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         setYaw = (float) (adjustYaw*(PI/180.0F));
 
         prevRotationPitch = rotationPitch;
-        rotationPitch = (float)((PI/180.0F)*(Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z))))));
-
+        rotationPitch = (float)((Mth.atan2((this.getDeltaMovement().y),Mth.sqrt((float) ((this.getDeltaMovement().x)*(this.getDeltaMovement().x)+(this.getDeltaMovement().z)*(this.getDeltaMovement().z))))));
         //NAVIGATOR SWITCH OPERATIONS
         //All entities require a land navigator, to have them not get stuck in 1-block-deep water
         //If it's using the land naviagtor....
