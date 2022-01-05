@@ -17,6 +17,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -47,6 +48,18 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (getBreachState()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.breach", true));
+            return PlayState.CONTINUE;
+        }
+        if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.attack", true));
+            return PlayState.CONTINUE;
+        }
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.megalodon.beached", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
     }
 
