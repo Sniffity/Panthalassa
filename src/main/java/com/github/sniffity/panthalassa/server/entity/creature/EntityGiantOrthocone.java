@@ -57,6 +57,11 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone.swimming", true));
             return PlayState.CONTINUE;
         }
+
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone.beached", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
     }
 
