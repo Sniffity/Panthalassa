@@ -55,12 +55,11 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.swimming", true));
             return PlayState.CONTINUE;
         }
-        else if ((this.getDeltaMovement().length()>0 && this.isLandNavigator)) {
+        else if ((this.getNavigation().isInProgress() && this.isOnGround() && !this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.land", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
-
     }
 
     @Override
