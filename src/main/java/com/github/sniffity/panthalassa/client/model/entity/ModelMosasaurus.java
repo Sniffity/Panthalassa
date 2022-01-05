@@ -34,11 +34,12 @@ public class ModelMosasaurus extends AnimatedGeoModel<EntityMosasaurus>
             (this.getAnimationProcessor().getBone("torso")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
         }
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
-        (this.getAnimationProcessor().getBone("lower_torso")).setRotationY(setYawValue*4.0F);
-        (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotationY(setYawValue*4.0F);
-        (this.getAnimationProcessor().getBone("tail_section_1")).setRotationY(setYawValue*4.0F);
-        (this.getAnimationProcessor().getBone("tail_section_2")).setRotationY(setYawValue*4.0F);
-        (this.getAnimationProcessor().getBone("neck")).setRotationY(-setYawValue*4.0F);
+        (this.getAnimationProcessor().getBone("body1")).setRotationY(setYawValue*4.0F);
+        (this.getAnimationProcessor().getBone("body2")).setRotationY(setYawValue*4.0F);
+        (this.getAnimationProcessor().getBone("tail")).setRotationY(setYawValue*4.0F);
+        (this.getAnimationProcessor().getBone("tail2")).setRotationY(setYawValue*4.0F);
+        (this.getAnimationProcessor().getBone("tail3")).setRotationY(setYawValue*4.0F);
+        (this.getAnimationProcessor().getBone("head")).setRotationY(-setYawValue*4.0F);
     }
 
     @Override
