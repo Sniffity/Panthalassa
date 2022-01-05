@@ -924,7 +924,15 @@
 			}
 		},
 		"animation.mosasaurus.breach": {
-			"loop": true
+			"loop": true,
+			"bones": {
+				"head": {
+					"rotation": [-17.5, 0, 0]
+				},
+				"bottomjaw1": {
+					"rotation": [40, 0, 0]
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2
