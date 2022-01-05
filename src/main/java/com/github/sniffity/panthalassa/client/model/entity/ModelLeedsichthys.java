@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.client.model.entity;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityLeedsichthys;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -33,7 +34,9 @@ public class ModelLeedsichthys extends AnimatedGeoModel<EntityLeedsichthys>
     public void setLivingAnimations(EntityLeedsichthys entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
-            (this.getAnimationProcessor().getBone("body")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
+            float setPitchValue = entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick();
+            setPitchValue = Mth.clamp(setPitchValue, -0.785F,0.785F);
+            (this.getAnimationProcessor().getBone("body")).setRotationX(setPitchValue);
         }
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
         (this.getAnimationProcessor().getBone("bodymid1")).setRotationY(setYawValue*3.5F);

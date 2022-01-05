@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.client.model.entity;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.EntityMosasaurus;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -30,8 +31,13 @@ public class ModelMosasaurus extends AnimatedGeoModel<EntityMosasaurus>
     @Override
     public void setLivingAnimations(EntityMosasaurus entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if ((entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) || entity.getBreaching()) {
-            (this.getAnimationProcessor().getBone("torso")).setRotationX(entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick());
+        float setPitchValue = entity.prevRotationPitch+(entity.rotationPitch-entity.prevRotationPitch)*customPredicate.getPartialTick();
+        if (entity.getBreaching()) {
+            (this.getAnimationProcessor().getBone("neck")).setRotationX(setPitchValue);
+        }
+        else if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
+            setPitchValue = Mth.clamp(setPitchValue, -0.785F,0.785F);
+            (this.getAnimationProcessor().getBone("neck")).setRotationX(setPitchValue);
         }
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*customPredicate.getPartialTick();
         (this.getAnimationProcessor().getBone("body1")).setRotationY(setYawValue*4.0F);
