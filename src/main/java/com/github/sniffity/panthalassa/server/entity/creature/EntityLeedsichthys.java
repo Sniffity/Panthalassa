@@ -50,6 +50,11 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.attack", true));
             return PlayState.CONTINUE;
         }
+
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.beached", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
 
     }
