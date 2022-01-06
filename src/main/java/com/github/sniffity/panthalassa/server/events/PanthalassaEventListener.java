@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.events;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.config.PanthalassaServerConfig;
 import com.github.sniffity.panthalassa.server.block.BlockPortalBlockEntity;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
@@ -10,9 +11,12 @@ import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpeci
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
@@ -28,11 +32,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
 import org.apache.logging.log4j.core.jmx.Server;
+import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.function.Supplier;
 
@@ -99,6 +106,19 @@ public class PanthalassaEventListener {
         if (event.getEntityMounting() instanceof ServerPlayer serverPlayer) {
             if (event.isMounting() && event.getEntityBeingMounted() instanceof PanthalassaVehicle) {
                 PanthalassaPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PacketCameraSwitch());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPLayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (PanthalassaServerConfig.giveJournal.get()) {
+            CompoundTag playerData = event.getPlayer().getPersistentData();
+            CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
+            if (data != null && !data.getBoolean("panthalassa_received_journal")) {
+                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), (PatchouliAPI.get().getBookStack(new ResourceLocation(Panthalassa.MODID,"journal"))));
+                data.putBoolean("panthalassa_received_journal", true);
+                playerData.put(Player.PERSISTED_NBT_TAG, data);
             }
         }
     }

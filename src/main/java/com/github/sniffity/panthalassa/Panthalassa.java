@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa;
 
 import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
+import com.github.sniffity.panthalassa.config.PanthalassaServerConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
@@ -78,6 +79,7 @@ public final class Panthalassa {
 		forgeBus.register(this);
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, PanthalassaServerConfig.GENERAL_SPEC, "panthalassa-server-config.toml");
 
 	}
 
