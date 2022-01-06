@@ -61,7 +61,7 @@ public class PanthalassaEntityTypes {
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
                     .<VehicleMRSV>of(VehicleMRSV::new,MobCategory.MISC)
-                    .sized(2.0F, 1.0F)
+                    .sized(2.0F, 1.5F)
                     .build(new ResourceLocation(Panthalassa.MODID, "manta_ray_submersible_vehicle").toString()));
 
 
