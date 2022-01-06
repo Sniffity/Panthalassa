@@ -88,7 +88,6 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     public void tick() {
         super.tick();
         setCrushCooldown((getCrushCooldown())-1);
-        System.out.println("I have passengers:" +!this.getPassengers().isEmpty());
     }
 
     public static AttributeSupplier.Builder giantOrthoconeAttributes() {
