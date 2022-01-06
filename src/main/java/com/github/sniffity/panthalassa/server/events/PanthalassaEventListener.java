@@ -1,34 +1,24 @@
 package com.github.sniffity.panthalassa.server.events;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.config.PanthalassaServerConfig;
-import com.github.sniffity.panthalassa.server.block.BlockPortalBlockEntity;
+import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch;
-import com.github.sniffity.panthalassa.server.network.packets.PacketVehicleSpecial;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -38,10 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
-import org.apache.logging.log4j.core.jmx.Server;
 import vazkii.patchouli.api.PatchouliAPI;
-
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID)
 
@@ -112,7 +99,7 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public static void onPLayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (PanthalassaServerConfig.giveJournal.get()) {
+        if (PanthalassaCommonConfig.giveJournal.get()) {
             CompoundTag playerData = event.getPlayer().getPersistentData();
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("panthalassa_received_journal")) {
