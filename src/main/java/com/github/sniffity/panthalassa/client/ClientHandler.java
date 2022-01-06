@@ -35,7 +35,6 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
-    Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
@@ -83,7 +82,6 @@ public class ClientHandler {
 
     }
 
-
     private static void render(Supplier<? extends Block> block, RenderType render) {
         ItemBlockRenderTypes.setRenderLayer(block.get(), render);
     }
@@ -99,7 +97,6 @@ public class ClientHandler {
 
     }
 
-
     public static void registerBlockColors() {
         BlockColors colors = Minecraft.getInstance().getBlockColors();
 
@@ -108,8 +105,6 @@ public class ClientHandler {
                 PanthalassaBlocks.KRETHROSS.get(),
                 PanthalassaBlocks.KRETHROSS_PLANT.get(),
                 PanthalassaBlocks.FROSTGRASS.get()
-
-
         );
 
     }
@@ -134,7 +129,6 @@ public class ClientHandler {
                 PanthalassaBlocks.KRETHROSS.get(),
                 PanthalassaBlocks.KRETHROSS_PLANT.get().asItem(),
                 PanthalassaBlocks.FROSTGRASS.get()
-
         );
     }
 }
