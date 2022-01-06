@@ -34,7 +34,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     public VehicleAGII(EntityType<? extends PanthalassaVehicle> type, Level world) {
         super(type, world);
-        this.waterSpeed = 0.04F;
+        this.waterSpeed = 0.03F;
         this.landSpeed = 0.004F;
     }
 
