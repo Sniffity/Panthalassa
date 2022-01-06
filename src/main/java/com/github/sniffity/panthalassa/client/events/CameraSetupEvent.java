@@ -36,14 +36,14 @@ public class CameraSetupEvent {
         CameraType view = mc.options.getCameraType();
         float yCamera;
 
-        if (view == CameraType.THIRD_PERSON_BACK) {
-            if (vehicle.level.getBlockState(new BlockPos(vehicle.position()).above()).canOcclude()) {
-                yCamera = -4.0F;
-            }
-            else {
-                yCamera = 1.0F;
-            }
+        if (vehicle.level.getBlockState(new BlockPos(vehicle.position()).above()).canOcclude()) {
+            yCamera = -4.0F;
+        }
+        else {
+            yCamera = 1.0F;
+        }
 
+        if (view == CameraType.THIRD_PERSON_BACK) {
             if (vehicle instanceof VehicleMRSV) {
                 event.getCamera().move(-calcCameraDistance(8.0, vehicle), yCamera, 0);
             }
@@ -52,11 +52,11 @@ public class CameraSetupEvent {
 
             }
         } else {
-            //TODO: First person camera
             if (vehicle instanceof VehicleMRSV) {
+                event.getCamera().move(-calcCameraDistance(-1.5, vehicle), yCamera, 0);
             }
             if (vehicle instanceof VehicleAGII) {
-
+                event.getCamera().move(-calcCameraDistance(-2.0, vehicle), yCamera, 0);
             }
         }
     }
