@@ -35,6 +35,7 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
 
     protected static final EntityDataAccessor<Float> CRUSH_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> CRUSHING_STATE = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> CRUSHING = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -49,6 +50,8 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
         super.defineSynchedData();
         this.entityData.define(CRUSH_COOLDOWN, 0.00F);
         this.entityData.define(CRUSHING_STATE, false);
+        this.entityData.define(CRUSHING, false);
+
 
     }
 
@@ -85,6 +88,7 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     public void tick() {
         super.tick();
         setCrushCooldown((getCrushCooldown())-1);
+        System.out.println("I have passengers:" +!this.getPassengers().isEmpty());
     }
 
     public static AttributeSupplier.Builder giantOrthoconeAttributes() {
@@ -99,20 +103,20 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaCrushAttackGoal(this, 1.7F));
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 1.7F, false));
+        this.goalSelector.addGoal(0, new PanthalassaCrushAttackGoal(this, 2.0F));
+        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityGiantOrthocone) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityGiantOrthocone) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
     }
 
     @Override
     public void setCrushCooldown(float crushCooldown) {
         this.entityData.set(CRUSH_COOLDOWN,crushCooldown);
     }
-
     @Override
     public float getCrushCooldown() {
         return this.entityData.get(CRUSH_COOLDOWN);
@@ -127,4 +131,16 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     public boolean getCrushingState() {
         return this.entityData.get(CRUSHING_STATE);
     }
+
+    @Override
+    public void setCrushing(boolean isCrushing) {
+        this.entityData.set(CRUSHING,isCrushing);
+    }
+
+    @Override
+    public boolean getCrushing() {
+        return this.entityData.get(CRUSHING);
+    }
+
+
 }

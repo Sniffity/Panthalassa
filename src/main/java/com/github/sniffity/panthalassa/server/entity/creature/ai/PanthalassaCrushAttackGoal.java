@@ -18,9 +18,6 @@ public class PanthalassaCrushAttackGoal extends Goal {
     protected final ICrushable crushingEntity;
     private final double speedTowardsTarget;
     private Path path;
-    private double targetX;
-    private double targetY;
-    private double targetZ;
     private double initialHealth;
     private boolean step1Done;
     private int step1Ticks;
@@ -76,6 +73,7 @@ public class PanthalassaCrushAttackGoal extends Goal {
     public boolean canContinueToUse() {
         //If it loses its target, stop using the goal...
         LivingEntity livingentity = this.attacker.getTarget();
+
         if (livingentity == null) {
             return false;
         }
@@ -118,6 +116,7 @@ public class PanthalassaCrushAttackGoal extends Goal {
     public void start() {
         this.attacker.getNavigation().moveTo(this.path, this.speedTowardsTarget);
         this.attacker.setAggressive(true);
+        this.crushingEntity.setCrushing(true);
         this.initialHealth = this.attacker.getHealth();
     }
 
@@ -157,12 +156,13 @@ public class PanthalassaCrushAttackGoal extends Goal {
                     this.crushingEntity.setCrushingState(true);
                     this.step1Done = true;
 
-
                 }
             }
         }
         //This section will get called a total of 6 times. Meaning, while crushing, the entity will deal damage 6 times, with intervals in between...
         if (step1Done) {
+            //Do not move while performing crushing attack, hold in place...
+            this.attacker.getNavigation().stop();
             ++step2Ticks;
             if (step2Ticks == 0 || step2Ticks == 20 || step2Ticks == 40 || step2Ticks == 60 || step2Ticks == 80 || step2Ticks == 100) {
                 this.attacker.swing(InteractionHand.MAIN_HAND);

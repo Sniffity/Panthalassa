@@ -10,4 +10,8 @@ public interface ICrushable
     void setCrushingState(boolean isCrushing);
 
     boolean getCrushingState();
+
+    void setCrushing(boolean breaching);
+
+    boolean getCrushing();
 }
