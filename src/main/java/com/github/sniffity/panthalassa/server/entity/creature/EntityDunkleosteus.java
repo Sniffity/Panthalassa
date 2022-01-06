@@ -88,11 +88,12 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public static AttributeSupplier.Builder dunkleosteusAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 30)
+                .add(Attributes.ATTACK_DAMAGE, 25)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
+                .add(Attributes.ARMOR, 20)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.FOLLOW_RANGE, 20)
-                .add(Attributes.MAX_HEALTH, 60)
+                .add(Attributes.MAX_HEALTH, 100)
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.3F);
     }
 

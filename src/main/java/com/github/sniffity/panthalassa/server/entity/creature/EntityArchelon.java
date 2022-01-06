@@ -88,7 +88,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
         return Mob.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 5)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.ARMOR, 20)
+                .add(Attributes.ARMOR, 30)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 2)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MAX_HEALTH, 60)
