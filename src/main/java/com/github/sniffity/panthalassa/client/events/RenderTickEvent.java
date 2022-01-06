@@ -54,7 +54,18 @@ public class RenderTickEvent {
         String vehicleText;
         if (vehicle instanceof VehicleMRSV) {
             vehicleText = "MANTA RAY SUBMERSIBLE VEHICLE";
-            game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 150, 10, Color.WHITE.getRGB());
+            float boostCooldown = ((VehicleMRSV)vehicle).getBoostCooldown();
+            String boostCooldownText;
+
+            if (boostCooldown < 0) {
+                boostCooldownText = "BOOST READY";
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Boost Cooldown: " + ChatFormatting.GREEN + boostCooldownText, 10, 75, Color.WHITE.getRGB());
+
+            } else {
+                boostCooldownText = new DecimalFormat("00").format(boostCooldown);
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Boost Cooldown: " + ChatFormatting.YELLOW + boostCooldownText, 10, 75, Color.WHITE.getRGB());
+            }
+
         }
         if (vehicle instanceof VehicleAGII) {
             vehicleText = "ABYSS GLIDER II SUBMERSIBLE VEHICLE";
