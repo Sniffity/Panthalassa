@@ -59,11 +59,11 @@ public class RenderTickEvent {
 
             if (boostCooldown < 0) {
                 boostCooldownText = "BOOST READY";
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Boost Cooldown: " + ChatFormatting.GREEN + boostCooldownText, 10, 75, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Boost Cooldown: " + ChatFormatting.GREEN + boostCooldownText, 10, 85, Color.WHITE.getRGB());
 
             } else {
                 boostCooldownText = new DecimalFormat("00").format(boostCooldown);
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Boost Cooldown: " + ChatFormatting.YELLOW + boostCooldownText, 10, 75, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Boost Cooldown: " + ChatFormatting.YELLOW + boostCooldownText, 10, 85, Color.WHITE.getRGB());
             }
 
         }
