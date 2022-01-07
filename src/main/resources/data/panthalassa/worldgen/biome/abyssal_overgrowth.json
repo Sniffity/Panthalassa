@@ -40,22 +40,22 @@
   "spawners": {
     "monster": [
       {
-        "type": "panthalassa:dunkleosteus",
-        "weight": 50,
+        "type": "panthalassa:kronosaurus",
+        "weight": 25,
         "minCount": 1,
         "maxCount": 3
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 60,
+        "weight": 40,
         "minCount": 3,
         "maxCount": 6
       },
       {
-        "type": "panthalassa:archelon",
-        "weight": 50,
+        "type": "panthalassa:mosasaurus",
+        "weight": 10,
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 1
       }
     ],
     "creature": [],
