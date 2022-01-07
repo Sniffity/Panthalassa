@@ -38,7 +38,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
 
     public EntityArchelon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.canBreatheOutsideWater = false;
+        this.canBreatheOutsideWater = true;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.swimming", true));
             return PlayState.CONTINUE;
         }
-        else if ((this.getNavigation().isInProgress() && this.isOnGround() && !this.isInWater())) {
+        else if (this.getDeltaMovement().length()>0.2 && !this.isInWater()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.land", true));
             return PlayState.CONTINUE;
         }
