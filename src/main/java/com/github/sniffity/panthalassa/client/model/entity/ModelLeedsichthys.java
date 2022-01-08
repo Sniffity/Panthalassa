@@ -43,7 +43,7 @@ public class ModelLeedsichthys extends AnimatedGeoModel<EntityLeedsichthys>
         (this.getAnimationProcessor().getBone("bodymid2")).setRotationY(setYawValue*3.5F);
         (this.getAnimationProcessor().getBone("tail1")).setRotationY(setYawValue*3.5F);
         (this.getAnimationProcessor().getBone("tail2")).setRotationY(setYawValue*3.5F);
-        (this.getAnimationProcessor().getBone("head")).setRotationY(setYawValue*3.5F);
+        (this.getAnimationProcessor().getBone("head")).setRotationY(-setYawValue*3.5F);
     }
 
     @Override
