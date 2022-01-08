@@ -16,20 +16,20 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "${mod_version}+${mc_version}"
+version = "${mod_version}-${minecraft_version}"
 group = 'com.github.sniffity.panthalassa'
-archivesBaseName = "${modid}"
+archivesBaseName = "${mod_id}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: "official", version: "${mc_version}"
+    mappings channel: "official", version: "${minecraft_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
             workingDirectory project.file('run')
-            arg "-mixin.config=" + project.getProperty('modid') + ".mixins.json"
+            arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.console.level', 'debug'
@@ -42,7 +42,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            arg "-mixin.config=" + project.getProperty('modid') + ".mixins.json"
+            arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
@@ -55,7 +55,7 @@ minecraft {
         data {
             workingDirectory project.file('run')
             args '--mod', 'panthalassa', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            arg "-mixin.config=" + project.getProperty('modid') + ".mixins.json"
+            arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -82,9 +82,8 @@ repositories {
     }
 }
 
-
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
@@ -96,10 +95,36 @@ dependencies {
 
 }
 
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
+def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
+def replaceProperties = [mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,
+                         mod_authors: mod_authors, mod_description: mod_description,
+                         minecraft_version_range: minecraft_version_range, forge_version_range: forge_version_range,
+                         loader_version_range: loader_version_range]
+processResources {
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+
+    intoTargets.each { target ->
+        if (file(target).exists()) {
+            copy {
+                from(sourceSets.main.resources) {
+                    include resourceTargets
+                    expand replaceProperties
+                }
+                into target
+            }
+        }
+    }
+}
 
 
 mixin {
-    add sourceSets.main, "${modid}.refmap.json"
+    add sourceSets.main, "${mod_id}.refmap.json"
 }
 
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
