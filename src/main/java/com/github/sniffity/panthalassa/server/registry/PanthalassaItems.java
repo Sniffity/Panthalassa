@@ -93,4 +93,12 @@ public class PanthalassaItems {
 					0xb78685,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> BASILOSAURUS_SPAWN_EGG = ITEMS.register("basilosaurus_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.BASILOSAURUS,
+					0x6e1e1e,
+					0x340c0c,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+
 }

@@ -65,6 +65,8 @@ public class ClientHandler {
                 RenderLeedsichthys::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(),
                 RenderGiantOrthocone::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.BASILOSAURUS.get(),
+                RenderBasilosaurus::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),

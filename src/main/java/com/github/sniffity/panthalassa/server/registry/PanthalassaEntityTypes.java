@@ -58,6 +58,11 @@ public class PanthalassaEntityTypes {
                     .sized(1.8F, 1.2F)
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone").toString()));
 
+    public static final RegistryObject<EntityType<EntityBasilosaurus>> BASILOSAURUS = ENTITY_TYPES.register ("basilosaurus",()->
+            EntityType.Builder.of(EntityBasilosaurus::new,MobCategory.MONSTER)
+                    .sized(1.8F, 1.2F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "basilosaurus").toString()));
+
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
                     .<VehicleMRSV>of(VehicleMRSV::new,MobCategory.MISC)

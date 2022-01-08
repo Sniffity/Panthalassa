@@ -103,6 +103,8 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.DUNKLEOSTEUS.get(), EntityDunkleosteus.dunkleosteusAttributes().build());
 		event.put(PanthalassaEntityTypes.LEEDSICHTHYS.get(), EntityLeedsichthys.leedsichthysAttributes().build());
 		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), EntityGiantOrthocone.giantOrthoconeAttributes().build());
+		event.put(PanthalassaEntityTypes.BASILOSAURUS.get(), EntityBasilosaurus.basilosaurusAttributes().build());
+
 	}
 
 	public void addDimensionalSpacing(final WorldEvent.Load event) {

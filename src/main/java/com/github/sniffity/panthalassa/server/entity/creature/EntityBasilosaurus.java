@@ -1,18 +1,21 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.animal.Cod;
 import net.minecraft.world.entity.animal.Salmon;
 import net.minecraft.world.entity.animal.TropicalFish;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -20,23 +23,19 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import javax.annotation.Nullable;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 
-public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, Enemy {
+import javax.annotation.Nullable;
+
+public class EntityBasilosaurus extends PanthalassaEntity implements IAnimatable, Enemy {
 
     public static final int BLOCKED_DISTANCE = 2;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
 
-    public EntityLeedsichthys(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
+    public EntityBasilosaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
-        this.adjustment = 0.25F;
+        this.adjustment = 0.20F;
         this.canBreatheOutsideWater = false;
     }
 
@@ -47,13 +46,19 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.attacking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.basilosaurus.attack", true));
             return PlayState.CONTINUE;
         }
+        if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.basilosaurus.swimming", true));
+            return PlayState.CONTINUE;
+        }
+        /*
         if ((this.isOnGround() && !this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.beached", true));
             return PlayState.CONTINUE;
         }
+        */
         return PlayState.STOP;
 
     }
@@ -79,7 +84,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
         super.tick();
     }
 
-    public static AttributeSupplier.Builder leedsichthysAttributes() {
+    public static AttributeSupplier.Builder basilosaurusAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 20)
                 .add(Attributes.ATTACK_KNOCKBACK, 2)
