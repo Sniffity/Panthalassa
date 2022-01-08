@@ -51,11 +51,11 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.attack", true));
             return PlayState.CONTINUE;
         }
-        if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
+        if (event.isMoving() && this.isInWater()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.swimming", true));
             return PlayState.CONTINUE;
         }
-        else if (this.getDeltaMovement().length()>0.2 && !this.isInWater()) {
+        if (event.isMoving() && this.isOnGround()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.archelon.land", true));
             return PlayState.CONTINUE;
         }
@@ -96,10 +96,10 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaPanicGoal(this, 0.3D));
+        this.goalSelector.addGoal(0, new PanthalassaPanicGoal(this, 0.2D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.7, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.1, 30));
+        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.2D, 30));
         this.goalSelector.addGoal(3, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3, false));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof Cod || entity instanceof Salmon || entity instanceof TropicalFish)));
