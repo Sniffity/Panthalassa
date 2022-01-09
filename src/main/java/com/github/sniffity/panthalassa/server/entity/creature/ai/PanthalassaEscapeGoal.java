@@ -51,7 +51,7 @@ public class PanthalassaEscapeGoal extends Goal {
 
             if (portalPOI.isPresent()) {
                 BlockPortalBlockEntity tempTE = getPortalTE(creature.level, portalPOI.get().getPos());
-                if (tempTE != null) {
+                if (tempTE != null && tempTE.offsetFromCenter != null) {
                     BlockPortalBlockEntity centerTE = getPortalTE(creature.level, portalPOI.get().getPos().subtract(tempTE.offsetFromCenter));
                     if (centerTE != null) {
                         this.targetPos = centerTE.getBlockPos();

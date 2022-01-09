@@ -60,7 +60,6 @@ public class BlockPortal extends Block implements EntityBlock {
     }
 
     public static void changeDimension(ServerLevel initialWorld, Entity entity, BlockPos portalBlockPos, PanthalassaTeleporter teleporter) {
-
         // If portal block is connected to a portal in other dimension already, just teleport right away
         BlockEntity tileEntity = initialWorld.getBlockEntity(portalBlockPos);
         if (tileEntity instanceof BlockPortalBlockEntity) {
