@@ -174,9 +174,6 @@ public class PanthalassaWorldSavedData extends SavedData {
             BlockPos targetBlock = entry.targetBlock;
 
             if (targetWorld != null && originalWorld != null) {
-                assert targetWorld != null;
-                assert originalWorld != null;
-
                 Entity entity2 = entity.getType().create(targetWorld);
 
                 if (entity2 != null) {
