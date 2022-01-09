@@ -81,69 +81,69 @@ public class PanthalassaWorldSavedData extends SavedData {
             ServerLevel originalWorld = server.getLevel(entry.originalWorld);
             Vec3 targetVec = entry.targetVec;
 
-            if (targetWorld != null && vehicle != null) {
+            if (targetWorld != null && vehicle != null && originalWorld !=null) {
                 Entity vehicle2 = vehicle.getType().create(targetWorld);
                 ChunkPos entityChunkpos = new ChunkPos(vehicle.blockPosition());
                 targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, vehicle.getId());
                 originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
 
 
-                assert vehicle2 != null;
-                vehicle2.restoreFrom(vehicle);
-                vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
-                vehicle2.setDeltaMovement(0, 0, 0);
-                targetWorld.addDuringTeleport(vehicle2);
-                vehicle2.setPortalCooldown();
+                if (vehicle2 != null) {
+                    vehicle2.restoreFrom(vehicle);
+                    vehicle2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), vehicle.yRot, vehicle.xRot);
+                    vehicle2.setDeltaMovement(0, 0, 0);
+                    targetWorld.addDuringTeleport(vehicle2);
+                    vehicle2.setPortalCooldown();
+
+                    originalWorld.resetEmptyTime();
+                    targetWorld.resetEmptyTime();
+
+                    while (vehicle.getPassengers().size() > 0) {
+                        Entity passenger = vehicle.getPassengers().get(0);
+                        passenger.stopRiding();
+
+                        if (passenger instanceof Player) {
+                            ServerPlayer player = (ServerPlayer) passenger;
+                            ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());
+                            targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, passenger.getId());
+                            originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
 
 
-                assert originalWorld != null;
-                originalWorld.resetEmptyTime();
-                targetWorld.resetEmptyTime();
-
-                while (vehicle.getPassengers().size() > 0) {
-                    Entity passenger = vehicle.getPassengers().get(0);
-                    passenger.stopRiding();
-
-                    if (passenger instanceof Player) {
-                        ServerPlayer player = (ServerPlayer) passenger;
-                        ChunkPos playerChunkPos = new ChunkPos(passenger.blockPosition());
-                        targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, playerChunkPos, 1, passenger.getId());
-                        originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
-
-
-                        player.fallDistance = 0;
-                        player.yo = 0;
-                        player.teleportTo(
-                                targetWorld,
-                                entry.targetVec.x(),
-                                entry.targetVec.y() + 0.2D,
-                                entry.targetVec.z(),
-                                entry.yaw,
-                                entry.pitch);
-                        player.startRiding(vehicle2);
-                        player.setPortalCooldown();
-                    } else {
-                        Entity passenger2 = passenger.getType().create(targetWorld);
-                        ChunkPos entityChunkpos2 = new ChunkPos(passenger.blockPosition());
-                        targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos2, 1, passenger.getId());
-                        originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
+                            player.fallDistance = 0;
+                            player.yo = 0;
+                            player.teleportTo(
+                                    targetWorld,
+                                    entry.targetVec.x(),
+                                    entry.targetVec.y() + 0.2D,
+                                    entry.targetVec.z(),
+                                    entry.yaw,
+                                    entry.pitch);
+                            player.startRiding(vehicle2);
+                            player.setPortalCooldown();
+                        } else {
+                            Entity passenger2 = passenger.getType().create(targetWorld);
+                            ChunkPos entityChunkpos2 = new ChunkPos(passenger.blockPosition());
+                            targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos2, 1, passenger.getId());
+                            originalWorld.getChunkSource().addRegionTicket(TicketType.PORTAL, entityChunkpos, 5, vehicle.blockPosition());
 
 
-                        assert passenger2 != null;
-                        passenger2.restoreFrom(passenger);
-                        passenger2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), passenger.yRot, passenger.xRot);
-                        passenger2.setDeltaMovement(0, 0, 0);
-                        targetWorld.addDuringTeleport(passenger2);
+                            if (passenger2 != null){
+                                passenger2.restoreFrom(passenger);
+                                passenger2.moveTo(new BlockPos(targetVec.x(), targetVec.y(), targetVec.z()), passenger.yRot, passenger.xRot);
+                                passenger2.setDeltaMovement(0, 0, 0);
+                                targetWorld.addDuringTeleport(passenger2);
 
-                        passenger.discard();
+                                passenger.discard();
 
-                        originalWorld.resetEmptyTime();
-                        targetWorld.resetEmptyTime();
-                        passenger2.startRiding(vehicle2);
-                        passenger2.setPortalCooldown();
+                                originalWorld.resetEmptyTime();
+                                targetWorld.resetEmptyTime();
+                                passenger2.startRiding(vehicle2);
+                                passenger2.setPortalCooldown();
+                            }
+                        }
                     }
+                    vehicle.discard();
                 }
-                vehicle.discard();
             }
         }
 
@@ -173,25 +173,27 @@ public class PanthalassaWorldSavedData extends SavedData {
             ServerLevel originalWorld = server.getLevel(entry.originalWorld);
             BlockPos targetBlock = entry.targetBlock;
 
-            assert targetWorld != null;
-            assert originalWorld != null;
+            if (targetWorld != null && originalWorld != null) {
+                assert targetWorld != null;
+                assert originalWorld != null;
 
-            Entity entity2 = entity.getType().create(targetWorld);
+                Entity entity2 = entity.getType().create(targetWorld);
 
-            if (entity2 != null) {
-                ChunkPos entityChunkpos = new ChunkPos(entity.blockPosition());
-                targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, entity.getId());
+                if (entity2 != null) {
+                    ChunkPos entityChunkpos = new ChunkPos(entity.blockPosition());
+                    targetWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, entityChunkpos, 1, entity.getId());
 
-                entity2.restoreFrom(entity);
-                entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
-                entity2.setDeltaMovement(0, 0, 0);
-                entity2.setPortalCooldown();
-                targetWorld.addDuringTeleport(entity2);
+                    entity2.restoreFrom(entity);
+                    entity2.moveTo(targetBlock, entity.yRot, entity.xRot);
+                    entity2.setDeltaMovement(0, 0, 0);
+                    entity2.setPortalCooldown();
+                    targetWorld.addDuringTeleport(entity2);
 
-                entity.discard();
+                    entity.discard();
 
-                originalWorld.resetEmptyTime();
-                targetWorld.resetEmptyTime();
+                    originalWorld.resetEmptyTime();
+                    targetWorld.resetEmptyTime();
+                }
             }
         }
     }
