@@ -36,8 +36,8 @@ public class BlockPortalBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compoundNBT) {
-        super.save(compoundNBT);
+    public void saveAdditional(CompoundTag compoundNBT) {
+        super.saveAdditional(compoundNBT);
 
         if(destinationWorld != null)
             compoundNBT.putString("destinationWorld", destinationWorld.location().toString());
@@ -47,7 +47,10 @@ public class BlockPortalBlockEntity extends BlockEntity {
 
         if(offsetFromCenter != null)
             compoundNBT.put("offsetFromCenter", NbtUtils.writeBlockPos(offsetFromCenter));
+    }
 
-        return compoundNBT;
+    @Override
+    public CompoundTag getUpdateTag() {
+        return this.saveWithoutMetadata();
     }
 }

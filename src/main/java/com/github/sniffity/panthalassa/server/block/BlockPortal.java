@@ -5,32 +5,37 @@ import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.world.teleporter.PanthalassaTeleporter;
 import com.github.sniffity.panthalassa.server.world.teleporter.TeleporterLogic;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -62,8 +67,7 @@ public class BlockPortal extends Block implements EntityBlock {
     public static void changeDimension(ServerLevel initialWorld, Entity entity, BlockPos portalBlockPos, PanthalassaTeleporter teleporter) {
         // If portal block is connected to a portal in other dimension already, just teleport right away
         BlockEntity tileEntity = initialWorld.getBlockEntity(portalBlockPos);
-        if (tileEntity instanceof BlockPortalBlockEntity) {
-            BlockPortalBlockEntity portalTE = (BlockPortalBlockEntity) tileEntity;
+        if (tileEntity instanceof BlockPortalBlockEntity portalTE) {
             ServerLevel targetWorld = initialWorld.getServer().getLevel(portalTE.destinationWorld);
             if (targetWorld != null && portalTE.destinationPos != null && targetWorld.getBlockState(portalTE.destinationPos).is(PanthalassaBlocks.PORTAL.get())) {
                 TeleporterLogic.teleport(entity, targetWorld, initialWorld, portalTE.destinationPos);
@@ -298,6 +302,7 @@ public class BlockPortal extends Block implements EntityBlock {
                         BlockEntity tileEntity = this.world.getBlockEntity(mutable);
                         if (tileEntity instanceof BlockPortalBlockEntity) {
                             ((BlockPortalBlockEntity) tileEntity).offsetFromCenter = new BlockPos(x, 0, z);
+                            tileEntity.setChanged();
                         }
 
                         // Helps create some space for mobs to swim into portal
@@ -319,20 +324,22 @@ public class BlockPortal extends Block implements EntityBlock {
                 for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
                     int distSq = x * x + z * z;
                     if (distSq <= minRadiusSq) {
-                        mutable1.set(this.centerPosition).move(x, 0, z);
+                        mutable1.set(centerPosition).move(x, 0, z);
                         mutable2.set(centerOfOtherPortal).move(x, 0, z);
 
-                        BlockEntity tileEntity1 = this.world.getBlockEntity(mutable1);
+                        BlockEntity tileEntity1 = world.getBlockEntity(mutable1);
                         BlockEntity tileEntity2 = otherWorld.getBlockEntity(mutable2);
-                        if (tileEntity1 instanceof BlockPortalBlockEntity && tileEntity2 instanceof BlockPortalBlockEntity) {
-                            BlockPortalBlockEntity portal1 = ((BlockPortalBlockEntity) tileEntity1);
-                            BlockPortalBlockEntity portal2 = ((BlockPortalBlockEntity) tileEntity2);
+                        if (tileEntity1 instanceof BlockPortalBlockEntity portal1 &&
+                            tileEntity2 instanceof BlockPortalBlockEntity portal2) {
 
                             portal1.destinationPos = portal2.getBlockPos();
                             portal1.destinationWorld = portal2.getLevel().dimension();
 
                             portal2.destinationPos = portal1.getBlockPos();
                             portal2.destinationWorld = portal1.getLevel().dimension();
+
+                            portal1.setChanged();
+                            portal2.setChanged();
                         }
                     }
                 }

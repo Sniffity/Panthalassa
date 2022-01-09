@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.damagesource.DamageSource;
@@ -47,14 +48,11 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public static void onPlayerDamage(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof Player) {
-            Player player = (Player) event.getEntityLiving();
-            if (player != null) {
-                Entity vehicle = player.getVehicle();
-                if (vehicle instanceof PanthalassaVehicle) {
-                    event.setCanceled(true);
-                    vehicle.hurt(event.getSource(), event.getAmount());
-                }
+        if (event.getEntityLiving() instanceof Player player) {
+            Entity vehicle = player.getVehicle();
+            if (vehicle instanceof PanthalassaVehicle) {
+                event.setCanceled(true);
+                vehicle.hurt(event.getSource(), event.getAmount());
             }
         }
     }
