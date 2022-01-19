@@ -33,7 +33,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable, Enemy {
     public static final int BLOCKED_DISTANCE = 3;
 
-    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
