@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatable, Enemy, ICrushable {
     public static final int BLOCKED_DISTANCE = 3;
 
-    protected static final EntityDataAccessor<Float> CRUSH_COOLDOWN = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Boolean> CRUSHING_STATE = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.BOOLEAN);
-    protected static final EntityDataAccessor<Boolean> CRUSHING = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Float> CRUSH_COOLDOWN = SynchedEntityData.defineId(EntityGiantOrthocone.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Boolean> CRUSHING_STATE = SynchedEntityData.defineId(EntityGiantOrthocone.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> CRUSHING = SynchedEntityData.defineId(EntityGiantOrthocone.class, EntityDataSerializers.BOOLEAN);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
