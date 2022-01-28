@@ -53,12 +53,12 @@ public class EntityBasilosaurus extends PanthalassaEntity implements IAnimatable
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.basilosaurus.swimming", true));
             return PlayState.CONTINUE;
         }
-        /*
+
         if ((this.isOnGround() && !this.isInWater())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.leedsichthys.beached", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.basilosaurus.beached", true));
             return PlayState.CONTINUE;
         }
-        */
+
         return PlayState.STOP;
 
     }

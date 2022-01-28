@@ -59,6 +59,10 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.swimming", true));
             return PlayState.CONTINUE;
         }
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mosasaurus.beached", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
     }
 
@@ -110,7 +114,6 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     }
 
     public void registerGoals() {
-        this.goalSelector.addGoal(0, new PanthalassaFindWaterGoal(this, 0.1F));
         this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0F));
         this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.2F, false));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.6F));

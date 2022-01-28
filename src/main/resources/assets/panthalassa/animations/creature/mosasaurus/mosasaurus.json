@@ -446,22 +446,22 @@
 				"neck": {
 					"position": {
 						"0.0": {
-							"vector": [0, -18, 0]
+							"vector": [0, 0, 0]
 						},
 						"0.75": {
-							"vector": [0, -18, 0]
+							"vector": [0, 0, 0]
 						},
 						"1.0": {
-							"vector": [0, -18, 0]
+							"vector": [0, 0, 0]
 						},
 						"1.5": {
-							"vector": [0, -18, 0]
+							"vector": [0, 0, 0]
 						},
 						"2.0": {
-							"vector": [0, -18, 0]
+							"vector": [0, 0, 0]
 						},
 						"2.5": {
-							"vector": [0, -18, 0]
+							"vector": [0, 0, 0]
 						}
 					}
 				},
@@ -920,17 +920,6 @@
 							"vector": [0, 0, 0]
 						}
 					}
-				}
-			}
-		},
-		"animation.mosasaurus.breach": {
-			"loop": true,
-			"bones": {
-				"head": {
-					"rotation": [-17.5, 0, 0]
-				},
-				"bottomjaw1": {
-					"rotation": [40, 0, 0]
 				}
 			}
 		}

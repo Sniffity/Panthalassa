@@ -61,8 +61,11 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coelacanth.attack", true));
             return PlayState.CONTINUE;
         }
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coelacanth.beached", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
-
     }
 
     @Override
