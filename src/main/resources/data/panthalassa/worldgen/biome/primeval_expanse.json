@@ -47,7 +47,7 @@
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 40,
+        "weight": 50,
         "minCount": 3,
         "maxCount": 6
       },

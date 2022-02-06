@@ -43,11 +43,11 @@
         "type": "panthalassa:dunkleosteus",
         "weight": 20,
         "minCount": 1,
-        "maxCount": 3
+        "maxCount": 1
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 40,
+        "weight": 60,
         "minCount": 3,
         "maxCount": 6
       },

@@ -36,7 +36,26 @@
     []
   ],
   "spawners": {
-    "monster": [],
+    "monster": [
+      {
+        "type": "panthalassa:giant_orthocone",
+        "weight": 30,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "panthalassa:coelacanth",
+        "weight": 60,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "panthalassa:basilosaurus",
+        "weight": 40,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
     "creature": [],
     "ambient": [],
     "axolotls": [],
