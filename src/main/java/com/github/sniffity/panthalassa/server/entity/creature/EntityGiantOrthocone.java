@@ -17,6 +17,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -51,16 +52,21 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
         this.entityData.define(CRUSH_COOLDOWN, 0.00F);
         this.entityData.define(CRUSHING_STATE, false);
         this.entityData.define(CRUSHING, false);
-
-
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (this.getCrushingState()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone.grabbing", true));
+            return PlayState.CONTINUE;
+        }
+        if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone.attack", true));
+            return PlayState.CONTINUE;
+        }
         if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone.swimming", true));
             return PlayState.CONTINUE;
         }
-
         if ((this.isOnGround() && !this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone.beached", true));
             return PlayState.CONTINUE;
@@ -139,5 +145,17 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
     @Override
     public boolean getCrushing() {
         return this.entityData.get(CRUSHING);
+    }
+
+    @Override
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            float f = 1.0F;
+            float f1 = (float)((!this.isAlive() ? (double)0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
+            float f2 = 0.0F;
+
+            Vec3 vector3d = (new Vec3((double)f, 0, 0.0D)).yRot(-this.yRot * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+            passenger.setPos(this.getX() + vector3d.x, this.getY() + (double)f1+f2, this.getZ() + vector3d.z);
+        }
     }
 }
