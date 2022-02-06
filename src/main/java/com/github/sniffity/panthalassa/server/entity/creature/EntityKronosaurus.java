@@ -20,9 +20,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
 import javax.annotation.Nullable;
-
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -33,8 +31,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
@@ -61,6 +57,10 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         }
         if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.idle", true));
+            return PlayState.CONTINUE;
+        }
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.kronosaurus.beached", true));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
