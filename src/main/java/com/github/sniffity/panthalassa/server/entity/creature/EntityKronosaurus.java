@@ -31,7 +31,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-
 public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
     public static final int BLOCKED_DISTANCE = 3;
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.BOOLEAN);
