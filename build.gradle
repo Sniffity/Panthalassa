@@ -87,8 +87,8 @@ dependencies {
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63")
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-63:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-65")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-65:api")
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.11')
     runtimeOnly fg.deobf("curse.maven:cyanide-541676:3545771")
 }
