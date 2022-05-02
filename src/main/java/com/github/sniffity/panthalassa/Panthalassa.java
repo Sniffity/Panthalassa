@@ -36,7 +36,6 @@ public final class Panthalassa {
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
-	//	forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
 
 		modBus.addListener(this::setup);
 		modBus.addListener(this::registerEntityAttributes);
@@ -82,68 +81,6 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.BASILOSAURUS.get(), EntityBasilosaurus.basilosaurusAttributes().build());
 
 	}
-/*
-	public void addDimensionalSpacing(final WorldEvent.Load event) {
-		if (event.getWorld() instanceof ServerLevel serverLevel) {
-			ChunkGenerator chunkGenerator = serverLevel.getChunkSource().getGenerator();
-			if (chunkGenerator instanceof FlatLevelSource && serverLevel.dimension().equals(Level.OVERWORLD)) {
-				return;
-			}
-			StructureSettings worldStructureConfig = chunkGenerator.getSettings();
-
-
-			HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> PanthalassaStructureMultiMap = new HashMap<>();
-
-			for (Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
-				Biome.BiomeCategory biomeCategory = biomeEntry.getValue().getBiomeCategory();
-				if (biomeCategory == Biome.BiomeCategory.OCEAN) {
-					associateBiomeToConfiguredStructure(PanthalassaStructureMultiMap, PanthalassaConfiguredStructures.CONFIGURED_PANTHALASSA_LABORATORY, biomeEntry.getKey());
-				}
-			}
-
-			ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
-			worldStructureConfig.configuredStructures.entrySet().stream().filter(entry -> !PanthalassaStructureMultiMap.containsKey(entry.getKey())).forEach(tempStructureToMultiMap::put);
-
-			PanthalassaStructureMultiMap.forEach((key, value) -> tempStructureToMultiMap.put(key, ImmutableMultimap.copyOf(value)));
-
-			worldStructureConfig.configuredStructures = tempStructureToMultiMap.build();
-
-
-			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(worldStructureConfig.structureConfig());
-			tempMap.putIfAbsent(PanthalassaStructures.PANTHALASSA_LABORATORY.get(), StructureSettings.DEFAULTS.get(PanthalassaStructures.PANTHALASSA_LABORATORY.get()));
-			worldStructureConfig.structureConfig = tempMap;
-
-		}
-
-
-	}
-
-
-
- */
-
-	/*
-	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> PanthalassaStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
-		PanthalassaStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
-		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = PanthalassaStructureToMultiMap.get(configuredStructureFeature.feature);
-		if(configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
-			Panthalassa.LOGGER.debug("""
-                    Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
-                    This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
-                    The two conflicting ConfiguredStructures are: {}, {}
-                    The biome that is attempting to be shared: {}
-                """,
-					BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
-					BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biomeRegistryKey).findFirst().get().getKey()),
-					biomeRegistryKey
-			);
-		}
-		else{
-			configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
-		}
-	}
-
-	 */
 
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {

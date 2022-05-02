@@ -11,6 +11,6 @@ public class PanthalassaStructures {
 
     public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Panthalassa.MODID);
 
-    public static final RegistryObject<StructureFeature<?>> SKY_STRUCTURES = STRUCTURES.register("sky_structures", StructurePanthalassaLaboratory::new);
+    public static final RegistryObject<StructureFeature<?>> PANTHALASSA_LABORATORY = STRUCTURES.register("panthalassa_laboratory", StructurePanthalassaLaboratory::new);
 
 }
