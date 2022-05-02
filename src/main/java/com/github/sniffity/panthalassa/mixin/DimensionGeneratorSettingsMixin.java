@@ -18,6 +18,8 @@ import java.util.Optional;
  * Acknowledgements: The following class was developed implementing the same methods the Undergarden uses to generate
  *  random seeds.
  */
+/*
+
 
 @Mixin(WorldGenSettings.class)
 public class DimensionGeneratorSettingsMixin {
@@ -26,4 +28,7 @@ public class DimensionGeneratorSettingsMixin {
     private void getSeedFromConstructor(long seed, boolean generateFeatures, boolean bonusChest, MappedRegistry<LevelStem> options, Optional<String> legacyOptions, CallbackInfo ci) {
         SeedBearer.putInSeed(seed);
     }
+
 }
+
+ */
