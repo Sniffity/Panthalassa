@@ -1,13 +1,14 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
         maven { url='https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
     }
     dependencies {
         classpath(group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true) { exclude group: 'org.apache.log4j' }
         classpath 'org.apache.logging.log4j:log4j-api:2.11.2'
         classpath 'org.apache.logging.log4j:log4j-core:2.11.2'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
 
     }
@@ -15,6 +16,7 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
 version = "${mod_version}-${minecraft_version}"
 group = 'com.github.sniffity.panthalassa'
@@ -29,7 +31,9 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-
+            arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.console.level', 'debug'
             mods {
                 panthalassa {
@@ -40,6 +44,10 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
             mods {
                 panthalassa {
                     source sourceSets.main
@@ -50,6 +58,10 @@ minecraft {
         data {
             workingDirectory project.file('run')
             args '--mod', 'panthalassa', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
             mods {
                 panthalassa  {
                     source sourceSets.main
@@ -66,6 +78,10 @@ repositories {
         url = "https://maven.blamejared.com"
     }
     maven {
+        url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'
+    }
+
+    maven {
         url "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
@@ -75,10 +91,13 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    if (System.getProperty("idea.sync.active") != "true") {
+        annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    }
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67")
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67:api")
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.15')
-    runtimeOnly fg.deobf("curse.maven:cyanide-541676:3545771")
+    runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0") {transitive = false}
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
@@ -106,5 +125,9 @@ processResources {
             }
         }
     }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
 }
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'

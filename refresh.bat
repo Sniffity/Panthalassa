@@ -1,1 +1,2 @@
-gradlew --stop
+gradlew build --refresh-dependencies
+
