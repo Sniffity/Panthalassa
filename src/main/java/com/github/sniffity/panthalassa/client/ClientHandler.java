@@ -119,7 +119,6 @@ public class ClientHandler {
                 PanthalassaBlocks.KRETHROSS.get(),
                 PanthalassaBlocks.KRETHROSS_PLANT.get(),
                 PanthalassaBlocks.FROSTGRASS.get()
-
         );
 
         iColors.register((stack, tint) -> {
@@ -134,4 +133,3 @@ public class ClientHandler {
         );
     }
 }
-
