@@ -1,8 +1,8 @@
 {
   "type": "panthalassa:panthalassa",
+  "forge:use_server_seed": true,
   "generator": {
     "type": "minecraft:noise",
-    "seed": "0",
     "settings": "panthalassa:panthalassa_noise_settings",
     "biome_source": {
       "type": "minecraft:multi_noise",
