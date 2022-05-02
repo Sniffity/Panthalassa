@@ -5,27 +5,11 @@ import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.FlatLevelSource;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.levelgen.StructureSettings;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -38,8 +22,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
-import java.util.HashMap;
-import java.util.Map;
 
 @Mod(Panthalassa.MODID)
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -54,7 +36,7 @@ public final class Panthalassa {
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
-		forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
+	//	forgeBus.addListener(EventPriority.NORMAL, this::addDimensionalSpacing);
 
 		modBus.addListener(this::setup);
 		modBus.addListener(this::registerEntityAttributes);
@@ -67,9 +49,6 @@ public final class Panthalassa {
 		PanthalassaSounds.SOUND_EVENTS.register(modBus);
 		PanthalassaPOI.POI.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
-
-		//	PanthalassaBiomes.BIOMES.register(modBus);
-		//	PanthalassaSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
 
 		forgeBus.register(PanthalassaDimension.PANTHALASSA);
 		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
@@ -87,8 +66,6 @@ public final class Panthalassa {
 		PanthalassaPacketHandler.register();
 
 		event.enqueueWork(() -> {
-			PanthalassaStructures.setupStructures();
-			PanthalassaConfiguredStructures.registerConfiguredStructures();
 			PanthalassaEntityTypes.spawnPlacements();
 			PanthalassaDimension.registerDimensionAccessories();
 		});
@@ -106,7 +83,7 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.BASILOSAURUS.get(), EntityBasilosaurus.basilosaurusAttributes().build());
 
 	}
-
+/*
 	public void addDimensionalSpacing(final WorldEvent.Load event) {
 		if (event.getWorld() instanceof ServerLevel serverLevel) {
 			ChunkGenerator chunkGenerator = serverLevel.getChunkSource().getGenerator();
@@ -142,6 +119,11 @@ public final class Panthalassa {
 
 	}
 
+
+
+ */
+
+	/*
 	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> PanthalassaStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
 		PanthalassaStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
 		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = PanthalassaStructureToMultiMap.get(configuredStructureFeature.feature);
@@ -161,6 +143,9 @@ public final class Panthalassa {
 			configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
 		}
 	}
+
+	 */
+
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
 		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
