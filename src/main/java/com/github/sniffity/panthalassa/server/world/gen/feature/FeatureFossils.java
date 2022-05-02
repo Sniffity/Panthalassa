@@ -3,7 +3,6 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import java.util.Random;
-
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
@@ -17,9 +16,6 @@ import net.minecraft.world.level.levelgen.feature.FossilFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
@@ -45,8 +41,9 @@ public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
         StructureTemplate structuretemplate = templatemanager.getOrCreate(fossilfeatureconfiguration.fossilStructures.get(i));
         StructureTemplate structuretemplate1 = templatemanager.getOrCreate(fossilfeatureconfiguration.overlayStructures.get(i));
         ChunkPos chunkpos = new ChunkPos(blockpos0);
+        BoundingBox boundingbox = new BoundingBox(chunkpos.getMinBlockX() - 16, worldgenlevel.getMinBuildHeight(), chunkpos.getMinBlockZ() - 16, chunkpos.getMaxBlockX() + 16, worldgenlevel.getMaxBuildHeight(), chunkpos.getMaxBlockZ() + 16);
         BoundingBox mutableboundingbox = new BoundingBox(chunkpos.getMinBlockX(), 0, chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), 256, chunkpos.getMaxBlockZ());
-        StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setRotation(rotation).setBoundingBox(mutableboundingbox).setRandom(rand).addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR);
+        StructurePlaceSettings structureplacesettings = (new StructurePlaceSettings()).setRotation(rotation).setBoundingBox(boundingbox).setRandom(rand);
         Vec3i vec3i = structuretemplate.getSize(rotation);
         BlockPos blockpos = blockpos0.offset(-vec3i.getX() / 2, 0, -vec3i.getZ() / 2);
         int j = blockpos0.getY();
@@ -78,19 +75,17 @@ public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
             return false;
         }
 
-        if (countEmptyCorners(worldgenlevel, structuretemplate.getBoundingBox(placementsettings, blockpos1)) > fossilfeatureconfiguration.maxEmptyCornersAllowed) {
+        BlockPos blockpos2 = structuretemplate.getZeroPositionWithTransform(blockpos1.atY(i1), Mirror.NONE, rotation);
+
+        if (countEmptyCorners(worldgenlevel, structuretemplate.getBoundingBox(structureplacesettings, blockpos2)) > fossilfeatureconfiguration.maxEmptyCornersAllowed) {
             return false;
         } else {
-            placementsettings.clearProcessors();
-            fossilfeatureconfiguration.fossilProcessors.get().list().forEach((p_159795_) -> {
-                placementsettings.addProcessor(p_159795_);
-            });
-            structuretemplate.placeInWorld(worldgenlevel, blockpos1, blockpos1, placementsettings, rand, 4);
-            placementsettings.clearProcessors();
-            fossilfeatureconfiguration.overlayProcessors.get().list().forEach((p_159792_) -> {
-                placementsettings.addProcessor(p_159792_);
-            });
-            structuretemplate.placeInWorld(worldgenlevel, blockpos1, blockpos1, placementsettings, rand, 4);
+            structureplacesettings.clearProcessors();
+            fossilfeatureconfiguration.fossilProcessors.value().list().forEach(structureplacesettings::addProcessor);
+            structuretemplate.placeInWorld(worldgenlevel, blockpos2, blockpos2, structureplacesettings, rand, 4);
+            structureplacesettings.clearProcessors();
+            fossilfeatureconfiguration.overlayProcessors.value().list().forEach(structureplacesettings::addProcessor);
+            structuretemplate1.placeInWorld(worldgenlevel, blockpos2, blockpos2, structureplacesettings, rand, 4);
             return true;
         }
 
