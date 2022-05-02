@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  * Acknowledgements: The following class was developed implementing the same methods the Undergarden uses to generate
  * random seeds.
  */
-
+/*
 public class PanthalassaChunkGenerator extends NoiseBasedChunkGenerator {
 
     public static final Codec<PanthalassaChunkGenerator> CODEC = RecordCodecBuilder.create((p_188643_) -> {
@@ -51,4 +51,6 @@ public class PanthalassaChunkGenerator extends NoiseBasedChunkGenerator {
     public ChunkGenerator withSeed(long p_64374_) {
         return new PanthalassaChunkGenerator(this.noises, this.biomeSource.withSeed(p_64374_), p_64374_, this.settings);
     }
-}
+   }
+
+ */

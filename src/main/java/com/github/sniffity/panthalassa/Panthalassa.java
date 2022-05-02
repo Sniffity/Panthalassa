@@ -67,7 +67,6 @@ public final class Panthalassa {
 
 		event.enqueueWork(() -> {
 			PanthalassaEntityTypes.spawnPlacements();
-			PanthalassaDimension.registerDimensionAccessories();
 		});
 	}
 
