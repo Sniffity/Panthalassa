@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "panthalassa:panthalassa_laboratory",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 42424242,
+    "spacing": 16,
+    "separation": 6,
+    "type": "minecraft:random_spread"
+  }
+}
