@@ -26,7 +26,6 @@ import software.bernie.geckolib3.GeckoLib;
 @Mod(Panthalassa.MODID)
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 
-
 public final class Panthalassa {
 	public static final String MODID = "panthalassa";
 	public static final Logger LOGGER = LogManager.getLogger();
@@ -49,16 +48,14 @@ public final class Panthalassa {
 		PanthalassaPOI.POI.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
 
-		forgeBus.register(PanthalassaDimension.PANTHALASSA);
-		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
-
+//		forgeBus.register(PanthalassaDimension.PANTHALASSA);
+//		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
 
 		GeckoLib.initialize();
 		forgeBus.register(this);
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PanthalassaCommonConfig.GENERAL_SPEC, "panthalassa-common-config.toml");
-
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {
@@ -79,7 +76,6 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.LEEDSICHTHYS.get(), EntityLeedsichthys.leedsichthysAttributes().build());
 		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), EntityGiantOrthocone.giantOrthoconeAttributes().build());
 		event.put(PanthalassaEntityTypes.BASILOSAURUS.get(), EntityBasilosaurus.basilosaurusAttributes().build());
-
 	}
 
 	@SubscribeEvent
