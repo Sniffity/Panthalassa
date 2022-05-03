@@ -7,7 +7,7 @@ package com.github.sniffity.panthalassa.server.world.dimension;
  * Acknowledgements: The following class was developed implementing the same methods the Undergarden uses to generate
  *  random seeds.
  */
-
+/*
 public class SeedBearer {
     private static long seed = 0;
 
@@ -19,3 +19,5 @@ public class SeedBearer {
         return seed;
     }
 }
+
+ */
