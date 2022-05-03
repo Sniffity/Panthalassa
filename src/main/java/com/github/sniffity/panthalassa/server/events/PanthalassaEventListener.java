@@ -97,7 +97,7 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public static void onPLayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (PanthalassaCommonConfig.giveJournal.get()) {
+        if (PanthalassaCommonConfig.COMMON.GENERAL.giveJournal.get()) {
             CompoundTag playerData = event.getPlayer().getPersistentData();
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("panthalassa_received_journal")) {
