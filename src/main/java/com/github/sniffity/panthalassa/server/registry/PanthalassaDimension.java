@@ -19,9 +19,4 @@ public class PanthalassaDimension {
             PanthalassaWorldSavedData.tick((ServerLevel) event.world);
         }
     }
-
-    private static ResourceLocation name(String name) {
-        return new ResourceLocation(Panthalassa.MODID, name);
-    }
-
 }
