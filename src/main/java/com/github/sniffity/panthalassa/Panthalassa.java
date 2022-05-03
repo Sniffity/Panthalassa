@@ -55,7 +55,7 @@ public final class Panthalassa {
 		forgeBus.register(this);
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, PanthalassaClientConfig.GENERAL_SPEC, "panthalassa-client-config.toml");
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PanthalassaCommonConfig.GENERAL_SPEC, "panthalassa-common-config.toml");
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PanthalassaCommonConfig.COMMON_CONFIG, "panthalassa-common-config.toml");
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {
