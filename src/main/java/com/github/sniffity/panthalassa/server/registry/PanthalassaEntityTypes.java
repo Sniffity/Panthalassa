@@ -85,7 +85,5 @@ public class PanthalassaEntityTypes {
         SpawnPlacements.register(LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
         SpawnPlacements.register(DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
         SpawnPlacements.register(GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-
     }
-
 }
