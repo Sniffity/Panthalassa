@@ -41,19 +41,19 @@
     "monster": [
       {
         "type": "panthalassa:kronosaurus",
-        "weight": 25,
+        "weight": 5,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 60,
+        "weight": 30,
         "minCount": 3,
         "maxCount": 6
       },
       {
         "type": "panthalassa:mosasaurus",
-        "weight": 10,
+        "weight": 2,
         "minCount": 1,
         "maxCount": 1
       }

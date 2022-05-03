@@ -41,7 +41,7 @@
     "monster": [
       {
         "type": "panthalassa:dunkleosteus",
-        "weight": 20,
+        "weight": 5,
         "minCount": 1,
         "maxCount": 1
       },

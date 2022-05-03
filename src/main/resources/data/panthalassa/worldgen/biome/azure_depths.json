@@ -39,7 +39,7 @@
     "monster": [
       {
         "type": "panthalassa:giant_orthocone",
-        "weight": 30,
+        "weight": 5,
         "minCount": 1,
         "maxCount": 1
       },

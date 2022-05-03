@@ -41,13 +41,13 @@
     "monster": [
       {
         "type": "panthalassa:megalodon",
-        "weight": 12,
+        "weight": 4,
         "minCount": 1,
         "maxCount": 1
       },
       {
         "type": "panthalassa:coelacanth",
-        "weight": 50,
+        "weight": 80,
         "minCount": 3,
         "maxCount": 6
       },
