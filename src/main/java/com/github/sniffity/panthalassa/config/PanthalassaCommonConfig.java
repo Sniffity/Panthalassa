@@ -5,6 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Panthalassa Mod - Class: PanthalassaCommonConfig <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Mowzie's Mobs handles
+ * their own config for controlling entity spawns.
+ */
+
 public final class PanthalassaCommonConfig {
 
     public static ForgeConfigSpec COMMON_CONFIG;
@@ -94,7 +103,85 @@ public final class PanthalassaCommonConfig {
 
     public static class Archelon {
         Archelon(final ForgeConfigSpec.Builder builder) {
-            builder.push("Archelon");
+            builder.push("archelon");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    30,
+                    1,
+                    2,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Mosasaurus {
+        Mosasaurus(final ForgeConfigSpec.Builder builder) {
+            builder.push("mosasaurus");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    10,
+                    1,
+                    1,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Coelacanth {
+        Coelacanth(final ForgeConfigSpec.Builder builder) {
+            builder.push("coelacanth");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    50,
+                    3,
+                    5,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Dunkleosteus {
+        Dunkleosteus(final ForgeConfigSpec.Builder builder) {
+            builder.push("dunkleosteus");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    10,
+                    1,
+                    2,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Leedischthys {
+        Leedischthys(final ForgeConfigSpec.Builder builder) {
+            builder.push("leedischthys");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    20,
+                    1,
+                    2,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class GiantOrthocone {
+        GiantOrthocone(final ForgeConfigSpec.Builder builder) {
+            builder.push("giant_orthocone");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    10,
+                    1,
+                    1,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Basilosaurus {
+        Basilosaurus(final ForgeConfigSpec.Builder builder) {
+            builder.push("basilosaurus");
             externalSpawning = new ExternalSpawningConfig(builder,
                     30,
                     1,
@@ -111,13 +198,23 @@ public final class PanthalassaCommonConfig {
             KRONOSAURUS = new Kronosaurus(builder);
             MEGALODON = new Megalodon(builder);
             ARCHELON = new Archelon(builder);
+            MOSASAURUS = new Mosasaurus(builder);
+            COELACANTH = new Coelacanth(builder);
+            DUNKLEOSTEUS = new Dunkleosteus(builder);
+            LEEDISCHTHYS = new Leedischthys(builder);
+            GIANT_ORTHOCONE = new GiantOrthocone(builder);
+            BASILOSAURUS = new Basilosaurus(builder);
             builder.pop();
         }
-
         public final Kronosaurus KRONOSAURUS;
         public final Megalodon MEGALODON;
         public final Archelon ARCHELON;
-
+        public final Mosasaurus MOSASAURUS;
+        public final Coelacanth COELACANTH;
+        public final Dunkleosteus DUNKLEOSTEUS;
+        public final Leedischthys LEEDISCHTHYS;
+        public final GiantOrthocone GIANT_ORTHOCONE;
+        public final Basilosaurus BASILOSAURUS;
     }
 
     public static class Common {
@@ -127,6 +224,5 @@ public final class PanthalassaCommonConfig {
         }
         public final GeneralConfig GENERAL;
         public final EntitiesConfig ENTITIES;
-
     }
 }
