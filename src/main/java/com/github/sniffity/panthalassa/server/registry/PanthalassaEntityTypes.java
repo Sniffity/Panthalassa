@@ -26,41 +26,49 @@ public class PanthalassaEntityTypes {
     public static final RegistryObject<EntityType<EntityMegalodon>> MEGALODON = ENTITY_TYPES.register ("megalodon",()->
             EntityType.Builder.of(EntityMegalodon::new,MobCategory.MONSTER)
                     .sized(1.0F, 1.0F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon").toString()));
 
     public static final RegistryObject<EntityType<EntityArchelon>> ARCHELON = ENTITY_TYPES.register ("archelon",()->
             EntityType.Builder.of(EntityArchelon::new,MobCategory.MONSTER)
                     .sized(2.0F, 1.0F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "archelon").toString()));
 
     public static final RegistryObject<EntityType<EntityMosasaurus>> MOSASAURUS = ENTITY_TYPES.register ("mosasaurus",()->
             EntityType.Builder.of(EntityMosasaurus::new,MobCategory.MONSTER)
                     .sized(1.0F, 1.0F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "mosasaurus").toString()));
 
     public static final RegistryObject<EntityType<EntityCoelacanth>> COELACANTH = ENTITY_TYPES.register ("coelacanth",()->
             EntityType.Builder.of(EntityCoelacanth::new,MobCategory.MONSTER)
                     .sized(1.0F, 1.0F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "coelacanth").toString()));
 
     public static final RegistryObject<EntityType<EntityDunkleosteus>> DUNKLEOSTEUS = ENTITY_TYPES.register ("dunkleosteus",()->
             EntityType.Builder.of(EntityDunkleosteus::new,MobCategory.MONSTER)
                     .sized(1.5F, 1.3F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "dunkleosteus").toString()));
 
     public static final RegistryObject<EntityType<EntityLeedsichthys>> LEEDSICHTHYS = ENTITY_TYPES.register ("leedsichthys",()->
             EntityType.Builder.of(EntityLeedsichthys::new,MobCategory.MONSTER)
                     .sized(1.8F, 1.2F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "leedsichthys").toString()));
 
     public static final RegistryObject<EntityType<EntityGiantOrthocone>> GIANT_ORTHOCONE = ENTITY_TYPES.register ("giant_orthocone",()->
             EntityType.Builder.of(EntityGiantOrthocone::new,MobCategory.MONSTER)
                     .sized(1.8F, 1.2F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone").toString()));
 
     public static final RegistryObject<EntityType<EntityBasilosaurus>> BASILOSAURUS = ENTITY_TYPES.register ("basilosaurus",()->
             EntityType.Builder.of(EntityBasilosaurus::new,MobCategory.MONSTER)
                     .sized(1.8F, 1.2F)
+                    .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "basilosaurus").toString()));
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
