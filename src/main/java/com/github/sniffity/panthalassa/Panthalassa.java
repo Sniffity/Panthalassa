@@ -5,6 +5,7 @@ import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
+import com.github.sniffity.panthalassa.server.world.spawn.PanthalassaSpawns;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -60,7 +61,7 @@ public final class Panthalassa {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		PanthalassaPacketHandler.register();
-
+		PanthalassaSpawns.registerSpawnPlacementTypes();
 		event.enqueueWork(() -> {
 			PanthalassaEntityTypes.spawnPlacements();
 		});
