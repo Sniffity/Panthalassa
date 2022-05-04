@@ -54,7 +54,7 @@ public final class PanthalassaCommonConfig {
                     .defineInRange("min_group_size", minGroupSize, 1, Integer.MAX_VALUE);
             this.maxGroupSize = builder
                     .comment("Maximum number of this entity that will spawn in each group")
-                    .defineInRange("min_group_size", minGroupSize, 1, Integer.MAX_VALUE);
+                    .defineInRange("max_group_size", maxGroupSize, 1, Integer.MAX_VALUE);
             this.biomeSpawningConfig = biomeSpawningConfig;
         }
 
@@ -201,7 +201,7 @@ public final class PanthalassaCommonConfig {
             MOSASAURUS = new Mosasaurus(builder);
             COELACANTH = new Coelacanth(builder);
             DUNKLEOSTEUS = new Dunkleosteus(builder);
-            LEEDISCHTHYS = new Leedischthys(builder);
+            LEEDSISCHTHYS = new Leedischthys(builder);
             GIANT_ORTHOCONE = new GiantOrthocone(builder);
             BASILOSAURUS = new Basilosaurus(builder);
             builder.pop();
@@ -212,7 +212,7 @@ public final class PanthalassaCommonConfig {
         public final Mosasaurus MOSASAURUS;
         public final Coelacanth COELACANTH;
         public final Dunkleosteus DUNKLEOSTEUS;
-        public final Leedischthys LEEDISCHTHYS;
+        public final Leedischthys LEEDSISCHTHYS;
         public final GiantOrthocone GIANT_ORTHOCONE;
         public final Basilosaurus BASILOSAURUS;
     }
