@@ -201,7 +201,7 @@ public final class PanthalassaCommonConfig {
             MOSASAURUS = new Mosasaurus(builder);
             COELACANTH = new Coelacanth(builder);
             DUNKLEOSTEUS = new Dunkleosteus(builder);
-            LEEDSISCHTHYS = new Leedischthys(builder);
+            LEEDSICHTHYS = new Leedischthys(builder);
             GIANT_ORTHOCONE = new GiantOrthocone(builder);
             BASILOSAURUS = new Basilosaurus(builder);
             builder.pop();
@@ -212,7 +212,7 @@ public final class PanthalassaCommonConfig {
         public final Mosasaurus MOSASAURUS;
         public final Coelacanth COELACANTH;
         public final Dunkleosteus DUNKLEOSTEUS;
-        public final Leedischthys LEEDSISCHTHYS;
+        public final Leedischthys LEEDSICHTHYS;
         public final GiantOrthocone GIANT_ORTHOCONE;
         public final Basilosaurus BASILOSAURUS;
     }
