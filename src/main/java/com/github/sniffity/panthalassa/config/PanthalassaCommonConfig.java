@@ -67,7 +67,7 @@ public final class PanthalassaCommonConfig {
     public static class BiomeSpawningConfig {
         BiomeSpawningConfig(final ForgeConfigSpec.Builder builder, List<? extends String> biomeWhitelist) {
             builder.push("biome_config");
-            this.biomeWhitelist = builder.comment("Allow spawns in these biomes regardless of the biome type settings")
+            this.biomeWhitelist = builder.comment("Allow spawns in these biomes")
                     .defineList("biome_whitelist", biomeWhitelist, STRING_PREDICATE);
             builder.pop();
         }

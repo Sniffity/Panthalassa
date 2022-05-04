@@ -116,32 +116,40 @@ public class PanthalassaSpawns {
     }
 
     public static boolean isBiomeInConfig(PanthalassaCommonConfig.BiomeSpawningConfig biomeConfig, ResourceLocation biomeName) {
-        if (biomeConfig.biomeWhitelist.get().contains(biomeName.toString())) {
+        String biomeComboString = biomeConfig.biomeWhitelist.get().toString();
+        String[] biomeStringArray = biomeComboString.toLowerCase().replace(" ", "").split(",");
+
+        if (Arrays.asList(biomeStringArray).contains(biomeName.toString())) {
+            System.out.println("MATCH!");
             return true;
         }
-        Set<BiomeCombo> biomeCombos = new HashSet<>();
 
-        ResourceKey<Biome> biomeRegistryKey = ResourceKey.create(ForgeRegistries.Keys.BIOMES, biomeName);
-        for (BiomeCombo biomeCombo : biomeCombos) {
-            if (biomeCombo.acceptsBiome(biomeRegistryKey)) return true;
-        }
         return false;
     }
 
-    private static class BiomeCombo {
-        BiomeDictionary.Type[] neededTypes;
-        boolean[] inverted;
-        private BiomeCombo(String biomeComboString) {
-            String[] typeStrings = biomeComboString.toUpperCase().replace(" ", "").split(",");
-            inverted = new boolean[typeStrings.length];
-            for (int i = 0; i < typeStrings.length; i++) {
-                if (typeStrings[i].length() == 0) {
-                    continue;
-                }
+    BiomeDictionary.Type[] neededTypes;
+    boolean[] inverted;
+    private void splitBiomes(String biomeComboString) {
+        String[] typeStrings = biomeComboString.toUpperCase().replace(" ", "").split(",");
+        neededTypes = new BiomeDictionary.Type[typeStrings.length];
+        inverted = new boolean[typeStrings.length];
+        for (int i = 0; i < typeStrings.length; i++) {
+            if (typeStrings[i].length() == 0) {
+                continue;
             }
+            inverted[i] = typeStrings[i].charAt(0) == '!';
+            String name = typeStrings[i].replace("!", "");
+            Collection<BiomeDictionary.Type> allTypes = BiomeDictionary.Type.getAll();
+            BiomeDictionary.Type neededType = BiomeDictionary.Type.getType(name);
+            if (!allTypes.contains(neededType))
+                System.out.println("Panthalassa config warning: No biome dictionary type with name '" + name + "'. Unable to check for type.");
+            neededTypes[i] = neededType;
         }
+    }
+
 
         private boolean acceptsBiome(ResourceKey<Biome> biome) {
+
             Set<BiomeDictionary.Type> thisTypes = BiomeDictionary.getTypes(biome);
             for (int i = 0; i < neededTypes.length; i++) {
                 if (neededTypes[i] == null) continue;
@@ -157,6 +165,5 @@ public class PanthalassaSpawns {
                 }
             }
             return true;
-        }
     }
 }
