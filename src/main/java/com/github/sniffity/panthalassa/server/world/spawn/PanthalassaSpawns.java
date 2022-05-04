@@ -120,7 +120,6 @@ public class PanthalassaSpawns {
         String[] biomeStringArray = biomeComboString.toLowerCase().replace(" ", "").split(",");
 
         if (Arrays.asList(biomeStringArray).contains(biomeName.toString())) {
-            System.out.println("MATCH!");
             return true;
         }
 
