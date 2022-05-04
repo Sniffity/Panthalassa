@@ -36,7 +36,7 @@ public final class PanthalassaCommonConfig {
                     .comment("This boolean value will determine whether or not the Panthalassa Journal (Guide Book) is given to players when they first join the server")
                     .define("give_journal", true);
             this.externalSpawningBoolean = builder
-                    .comment("This boolean value will determine whether Panthalassa's creatures spawn outside the Panthalassa Dimesnsion")
+                    .comment("This boolean value will determine whether Panthalassa's creatures spawn outside the Panthalassa Dimension")
                     .define("external_spawning", false);
             builder.pop();
         }
@@ -79,7 +79,7 @@ public final class PanthalassaCommonConfig {
         Kronosaurus(final ForgeConfigSpec.Builder builder) {
             builder.push("kronosaurus");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    20,
+                    2,
                     1,
                     3,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -92,7 +92,7 @@ public final class PanthalassaCommonConfig {
         Megalodon(final ForgeConfigSpec.Builder builder) {
             builder.push("megalodon");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    10,
+                    1,
                     1,
                     1,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -105,7 +105,7 @@ public final class PanthalassaCommonConfig {
         Archelon(final ForgeConfigSpec.Builder builder) {
             builder.push("archelon");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    30,
+                    3,
                     1,
                     2,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -118,7 +118,7 @@ public final class PanthalassaCommonConfig {
         Mosasaurus(final ForgeConfigSpec.Builder builder) {
             builder.push("mosasaurus");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    10,
+                    1,
                     1,
                     1,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -131,7 +131,7 @@ public final class PanthalassaCommonConfig {
         Coelacanth(final ForgeConfigSpec.Builder builder) {
             builder.push("coelacanth");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    50,
+                    5,
                     3,
                     5,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -144,7 +144,7 @@ public final class PanthalassaCommonConfig {
         Dunkleosteus(final ForgeConfigSpec.Builder builder) {
             builder.push("dunkleosteus");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    10,
+                    1,
                     1,
                     2,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -157,7 +157,7 @@ public final class PanthalassaCommonConfig {
         Leedischthys(final ForgeConfigSpec.Builder builder) {
             builder.push("leedischthys");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    20,
+                    2,
                     1,
                     2,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -170,7 +170,7 @@ public final class PanthalassaCommonConfig {
         GiantOrthocone(final ForgeConfigSpec.Builder builder) {
             builder.push("giant_orthocone");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    10,
+                    1,
                     1,
                     1,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
@@ -183,7 +183,7 @@ public final class PanthalassaCommonConfig {
         Basilosaurus(final ForgeConfigSpec.Builder builder) {
             builder.push("basilosaurus");
             externalSpawning = new ExternalSpawningConfig(builder,
-                    30,
+                    3,
                     1,
                     2,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
