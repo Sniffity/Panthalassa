@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -65,6 +66,11 @@ public final class Panthalassa {
 		event.enqueueWork(() -> {
 			PanthalassaEntityTypes.spawnPlacements();
 		});
+	}
+
+	@SubscribeEvent
+	public void onBiomeLoading(BiomeLoadingEvent event) {
+		PanthalassaSpawns.onBiomeLoading(event);
 	}
 
 	private void registerEntityAttributes(EntityAttributeCreationEvent event) {

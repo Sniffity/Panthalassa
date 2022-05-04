@@ -43,7 +43,7 @@ public class PanthalassaSpawns {
         spawnConfigs.put(PanthalassaEntityTypes.MOSASAURUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.MOSASAURUS.externalSpawning);
         spawnConfigs.put(PanthalassaEntityTypes.COELACANTH.get(), PanthalassaCommonConfig.COMMON.ENTITIES.COELACANTH.externalSpawning);
         spawnConfigs.put(PanthalassaEntityTypes.DUNKLEOSTEUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.DUNKLEOSTEUS.externalSpawning);
-        spawnConfigs.put(PanthalassaEntityTypes.LEEDSICHTHYS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.LEEDISCHTHYS.externalSpawning);
+        spawnConfigs.put(PanthalassaEntityTypes.LEEDSICHTHYS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.LEEDSISCHTHYS.externalSpawning);
         spawnConfigs.put(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), PanthalassaCommonConfig.COMMON.ENTITIES.GIANT_ORTHOCONE.externalSpawning);
         spawnConfigs.put(PanthalassaEntityTypes.BASILOSAURUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.BASILOSAURUS.externalSpawning);
 
@@ -52,23 +52,20 @@ public class PanthalassaSpawns {
 
     public static void registerSpawnPlacementTypes() {
         SpawnPlacements.Type.create("Panthalassa_Spawns", new TriPredicate<LevelReader, BlockPos, EntityType<? extends Mob>>() {
-
             @Override
             public boolean test(LevelReader t, BlockPos pos, EntityType<? extends Mob> entityType) {
                 BlockState block = t.getBlockState(pos.below());
-                if (block.getBlock() == Blocks.BEDROCK || block.getBlock() == Blocks.BARRIER || !block.getMaterial().blocksMotion())
+                if (block.getBlock() == Blocks.BEDROCK || block.getBlock() == Blocks.BARRIER)
                     return false;
                 BlockState iblockstateUp = t.getBlockState(pos);
                 BlockState iblockstateUp2 = t.getBlockState(pos.above());
                 return NaturalSpawner.isValidEmptySpawnBlock(t, pos, iblockstateUp, iblockstateUp.getFluidState(), entityType) && NaturalSpawner.isValidEmptySpawnBlock(t, pos.above(), iblockstateUp2, iblockstateUp2.getFluidState(), entityType);
             }
-
-
         });
 
         SpawnPlacements.Type panthalassaSpawns = SpawnPlacements.Type.valueOf("Panthalassa_Spawns");
         if (panthalassaSpawns != null && PanthalassaCommonConfig.COMMON.GENERAL.externalSpawningBoolean.get()) {
-            SpawnPlacements.register(PanthalassaEntityTypes.KRONOSAURUS.get(), panthalassaSpawns, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+            SpawnPlacements.register(PanthalassaEntityTypes.KRONOSAURUS.get(), panthalassaSpawns,Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
             SpawnPlacements.register(PanthalassaEntityTypes.MEGALODON.get(), panthalassaSpawns, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
             SpawnPlacements.register(PanthalassaEntityTypes.ARCHELON.get(), panthalassaSpawns, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
             SpawnPlacements.register(PanthalassaEntityTypes.MOSASAURUS.get(), panthalassaSpawns, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
@@ -87,6 +84,31 @@ public class PanthalassaSpawns {
         if (PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
             registerEntityWorldSpawn(PanthalassaEntityTypes.KRONOSAURUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
         }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.MEGALODON.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.MEGALODON.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.ARCHELON.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.ARCHELON.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.MOSASAURUS.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.MOSASAURUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.COELACANTH.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.COELACANTH.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.DUNKLEOSTEUS.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.DUNKLEOSTEUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.LEEDSISCHTHYS.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.LEEDSICHTHYS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.GIANT_ORTHOCONE.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+        if (PanthalassaCommonConfig.COMMON.ENTITIES.BASILOSAURUS.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
+            registerEntityWorldSpawn(PanthalassaEntityTypes.BASILOSAURUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);
+        }
+
 
     }
     private static void registerEntityWorldSpawn (EntityType < ? > entity, PanthalassaCommonConfig.ExternalSpawningConfig spawnConfig, MobCategory classification, BiomeLoadingEvent event){
