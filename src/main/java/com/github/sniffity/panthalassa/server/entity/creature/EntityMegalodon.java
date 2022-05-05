@@ -100,6 +100,8 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
+
+
     public static AttributeSupplier.Builder megalodonAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 40)
