@@ -84,14 +84,4 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_2_submersible_vehicle").toString()));
 
-    public static void spawnPlacements() {
-        SpawnPlacements.register(KRONOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(MOSASAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(COELACANTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(MEGALODON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(ARCHELON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-        SpawnPlacements.register(GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PanthalassaEntity::canPanthalassaEntitySpawn);
-    }
 }

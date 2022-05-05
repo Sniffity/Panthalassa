@@ -42,7 +42,6 @@ public final class PanthalassaCommonConfig {
         }
     }
 
-
     public static class ExternalSpawningConfig {
         ExternalSpawningConfig(final ForgeConfigSpec.Builder builder, int spawnRate, int minGroupSize, int maxGroupSize, BiomeSpawningConfig biomeSpawningConfig) {
             builder.comment("This config will only take effect if external_spawning is set to TRUE");

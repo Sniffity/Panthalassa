@@ -62,9 +62,8 @@ public final class Panthalassa {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		PanthalassaPacketHandler.register();
-		PanthalassaSpawns.registerSpawnPlacementTypes();
 		event.enqueueWork(() -> {
-			PanthalassaEntityTypes.spawnPlacements();
+			PanthalassaSpawns.registerSpawnPlacementTypes();
 		});
 	}
 
