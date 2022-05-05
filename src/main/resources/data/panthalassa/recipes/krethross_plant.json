@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " y ",
+    " x ",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:cyan_dye"
+    },
+    "y":
+    {
+      "item": "minecraft:kelp"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:krethross_plant",
+    "count": 16
+  }
+}

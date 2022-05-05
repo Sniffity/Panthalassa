@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " y ",
+    " x ",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:seagrass"
+    },
+    "y":
+    {
+      "item": "minecraft:blue_dye"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:frostgrass",
+    "count": 16
+  }
+}

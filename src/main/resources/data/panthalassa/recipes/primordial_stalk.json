@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " y ",
+    " x ",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:kelp"
+    },
+    "y":
+    {
+      "item": "minecraft:green_dye"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:primordial_stalk",
+    "count": 16
+  }
+}
