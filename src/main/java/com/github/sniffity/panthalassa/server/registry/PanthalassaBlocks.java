@@ -31,53 +31,58 @@ public class PanthalassaBlocks {
 
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
-            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
-                    .strength(2f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT)
+                    .strength(0.5F)
                     .sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<Block> PANTHALASSA_COARSE_SOIL = BLOCKS.register("panthalassa_coarse_soil",
-            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
-                    .strength(2f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT)
+                    .strength(0.5F)
                     .sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<Block> PANTHALASSA_LOOSE_SOIL = BLOCKS.register("panthalassa_loose_soil",
-            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
-                    .strength(2f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT)
+                    .strength(0.5F)
                     .sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<Block> PANTHALASSA_STONE = BLOCKS.register("panthalassa_stone",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-                    .strength(2f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_COARSE_STONE = BLOCKS.register("panthalassa_coarse_stone",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-                    .strength(2f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_LOOSE_STONE = BLOCKS.register("panthalassa_loose_stone",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-                    .strength(2f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_ROCK = BLOCKS.register("panthalassa_rock",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-                    .strength(3f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> ANCIENT_ROCK = BLOCKS.register("ancient_rock",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-                    .strength(3f, 6f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)
                     .sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> PANTHALASSA_SAND = BLOCKS.register("panthalassa_sand",
-            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
-                    .strength(1f, 1f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.SAND)
+                    .strength(0.5F)
                     .sound(SoundType.SAND)));
 
     public static final RegistryObject<Block> PANTHALASSA_OVERGROWN_SAND = BLOCKS.register("panthalassa_overgrown_sand",
-            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.COLOR_BROWN)
-                    .strength(1f, 1f)
+            () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.SAND)
+                    .strength(0.5F)
                     .sound(SoundType.SAND)));
 
     public static final RegistryObject<Block> LIGHT_AIR = BLOCKS.register("light_air",
