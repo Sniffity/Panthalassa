@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "panthalassa:panthalassa_loose_soil",
+    "panthalassa:panthalassa_soil",
+    "panthalassa:panthalassa_coarse_soil",
+    "panthalassa:panthalassa_sand",
+    "panthalassa:panthalassa_overgrown_sand"
+  ]
+}
