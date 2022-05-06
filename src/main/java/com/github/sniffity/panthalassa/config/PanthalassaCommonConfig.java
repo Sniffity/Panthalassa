@@ -29,6 +29,8 @@ public final class PanthalassaCommonConfig {
     public static class GeneralConfig {
         public final ForgeConfigSpec.BooleanValue giveJournal;
         public final ForgeConfigSpec.BooleanValue externalSpawningBoolean;
+        public final ForgeConfigSpec.BooleanValue crushDepth;
+        public final ForgeConfigSpec.BooleanValue randomSwimmingChecks;
 
         GeneralConfig(ForgeConfigSpec.Builder builder) {
             builder.push("general");
@@ -38,6 +40,13 @@ public final class PanthalassaCommonConfig {
             this.externalSpawningBoolean = builder
                     .comment("This boolean value will determine whether Panthalassa's creatures spawn outside the Panthalassa Dimension")
                     .define("external_spawning", false);
+            this.crushDepth = builder
+                    .comment("This boolean value will determine whether the crush depth mechanic is enabled within Panthalassa")
+                    .define("crush_depth", true);
+            this.randomSwimmingChecks = builder
+                    .comment("This boolean value will determine whether entities will try and avoid walls when randomly swimming")
+                    .define("random_swimming_avoid", false);
+
             builder.pop();
         }
     }
