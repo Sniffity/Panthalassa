@@ -59,13 +59,14 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof LivingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)) {
-            if (entity.level.dimension() == PanthalassaDimension.PANTHALASSA) {
-                if (!(entity instanceof PanthalassaEntity)) {
-                    if (entity.getVehicle() == null || !(entity.getVehicle() instanceof PanthalassaVehicle)) {
-                        entity.hurt(DamageSource.CRAMMING, 100.0F);
-
+        if (PanthalassaCommonConfig.COMMON.GENERAL.crushDepth.get()) {
+            Entity entity = event.getEntity();
+            if (entity instanceof LivingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)) {
+                if (entity.level.dimension() == PanthalassaDimension.PANTHALASSA) {
+                    if (!(entity instanceof PanthalassaEntity)) {
+                        if (entity.getVehicle() == null || !(entity.getVehicle() instanceof PanthalassaVehicle)) {
+                            entity.hurt(DamageSource.CRAMMING, 100.0F);
+                        }
                     }
                 }
             }
