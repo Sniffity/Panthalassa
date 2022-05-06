@@ -219,6 +219,7 @@ public class PanthalassaBreachAttackGoal extends Goal {
                 if (!attacker.getPassengers().isEmpty()) {
                     attacker.ejectPassengers();
                 }
+                panthalassaBreachableEntity.setBreachState(false);
                 step3Done = true;
             }
         }
