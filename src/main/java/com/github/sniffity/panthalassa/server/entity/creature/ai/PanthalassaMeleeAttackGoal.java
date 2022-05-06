@@ -95,7 +95,6 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         this.attacker.getNavigation().moveTo(this.path, this.speedTowardsTarget);
         this.attacker.setAggressive(true);
         this.delayCounter = 0;
-
         this.ticksUntilNextAttack = 0;
     }
 

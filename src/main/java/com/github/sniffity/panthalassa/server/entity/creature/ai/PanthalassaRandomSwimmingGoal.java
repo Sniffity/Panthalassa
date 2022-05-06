@@ -4,15 +4,11 @@ import java.util.EnumSet;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import com.mojang.math.Vector3d;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -46,12 +42,17 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     public boolean canUse() {
         if (this.creature.isVehicle()) {
             return false;
-        } if (this.creature.getTarget() != null){
+        }
+        /*
+        if (this.creature.getTarget() != null){
             return false;
         }
+        */
+        /*
         if (this.creature.isLandNavigator) {
             return false;
         }
+        */
         if (!this.creature.isInWater() && !this.creature.level.getBlockState(new BlockPos(creature.position()).below()).is(Blocks.WATER)) {
             return false;
         } else {
@@ -89,28 +90,27 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             if (distance < 10) {
                 return null;
             }
-
-            for (int i = 0; i <= avoidDistance; i++) {
-                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).north(i)).is(FluidTags.WATER)) {
-                    targetVec = null;
-                    break;
-                }
-                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).south(i)).is(FluidTags.WATER)) {
-                    targetVec = null;
-                    break;
-                }
-                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).east(i)).is(FluidTags.WATER)) {
-                    targetVec = null;
-                    break;
-                }
-                if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).west(i)).is(FluidTags.WATER)) {
-                    targetVec = null;
-                    break;
+            if (PanthalassaCommonConfig.COMMON.GENERAL.randomSwimmingChecks.get()) {
+                for (int i = 0; i <= avoidDistance; i++) {
+                    if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).north(i)).is(FluidTags.WATER)) {
+                        targetVec = null;
+                        break;
+                    }
+                    if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).south(i)).is(FluidTags.WATER)) {
+                        targetVec = null;
+                        break;
+                    }
+                    if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).east(i)).is(FluidTags.WATER)) {
+                        targetVec = null;
+                        break;
+                    }
+                    if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).west(i)).is(FluidTags.WATER)) {
+                        targetVec = null;
+                        break;
+                    }
                 }
             }
-
         return targetVec;
-
         }
         return null;
     }
