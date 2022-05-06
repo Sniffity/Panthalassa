@@ -7,7 +7,7 @@ Let the brave venture forth into Panthalassa, for who knows what may be found wi
 License:
 =============================
 All code for this mod falls under GNU General Public License v3.0 (GNU GPLv3). The full license can be found in the LICENSE-CODE.txt file.
--Developing this mod was a learning process and many mods with public GitHubs were used as reference mate
+-Developing this mod was a learning process and many mods with public GitHubs were used as reference material.
 
 All assets (which include models, textures and animations) for this mod falls under an All Rights Reserved License (ARR). The full license can be found in the LICENSE-ASSETS.txt file.
 
