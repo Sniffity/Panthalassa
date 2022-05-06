@@ -873,6 +873,17 @@
 				}
 			}
 		},
+		"animation.mosasaurus.breach": {
+			"loop": true,
+			"bones": {
+				"head": {
+					"rotation": [-30, 0, 0]
+				},
+				"bottomjaw1": {
+					"rotation": [55, 0, 0]
+				}
+			}
+		},
 		"animation.mosasaurus.attack": {
 			"animation_length": 1.20833,
 			"bones": {
