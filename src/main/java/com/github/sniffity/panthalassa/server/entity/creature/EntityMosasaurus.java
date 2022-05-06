@@ -11,8 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -30,6 +28,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
     public static final int BLOCKED_DISTANCE = 3;
