@@ -49,9 +49,8 @@ public final class Panthalassa {
 		PanthalassaSounds.SOUND_EVENTS.register(modBus);
 		PanthalassaPOI.POI.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
+		PanthalassaEffects.EFFECTS.register(modBus);
 
-//		forgeBus.register(PanthalassaDimension.PANTHALASSA);
-//		forgeBus.register(PanthalassaDimension.PANTHALASSA_TYPE);
 
 		GeckoLib.initialize();
 		forgeBus.register(this);
