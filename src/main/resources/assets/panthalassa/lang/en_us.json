@@ -74,5 +74,7 @@
     "key.vehicle.sonar": "Vehicle Sonar",
     "key.vehicle.special": "Vehicle Special Ability",
 
-    "effect.panthalassa.crush_resist": "Crush Resist"
+    "effect.panthalassa.crush_resist": "Crush Resist",
+
+    "item.panthalassa.diving_suit_helmet": "Diving Suit Helmet"
 }

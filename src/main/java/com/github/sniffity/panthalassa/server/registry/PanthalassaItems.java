@@ -3,8 +3,11 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.item.ItemAGII;
+import com.github.sniffity.panthalassa.server.item.ItemDivingSuit;
 import com.github.sniffity.panthalassa.server.item.ItemMRSV;
 import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -100,5 +103,7 @@ public class PanthalassaItems {
 					0x340c0c,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
-
+	public static final RegistryObject<Item> DIVING_SUIT_HELM = ITEMS.register("diving_suit_helmet",
+			() -> new ItemDivingSuit(
+					ArmorMaterials.IRON, EquipmentSlot.HEAD).setArmorTexture("diving_suit_layer_1"));
 }
