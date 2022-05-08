@@ -9,7 +9,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -49,6 +48,5 @@ public class BlockPressureEqualizerBlockEntity extends BlockEntity {
 
     public void tick(Level p_155253_, BlockPos p_155254_) {
         applyEffects(p_155253_, p_155254_);
-
     }
 }
