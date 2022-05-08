@@ -38,7 +38,7 @@ public class BlockPressureEqualizerBlockEntity extends BlockEntity {
     }
 
     private static void applyEffects(Level level, BlockPos blockPos) {
-        AABB aabb = (new AABB(blockPos.getX()-10, blockPos.getY()-10, blockPos.getZ()-10, blockPos.getX()+10, blockPos.getY()+10, blockPos.getZ()+10));
+        AABB aabb = (new AABB(blockPos.getX()-20, blockPos.getY()-20, blockPos.getZ()-20, blockPos.getX()+20, blockPos.getY()+20, blockPos.getZ()+20));
         List<Player> list = level.getEntitiesOfClass(Player.class, aabb);
         if (!list.isEmpty()) {
             for(Player player : list) {
