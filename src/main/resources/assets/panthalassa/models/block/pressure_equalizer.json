@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "panthalassa:block/pressure_equalizer"
+  }
+}

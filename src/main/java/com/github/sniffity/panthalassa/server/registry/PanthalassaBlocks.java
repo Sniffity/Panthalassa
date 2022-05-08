@@ -13,6 +13,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Locale;
+
 public class PanthalassaBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Panthalassa.MODID);
@@ -125,4 +127,11 @@ public class PanthalassaBlocks {
                     .randomTicks()
                     .instabreak()
                     .sound(SoundType.WET_GRASS)));
+
+    public static final RegistryObject<BlockPressureEqualizer> PRESSURE_EQUALIZER = BLOCKS.register("pressure_equalizer",
+            () -> new BlockPressureEqualizer(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.DIAMOND)
+                    .strength(3.0F)
+                    .lightLevel((n) -> 15)
+                    .sound(SoundType.GLASS)));
 }
+
