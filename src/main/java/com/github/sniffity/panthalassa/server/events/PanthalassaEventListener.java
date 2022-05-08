@@ -8,11 +8,14 @@ import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEffects;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -30,6 +33,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
 import vazkii.patchouli.api.PatchouliAPI;
+
+import java.util.Collection;
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID)
 
@@ -65,7 +70,9 @@ public class PanthalassaEventListener {
                 if (entity.level.dimension() == PanthalassaDimension.PANTHALASSA) {
                     if (!(entity instanceof PanthalassaEntity)) {
                         if (entity.getVehicle() == null || !(entity.getVehicle() instanceof PanthalassaVehicle)) {
-                            entity.hurt(DamageSource.CRAMMING, 100.0F);
+                            if (!((LivingEntity) entity).hasEffect(PanthalassaEffects.CRUSH_RESIST.get())) {
+                                entity.hurt(DamageSource.CRAMMING, 100.0F);
+                            }
                         }
                     }
                 }
