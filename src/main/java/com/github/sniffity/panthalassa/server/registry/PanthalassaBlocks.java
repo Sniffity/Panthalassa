@@ -128,10 +128,7 @@ public class PanthalassaBlocks {
                     .instabreak()
                     .sound(SoundType.WET_GRASS)));
 
-    public static final RegistryObject<BlockPressureEqualizer> PRESSURE_EQUALIZER = BLOCKS.register("pressure_equalizer",
-            () -> new BlockPressureEqualizer(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.DIAMOND)
-                    .strength(3.0F)
-                    .lightLevel((n) -> 15)
-                    .sound(SoundType.GLASS)));
+    public static final RegistryObject<Block> PRESSURE_EQUALIZER = BLOCKS.register("pressure_equalizer",
+            BlockPressureEqualizer::new);
 }
 

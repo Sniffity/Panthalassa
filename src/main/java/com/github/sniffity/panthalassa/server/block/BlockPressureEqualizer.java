@@ -5,17 +5,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-
 import javax.annotation.Nullable;
 
-public class BlockPressureEqualizer extends BaseEntityBlock  {
+public class BlockPressureEqualizer extends Block implements EntityBlock {
 
-    public BlockPressureEqualizer(BlockBehaviour.Properties p_52094_) {
-        super(p_52094_);
+    public BlockPressureEqualizer() {
+        super(Properties.of(
+                Material.METAL,
+                MaterialColor.DIAMOND)
+                .strength(3.0F, 3.0F)
+                .sound(SoundType.GLASS)
+                .lightLevel((state) -> 15));
     }
 
     @Override
