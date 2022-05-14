@@ -106,4 +106,7 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> DIVING_SUIT_HELM = ITEMS.register("diving_suit_helmet",
 			() -> new ItemDivingSuit(
 					ArmorMaterials.IRON, EquipmentSlot.HEAD).setArmorTexture("diving_suit_layer_1"));
+
+	public static final RegistryObject<Item> PRESSURE_EQUALIZER_MATRIX = ITEMS.register("pressure_equalizer_matrix",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 }

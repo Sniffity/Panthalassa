@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "zxz",
+    "xyx",
+    "zxz"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:glass"
+    },
+    "y":
+    {
+      "item": "panthalassa:pressure_equalizer_matrix"
+    },
+    "z":
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:pressure_equalizer",
+    "count": 1
+  }
+}
