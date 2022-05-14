@@ -132,7 +132,7 @@ public class PanthalassaVehicle extends Entity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) { {
+    protected void addAdditionalSaveData(CompoundTag compound) {
             compound.putFloat("MaxHealth", this.getMaxHealth());
             compound.putFloat("Health", this.getHealth());
             compound.putFloat("Armor", this.getArmor());
@@ -143,8 +143,6 @@ public class PanthalassaVehicle extends Entity {
             compound.putInt("LightX", this.getLightPos().getX());
             compound.putInt("LightY", this.getLightPos().getY());
             compound.putInt("LightZ", this.getLightPos().getZ());
-
-    }
     }
 
     public static boolean canVehicleCollide(Entity p_242378_0_, Entity entity) {
