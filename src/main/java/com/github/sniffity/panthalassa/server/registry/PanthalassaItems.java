@@ -3,6 +3,9 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.item.*;
+import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShell;
+import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
+import com.github.sniffity.panthalassa.server.item.vehicle.ItemMRSV;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
@@ -108,7 +111,6 @@ public class PanthalassaItems {
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
-			() -> new ItemPanthalassaDisplay(
-					new Item.Properties().tab(PanthalassaItemGroup.GROUP),
-					PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL));
+			() -> new ItemGiantOrthoconeShell(
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 }
