@@ -1,8 +1,6 @@
-package com.github.sniffity.panthalassa.client.model.entity;
-
+package com.github.sniffity.panthalassa.client.model.display;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityGiantOrthocone;
 import com.github.sniffity.panthalassa.server.entity.display.EntityGiantOrthoconeShell;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -34,6 +32,7 @@ public class ModelGiantOrthoconeShell extends AnimatedGeoModel<EntityGiantOrthoc
     @Override
     public void setLivingAnimations(EntityGiantOrthoconeShell entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
+        (this.getAnimationProcessor().getBone("shell1")).setRotationY((float) -(entity.yRot *(PI/180.0F) + PI/2));
     }
 
     @Override

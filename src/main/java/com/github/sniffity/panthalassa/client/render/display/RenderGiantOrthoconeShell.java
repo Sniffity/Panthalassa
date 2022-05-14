@@ -1,9 +1,6 @@
 package com.github.sniffity.panthalassa.client.render.display;
 
-import com.github.sniffity.panthalassa.client.model.entity.ModelArchelon;
-import com.github.sniffity.panthalassa.client.model.entity.ModelGiantOrthoconeShell;
-import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
-import com.github.sniffity.panthalassa.server.entity.creature.EntityArchelon;
+import com.github.sniffity.panthalassa.client.model.display.ModelGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.display.EntityGiantOrthoconeShell;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -25,4 +22,5 @@ public class RenderGiantOrthoconeShell extends GeoEntityRenderer<EntityGiantOrth
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
     }
+
 }

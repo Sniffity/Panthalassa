@@ -84,7 +84,7 @@ public class PanthalassaEntityTypes {
 
     public static final RegistryObject<EntityType<EntityGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell",()->
             EntityType.Builder
-                    .of(EntityGiantOrthoconeShell::new,MobCategory.MISC)
+                    .<EntityGiantOrthoconeShell>of(EntityGiantOrthoconeShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell").toString()));
 }

@@ -1,43 +1,20 @@
 package com.github.sniffity.panthalassa.server.entity.display;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-
-public class PanthalassaDisplayEntity extends Mob implements IAnimatable {
-
-    protected static final EntityDataAccessor<Float> DIRECTION = SynchedEntityData.defineId(PanthalassaDisplayEntity.class, EntityDataSerializers.FLOAT);
-    private AnimationFactory factory = new AnimationFactory(this);
-
+public class PanthalassaDisplayEntity extends Mob {
 
     public PanthalassaDisplayEntity(EntityType type, Level level) {
         super(type, level);
         this.noCulling = true;
     }
 
-    @Override
-    protected void defineSynchedData() {
-        this.entityData.define(DIRECTION, 0F);
-        super.defineSynchedData();
-    }
 
     public static AttributeSupplier.Builder displayAttributes() {
         return Mob.createMobAttributes()
@@ -52,42 +29,6 @@ public class PanthalassaDisplayEntity extends Mob implements IAnimatable {
     @Override
     public boolean isNoAi() {
         return true;
-    }
-
-    public void tick() {
-        this.yBodyRotO = 0;
-        this.yHeadRotO = 0;
-        this.yBodyRot = 0;
-        this.yHeadRot = 0;
-    }
-
-    public float getYaw() {
-        return this.entityData.get(DIRECTION);
-    }
-
-    public void setYaw(float yaw) {
-        this.entityData.set(DIRECTION,yaw);
-    }
-
-    @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.isShiftKeyDown()) {
-            this.setYaw(player.yRot);
-        }
-        return super.mobInteract(player, hand);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        this.setYaw(compound.getFloat("Yaw"));
-        super.readAdditionalSaveData(compound);
-
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        compound.putFloat("Yaw", this.getYaw());
-        super.addAdditionalSaveData(compound);
     }
 
     @Override
@@ -107,19 +48,5 @@ public class PanthalassaDisplayEntity extends Mob implements IAnimatable {
     @Override
     public boolean removeWhenFarAway(double distance) {
         return false;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        return PlayState.STOP;
     }
 }

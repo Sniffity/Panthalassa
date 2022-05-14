@@ -5,9 +5,19 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityGiantOrthoconeShell extends PanthalassaDisplayEntity{
-    public EntityGiantOrthoconeShell(EntityType type, Level level) {
+public class EntityGiantOrthoconeShell extends PanthalassaDisplayEntity implements IAnimatable{
+
+    private AnimationFactory factory = new AnimationFactory(this);
+
+    public EntityGiantOrthoconeShell(EntityType<? extends PanthalassaDisplayEntity> type, Level level) {
         super(type, level);
     }
 
@@ -24,6 +34,21 @@ public class EntityGiantOrthoconeShell extends PanthalassaDisplayEntity{
         ItemStack stack = new ItemStack(PanthalassaItems.GIANT_ORTHOCONE_SHELL.get(), 1);
         if (!this.level.isClientSide)
             this.spawnAtLocation(stack, 0.0F);
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.giant_orthocone_shell.hold", true));
+        return PlayState.CONTINUE;
     }
 }
 
