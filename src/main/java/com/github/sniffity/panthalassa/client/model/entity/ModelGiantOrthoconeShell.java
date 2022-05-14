@@ -34,9 +34,6 @@ public class ModelGiantOrthoconeShell extends AnimatedGeoModel<EntityGiantOrthoc
     @Override
     public void setLivingAnimations(EntityGiantOrthoconeShell entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (entity.isInWater() && !entity.level.getBlockState(entity.blockPosition().below()).canOcclude()) {
-            (this.getAnimationProcessor().getBone("shell1")).setRotationX(-(float) (entity.xRot*(PI/180.0F)));
-        }
     }
 
     @Override

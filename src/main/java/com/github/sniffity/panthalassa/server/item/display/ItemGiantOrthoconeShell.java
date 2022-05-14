@@ -47,21 +47,16 @@ public class ItemGiantOrthoconeShell extends Item  {
             }
 
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
-                EntityGiantOrthoconeShell displayEntity = new EntityGiantOrthoconeShell(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), worldIn);
+                EntityGiantOrthoconeShell displayEntity = new EntityGiantOrthoconeShell(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(), worldIn);
                 displayEntity.yRot = player.yRot;
-                if (!worldIn.noCollision(displayEntity, displayEntity.getBoundingBox().inflate(-0.1D))) {
-                    return InteractionResultHolder.fail(itemstack);
-                } else {
-                    if (!worldIn.isClientSide) {
-                        worldIn.addFreshEntity(displayEntity);
-                        if (!player.getAbilities().instabuild) {
-                            itemstack.shrink(1);
-                        }
+                if (!worldIn.isClientSide) {
+                    worldIn.addFreshEntity(displayEntity);
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
                     }
-
-                    player.awardStat(Stats.ITEM_USED.get(this));
-                    return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());
                 }
+                player.awardStat(Stats.ITEM_USED.get(this));
+                return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());
             } else {
                 return InteractionResultHolder.pass(itemstack);
             }
