@@ -13,11 +13,11 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityGiantOrthoconeShell extends PanthalassaDisplayEntity implements IAnimatable{
+public class DisplayGiantOrthoconeShell extends PanthalassaDisplayEntity implements IAnimatable{
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public EntityGiantOrthoconeShell(EntityType<? extends PanthalassaDisplayEntity> type, Level level) {
+    public DisplayGiantOrthoconeShell(EntityType<? extends PanthalassaDisplayEntity> type, Level level) {
         super(type, level);
     }
 
@@ -31,7 +31,7 @@ public class EntityGiantOrthoconeShell extends PanthalassaDisplayEntity implemen
         if (isRemoved())
             return;
         this.discard();
-        ItemStack stack = new ItemStack(PanthalassaItems.GIANT_ORTHOCONE_SHELL.get(), 1);
+        ItemStack stack = new ItemStack(PanthalassaItems.GIANT_ORTHOCONE_SHELL_DISPLAY.get(), 1);
         if (!this.level.isClientSide)
             this.spawnAtLocation(stack, 0.0F);
     }

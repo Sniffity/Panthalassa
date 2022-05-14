@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
-import com.github.sniffity.panthalassa.server.entity.display.EntityGiantOrthoconeShell;
+import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.world.entity.MobCategory;
@@ -82,9 +82,9 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_2_submersible_vehicle").toString()));
 
-    public static final RegistryObject<EntityType<EntityGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell",()->
+    public static final RegistryObject<EntityType<DisplayGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell",()->
             EntityType.Builder
-                    .<EntityGiantOrthoconeShell>of(EntityGiantOrthoconeShell::new,MobCategory.MISC)
+                    .<DisplayGiantOrthoconeShell>of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell").toString()));
 }

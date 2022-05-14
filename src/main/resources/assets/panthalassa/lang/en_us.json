@@ -52,7 +52,6 @@
     "block.panthalassa.panthalassa_portal": "Panthalassa Portal",
     "block.panthalassa.panthalassa_portal.message": "Blocked attempt to manually place a Panthalassa Portal Block - this can cause issues with Panthalassa's Portal functioning.\nIf you want to manually place a portal, please build a circle of diameter 15 with Panthalassa Portal Frames, fill the inside with water and apply a strong Redstone Signal to one of the N/S/E/W edges...",
 
-    "block.panthalassa.pressure_equalizer": "Pressure Equalizer",
 
     "entity.panthalassa.manta_ray_submersible_vehicle": "Manta Ray Submersible Vehicle",
     "entity.panthalassa.abyss_glider_2_submersible_vehicle": "Abyss Glider II Submersible Vehicle",
@@ -78,5 +77,10 @@
 
     "item.panthalassa.diving_suit_helmet": "Diving Suit Helmet",
 
+    "block.panthalassa.pressure_equalizer": "Pressure Equalizer",
     "item.panthalassa.pressure_equalizer_matrix": "Pressure Equalizer Matrix",
+
+    "item.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
+    "item.panthalassa.giant_orthocone_shell": "Giant Orthocone Shell",
+    "entity.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display"
 }

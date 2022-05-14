@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.item.*;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShell;
+import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemMRSV;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -109,6 +110,10 @@ public class PanthalassaItems {
 
 	public static final RegistryObject<Item> PRESSURE_EQUALIZER_MATRIX = ITEMS.register("pressure_equalizer_matrix",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL_DISPLAY = ITEMS.register("giant_orthocone_shell_display",
+			() -> new ItemGiantOrthoconeShellDisplay(
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
 			() -> new ItemGiantOrthoconeShell(

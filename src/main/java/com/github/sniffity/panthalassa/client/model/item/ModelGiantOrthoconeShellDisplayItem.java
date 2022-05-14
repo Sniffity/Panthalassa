@@ -1,11 +1,12 @@
 package com.github.sniffity.panthalassa.client.model.item;
 
+
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class ModelGiantOrthoconeShellItem extends AnimatedGeoModel<ItemGiantOrthoconeShellDisplay> {
+public class ModelGiantOrthoconeShellDisplayItem extends AnimatedGeoModel<ItemGiantOrthoconeShellDisplay> {
     @Override
     public ResourceLocation getModelLocation(ItemGiantOrthoconeShellDisplay object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/display/giant_orthocone_shell/giant_orthocone_shell.geo.json");
