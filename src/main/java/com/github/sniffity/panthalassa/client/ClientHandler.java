@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
+import com.github.sniffity.panthalassa.client.render.display.RenderGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.client.render.entity.*;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
@@ -71,6 +72,8 @@ public class ClientHandler {
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),
                 RenderAGII::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(),
+                RenderGiantOrthoconeShell::new);
     }
 
     public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");

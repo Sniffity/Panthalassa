@@ -2,10 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 
-import com.github.sniffity.panthalassa.server.item.ItemAGII;
-import com.github.sniffity.panthalassa.server.item.ItemDivingSuit;
-import com.github.sniffity.panthalassa.server.item.ItemMRSV;
-import com.github.sniffity.panthalassa.server.item.ItemPanthalassaSpawnEgg;
+import com.github.sniffity.panthalassa.server.item.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
@@ -109,4 +106,9 @@ public class PanthalassaItems {
 
 	public static final RegistryObject<Item> PRESSURE_EQUALIZER_MATRIX = ITEMS.register("pressure_equalizer_matrix",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
+			() -> new ItemPanthalassaDisplay(
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP),
+					PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL));
 }

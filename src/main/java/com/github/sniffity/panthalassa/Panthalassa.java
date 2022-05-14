@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa;
 import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
+import com.github.sniffity.panthalassa.server.entity.display.PanthalassaDisplayEntity;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import com.github.sniffity.panthalassa.server.world.spawn.PanthalassaSpawns;
@@ -81,6 +82,8 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.LEEDSICHTHYS.get(), EntityLeedsichthys.leedsichthysAttributes().build());
 		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), EntityGiantOrthocone.giantOrthoconeAttributes().build());
 		event.put(PanthalassaEntityTypes.BASILOSAURUS.get(), EntityBasilosaurus.basilosaurusAttributes().build());
+		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
+
 	}
 
 	@SubscribeEvent
