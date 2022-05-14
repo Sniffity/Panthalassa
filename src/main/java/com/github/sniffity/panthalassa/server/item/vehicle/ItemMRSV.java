@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.server.item;
+package com.github.sniffity.panthalassa.server.item.vehicle;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.world.entity.Entity;

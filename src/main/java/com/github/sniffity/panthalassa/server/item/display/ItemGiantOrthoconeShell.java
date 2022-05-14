@@ -1,14 +1,12 @@
-package com.github.sniffity.panthalassa.server.item;
+package com.github.sniffity.panthalassa.server.item.display;
 
-import com.github.sniffity.panthalassa.server.entity.display.PanthalassaDisplayEntity;
-import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
+import com.github.sniffity.panthalassa.server.entity.display.EntityGiantOrthoconeShell;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,15 +18,12 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public class ItemPanthalassaDisplay extends Item  {
+public class ItemGiantOrthoconeShell extends Item  {
     private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
-    public EntityType<? extends PanthalassaDisplayEntity> panthalassaDisplayEntity;
 
-    public ItemPanthalassaDisplay(Item.Properties properties, Supplier<? extends EntityType<? extends PanthalassaDisplayEntity>> type) {
+    public ItemGiantOrthoconeShell(Item.Properties properties) {
         super(properties);
-        this.panthalassaDisplayEntity = type.get();
     }
 
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player player, InteractionHand hand) {
@@ -52,7 +47,7 @@ public class ItemPanthalassaDisplay extends Item  {
             }
 
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
-                PanthalassaDisplayEntity displayEntity = new PanthalassaDisplayEntity(panthalassaDisplayEntity, worldIn);
+                EntityGiantOrthoconeShell displayEntity = new EntityGiantOrthoconeShell(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), worldIn);
                 displayEntity.yRot = player.yRot;
                 if (!worldIn.noCollision(displayEntity, displayEntity.getBoundingBox().inflate(-0.1D))) {
                     return InteractionResultHolder.fail(itemstack);
