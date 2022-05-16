@@ -445,7 +445,7 @@
               "then_run": {
                 "type": "minecraft:block",
                 "result_state": {
-                  "Name": "panthalassa:panthalassa_ancient_rock"
+                  "Name": "panthalassa:ancient_rock"
                 }
               }
             },
