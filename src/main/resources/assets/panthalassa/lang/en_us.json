@@ -82,5 +82,7 @@
 
     "item.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
     "item.panthalassa.giant_orthocone_shell": "Giant Orthocone Shell",
-    "entity.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display"
+    "entity.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
+
+    "block.panthalassa.hydrothermal_vent": "Hydrothermal Vent"
 }

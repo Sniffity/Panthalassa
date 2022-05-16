@@ -4,10 +4,12 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
+import com.github.sniffity.panthalassa.client.render.blockentity.RenderHydrothermalVent;
 import com.github.sniffity.panthalassa.client.render.display.RenderGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.client.render.entity.*;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.world.level.block.Block;
@@ -49,7 +51,7 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(PanthalassaEntityTypes.KRONOSAURUS.get(),
                 RenderKronosaurus::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MEGALODON.get(),
@@ -74,6 +76,8 @@ public class ClientHandler {
                 RenderAGII::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(),
                 RenderGiantOrthoconeShell::new);
+        event.registerBlockEntityRenderer(PanthalassaBlockEntities.HYDROTHERMAL_VENT_TE.get(),
+                RenderHydrothermalVent::new);
     }
 
     public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");

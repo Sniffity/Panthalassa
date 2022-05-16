@@ -29,7 +29,8 @@ public class BlockHydrothermalVent extends Block implements EntityBlock {
                 Material.STONE,
                 MaterialColor.STONE)
                 .strength(3.0F, 3.0F)
-                .sound(SoundType.STONE));
+                .sound(SoundType.STONE)
+                .noOcclusion());
     }
 
     @Override

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " y ",
+    " x ",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:coal_block"
+    },
+    "y":
+    {
+      "item": "minecraft:fire_charge"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:hydrothermal_vent",
+    "count": 9
+  }
+}
