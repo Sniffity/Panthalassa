@@ -1,28 +1,36 @@
 package com.github.sniffity.panthalassa.server.block;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
 import javax.annotation.Nullable;
 
-public class BlockHydrothermalVent extends Block implements EntityBlock {
+public class BlockHydrothermalVent extends Block implements EntityBlock, SimpleWaterloggedBlock {
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockHydrothermalVent() {
         super(Properties.of(
@@ -31,6 +39,15 @@ public class BlockHydrothermalVent extends Block implements EntityBlock {
                 .strength(3.0F, 3.0F)
                 .sound(SoundType.STONE)
                 .noOcclusion());
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.valueOf(false)));
+    }
+
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+    }
+
+    public FluidState getFluidState(BlockState p_204507_1_) {
+        return p_204507_1_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_204507_1_);
     }
 
     @Override
@@ -56,5 +73,12 @@ public class BlockHydrothermalVent extends Block implements EntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? (level0, pos, state0, blockEntity) -> ((BlockHydrothermalVentBlockEntity) blockEntity).tick(level,pos)
                 : null;
+    }
+
+    public BlockState getStateForPlacement(BlockPlaceContext p_56872_) {
+        BlockPos blockpos = p_56872_.getClickedPos();
+        FluidState fluidstate = p_56872_.getLevel().getFluidState(blockpos);
+        BlockState blockstate = this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        return blockstate;
     }
 }
