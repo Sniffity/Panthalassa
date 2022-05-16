@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.block;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaParticlesTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
@@ -26,7 +27,7 @@ public class BlockHydrothermalVentBlockEntity extends BlockEntity implements IAn
     public static <B extends BlockEntity>void tick(Level level, BlockPos pos) {
         if (level.isClientSide()) {
             Random random = level.getRandom();
-            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+            level.addAlwaysVisibleParticle(PanthalassaParticlesTypes.VENT_SMOKE.get(),
                     true,
                     (double)pos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1),
                     (double)pos.getY() + random.nextDouble() + random.nextDouble(),

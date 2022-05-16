@@ -51,7 +51,7 @@ public final class Panthalassa {
 		PanthalassaPOI.POI.register(modBus);
 		PanthalassaFeatures.FEATURES.register(modBus);
 		PanthalassaEffects.EFFECTS.register(modBus);
-
+		PanthalassaParticlesTypes.PARTICLE_TYPES.register(modBus);
 
 		GeckoLib.initialize();
 		forgeBus.register(this);
