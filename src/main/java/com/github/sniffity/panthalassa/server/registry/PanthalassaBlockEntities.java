@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.server.block.BlockHydrothermalVentBlockEntity;
 import com.github.sniffity.panthalassa.server.block.BlockPortalBlockEntity;
 import com.github.sniffity.panthalassa.server.block.BlockPressureEqualizerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -15,4 +16,7 @@ public class PanthalassaBlockEntities {
             "portal", () -> BlockEntityType.Builder.of(BlockPortalBlockEntity::new, PanthalassaBlocks.PORTAL.get()).build(null));
     public static final RegistryObject<BlockEntityType<BlockPressureEqualizerBlockEntity>> PRESSURE_EQUALIZER_TE = BLOCK_ENTITY_TYPES.register(
             "pressure_equalizer", () -> BlockEntityType.Builder.of(BlockPressureEqualizerBlockEntity::new, PanthalassaBlocks.PRESSURE_EQUALIZER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockHydrothermalVentBlockEntity>> HYDROTHERMAL_VENT_TE = BLOCK_ENTITY_TYPES.register(
+            "hydrothermal_vent", () -> BlockEntityType.Builder.of(BlockHydrothermalVentBlockEntity::new, PanthalassaBlocks.HYDROTHERMAL_VENT.get()).build(null));
+
 }

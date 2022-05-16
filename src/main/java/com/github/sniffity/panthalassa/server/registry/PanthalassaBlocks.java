@@ -130,5 +130,8 @@ public class PanthalassaBlocks {
 
     public static final RegistryObject<Block> PRESSURE_EQUALIZER = BLOCKS.register("pressure_equalizer",
             BlockPressureEqualizer::new);
+
+    public static final RegistryObject<Block> HYDROTHERMAL_VENT = BLOCKS.register("hydrothermal_vent",
+            BlockHydrothermalVent::new);
 }
 
