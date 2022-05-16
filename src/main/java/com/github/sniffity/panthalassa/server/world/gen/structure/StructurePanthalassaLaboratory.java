@@ -9,11 +9,9 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
-
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
-
 import java.util.Optional;
 
 public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfiguration> {
@@ -27,12 +25,11 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
         return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
 
-    protected static int isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
+    protected static int determineYHeight(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         BlockPos centerOfChunk = context.chunkPos().getWorldPosition();
         int landHeight = context.chunkGenerator().getFirstOccupiedHeight(centerOfChunk.getX(), centerOfChunk.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
         NoiseColumn columnOfBlocks = context.chunkGenerator().getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ(), context.heightAccessor());
         BlockState topBlock = columnOfBlocks.getBlock(landHeight);
-        BlockPos centerPos;
         if (topBlock.getFluidState().is(FluidTags.WATER)) {
             int i = 0;
             while (!topBlock.canOcclude()) {
@@ -48,7 +45,7 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
 
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
 
-        int yHeight = StructurePanthalassaLaboratory.isFeatureChunk(context);
+        int yHeight = StructurePanthalassaLaboratory.determineYHeight(context);
         if (!(yHeight<=42)) {
             return Optional.empty();
         }
@@ -64,7 +61,6 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
                         false,
                         false
                 );
-
         return structurePiecesGenerator;
     }
 }
