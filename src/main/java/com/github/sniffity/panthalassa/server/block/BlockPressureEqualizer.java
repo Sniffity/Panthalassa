@@ -1,10 +1,8 @@
 package com.github.sniffity.panthalassa.server.block;
 
-import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
