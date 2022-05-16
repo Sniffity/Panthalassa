@@ -11,76 +11,63 @@
         {
           "biome": "panthalassa:primeval_expanse",
           "parameters": {
-            "erosion": 0.0,
-            "offset": 0.0,
-            "continentalness": 0.0,
-            "humidity": 0.0,
-            "depth": 0.0,
-            "weirdness": [
-              -0.1,
-              0.1
-            ],
-            "temperature": [
-              -0.1,
-              0.1
-            ]
-          }
-        },
-        {
-          "biome": "panthalassa:azure_depths",
-          "parameters": {
-            "erosion": 0.0,
-            "offset": 0.0,
-            "continentalness": 0.0,
-            "humidity": 0.0,
-            "depth": 0.2,
-            "weirdness": [
-              -0.3,
-              -0.1
-            ],
-            "temperature": [
-              0.1,
-              0.3
-            ]
+            "temperature": 0,
+            "humidity": 0,
+            "depth": 0,
+            "weirdness": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "offset": 0
           }
         },
         {
           "biome": "panthalassa:abyssal_overgrowth",
           "parameters": {
-            "erosion": 0.0,
-            "offset": 0.0,
-            "continentalness": 0.0,
-            "humidity": 0.0,
-            "depth": -0.1,
-            "weirdness": [
-              0.1,
-              0.5
-            ],
-            "temperature": [
-              -0.5,
-              -0.1
-            ]
+            "temperature": 0.3,
+            "humidity": -0.3,
+            "depth": 0.4,
+            "weirdness": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "offset": 0.1
           }
         },
         {
           "biome": "panthalassa:ancient_caverns",
           "parameters": {
-            "erosion": 0.0,
-            "offset": 0.0,
-            "continentalness": 0.0,
-            "humidity": 0.0,
-            "depth": 0.1,
-            "weirdness": [
-              -0.7,
-              -0.3
-            ],
-            "temperature": [
-              0.3,
-              0.7
-            ]
+            "temperature": -0.3,
+            "humidity": 0.3,
+            "depth": 0.4,
+            "weirdness": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "offset": 0.1
+          }
+        },
+        {
+          "biome": "panthalassa:azure_depths",
+          "parameters": {
+            "temperature": -0.5,
+            "humidity": -0.5,
+            "depth": 0.8,
+            "weirdness": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "offset": 0.1
+          }
+        },
+        {
+          "biome": "panthalassa:searing_range",
+          "parameters": {
+            "temperature": 0.5,
+            "humidity": 0.5,
+            "depth": 0.8,
+            "weirdness": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "offset": 0.1
           }
         }
-
       ]
     }
   }
