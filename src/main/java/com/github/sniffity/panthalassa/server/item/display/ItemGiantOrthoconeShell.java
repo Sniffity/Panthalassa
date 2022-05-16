@@ -18,7 +18,6 @@ import java.util.function.Predicate;
 
 public class ItemGiantOrthoconeShell extends Item implements IAnimatable {
     private static final String CONTROLLER_NAME = "popupController";
-    private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
     public AnimationFactory factory = new AnimationFactory(this);
 
     public ItemGiantOrthoconeShell(Item.Properties properties) {
