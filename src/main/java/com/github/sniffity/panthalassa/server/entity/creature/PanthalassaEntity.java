@@ -1,12 +1,10 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaSwimmingHelper;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.Difficulty;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -16,7 +14,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
@@ -27,17 +24,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
-
 import java.util.Random;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraftforge.common.Tags;
-
 import static java.lang.Math.PI;
 
 /**
@@ -65,8 +58,9 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     public float prevSetYaw;
     public float setYaw;
 
-
+    //ATTACKING STATE used for animation purposes
     protected static final EntityDataAccessor<Boolean> ATTACKING_STATE = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.BOOLEAN);
+    //AIR SUPPLY used to ensure they suffocate outside of water
     protected static final EntityDataAccessor<Integer> AIR_SUPPLY = SynchedEntityData.defineId(PanthalassaEntity.class, EntityDataSerializers.INT);
 
     public PanthalassaEntity(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
@@ -80,7 +74,6 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     protected void defineSynchedData() {
         this.entityData.define(ATTACKING_STATE, Boolean.FALSE);
         this.entityData.define(AIR_SUPPLY, 150);
-
         super.defineSynchedData();
     }
 
@@ -146,6 +139,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         }
     }
 
+    //Ensure Panthalassa Entities can breathe underwater by overriding the method.
     @Override
     public boolean canBreatheUnderwater() {
         return true;
@@ -164,6 +158,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         }
     }
 
+    //TODO: Should this method be removed? Is there any logic in overrriding this?
     @Override
     public boolean doHurtTarget(Entity entityIn) {
         float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
@@ -206,8 +201,10 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         return flag;
     }
 
+
+    //Ensure spawning in water, either minecraft water or panthalassa water
     public static boolean canPanthalassaEntitySpawn(EntityType<? extends PanthalassaEntity> type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        if (pos.getY()>20 && pos.getY()<110) {
+        if (worldIn.getBlockState(pos).is(Blocks.WATER) || worldIn.getBlockState(pos).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
             return true;
         }
         return false;
@@ -219,7 +216,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         return p_205019_1_.containsAnyLiquid(this.getBoundingBox());
     }
 
-    //Method is overriden to ensure these entities do not despawn, despite them being in the MONSTER MobCategory..
+    //Method is overriden to ensure these entities do not despawn, despite them being in the MONSTER MobCategory.
     @Override
     public void checkDespawn() {
     }
@@ -238,6 +235,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         }
     }
 
+    //Air supply logic - ensures they suffocate outside water
     protected void handleAirSupply(int p_209207_1_) {
         if (this.isAlive() && !this.isInWaterOrBubble()) {
             this.setAirSupplyLocal(p_209207_1_ - 1);
@@ -255,14 +253,17 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         this.entityData.set(ATTACKING_STATE,isAttacking);
     }
 
+    //Attacking state used for purposes of attack animations
     public boolean getAttackingState() {
         return this.entityData.get(ATTACKING_STATE);
     }
 
+    //Air supply logic - ensures they suffocate outside water
     public void setAirSupplyLocal(int airSupply) {
         this.entityData.set(AIR_SUPPLY,airSupply);
     }
 
+    //Air supply logic - ensures they suffocate outside water
     public int getAirSupplyLocal() {
         return this.entityData.get(AIR_SUPPLY);
     }
