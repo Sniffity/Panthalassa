@@ -29,7 +29,9 @@
     [],
     [],
     [],
-    [],
+    [
+      "panthalassa:hydrothermal_vents"
+    ],
     []
   ],
   "spawners": {
