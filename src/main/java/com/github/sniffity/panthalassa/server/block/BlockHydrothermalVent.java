@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.server.block;
 
+import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -74,10 +76,15 @@ public class BlockHydrothermalVent extends Block implements EntityBlock, SimpleW
                 : null;
     }
 
-    public BlockState getStateForPlacement(BlockPlaceContext p_56872_) {
-        BlockPos blockpos = p_56872_.getClickedPos();
-        FluidState fluidstate = p_56872_.getLevel().getFluidState(blockpos);
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        FluidState fluidstate = context.getLevel().getFluidState(blockpos);
         BlockState blockstate = this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
         return blockstate;
+    }
+
+    public BlockState getStateForPlacement(BlockGetter blockGetter, BlockPos pos) {
+        FluidState fluidstate = blockGetter.getFluidState(pos);
+        return this.defaultBlockState().setValue(WATERLOGGED, fluidstate.is(FluidTags.WATER));
     }
 }
