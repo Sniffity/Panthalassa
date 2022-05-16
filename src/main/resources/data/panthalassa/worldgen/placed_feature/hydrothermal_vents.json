@@ -1,0 +1,18 @@
+{
+  "feature": "panthalassa:hydrothermal_vents",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 50,
+      "noise_factor": 1,
+      "noise_offset": 10
+
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "panthalassa:hydrothermal_vents",
+  "config": {
+    "hydrothermal_structures": [
+      "panthalassa:hydrothermal_vents/vent_1",
+      "panthalassa:hydrothermal_vents/vent_2",
+      "panthalassa:hydrothermal_vents/vent_3"
+    ]
+  }
+}
