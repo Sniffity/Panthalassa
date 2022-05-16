@@ -202,10 +202,9 @@ public abstract class PanthalassaEntity extends PathfinderMob {
     }
 
 
-    //Ensure spawning in water, either minecraft water or panthalassa water
     public static boolean canPanthalassaEntitySpawn(EntityType<? extends PanthalassaEntity> type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        if (worldIn.getBlockState(pos).is(Blocks.WATER) || worldIn.getBlockState(pos).is(PanthalassaBlocks.PANTHALASSA_WATER.get())) {
-            return true;
+        if (randomIn.nextDouble() > 0.5) {
+                return true;
         }
         return false;
     }
