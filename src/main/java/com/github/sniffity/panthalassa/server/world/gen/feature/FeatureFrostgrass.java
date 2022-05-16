@@ -24,7 +24,6 @@ public class FeatureFrostgrass extends Feature<ProbabilityFeatureConfiguration> 
         Random rand = p_159884_.random();
         WorldGenLevel worldgenlevel = p_159884_.level();
         BlockPos pos = p_159884_.origin();
-        ProbabilityFeatureConfiguration probabilityfeatureconfiguration = p_159884_.config();
 
         boolean flag = false;
         int i = rand.nextInt(8) - rand.nextInt(8);
