@@ -55,6 +55,6 @@ public class PanthalassaFeatures {
     public static final RegistryObject<Feature<ProbabilityFeatureConfiguration>> FROSTGRASS =
             FEATURES.register("frostgrass", () -> new FeatureFrostgrass(ProbabilityFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<ConfigurationHydrothermalVent>> HYDROTHERMAL_VENTS =
-            FEATURES.register("hydrothermal_vents", () -> new FeatureHydrothermalVents(ConfigurationHydrothermalVent.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> HYDROTHERMAL_VENTS =
+            FEATURES.register("hydrothermal_vents", () -> new FeatureHydrothermalVents(NoneFeatureConfiguration.CODEC));
 }
