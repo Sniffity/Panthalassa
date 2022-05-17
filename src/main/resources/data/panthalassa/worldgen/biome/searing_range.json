@@ -13,7 +13,13 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
       "block_search_extent": 8,
-      "offset": 2
+      "offset": 2,
+      "particle": {
+        "options": {
+          "type": "minecraft:white_ash"
+        },
+        "probability": 0.118093334
+      }
     }
   },
   "carvers": {
@@ -30,7 +36,9 @@
     [],
     [],
     [
-      "panthalassa:hydrothermal_vents"
+      "panthalassa:hydrothermal_vents",
+      "panthalassa:rock_spikes",
+      "panthalassa:dead_coral_tree"
     ],
     []
   ],
