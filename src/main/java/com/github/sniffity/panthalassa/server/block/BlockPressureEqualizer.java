@@ -21,6 +21,7 @@ public class BlockPressureEqualizer extends Block implements EntityBlock {
                 MaterialColor.DIAMOND)
                 .strength(3.0F, 3.0F)
                 .sound(SoundType.GLASS)
+                .noOcclusion()
                 .lightLevel((state) -> 15));
     }
 
