@@ -84,5 +84,11 @@
     "item.panthalassa.giant_orthocone_shell": "Giant Orthocone Shell",
     "entity.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
 
-    "block.panthalassa.hydrothermal_vent": "Hydrothermal Vent"
+    "block.panthalassa.hydrothermal_vent": "Hydrothermal Vent",
+
+    "item.panthalassa.creature_synthesizer_core": "Creature Synthesizer Core",
+    "item.panthalassa.creature_synthesizer_stabilizer": "Creature Synthesizer Stabilizer",
+    "item.panthalassa.genome_predator_y": "Genome: Predator Y",
+    "item.panthalassa.genome_ghonzul": "Genome: Ghonzul",
+    "item.panthalassa.genome_vraxails": "Genome: Vraxails"
 }

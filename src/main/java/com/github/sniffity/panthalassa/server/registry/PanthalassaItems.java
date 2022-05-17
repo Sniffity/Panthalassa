@@ -118,4 +118,19 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
 			() -> new ItemGiantOrthoconeShell(
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_CORE = ITEMS.register("creature_synthesizer_core",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_STABILIZER = ITEMS.register("creature_synthesizer_stabilizer",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> GENOME_PREDATOR_Y = ITEMS.register("genome_predator_y",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> GENOME_GHONZUL = ITEMS.register("genome_ghonzul",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> GENOME_VRAXAILS = ITEMS.register("genome_vraxails",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 }
