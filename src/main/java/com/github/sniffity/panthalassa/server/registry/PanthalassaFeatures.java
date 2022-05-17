@@ -57,4 +57,10 @@ public class PanthalassaFeatures {
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> HYDROTHERMAL_VENTS =
             FEATURES.register("hydrothermal_vents", () -> new FeatureHydrothermalVents(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> ROCK_SPIKES =
+            FEATURES.register("rock_spikes", () -> new FeatureRockSpikes(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> DEAD_CORAL_TREE =
+            FEATURES.register("dead_coral_tree", () -> new FeatureDeadCoralTree(NoneFeatureConfiguration.CODEC));
 }
