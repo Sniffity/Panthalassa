@@ -90,5 +90,7 @@
     "item.panthalassa.creature_synthesizer_stabilizer": "Creature Synthesizer Stabilizer",
     "item.panthalassa.genome_predator_y": "Genome: Predator Y",
     "item.panthalassa.genome_ghonzul": "Genome: Ghonzul",
-    "item.panthalassa.genome_vraxails": "Genome: Vraxails"
+    "item.panthalassa.genome_vraxails": "Genome: Vraxails",
+
+    "entity.panthalassa.proteus_class_submersible_vehicle": "Proteus Class Submersible Vehicle"
 }

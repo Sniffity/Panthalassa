@@ -10,6 +10,7 @@ import com.github.sniffity.panthalassa.client.render.display.RenderGiantOrthocon
 import com.github.sniffity.panthalassa.client.render.entity.*;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderPCSV;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
@@ -81,6 +82,8 @@ public class ClientHandler {
                 RenderHydrothermalVent::new);
         event.registerBlockEntityRenderer(PanthalassaBlockEntities.PRESSURE_EQUALIZER_TE.get(),
                 RenderPressureEqualizer::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.PCSV.get(),
+                RenderPCSV::new);
     }
 
     public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");

@@ -5,6 +5,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceLocation;
@@ -87,4 +88,10 @@ public class PanthalassaEntityTypes {
                     .<DisplayGiantOrthoconeShell>of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell").toString()));
+
+    public static final RegistryObject<EntityType<VehiclePCSV>> PCSV = ENTITY_TYPES.register ("proteus_class_submersible_vehicle",()->
+            EntityType.Builder
+                    .<VehiclePCSV>of(VehiclePCSV::new,MobCategory.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "proteus_class_submersible_vehicle").toString()));
 }
