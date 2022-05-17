@@ -82,9 +82,4 @@ public class BlockHydrothermalVent extends Block implements EntityBlock, SimpleW
         BlockState blockstate = this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
         return blockstate;
     }
-
-    public BlockState getStateForPlacement(BlockGetter blockGetter, BlockPos pos) {
-        FluidState fluidstate = blockGetter.getFluidState(pos);
-        return this.defaultBlockState().setValue(WATERLOGGED, fluidstate.is(FluidTags.WATER));
-    }
 }
