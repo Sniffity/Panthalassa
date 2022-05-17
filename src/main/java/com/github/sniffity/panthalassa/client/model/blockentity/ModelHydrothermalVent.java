@@ -9,7 +9,7 @@ public class ModelHydrothermalVent extends AnimatedGeoModel<BlockHydrothermalVen
 
     @Override
     public ResourceLocation getAnimationFileLocation(BlockHydrothermalVentBlockEntity animatable) {
-        return new ResourceLocation(Panthalassa.MODID, "animations/blockentity/hydrothermal_vent.json");
+        return new ResourceLocation(Panthalassa.MODID, "animations/blockentity/hydrothermal_vent/hydrothermal_vent.json");
     }
 
     @Override
