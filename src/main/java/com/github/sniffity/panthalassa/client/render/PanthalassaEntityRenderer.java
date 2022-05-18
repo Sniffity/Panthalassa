@@ -27,10 +27,10 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 import software.bernie.geckolib3.util.AnimationUtils;
 
-public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends EntityRenderer<T> implements IGeoRenderer<T> {
+public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends EntityRenderer<T> implements IGeoRenderer<T> {
     private final AnimatedGeoModel<T> modelProvider;
 
-    protected PanthalassaVehicleRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> modelProvider) {
+    protected PanthalassaEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> modelProvider) {
         super(renderManager);
         this.modelProvider = modelProvider;
     }

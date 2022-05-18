@@ -1,0 +1,40 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 12,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "torpedo_right_casing",
+					"pivot": [-0.7, 2, -2.6],
+					"cubes": [
+						{"origin": [-20.7, 0, -2], "size": [40, 4, 4], "pivot": [-13, -5, -27], "rotation": [0, 0, 0.02158], "uv": [0, 52]}
+					]
+				},
+				{
+					"name": "torpedo_right_tip",
+					"parent": "torpedo_right_casing",
+					"pivot": [-20.7, 2, -2.6],
+					"cubes": [
+						{"origin": [-23.2, 0.5, -1.5], "size": [5, 3, 3], "pivot": [-13, -5, -27], "rotation": [0, 0, 0.02158], "uv": [12, 0]}
+					]
+				},
+				{
+					"name": "torpedo_right_back",
+					"parent": "torpedo_right_casing",
+					"pivot": [20.3, 2, -2.6],
+					"cubes": [
+						{"origin": [17.8, -0.5, -2.5], "size": [5, 5, 5], "pivot": [-13, -5, -27], "rotation": [0, 0, 0.02158], "uv": [74, 0]}
+					]
+				}
+			]
+		}
+	]
+}
