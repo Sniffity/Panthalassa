@@ -2,10 +2,12 @@ package com.github.sniffity.panthalassa.server.block;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEffects;
+import com.mojang.blaze3d.shaders.Effect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,6 +52,7 @@ public class BlockPressureEqualizerBlockEntity extends BlockEntity implements IA
         if (!list.isEmpty()) {
             for(Player player : list) {
                 player.addEffect(new MobEffectInstance(PanthalassaEffects.CRUSH_RESIST.get(), 260, 0, true, true));
+                player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 260, 0));
             }
         }
     }
