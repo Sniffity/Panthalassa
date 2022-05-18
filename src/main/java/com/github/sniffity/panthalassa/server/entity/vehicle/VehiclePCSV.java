@@ -29,7 +29,6 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
         this.landSpeed = 0.006F;
     }
 
-    //TODO: PCSV item
     public VehiclePCSV(Level p_i1705_1_, double x, double y, double z) {
         this(PanthalassaEntityTypes.PCSV.get(), p_i1705_1_);
         this.setPos(x, y, z);
@@ -99,8 +98,14 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
 
     @Override
     public void respondKeybindSpecial() {
-        this.level.addFreshEntity(new ProjectileTorpedo(PanthalassaEntityTypes.TORPEDO.get(), this, this.getEyePosition().subtract(0,2,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
+        if (!this.level.isClientSide && this.getTorpedoCooldown() < 0 && this.getTorpedoCount() > 0) {
+            this.level.addFreshEntity(new ProjectileTorpedo(PanthalassaEntityTypes.TORPEDO.get(), this, this.getEyePosition().subtract(0,2,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
+            this.setTorpedoCooldown(100);
+            this.setTorpedoCount(this.getTorpedoCount()-1);
+        }
     }
+
+
 
 
     //TODO: Perhaps if on TORPEDO_COOLDOWN, apply a different texture, which does not have the torpedoes textured.
