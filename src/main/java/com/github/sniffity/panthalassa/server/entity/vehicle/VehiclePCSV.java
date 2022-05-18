@@ -29,6 +29,7 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
         this.landSpeed = 0.006F;
     }
 
+    //TODO: PCSV item
     public VehiclePCSV(Level p_i1705_1_, double x, double y, double z) {
         this(PanthalassaEntityTypes.PCSV.get(), p_i1705_1_);
         this.setPos(x, y, z);
@@ -63,12 +64,10 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        {
-            compound.putInt("torpedoCount", this.getTorpedoCount());
-            compound.putFloat("torpedoCooldown", this.getTorpedoCooldown());
+        compound.putInt("torpedoCount", this.getTorpedoCount());
+        compound.putFloat("torpedoCooldown", this.getTorpedoCooldown());
 
-            super.addAdditionalSaveData(compound);
-        }
+        super.addAdditionalSaveData(compound);
     }
 
     @Override
