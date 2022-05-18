@@ -80,13 +80,11 @@ public class RenderTickEvent {
             String torpedoCountText;
             if (torpedoCount <= 0) {
                 torpedoCountText = "EMPTY";
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.GREEN + torpedoCountText, 10, 95, Color.WHITE.getRGB());
-
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.GREEN + torpedoCountText, 10, 85, Color.WHITE.getRGB());
             } else {
                 torpedoCountText = new DecimalFormat("00").format(torpedoCount);
                 game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.YELLOW + torpedoCountText, 10, 85, Color.WHITE.getRGB());
             }
-            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.GREEN + torpedoCount, 10, 85, Color.WHITE.getRGB());
 
             float torpedoCooldown = ((VehiclePCSV)vehicle).getTorpedoCooldown();
             String torpedoCooldownText;
