@@ -8,6 +8,7 @@ import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShe
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemMRSV;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -133,4 +134,13 @@ public class PanthalassaItems {
 
 	public static final RegistryObject<Item> GENOME_VRAXAILS = ITEMS.register("genome_vraxails",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+	public static final RegistryObject<Item> KRONOSAURUS_MEAT = ITEMS.register("kronosaurus_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+			.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+
+	public static final RegistryObject<Item> COOKED_KRONOSAUURS_MEAT = ITEMS.register("cooked_kronosaurus_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+
 }
