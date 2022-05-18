@@ -92,7 +92,7 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
 
     @Override
     public void tick() {
-        setTorpedoCooldown(getTorpedoCount() - 1);
+        setTorpedoCooldown(getTorpedoCooldown() - 1);
         super.tick();
     }
 
