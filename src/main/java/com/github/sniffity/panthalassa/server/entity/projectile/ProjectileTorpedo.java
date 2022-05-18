@@ -2,6 +2,8 @@ package com.github.sniffity.panthalassa.server.entity.projectile;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -66,6 +68,8 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
             this.discard();
             return;
         }
+        ProjectileUtil.rotateTowardsMovement(this, 1);
+
         super.tick();
 
         //Check for collisions, either with entities or with blocks...
@@ -75,7 +79,7 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         List<Entity> entities = level.getEntities(this, boundingBox, this::canImpactEntity);
         if (!entities.isEmpty()){
             //Proceed to register an impact...
-            impactEntity(new BlockPos(this.position()), entities);
+            impact(new BlockPos(this.position()));
         } else {
             //Else, check for block collision...
             Vec3 position = this.position();
@@ -83,9 +87,11 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
             HitResult raytraceresult = level.clip(new ClipContext(position, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (raytraceresult.getType() != HitResult.Type.MISS){
                 //If there is a collision, proceed to register an impact...
-                impactBlock(new BlockPos(this.position()));
+                impact(new BlockPos(this.position()));
             }
         }
+
+
         //Continue moving the projectile along its path...
         Vec3 motion = getDeltaMovement();
         double x = getX() + motion.x;
@@ -94,8 +100,17 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         //Of note, this will not change the actual position of the entity, it will not move it...
         //Instead it will update the values we are using to calculate collisions...
         absMoveTo(x, y, z);
-    }
 
+        if (level.isClientSide){
+            if (this.isInWater()) {
+                for(int i = 0; i < 4; ++i) {
+                    this.level.addParticle(ParticleTypes.BUBBLE, x - motion.x * 0.25D, y - motion.y * 0.25D, z - motion.z * 0.25D, motion.x, motion.y, motion.z);
+                }
+            } else {
+                this.level.addParticle(ParticleTypes.CLOUD, x - motion.x * 0.25D, y - motion.y * 0.25D, z - motion.z * 0.25D, motion.x, motion.y, motion.z);
+            }
+        }
+    }
 
     public boolean canImpactEntity(Entity entity) {
         if (entity == source) {
@@ -116,18 +131,18 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         return source != null && !entity.isAlliedTo(source);
     }
 
-    public void impactEntity(BlockPos impactPos, List<Entity> entities) {
-        for (Entity entity : entities) {
-            entity.hurt(DamageSource.explosion((LivingEntity) entity),20F);
-        }
+    public void impact(BlockPos impactPos) {
         this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 5.0F, true, Explosion.BlockInteraction.DESTROY);
+        AABB boundingBox = getBoundingBox().inflate(4);
+        List<Entity> entities = level.getEntities(this, boundingBox, this::canImpactEntity);
+        if (!entities.isEmpty()) {
+            for (Entity entity : entities) {
+                entity.hurt(DamageSource.explosion((LivingEntity) entity),50F);
+            }
+        }
         this.discard();
     }
 
-    public void impactBlock(BlockPos impactPos) {
-        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 5.0F, true, Explosion.BlockInteraction.DESTROY);
-        this.discard();
-    }
     @Override
     public void setDeltaMovement(Vec3 motionIn) {
         super.setDeltaMovement(motionIn);
@@ -136,7 +151,6 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         //TODO: This is only being called once, initially. Perhaps call it again to re-adjust.
         ProjectileUtil.rotateTowardsMovement(this, 1);
     }
-
 
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
