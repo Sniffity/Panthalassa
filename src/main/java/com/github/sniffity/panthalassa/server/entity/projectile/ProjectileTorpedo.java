@@ -26,6 +26,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 
 public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnData, IAnimatable {
@@ -50,9 +51,8 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         this.life = 200;
         //deltaMovement is set to the previously defined vector...
         this.setDeltaMovement(acceleration);
-        //The starting position is ever so slightly adjusted.......
+        //The starting position is ever so slightly adjusted, to the center of its bounding box
         //Of note: This will not move the entity, it will simply change what we define as its position for fuutre calculations.
-        //TODO: Is this necessary?
         position = position.add(this.getDeltaMovement()).subtract(0, getBbHeight() / 2, 0);
 
         moveTo(position.x, position.y, position.z, yRot, xRot);
@@ -72,9 +72,10 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         //Define a bounding box....
         AABB boundingBox = getBoundingBox().inflate(0.05);
         //If any of the entities that meet the canImpactEntity condition are within the bounding box...
-        if (!level.getEntities(this, boundingBox, this::canImpactEntity).isEmpty()){
+        List<Entity> entities = level.getEntities(this, boundingBox, this::canImpactEntity);
+        if (!entities.isEmpty()){
             //Proceed to register an impact...
-            impact(new BlockPos(this.position()));
+            impactEntity(new BlockPos(this.position()), entities);
         } else {
             //Else, check for block collision...
             Vec3 position = this.position();
@@ -82,7 +83,7 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
             HitResult raytraceresult = level.clip(new ClipContext(position, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (raytraceresult.getType() != HitResult.Type.MISS){
                 //If there is a collision, proceed to register an impact...
-                impact(new BlockPos(this.position()));
+                impactBlock(new BlockPos(this.position()));
             }
         }
         //Continue moving the projectile along its path...
@@ -97,25 +98,41 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
 
 
     public boolean canImpactEntity(Entity entity) {
-        if (entity == source) return false;
-        if (!entity.isAlive()) return false;
-        if (!(entity instanceof LivingEntity)) return false;
-        if (entity.getRootVehicle() == source) return false;
-        if (entity.isSpectator() || !entity.isPickable() || entity.noPhysics) return false;
+        if (entity == source) {
+            return false;
+        }
+        if (!entity.isAlive()) {
+            return false;
+        }
+        if (!(entity instanceof LivingEntity)) {
+            return false;
+        }
+        if (entity.getRootVehicle() == source) {
+            return false;
+        }
+        if (entity.isSpectator() || !entity.isPickable() || entity.noPhysics) {
+            return false;
+        }
         return source != null && !entity.isAlliedTo(source);
     }
 
-    public void impact(BlockPos impactPos) {
-        //TODO: Does this deal damage?
-        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 20.0F, true, Explosion.BlockInteraction.DESTROY);
+    public void impactEntity(BlockPos impactPos, List<Entity> entities) {
+        for (Entity entity : entities) {
+            entity.hurt(DamageSource.mobAttack(this),)
+        }
+        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 5.0F, true, Explosion.BlockInteraction.DESTROY);
         this.discard();
     }
 
+    public void impactBlock(BlockPos impactPos) {
+        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 5.0F, true, Explosion.BlockInteraction.DESTROY);
+        this.discard();
+    }
     @Override
     public void setDeltaMovement(Vec3 motionIn) {
         super.setDeltaMovement(motionIn);
         //TODO: Examine this
-        //TODO: On render class, rortate bone to match xRot and yRot
+        //TODO: On render class, rotate bone to match xRot and yRot?
         //TODO: This is only being called once, initially. Perhaps call it again to re-adjust.
         ProjectileUtil.rotateTowardsMovement(this, 1);
     }
@@ -148,9 +165,13 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
     }
 
     @Override
-    //TODO: Since torpedoes can't be hurt, they are bouncing away on explosions. Adjust, perhaps override the "bouncing" method
     public boolean hurt(DamageSource source, float amount) {
         return false;
+    }
+
+    @Override
+    public boolean ignoreExplosion() {
+        return true;
     }
 
     @Override
