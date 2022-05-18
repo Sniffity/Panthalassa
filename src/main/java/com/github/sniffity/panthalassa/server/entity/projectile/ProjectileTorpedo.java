@@ -118,7 +118,7 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
 
     public void impactEntity(BlockPos impactPos, List<Entity> entities) {
         for (Entity entity : entities) {
-            entity.hurt(DamageSource.mobAttack(this),)
+            entity.hurt(DamageSource.explosion((LivingEntity) entity),20F);
         }
         this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 5.0F, true, Explosion.BlockInteraction.DESTROY);
         this.discard();
