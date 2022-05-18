@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -18,7 +17,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 
-public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
+public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
 
     protected static final EntityDataAccessor<Float> TORPEDO_COOLDOWN = SynchedEntityData.defineId(VehiclePCSV.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> TORPEDO_COUNT = SynchedEntityData.defineId(VehiclePCSV.class, EntityDataSerializers.INT);
@@ -105,7 +104,8 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
     }
 
 
-
+    //TODO: Perhaps if on TORPEDO_COOLDOWN, apply a different texture, which does not have the torpedoes textured.
+    //TODO: If torpedo count = 0, same
     public void setTorpedoCount(int count)
     {
         this.entityData.set(TORPEDO_COUNT, count);

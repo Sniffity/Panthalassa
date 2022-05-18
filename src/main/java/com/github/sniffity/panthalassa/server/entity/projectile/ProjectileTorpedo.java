@@ -40,13 +40,21 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
 
     public ProjectileTorpedo(EntityType<? extends ProjectileTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
         super(type, source.level);
+        //Direction is taken and a small "push" is added to it, this will very slightly change the direction of this vector...
         direction = direction.add(new Vec3(random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset()));
+        //The new direction unit vector is taken, and then scaled up...
+        //This ensures that all vectors for projectiles are of the same "size", despite their differences in direction...
         double length = direction.length();
         this.acceleration = new Vec3(direction.x / length * getMotionFactor(), direction.y / length * getMotionFactor(), direction.z / length * getMotionFactor());
         this.source = source;
         this.life = 200;
+        //deltaMovement is set to the previously defined vector...
         this.setDeltaMovement(acceleration);
+        //The starting position is ever so slightly adjusted.......
+        //Of note: This will not move the entity, it will simply change what we define as its position for fuutre calculations.
+        //TODO: Is this necessary?
         position = position.add(this.getDeltaMovement()).subtract(0, getBbHeight() / 2, 0);
+
         moveTo(position.x, position.y, position.z, yRot, xRot);
     }
 
@@ -61,7 +69,6 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         super.tick();
 
         //Check for collisions, either with entities or with blocks...
-
         //Define a bounding box....
         AABB boundingBox = getBoundingBox().inflate(0.05);
         //If any of the entities that meet the canImpactEntity condition are within the bounding box...
@@ -78,11 +85,13 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
                 impact(new BlockPos(this.position()));
             }
         }
-        //Continue moving the projectile along its path
+        //Continue moving the projectile along its path...
         Vec3 motion = getDeltaMovement();
         double x = getX() + motion.x;
         double y = getY() + motion.y;
         double z = getZ() + motion.z;
+        //Of note, this will not change the actual position of the entity, it will not move it...
+        //Instead it will update the values we are using to calculate collisions...
         absMoveTo(x, y, z);
     }
 
@@ -97,6 +106,7 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
     }
 
     public void impact(BlockPos impactPos) {
+        //TODO: Does this deal damage?
         this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 20.0F, true, Explosion.BlockInteraction.DESTROY);
         this.discard();
     }
@@ -104,6 +114,9 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
     @Override
     public void setDeltaMovement(Vec3 motionIn) {
         super.setDeltaMovement(motionIn);
+        //TODO: Examine this
+        //TODO: On render class, rortate bone to match xRot and yRot
+        //TODO: This is only being called once, initially. Perhaps call it again to re-adjust.
         ProjectileUtil.rotateTowardsMovement(this, 1);
     }
 
@@ -135,6 +148,7 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
     }
 
     @Override
+    //TODO: Since torpedoes can't be hurt, they are bouncing away on explosions. Adjust, perhaps override the "bouncing" method
     public boolean hurt(DamageSource source, float amount) {
         return false;
     }
