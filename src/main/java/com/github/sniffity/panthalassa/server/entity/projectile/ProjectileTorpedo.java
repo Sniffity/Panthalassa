@@ -18,6 +18,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
@@ -162,4 +167,19 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         this.source = (PanthalassaVehicle) level.getEntity(buffer.readInt());
 
     }
+    public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        return PlayState.STOP;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
+    private final AnimationFactory factory = new AnimationFactory(this);
 }

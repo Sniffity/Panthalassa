@@ -13,25 +13,26 @@
 			"bones": [
 				{
 					"name": "torpedo_right_casing",
-					"pivot": [-0.7, 2, -2.6],
+					"pivot": [3, 2, -3],
+					"rotation": [0, -90, 0],
 					"cubes": [
-						{"origin": [-20.7, 0, -2], "size": [40, 4, 4], "pivot": [-13, -5, -27], "rotation": [0, 0, 0.02158], "uv": [0, 52]}
+						{"origin": [-17, 0, -2], "size": [40, 4, 4], "pivot": [-9, -5, -27], "rotation": [0, 0, 0.02158], "uv": [0, 52]}
 					]
 				},
 				{
 					"name": "torpedo_right_tip",
 					"parent": "torpedo_right_casing",
-					"pivot": [-20.7, 2, -2.6],
+					"pivot": [-53.7, 2, -2.6],
 					"cubes": [
-						{"origin": [-23.2, 0.5, -1.5], "size": [5, 3, 3], "pivot": [-13, -5, -27], "rotation": [0, 0, 0.02158], "uv": [12, 0]}
+						{"origin": [-19, 0.5, -1.5], "size": [5, 3, 3], "pivot": [-46, -5, -27], "rotation": [0, 0, 0.02158], "uv": [12, 0]}
 					]
 				},
 				{
 					"name": "torpedo_right_back",
 					"parent": "torpedo_right_casing",
-					"pivot": [20.3, 2, -2.6],
+					"pivot": [24.3, 2, -2.6],
 					"cubes": [
-						{"origin": [17.8, -0.5, -2.5], "size": [5, 5, 5], "pivot": [-13, -5, -27], "rotation": [0, 0, 0.02158], "uv": [74, 0]}
+						{"origin": [21, -0.5, -2.5], "size": [5, 5, 5], "pivot": [-9, -5, -27], "rotation": [0, 0, 0.02158], "uv": [74, 0]}
 					]
 				}
 			]

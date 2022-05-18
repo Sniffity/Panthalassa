@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.client.events;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
@@ -49,7 +50,9 @@ public class CameraSetupEvent {
             }
             if (vehicle instanceof VehicleAGII) {
                 event.getCamera().move(-calcCameraDistance(12.0, vehicle), yCamera, 0);
-
+            }
+            if (vehicle instanceof VehiclePCSV) {
+                event.getCamera().move(-calcCameraDistance(16.0, vehicle), yCamera, 0);
             }
         } else {
             if (vehicle instanceof VehicleMRSV) {

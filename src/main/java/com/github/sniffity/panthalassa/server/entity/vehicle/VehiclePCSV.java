@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
+import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTorpedo;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -100,7 +101,7 @@ public class VehiclePCSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void respondKeybindSpecial() {
-        //FIRE
+        this.level.addFreshEntity(new ProjectileTorpedo(PanthalassaEntityTypes.TORPEDO.get(), this, this.getEyePosition().subtract(0,2,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
     }
 
 
