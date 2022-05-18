@@ -96,5 +96,7 @@
     "entity.panthalassa.torpedo": "Torpedo",
 
     "item.panthalassa.kronosaurus_meat": "Kronosaurus Meat",
-    "item.panthalassa.cooked_kronosaurus_meat": "Cooked Kronosaurus Meat"
+    "item.panthalassa.cooked_kronosaurus_meat": "Cooked Kronosaurus Meat",
+    "item.panthalassa.megalodon_meat": "Megalodon Meat",
+    "item.panthalassa.cooked_megalodon_meat": "Cooked Megalodon Meat"
 }

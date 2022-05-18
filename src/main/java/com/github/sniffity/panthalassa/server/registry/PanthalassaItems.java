@@ -143,4 +143,12 @@ public class PanthalassaItems {
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
 
+	public static final RegistryObject<Item> MEGALODON_MEAT = ITEMS.register("megalodon_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+
+	public static final RegistryObject<Item> COOKED_MEGALODON_MEAT = ITEMS.register("cooked_megalodon_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+
 }

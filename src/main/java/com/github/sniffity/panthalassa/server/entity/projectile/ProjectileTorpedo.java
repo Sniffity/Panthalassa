@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -52,7 +53,7 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
     @Override
     public void tick() {
         //If the source dies, or the projectile has existed for over 200 ticks, or the chunk the projectile's at is not loaded...
-        if ((!level.isClientSide && (!source.isAlive() || tickCount > life )) || !level.hasChunkAt(this.blockPosition())) {
+        if ((!level.isClientSide && (tickCount > life )) || !level.hasChunkAt(this.blockPosition())) {
             //Remove the projectile...
             this.discard();
             return;
@@ -60,18 +61,23 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         super.tick();
 
         //Check for collisions, either with entities or with blocks...
+
+        //Define a bounding box....
         AABB boundingBox = getBoundingBox().inflate(0.05);
+        //If any of the entities that meet the canImpactEntity condition are within the bounding box...
         if (!level.getEntities(this, boundingBox, this::canImpactEntity).isEmpty()){
+            //Proceed to register an impact...
             impact(new BlockPos(this.position()));
         } else {
+            //Else, check for block collision...
             Vec3 position = this.position();
             Vec3 end = position.add(getDeltaMovement());
             HitResult raytraceresult = level.clip(new ClipContext(position, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (raytraceresult.getType() != HitResult.Type.MISS){
+                //If there is a collision, proceed to register an impact...
                 impact(new BlockPos(this.position()));
             }
         }
-
         //Continue moving the projectile along its path
         Vec3 motion = getDeltaMovement();
         double x = getX() + motion.x;
@@ -90,9 +96,9 @@ public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnD
         return source != null && !entity.isAlliedTo(source);
     }
 
-
     public void impact(BlockPos impactPos) {
-
+        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 20.0F, true, Explosion.BlockInteraction.DESTROY);
+        this.discard();
     }
 
     @Override
