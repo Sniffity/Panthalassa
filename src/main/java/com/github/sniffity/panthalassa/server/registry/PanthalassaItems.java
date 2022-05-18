@@ -7,6 +7,7 @@ import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShe
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemMRSV;
+import com.github.sniffity.panthalassa.server.item.vehicle.ItemPCSV;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorMaterials;
@@ -151,4 +152,6 @@ public class PanthalassaItems {
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
 
+	public static final RegistryObject<Item> PCSV_VEHICLE = ITEMS.register("pcsv_vehicle",
+			() -> new ItemPCSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 }
