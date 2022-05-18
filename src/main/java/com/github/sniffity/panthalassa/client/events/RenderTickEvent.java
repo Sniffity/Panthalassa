@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.client.events;
 
 import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
@@ -54,6 +55,7 @@ public class RenderTickEvent {
         String vehicleText;
         if (vehicle instanceof VehicleMRSV) {
             vehicleText = "MANTA RAY SUBMERSIBLE VEHICLE";
+            game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
             float boostCooldown = ((VehicleMRSV)vehicle).getBoostCooldown();
             String boostCooldownText;
 
@@ -71,6 +73,33 @@ public class RenderTickEvent {
             vehicleText = "ABYSS GLIDER II SUBMERSIBLE VEHICLE";
             game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
         }
+        if (vehicle instanceof VehiclePCSV) {
+            vehicleText = "PROTEUS-CLASS SUBMERSIBLE VEHICLE";
+            game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
+            int torpedoCount = ((VehiclePCSV)vehicle).getTorpedoCount();
+            String torpedoCountText;
+            if (torpedoCount <= 0) {
+                torpedoCountText = "EMPTY";
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.GREEN + torpedoCountText, 10, 95, Color.WHITE.getRGB());
+
+            } else {
+                torpedoCountText = new DecimalFormat("00").format(torpedoCount);
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.YELLOW + torpedoCountText, 10, 95, Color.WHITE.getRGB());
+            }
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.GREEN + torpedoCount, 10, 95, Color.WHITE.getRGB());
+            
+            float torpedoCooldown = ((VehiclePCSV)vehicle).getTorpedoCooldown();
+            String torpedoCooldownText;
+            if (torpedoCooldown < 0) {
+                torpedoCooldownText = "TORPEDO READY";
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.GREEN + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+
+            } else {
+                torpedoCooldownText = new DecimalFormat("00").format(torpedoCooldown);
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.YELLOW + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+            }
+        }
+
 
         String vehicleIntegrity;
         if (vehicle.getMaxHealth() != 0) {
