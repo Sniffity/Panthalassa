@@ -9,7 +9,7 @@ import com.github.sniffity.panthalassa.client.render.blockentity.RenderHydrother
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderPressureEqualizer;
 import com.github.sniffity.panthalassa.client.render.display.RenderGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.client.render.entity.*;
-import com.github.sniffity.panthalassa.client.render.projectile.RenderTorpedo;
+import com.github.sniffity.panthalassa.client.render.projectile.RenderBlastTorpedo;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderPCSV;
@@ -35,7 +35,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
@@ -89,8 +88,8 @@ public class ClientHandler {
                 RenderPressureEqualizer::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.PCSV.get(),
                 RenderPCSV::new);
-        event.registerEntityRenderer(PanthalassaEntityTypes.TORPEDO.get(),
-                RenderTorpedo::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.BLAST_TORPEDO.get(),
+                RenderBlastTorpedo::new);
     }
 
     @SubscribeEvent

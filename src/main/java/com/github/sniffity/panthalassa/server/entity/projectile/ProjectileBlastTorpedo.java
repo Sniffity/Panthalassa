@@ -2,7 +2,6 @@ package com.github.sniffity.panthalassa.server.entity.projectile;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,17 +30,17 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 
-public class ProjectileTorpedo extends Entity implements IEntityAdditionalSpawnData, IAnimatable {
+public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalSpawnData, IAnimatable {
     @Nullable
     public PanthalassaVehicle source;
     public Vec3 acceleration;
     public float life;
 
-    public ProjectileTorpedo(EntityType<?> type, Level level) {
+    public ProjectileBlastTorpedo(EntityType<?> type, Level level) {
         super(type, level);
     }
 
-    public ProjectileTorpedo(EntityType<? extends ProjectileTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
+    public ProjectileBlastTorpedo(EntityType<? extends ProjectileBlastTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
         super(type, source.level);
         //Direction is taken and a small "push" is added to it, this will very slightly change the direction of this vector...
         direction = direction.add(new Vec3(random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset()));

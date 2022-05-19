@@ -95,7 +95,7 @@
     "item.panthalassa.genome_vraxails": "Genome: Vraxails",
 
     "entity.panthalassa.proteus_class_submersible_vehicle": "Proteus-class Submersible Vehicle",
-    "entity.panthalassa.torpedo": "Torpedo",
+    "entity.panthalassa.blast_torpedo": "Blast Torpedo",
 
     "item.panthalassa.kronosaurus_meat": "Kronosaurus Meat",
     "item.panthalassa.cooked_kronosaurus_meat": "Cooked Kronosaurus Meat",
@@ -106,5 +106,7 @@
     "item.panthalassa.megalodon_meat": "Megalodon Meat",
     "item.panthalassa.cooked_megalodon_meat": "Cooked Megalodon Meat",
 
-    "item.panthalassa.pcsv_vehicle": "Proteus-class Submersible Vehicle"
+    "item.panthalassa.pcsv_vehicle": "Proteus-class Submersible Vehicle",
+    "item.panthalassa.blast_torpedo": "Blast Torpedo"
+
 }

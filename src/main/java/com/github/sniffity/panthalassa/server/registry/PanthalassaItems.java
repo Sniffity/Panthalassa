@@ -180,4 +180,9 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> COOKED_MEGALODON_MEAT = ITEMS.register("cooked_megalodon_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+
+	public static final RegistryObject<Item> BLAST_TORPEDO = ITEMS.register("blast_torpedo",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+
 }

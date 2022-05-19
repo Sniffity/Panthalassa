@@ -3,7 +3,7 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
-import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTorpedo;
+import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
@@ -96,9 +96,9 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "proteus_class_submersible_vehicle").toString()));
 
-    public static final RegistryObject<EntityType<ProjectileTorpedo>> TORPEDO = ENTITY_TYPES.register ("torpedo",()->
+    public static final RegistryObject<EntityType<ProjectileBlastTorpedo>> BLAST_TORPEDO = ENTITY_TYPES.register ("blast_torpedo",()->
             EntityType.Builder
-                    .<ProjectileTorpedo>of(ProjectileTorpedo::new,MobCategory.MISC)
+                    .<ProjectileBlastTorpedo>of(ProjectileBlastTorpedo::new,MobCategory.MISC)
                     .sized(0.5F, 0.5F)
-                    .build(new ResourceLocation(Panthalassa.MODID, "torpedo").toString()));
+                    .build(new ResourceLocation(Panthalassa.MODID, "blast_torpedo").toString()));
 }
