@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.item.*;
+import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
@@ -106,9 +107,18 @@ public class PanthalassaItems {
 					0x340c0c,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
-	public static final RegistryObject<Item> DIVING_SUIT_HELM = ITEMS.register("diving_suit_helmet",
+	public static final RegistryObject<Item> DIVING_SUIT_HELMET = ITEMS.register("diving_suit_helmet",
 			() -> new ItemDivingSuit(
-					ArmorMaterials.IRON, EquipmentSlot.HEAD).setArmorTexture("diving_suit_layer_1"));
+					ArmorMaterials.IRON, EquipmentSlot.HEAD));
+	public static final RegistryObject<Item> DIVING_SUIT_CHEST = ITEMS.register("diving_suit_chest",
+			() -> new ItemDivingSuit(
+					ArmorMaterials.IRON, EquipmentSlot.CHEST));
+	public static final RegistryObject<Item> DIVING_SUIT_LEGS = ITEMS.register("diving_suit_legs",
+			() -> new ItemDivingSuit(
+					ArmorMaterials.IRON, EquipmentSlot.LEGS));
+	public static final RegistryObject<Item> DIVING_SUIT_BOOTS = ITEMS.register("diving_suit_boots",
+			() -> new ItemDivingSuit(
+					ArmorMaterials.IRON, EquipmentSlot.FEET));
 
 	public static final RegistryObject<Item> PRESSURE_EQUALIZER_MATRIX = ITEMS.register("pressure_equalizer_matrix",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
