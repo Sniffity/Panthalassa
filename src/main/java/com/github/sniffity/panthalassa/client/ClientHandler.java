@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
+import com.github.sniffity.panthalassa.client.render.armor.RenderDivingSuit;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderHydrothermalVent;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderPressureEqualizer;
 import com.github.sniffity.panthalassa.client.render.display.RenderGiantOrthoconeShell;
@@ -12,6 +13,7 @@ import com.github.sniffity.panthalassa.client.render.projectile.RenderTorpedo;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderPCSV;
+import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
@@ -33,7 +35,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.lwjgl.glfw.GLFW;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -87,6 +91,11 @@ public class ClientHandler {
                 RenderPCSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.TORPEDO.get(),
                 RenderTorpedo::new);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(final EntityRenderersEvent.AddLayers event) {
+        GeoArmorRenderer.registerArmorRenderer(ItemDivingSuit.class, new RenderDivingSuit());
     }
 
     public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
