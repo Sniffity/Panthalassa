@@ -80,7 +80,7 @@ public class RenderTickEvent {
             String torpedoCountText;
             if (torpedoCount <= 0) {
                 torpedoCountText = "EMPTY";
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.GREEN + torpedoCountText, 10, 85, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.RED + torpedoCountText, 10, 85, Color.WHITE.getRGB());
             } else {
                 torpedoCountText = new DecimalFormat("00").format(torpedoCount);
                 game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.YELLOW + torpedoCountText, 10, 85, Color.WHITE.getRGB());
@@ -88,16 +88,20 @@ public class RenderTickEvent {
 
             float torpedoCooldown = ((VehiclePCSV)vehicle).getTorpedoCooldown();
             String torpedoCooldownText;
-            if (torpedoCooldown < 0) {
-                torpedoCooldownText = "TORPEDO READY";
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.GREEN + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+            if (torpedoCount > 0) {
+                if (torpedoCooldown < 0) {
+                    torpedoCooldownText = "TORPEDO READY";
+                    game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.GREEN + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
 
+                } else {
+                    torpedoCooldownText = new DecimalFormat("00").format(torpedoCooldown);
+                    game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.YELLOW + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+                }
             } else {
-                torpedoCooldownText = new DecimalFormat("00").format(torpedoCooldown);
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.YELLOW + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+                torpedoCooldownText = "EMPTY";
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.RED + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
             }
         }
-
 
         String vehicleIntegrity;
         if (vehicle.getMaxHealth() != 0) {

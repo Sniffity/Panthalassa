@@ -99,7 +99,7 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
     @Override
     public void respondKeybindSpecial() {
         if (!this.level.isClientSide && this.getTorpedoCooldown() < 0 && this.getTorpedoCount() > 0) {
-            this.level.addFreshEntity(new ProjectileTorpedo(PanthalassaEntityTypes.TORPEDO.get(), this, this.getEyePosition().subtract(0,2,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
+            this.level.addFreshEntity(new ProjectileTorpedo(PanthalassaEntityTypes.TORPEDO.get(), this, this.getEyePosition().subtract(0,1,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
             this.setTorpedoCooldown(100);
             this.setTorpedoCount(this.getTorpedoCount()-1);
         }
