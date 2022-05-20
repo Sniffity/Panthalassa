@@ -641,4 +641,8 @@ public class PanthalassaVehicle extends Entity {
         setLightsOn(!getLightsOn());
     }
 
+    @Override
+    public boolean fireImmune(){
+        return true;
+    }
 }
