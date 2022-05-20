@@ -1,16 +1,17 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -38,6 +39,7 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
         super(type, world);
         this.waterSpeed = 0.042F;
         this.landSpeed = 0.004F;
+        this.itemStack = new ItemStack(PanthalassaItems.MRSV_VEHICLE.get(),1);
     }
 
     public VehicleMRSV(Level p_i1705_1_, double x, double y, double z) {

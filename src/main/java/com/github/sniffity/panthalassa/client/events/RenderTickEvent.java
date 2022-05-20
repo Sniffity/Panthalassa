@@ -107,11 +107,11 @@ public class RenderTickEvent {
         if (vehicle.getMaxHealth() != 0) {
             vehicleIntegrity = new DecimalFormat("00").format((vehicle.getHealth() / vehicle.getMaxHealth()) * 100);
             if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>50){
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.GREEN + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.GREEN + vehicleIntegrity + ChatFormatting.GREEN + "%", 10, 25, Color.WHITE.getRGB());
             } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>20){
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.YELLOW + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.YELLOW + vehicleIntegrity + ChatFormatting.YELLOW + "%", 10, 25, Color.WHITE.getRGB());
             } else if (((vehicle.getHealth()/vehicle.getMaxHealth())*100)>0){
-                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.RED + vehicleIntegrity, 10, 25, Color.WHITE.getRGB());
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.RED + vehicleIntegrity + ChatFormatting.RED + "%", 10, 25, Color.WHITE.getRGB());
             } else {
                 game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Vehicle Integrity: " + ChatFormatting.DARK_PURPLE + "processing...", 10, 25, Color.WHITE.getRGB());
             }

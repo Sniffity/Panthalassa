@@ -184,5 +184,7 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> BLAST_TORPEDO = ITEMS.register("blast_torpedo",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> VEHICLE_PICKUP_TOOL = ITEMS.register("vehicle_pickup_tool",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 }

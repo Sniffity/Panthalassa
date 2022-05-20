@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
@@ -36,6 +38,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         super(type, world);
         this.waterSpeed = 0.032F;
         this.landSpeed = 0.004F;
+        this.itemStack = new ItemStack(PanthalassaItems.AGII_VEHICLE.get(),1);
     }
 
     public VehicleAGII(Level p_i1705_1_, double x, double y, double z) {

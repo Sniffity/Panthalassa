@@ -1,6 +1,9 @@
 package com.github.sniffity.panthalassa.server.item.vehicle;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -9,14 +12,18 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle.VEHICLE_HEALTH;
 
 public class ItemMRSV extends Item {
     private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
@@ -52,6 +59,9 @@ public class ItemMRSV extends Item {
                     return InteractionResultHolder.fail(itemstack);
                 } else {
                     if (!worldIn.isClientSide) {
+                        if (itemstack.getTag() != null) {
+                            vehicleMRSV.setHealth(itemstack.getTag().getFloat(VEHICLE_HEALTH));
+                        }
                         worldIn.addFreshEntity(vehicleMRSV);
                         if (!player.getAbilities().instabuild) {
                             itemstack.shrink(1);
@@ -64,6 +74,14 @@ public class ItemMRSV extends Item {
             } else {
                 return InteractionResultHolder.pass(itemstack);
             }
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        if  (stack.getTag() != null) {
+            Float health = stack.getTag().getFloat(VEHICLE_HEALTH);
+            tooltip.add(new TextComponent("Vehicle Health: ").append(new TextComponent(health.toString())).withStyle(ChatFormatting.YELLOW));
         }
     }
 }

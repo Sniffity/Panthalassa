@@ -1,12 +1,17 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
-import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTorpedo;
+import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -27,6 +32,7 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
         super(type, world);
         this.waterSpeed = 0.060F;
         this.landSpeed = 0.006F;
+        this.itemStack = new ItemStack(PanthalassaItems.PCSV_VEHICLE.get(),1);
     }
 
     public VehiclePCSV(Level p_i1705_1_, double x, double y, double z) {
@@ -99,14 +105,24 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
     @Override
     public void respondKeybindSpecial() {
         if (!this.level.isClientSide && this.getTorpedoCooldown() < 0 && this.getTorpedoCount() > 0) {
-            this.level.addFreshEntity(new ProjectileTorpedo(PanthalassaEntityTypes.TORPEDO.get(), this, this.getEyePosition().subtract(0,1,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
+            this.level.addFreshEntity(new ProjectileBlastTorpedo(PanthalassaEntityTypes.BLAST_TORPEDO.get(), this, this.getEyePosition().subtract(0,1,0), Vec3.directionFromRotation(this.xRot, this.yRot)));
             this.setTorpedoCooldown(100);
             this.setTorpedoCount(this.getTorpedoCount()-1);
         }
     }
 
-
-
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (player.isShiftKeyDown() && stack.getItem() == PanthalassaItems.BLAST_TORPEDO.get() && this.getTorpedoCount()<10) {
+            this.setTorpedoCount(this.getTorpedoCount()+1);
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return super.interact(player,hand);
+    }
 
     //TODO: Perhaps if on TORPEDO_COOLDOWN, apply a different texture, which does not have the torpedoes textured.
     //TODO: If torpedo count = 0, same

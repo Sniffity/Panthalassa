@@ -2,6 +2,9 @@ package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,6 +79,8 @@ public class PanthalassaVehicle extends Entity {
     public BlockState blockLightWater = PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState();
     public BlockState blockLightAir = PanthalassaBlocks.LIGHT_AIR.get().defaultBlockState();
     public ResourceKey<Level> prevDimension;
+    public ItemStack itemStack;
+    public static final String VEHICLE_HEALTH = "VehicleHealth";
 
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, Level worldIn) {
@@ -84,7 +89,6 @@ public class PanthalassaVehicle extends Entity {
 
     @Override
     protected void defineSynchedData() {
-
         this.entityData.define(NLF_DISTANCE, -1.00F);
         this.entityData.define(FLOOR_DISTANCE, -1);
         this.entityData.define(LIGHTS_ON, Boolean.FALSE);
@@ -168,6 +172,17 @@ public class PanthalassaVehicle extends Entity {
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!this.level.isClientSide && player.isShiftKeyDown() && stack.getItem() == PanthalassaItems.VEHICLE_PICKUP_TOOL.get()) {
+            if (isRemoved())
+                return InteractionResult.PASS;
+            this.discard();
+            CompoundTag tag = itemStack.getOrCreateTag();
+            tag.putFloat(VEHICLE_HEALTH,this.getHealth());
+            itemStack.setTag(tag);
+            this.spawnAtLocation(itemStack, 0.0F);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         if (!this.level.isClientSide && canAddPassenger(this)) {
             return player.startRiding(this) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
         } else {
