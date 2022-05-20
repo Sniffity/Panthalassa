@@ -29,6 +29,15 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/**
+ * Panthalassa Mod - Class: ProjectileBlastTorpedo <br></br?>
+ *
+ * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
+ *
+ * Acknowledgements: The following class was developed after studying how Wyrmroost
+ * implements projectiles generated from entities.
+ */
+
 
 public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalSpawnData, IAnimatable {
     @Nullable
