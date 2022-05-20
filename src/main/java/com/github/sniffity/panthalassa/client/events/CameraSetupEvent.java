@@ -61,6 +61,9 @@ public class CameraSetupEvent {
             if (vehicle instanceof VehicleAGII) {
                 event.getCamera().move(-calcCameraDistance(-2.0, vehicle), yCamera, 0);
             }
+            if (vehicle instanceof VehiclePCSV) {
+                event.getCamera().move(-calcCameraDistance(-2.0, vehicle), yCamera, 0);
+            }
         }
     }
 
@@ -93,4 +96,3 @@ public class CameraSetupEvent {
         return startingDistance;
     }
 }
-
