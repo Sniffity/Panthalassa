@@ -4,353 +4,436 @@
 		{
 			"description": {
 				"identifier": "geometry.unknown",
-				"texture_width": 256,
-				"texture_height": 256,
-				"visible_bounds_width": 12,
-				"visible_bounds_height": 3.5,
-				"visible_bounds_offset": [0, 1.25, 0]
+				"texture_width": 512,
+				"texture_height": 512,
+				"visible_bounds_width": 14,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
 			},
 			"bones": [
 				{
 					"name": "cockpit",
-					"pivot": [0, 16, -30],
-					"rotation": [6.8, 0, 0],
+					"pivot": [0, 16, -1],
 					"cubes": [
-						{"origin": [-11, 5, -45], "size": [22, 22, 30], "uv": [0, 0]}
-					]
-				},
-				{
-					"name": "chassis",
-					"parent": "cockpit",
-					"pivot": [0, 16, -18],
-					"cubes": [
-						{"origin": [-13, 3, -18.5], "size": [26, 26, 20], "uv": [104, 0]}
-					]
-				},
-				{
-					"name": "chassis_2",
-					"parent": "chassis",
-					"pivot": [0, 16, -1.4],
-					"rotation": [-10, 0, 0],
-					"cubes": [
-						{"origin": [-10, 6, -1.4], "size": [20, 20, 26], "uv": [78, 46]}
-					]
-				},
-				{
-					"name": "wing_right",
-					"parent": "chassis_2",
-					"pivot": [20, 18, 16.6],
-					"rotation": [-10, -19, 22],
-					"cubes": [
-						{"origin": [4, 16.5, 7.6], "size": [32, 3, 18], "uv": [144, 46]}
-					]
-				},
-				{
-					"name": "wing_right_2",
-					"parent": "wing_right",
-					"pivot": [37.3, 18, 26.5],
-					"rotation": [0, -56.6, 0],
-					"cubes": [
-						{"origin": [21.3, 16.5, 17.5], "size": [32, 3, 18], "uv": [152, 74]}
-					]
-				},
-				{
-					"name": "wing_right_3",
-					"parent": "wing_right_2",
-					"pivot": [53.3, 18, 19.2],
-					"rotation": [0, 55, 0],
-					"cubes": [
-						{"origin": [39.8, 16.5, 10.2], "size": [27, 3, 18], "uv": [0, 74]}
-					]
-				},
-				{
-					"name": "torpedo_right_support",
-					"parent": "wing_right_2",
-					"pivot": [18.3, 13, 26.5],
-					"rotation": [-4, 0, 0],
-					"cubes": [
-						{"origin": [16.8, 8, 25], "size": [3, 10, 3], "uv": [0, 0]}
-					]
-				},
-				{
-					"name": "torpedo_right_casing",
-					"parent": "torpedo_right_support",
-					"pivot": [12.3, 7, 24.4],
-					"rotation": [-48, -14, -8],
-					"cubes": [
-						{"origin": [-7.7, 5, 22.4], "size": [40, 4, 4], "uv": [0, 52]}
-					]
-				},
-				{
-					"name": "torpedo_right_tip",
-					"parent": "torpedo_right_casing",
-					"pivot": [-7.7, 7, 24.4],
-					"cubes": [
-						{"origin": [-10.2, 5.5, 22.9], "size": [5, 3, 3], "uv": [12, 0]}
-					]
-				},
-				{
-					"name": "torpedo_right_back",
-					"parent": "torpedo_right_casing",
-					"pivot": [33.3, 7, 24.4],
-					"cubes": [
-						{"origin": [30.8, 4.5, 21.9], "size": [5, 5, 5], "uv": [74, 0]}
-					]
-				},
-				{
-					"name": "wing_left",
-					"parent": "chassis_2",
-					"pivot": [-20, 18, 16.7],
-					"rotation": [-10, 19, -22],
-					"cubes": [
-						{"origin": [-36, 16.5, 7.7], "size": [32, 3, 18], "uv": [0, 95]}
-					]
-				},
-				{
-					"name": "wing_left_2",
-					"parent": "wing_left",
-					"pivot": [-37.3, 18, 26.6],
-					"rotation": [0, 56.6, 0],
-					"cubes": [
-						{"origin": [-53.3, 16.5, 17.6], "size": [32, 3, 18], "uv": [100, 95]}
-					]
-				},
-				{
-					"name": "wing_left_3",
-					"parent": "wing_left_2",
-					"pivot": [-53.3, 18, 19.3],
-					"rotation": [0, -55, 0],
-					"cubes": [
-						{"origin": [-66.8, 16.5, 10.3], "size": [27, 3, 18], "uv": [0, 116]}
-					]
-				},
-				{
-					"name": "torpedo_left_support",
-					"parent": "wing_left_2",
-					"pivot": [-18.3, 13, 26.6],
-					"rotation": [-4, 0, 0],
-					"cubes": [
-						{"origin": [-19.8, 8, 25.1], "size": [3, 10, 3], "uv": [94, 0]}
-					]
-				},
-				{
-					"name": "torpedo_left_casing",
-					"parent": "torpedo_left_support",
-					"pivot": [-12.3, 7, 24.5],
-					"rotation": [48, 14, 8],
-					"cubes": [
-						{"origin": [-32.3, 5, 22.5], "size": [40, 4, 4], "uv": [0, 60]}
-					]
-				},
-				{
-					"name": "torpedo_left_tip",
-					"parent": "torpedo_left_casing",
-					"pivot": [7.7, 7, 24.5],
-					"cubes": [
-						{"origin": [5.2, 5.5, 23], "size": [5, 3, 3], "uv": [106, 0]}
-					]
-				},
-				{
-					"name": "torpedo_left_back",
-					"parent": "torpedo_left_casing",
-					"pivot": [-33.3, 7, 24.5],
-					"cubes": [
-						{"origin": [-35.8, 4.5, 22], "size": [5, 5, 5], "uv": [176, 0]}
-					]
-				},
-				{
-					"name": "chassis_3",
-					"parent": "chassis_2",
-					"pivot": [0, 16, 19.4],
-					"rotation": [7, 0, 0],
-					"cubes": [
-						{"origin": [-7.5, 8.5, 19.4], "size": [15, 15, 26], "uv": [64, 116]}
-					]
-				},
-				{
-					"name": "chassis_4",
-					"parent": "chassis_3",
-					"pivot": [0, 16, 40.4],
-					"rotation": [2, 0, 0],
-					"cubes": [
-						{"origin": [-6, 10, 40.4], "size": [12, 12, 32], "uv": [146, 116]}
-					]
-				},
-				{
-					"name": "tail_left",
-					"parent": "chassis_4",
-					"pivot": [0, 16, 66.4],
-					"rotation": [0, 60, 0],
-					"cubes": [
-						{"origin": [-6, 19, 66.4], "size": [12, 3, 32], "uv": [0, 137]}
-					]
-				},
-				{
-					"name": "tail_right",
-					"parent": "chassis_4",
-					"pivot": [0, 16, 65.4],
-					"rotation": [0, -60, 0],
-					"cubes": [
-						{"origin": [-6, 19, 65.4], "size": [12, 3, 32], "uv": [56, 157]}
+						{"origin": [-11, 5, -16], "size": [22, 22, 30], "uv": [290, 0]}
 					]
 				},
 				{
 					"name": "cockpit_interior_back",
 					"parent": "cockpit",
-					"pivot": [0, 15, -20],
+					"pivot": [0, 15, 9],
 					"cubes": [
-						{"origin": [-9.5, 4.5, -20], "size": [19, 19, 1], "uv": [196, 0]}
+						{"origin": [-9.5, 4.5, 9], "size": [19, 19, 1], "uv": [196, 0]}
 					]
 				},
 				{
 					"name": "cockpit_interior_bottom",
 					"parent": "cockpit_interior_back",
-					"pivot": [0, 6.5, -28],
+					"pivot": [0, 6.5, 1],
 					"rotation": [-90, 0, 0],
 					"cubes": [
-						{"origin": [-9.5, -10, -28], "size": [19, 25, 1], "uv": [196, 20]}
+						{"origin": [-9.5, -10, 1], "size": [19, 25, 1], "uv": [196, 20]}
 					]
 				},
 				{
 					"name": "cockpit_control_panel_main",
 					"parent": "cockpit_interior_bottom",
-					"pivot": [0, -7.5, -31.5],
+					"pivot": [0, -7.5, -2.5],
 					"cubes": [
-						{"origin": [-8.5, -10, -35], "size": [17, 6, 7], "uv": [182, 95]}
+						{"origin": [-8.5, -10, -6], "size": [17, 6, 7], "uv": [182, 95]}
 					]
 				},
 				{
 					"name": "cockpit_control_panel",
 					"parent": "cockpit_control_panel_main",
-					"pivot": [0, -5.8, -31],
+					"pivot": [0, -5.8, -2],
 					"rotation": [-60, 0, 0],
 					"cubes": [
-						{"origin": [-8.5, -8.3, -34.5], "size": [17, 5, 3.9], "uv": [202, 108]}
+						{"origin": [-8.5, -8.3, -5.5], "size": [17, 5, 3.9], "uv": [202, 108]}
 					]
 				},
 				{
 					"name": "cockpit_pilot_seat",
 					"parent": "cockpit_interior_back",
-					"pivot": [0, 13.5, -22],
+					"pivot": [0, 13.5, 7],
 					"cubes": [
-						{"origin": [-3.5, 6.5, -22.5], "size": [7, 14, 1], "uv": [236, 0]}
+						{"origin": [-3.5, 6.5, 6.5], "size": [7, 14, 1], "uv": [236, 0]}
 					]
 				},
 				{
 					"name": "cockpit_pilot_seat_base",
 					"parent": "cockpit_pilot_seat",
-					"pivot": [0, 7, -23.5],
+					"pivot": [0, 7, 5.5],
 					"rotation": [90, 0, 0],
 					"cubes": [
-						{"origin": [-3.5, 5, -24], "size": [7, 9, 1], "uv": [12, 6]}
+						{"origin": [-3.5, 5, 5], "size": [7, 9, 1], "uv": [12, 6]}
 					]
 				},
 				{
 					"name": "cockpit_pilot_seat_base_cushion",
 					"parent": "cockpit_pilot_seat_base",
-					"pivot": [0, 7, -22.5],
+					"pivot": [0, 7, 6.5],
 					"cubes": [
-						{"origin": [-2.5, 6, -23], "size": [5, 8, 1], "uv": [106, 6]}
+						{"origin": [-2.5, 6, 6], "size": [5, 8, 1], "uv": [106, 6]}
 					]
 				},
 				{
 					"name": "cockpit_pilot_seat_cushion",
 					"parent": "cockpit_pilot_seat",
-					"pivot": [0, 15.5, -22],
+					"pivot": [0, 15.5, 7],
 					"cubes": [
-						{"origin": [-2.5, 7.5, -23.2], "size": [5, 12, 1], "uv": [74, 10]}
+						{"origin": [-2.5, 7.5, 5.8], "size": [5, 12, 1], "uv": [74, 10]}
 					]
 				},
 				{
 					"name": "cockpitframemain",
 					"parent": "cockpit",
-					"pivot": [12, 28.9, -44.7],
+					"pivot": [12, 28.9, -15.7],
 					"cubes": [
-						{"origin": [-13, 26.9, -45.7], "size": [26, 2, 2], "uv": [144, 67]}
+						{"origin": [-13, 26.9, -16.7], "size": [26, 2, 2], "uv": [144, 67]}
 					]
 				},
 				{
 					"name": "cockpitframeright",
 					"parent": "cockpitframemain",
-					"pivot": [12, 26.9, -44.7],
+					"pivot": [12, 26.9, -15.7],
 					"cubes": [
-						{"origin": [11, 2.9, -45.7], "size": [2, 24, 2], "uv": [236, 15]}
+						{"origin": [11, 2.9, -16.7], "size": [2, 24, 2], "uv": [236, 15]}
 					]
 				},
 				{
 					"name": "cockpitframeleft",
 					"parent": "cockpitframemain",
-					"pivot": [-12, 26.9, -44.7],
+					"pivot": [-12, 26.9, -15.7],
 					"cubes": [
-						{"origin": [-13, 2.9, -45.7], "size": [2, 24, 2], "uv": [244, 15]}
+						{"origin": [-13, 2.9, -16.7], "size": [2, 24, 2], "uv": [244, 15]}
 					]
 				},
 				{
 					"name": "cockpitframetopright",
 					"parent": "cockpitframemain",
-					"pivot": [12, 27.9, -43.7],
+					"pivot": [12, 27.9, -14.7],
 					"cubes": [
-						{"origin": [11, 26.9, -43.7], "size": [2, 2, 26], "uv": [112, 157]}
+						{"origin": [11, 26.9, -14.7], "size": [2, 2, 26], "uv": [112, 157]}
 					]
 				},
 				{
 					"name": "cockpitframetopleft",
 					"parent": "cockpitframemain",
-					"pivot": [-12, 27.9, -43.7],
+					"pivot": [-12, 27.9, -14.7],
 					"cubes": [
-						{"origin": [-13, 26.9, -43.7], "size": [2, 2, 26], "uv": [142, 160]}
+						{"origin": [-13, 26.9, -14.7], "size": [2, 2, 26], "uv": [142, 160]}
 					]
 				},
 				{
 					"name": "cockpitframerightdiagonal",
 					"parent": "cockpitframemain",
-					"pivot": [12, 27.9, -44.7],
+					"pivot": [12, 27.9, -15.7],
 					"rotation": [50, 0, 0],
 					"cubes": [
-						{"origin": [11, -9.1, -45.7], "size": [2, 37, 2], "uv": [244, 41]}
+						{"origin": [11, -9.1, -16.7], "size": [2, 37, 2], "uv": [244, 41]}
 					]
 				},
 				{
 					"name": "cockpitframeleftdiagonal",
 					"parent": "cockpitframemain",
-					"pivot": [-12, 27.9, -44.7],
+					"pivot": [-12, 27.9, -15.7],
 					"rotation": [50, 0, 0],
 					"cubes": [
-						{"origin": [-13, -9.1, -45.7], "size": [2, 37, 2], "uv": [244, 95]}
-					]
-				},
-				{
-					"name": "cockpitfrontdiagonalright",
-					"parent": "cockpitframemain",
-					"pivot": [5, 28.1, -44.7],
-					"rotation": [0, 0, -15],
-					"cubes": [
-						{"origin": [4, 2.1, -45.7], "size": [2, 26, 2], "uv": [146, 116]}
-					]
-				},
-				{
-					"name": "cockpitfrontdiagonalleft",
-					"parent": "cockpitframemain",
-					"pivot": [-5, 28.1, -44.7],
-					"rotation": [0, 0, 15],
-					"cubes": [
-						{"origin": [-6, 2.1, -45.7], "size": [2, 26, 2], "uv": [154, 116]}
+						{"origin": [-13, -9.1, -16.7], "size": [2, 37, 2], "uv": [244, 95]}
 					]
 				},
 				{
 					"name": "cockpitbottom",
 					"parent": "cockpitframemain",
-					"pivot": [12.5, 5.1, -44.7],
+					"pivot": [12.5, 5.1, -15.7],
 					"cubes": [
-						{"origin": [-13.5, 2.1, -45.7], "size": [27, 3, 30], "uv": [114, 188]}
+						{"origin": [-13.5, 1.1, -16.7], "size": [27, 4, 30], "uv": [114, 188]}
 					]
 				},
 				{
 					"name": "cockpitframecenter",
 					"parent": "cockpitframemain",
-					"pivot": [0, 27.9, -44.7],
+					"pivot": [0, 27.9, -15.7],
 					"cubes": [
-						{"origin": [-1, 26.9, -44.7], "size": [2, 2, 28], "uv": [0, 172]}
+						{"origin": [-1, 26.9, -15.7], "size": [2, 2, 28], "uv": [0, 172]}
+					]
+				},
+				{
+					"name": "chassis",
+					"parent": "cockpit",
+					"pivot": [0, 16, 11],
+					"cubes": [
+						{"origin": [-13, 3, 10.5], "size": [26, 26, 20], "uv": [104, 0]}
+					]
+				},
+				{
+					"name": "wing_right",
+					"parent": "chassis",
+					"pivot": [11, 22, 13],
+					"rotation": [0, -17, 7],
+					"cubes": [
+						{"origin": [11, 20, 13], "size": [32, 4, 23], "uv": [274, 106]}
+					]
+				},
+				{
+					"name": "wing_right2",
+					"parent": "wing_right",
+					"pivot": [43, 22, 13],
+					"rotation": [0, -44, 0],
+					"cubes": [
+						{"origin": [43, 20.5, 13], "size": [35, 3, 32], "uv": [264, 186]}
+					]
+				},
+				{
+					"name": "wing_right3",
+					"parent": "wing_right2",
+					"pivot": [67, 22.8, 14],
+					"rotation": [40, 0, 0],
+					"cubes": [
+						{"origin": [56, 22.8, 13], "size": [22, 8, 2], "uv": [144, 276]}
+					]
+				},
+				{
+					"name": "torpedo_right_support",
+					"parent": "wing_right",
+					"pivot": [33, 17, 16],
+					"rotation": [0, -60, 0],
+					"cubes": [
+						{"origin": [31.5, 12, 14.5], "size": [3, 10, 3], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "torpedo_right_casing",
+					"parent": "torpedo_right_support",
+					"pivot": [27, 11, 13.9],
+					"rotation": [-48, -14, -8],
+					"cubes": [
+						{"origin": [7, 9, 11.9], "size": [40, 4, 4], "uv": [0, 52]}
+					]
+				},
+				{
+					"name": "torpedo_right_tip",
+					"parent": "torpedo_right_casing",
+					"pivot": [7, 11, 13.9],
+					"cubes": [
+						{"origin": [4.5, 9.5, 12.4], "size": [5, 3, 3], "uv": [12, 0]}
+					]
+				},
+				{
+					"name": "torpedo_right_back",
+					"parent": "torpedo_right_casing",
+					"pivot": [48, 11, 13.9],
+					"cubes": [
+						{"origin": [45.5, 8.5, 11.4], "size": [5, 5, 5], "uv": [74, 0]}
+					]
+				},
+				{
+					"name": "wing_left",
+					"parent": "chassis",
+					"pivot": [-11, 22, 13],
+					"rotation": [0, 17, -7],
+					"cubes": [
+						{"origin": [-43, 20, 13], "size": [32, 4, 23], "uv": [394, 46]}
+					]
+				},
+				{
+					"name": "wing_lef2",
+					"parent": "wing_left",
+					"pivot": [-43, 22, 13],
+					"rotation": [0, 44, 0],
+					"cubes": [
+						{"origin": [-78, 20.5, 13], "size": [35, 3, 32], "uv": [374, 76]}
+					]
+				},
+				{
+					"name": "wing_left3",
+					"parent": "wing_lef2",
+					"pivot": [-67, 22.8, 14],
+					"rotation": [40, 0, 0],
+					"cubes": [
+						{"origin": [-78, 22.8, 13], "size": [22, 8, 2], "uv": [144, 276]}
+					]
+				},
+				{
+					"name": "torpedo_left_support",
+					"parent": "wing_left",
+					"pivot": [-33, 17, 16],
+					"rotation": [-4, 60, 0],
+					"cubes": [
+						{"origin": [-34.5, 12, 14.5], "size": [3, 10, 3], "uv": [94, 0]}
+					]
+				},
+				{
+					"name": "torpedo_left_casing",
+					"parent": "torpedo_left_support",
+					"pivot": [-27, 11, 13.9],
+					"rotation": [48, 14, 8],
+					"cubes": [
+						{"origin": [-47, 9, 11.9], "size": [40, 4, 4], "uv": [0, 60]}
+					]
+				},
+				{
+					"name": "torpedo_left_tip",
+					"parent": "torpedo_left_casing",
+					"pivot": [-7, 11, 13.9],
+					"cubes": [
+						{"origin": [-9.5, 9.5, 12.4], "size": [5, 3, 3], "uv": [106, 0]}
+					]
+				},
+				{
+					"name": "torpedo_left_back",
+					"parent": "torpedo_left_casing",
+					"pivot": [-48, 11, 13.9],
+					"cubes": [
+						{"origin": [-50.5, 8.5, 11.4], "size": [5, 5, 5], "uv": [176, 0]}
+					]
+				},
+				{
+					"name": "chassis_2",
+					"parent": "chassis",
+					"pivot": [0, 16, 27.6],
+					"rotation": [-3, 0, 0],
+					"cubes": [
+						{"origin": [-10, 6, 27.6], "size": [20, 20, 23], "uv": [73, 56]}
+					]
+				},
+				{
+					"name": "chassis_3",
+					"parent": "chassis_2",
+					"pivot": [0, 16, 48.4],
+					"rotation": [7, 0, 0],
+					"cubes": [
+						{"origin": [-7.5, 8.5, 48.4], "size": [15, 15, 21], "uv": [64, 116]}
+					]
+				},
+				{
+					"name": "chassis_4",
+					"parent": "chassis_3",
+					"pivot": [0, 15, 67.4],
+					"rotation": [10, 0, 0],
+					"cubes": [
+						{"origin": [-6, 13, 67.4], "size": [12, 8, 23], "uv": [236, 246]}
+					]
+				},
+				{
+					"name": "tail6",
+					"parent": "chassis_4",
+					"pivot": [0, 19, 89.2],
+					"rotation": [-14, 0, 0],
+					"cubes": [
+						{"origin": [-7, 10.5, 89.2], "size": [14, 11, 12], "uv": [110, 310]}
+					]
+				},
+				{
+					"name": "tailflipperright3",
+					"parent": "tail6",
+					"pivot": [5.5, 19.5, 94.2],
+					"rotation": [0, 90, 0],
+					"cubes": [
+						{"origin": [-1.5, 18, 94.2], "size": [11, 3, 16], "uv": [90, 240]}
+					]
+				},
+				{
+					"name": "tailflipperright4",
+					"parent": "tailflipperright3",
+					"pivot": [3.3, 19.5, 107.2],
+					"rotation": [0, -23, 0],
+					"cubes": [
+						{"origin": [-0.7, 18.5, 107.2], "size": [8, 2, 10], "uv": [88, 275]}
+					]
+				},
+				{
+					"name": "tailflipperright1",
+					"parent": "tail6",
+					"pivot": [-5.5, 19.5, 94.2],
+					"rotation": [0, 90, -180],
+					"cubes": [
+						{"origin": [-12.5, 18, 94.2], "size": [11, 3, 16], "uv": [90, 240]}
+					]
+				},
+				{
+					"name": "tailflipperright2",
+					"parent": "tailflipperright1",
+					"pivot": [-7.7, 19.5, 107.2],
+					"rotation": [0, -23, 0],
+					"cubes": [
+						{"origin": [-11.7, 18.5, 107.2], "size": [8, 2, 10], "uv": [88, 275]}
+					]
+				},
+				{
+					"name": "enginelegright",
+					"parent": "chassis_2",
+					"pivot": [8, 9, 44.6],
+					"rotation": [0, 0, -48],
+					"cubes": [
+						{"origin": [6.5, 4, 39.6], "size": [3, 5, 10], "uv": [0, 280]}
+					]
+				},
+				{
+					"name": "engineright",
+					"parent": "enginelegright",
+					"pivot": [8, 4, 44.6],
+					"cubes": [
+						{"origin": [4.5, -4, 38.1], "size": [7, 8, 20], "uv": [0, 230]}
+					]
+				},
+				{
+					"name": "enginelegleft",
+					"parent": "chassis_2",
+					"pivot": [-8, 9, 44.6],
+					"rotation": [0, 0, 48],
+					"cubes": [
+						{"origin": [-9.5, 4, 39.6], "size": [3, 5, 10], "uv": [0, 280]}
+					]
+				},
+				{
+					"name": "engineleft",
+					"parent": "enginelegleft",
+					"pivot": [-8, 4, 44.6],
+					"cubes": [
+						{"origin": [-11.5, -4, 38.1], "size": [7, 8, 20], "uv": [0, 230]}
+					]
+				},
+				{
+					"name": "cockpitfront",
+					"parent": "cockpit",
+					"pivot": [0, 27.6, -16],
+					"rotation": [43.3, 0, 0],
+					"cubes": [
+						{"origin": [-11, 9.6, -32], "size": [22, 18, 16], "uv": [290, 310]}
+					]
+				},
+				{
+					"name": "cockpitfrontframeupright",
+					"parent": "cockpitfront",
+					"pivot": [11, 28.6, -16],
+					"cubes": [
+						{"origin": [10, 26.6, -34], "size": [2, 2, 18], "uv": [460, 310]}
+					]
+				},
+				{
+					"name": "cockpitfrontframeupleft",
+					"parent": "cockpitfront",
+					"pivot": [-11, 28.6, -16],
+					"cubes": [
+						{"origin": [-12, 26.6, -34], "size": [2, 2, 18], "uv": [390, 310]}
+					]
+				},
+				{
+					"name": "cockpitfrontframedownright",
+					"parent": "cockpitfront",
+					"pivot": [11, 26.6, -32],
+					"cubes": [
+						{"origin": [10, 8.6, -34], "size": [2, 18, 2], "uv": [440, 350]}
+					]
+				},
+				{
+					"name": "cockpitfrontframedownleft",
+					"parent": "cockpitfront",
+					"pivot": [-11, 26.6, -32],
+					"cubes": [
+						{"origin": [-12, 8.6, -34], "size": [2, 18, 2], "uv": [470, 350]}
 					]
 				}
 			]
