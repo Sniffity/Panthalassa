@@ -12,6 +12,7 @@ import com.github.sniffity.panthalassa.client.render.entity.*;
 import com.github.sniffity.panthalassa.client.render.projectile.RenderBlastTorpedo;
 import com.github.sniffity.panthalassa.client.render.projectile.RenderTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderAGII;
+import com.github.sniffity.panthalassa.client.render.vehicle.RenderECSV;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderMRSV;
 import com.github.sniffity.panthalassa.client.render.vehicle.RenderPCSV;
 import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
@@ -89,6 +90,8 @@ public class ClientHandler {
                 RenderPressureEqualizer::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.PCSV.get(),
                 RenderPCSV::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.ECSV.get(),
+                RenderECSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.BLAST_TORPEDO.get(),
                 RenderBlastTorpedo::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.TRANQUILIZING_TORPEDO.get(),

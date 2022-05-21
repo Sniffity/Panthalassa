@@ -6,6 +6,7 @@ import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoco
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
+import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleECSV;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.world.entity.MobCategory;
@@ -108,4 +109,10 @@ public class PanthalassaEntityTypes {
                     .<ProjectileTranquilizingTorpedo>of(ProjectileTranquilizingTorpedo::new,MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(Panthalassa.MODID, "tranquilizing_torpedo").toString()));
+
+    public static final RegistryObject<EntityType<VehicleECSV>> ECSV = ENTITY_TYPES.register ("epimetheus_class_submersible_vehicle",()->
+            EntityType.Builder
+                    .<VehicleECSV>of(VehicleECSV::new,MobCategory.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "epimetheus_class_submersible_vehicle").toString()));
 }

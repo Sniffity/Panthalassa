@@ -41,7 +41,7 @@ public class ProjectileTranquilizingTorpedo extends Entity implements IEntityAdd
         super(type, level);
     }
 
-    public ProjectileTranquilizingTorpedo(EntityType<? extends ProjectileBlastTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
+    public ProjectileTranquilizingTorpedo(EntityType<? extends ProjectileTranquilizingTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
         super(type, source.level);
         //Direction is taken and a small "push" is added to it, this will very slightly change the direction of this vector...
         direction = direction.add(new Vec3(random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset()));

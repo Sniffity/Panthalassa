@@ -110,5 +110,8 @@
     "item.panthalassa.blast_torpedo": "Blast Torpedo",
     "item.panthalassa.tranquilizing_torpedo": "Tranquilizing Torpedo",
     "item.panthalassa.vehicle_pickup_tool": "Vehicle Pickup Tool",
-    "item.panthalassa.pcsv_cpu": "PCSV CPU"
+    "item.panthalassa.pcsv_cpu": "PCSV CPU",
+
+    "entity.panthalassa.epimetheus_class_submersible_vehicle": "Epimetheus-class Submersible Vehicle",
+    "entity.panthalassa.tranquilizing_torpedo": "Tranquilizing Torpedo"
 }
