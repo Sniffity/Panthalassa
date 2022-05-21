@@ -154,9 +154,6 @@ public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalS
     @Override
     public void setDeltaMovement(Vec3 motionIn) {
         super.setDeltaMovement(motionIn);
-        //TODO: Examine this
-        //TODO: On render class, rotate bone to match xRot and yRot?
-        //TODO: This is only being called once, initially. Perhaps call it again to re-adjust.
         ProjectileUtil.rotateTowardsMovement(this, 1);
     }
 
@@ -169,7 +166,7 @@ public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalS
     }
 
     protected float getMotionFactor() {
-        return 0.95f;
+        return 1.50f;
     }
 
     protected double getAccelerationOffset() {
