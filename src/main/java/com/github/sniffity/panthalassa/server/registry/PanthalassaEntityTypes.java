@@ -104,7 +104,7 @@ public class PanthalassaEntityTypes {
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(Panthalassa.MODID, "blast_torpedo").toString()));
 
-    public static final RegistryObject<EntityType<ProjectileTranquilizingTorpedo>> TRANQUILIZING_TORPEDO = ENTITY_TYPES.register ("blast_torpedo",()->
+    public static final RegistryObject<EntityType<ProjectileTranquilizingTorpedo>> TRANQUILIZING_TORPEDO = ENTITY_TYPES.register ("tranquilizing_torpedo",()->
             EntityType.Builder
                     .<ProjectileTranquilizingTorpedo>of(ProjectileTranquilizingTorpedo::new,MobCategory.MISC)
                     .sized(0.5F, 0.5F)
