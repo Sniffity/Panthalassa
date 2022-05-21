@@ -31,26 +31,17 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * Panthalassa Mod - Class: ProjectileBlastTorpedo <br></br?>
- *
- * Source code: https://github.com/Sniffity/Panthalassa <br></br?>
- *
- * Acknowledgements: The following class was developed after studying how Wyrmroost
- * implements projectiles generated from entities.
- */
-
-public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalSpawnData, IAnimatable {
+public class ProjectileTranquilizingTorpedo extends Entity implements IEntityAdditionalSpawnData, IAnimatable {
     @Nullable
     public PanthalassaVehicle source;
     public Vec3 acceleration;
     public float life;
 
-    public ProjectileBlastTorpedo(EntityType<?> type, Level level) {
+    public ProjectileTranquilizingTorpedo(EntityType<?> type, Level level) {
         super(type, level);
     }
 
-    public ProjectileBlastTorpedo(EntityType<? extends ProjectileBlastTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
+    public ProjectileTranquilizingTorpedo(EntityType<? extends ProjectileBlastTorpedo> type, PanthalassaVehicle source, Vec3 position, Vec3 direction) {
         super(type, source.level);
         //Direction is taken and a small "push" is added to it, this will very slightly change the direction of this vector...
         direction = direction.add(new Vec3(random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset(), random.nextGaussian() * getAccelerationOffset()));
@@ -141,16 +132,20 @@ public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalS
     }
 
     public void impact(BlockPos impactPos) {
-        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 5.0F, true, Explosion.BlockInteraction.DESTROY);
+        this.level.explode(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 0.0F, true, Explosion.BlockInteraction.DESTROY);
         AABB boundingBox = getBoundingBox().inflate(4);
         List<Entity> entities = level.getEntities(this, boundingBox, this::canImpactEntity);
         if (!entities.isEmpty()) {
             for (Entity entity : entities) {
-                entity.hurt(DamageSource.explosion((LivingEntity) entity),50F);
+                if (entity instanceof  LivingEntity) {
+                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1200, 10, true, true));
+                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 1200, 10, true, true));
+                }
             }
         }
         this.discard();
     }
+
 
     @Override
     public void setDeltaMovement(Vec3 motionIn) {

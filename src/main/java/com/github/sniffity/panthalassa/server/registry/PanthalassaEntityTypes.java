@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
+import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
@@ -101,4 +102,10 @@ public class PanthalassaEntityTypes {
                     .<ProjectileBlastTorpedo>of(ProjectileBlastTorpedo::new,MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(Panthalassa.MODID, "blast_torpedo").toString()));
+
+    public static final RegistryObject<EntityType<ProjectileTranquilizingTorpedo>> TRANQUILIZING_TORPEDO = ENTITY_TYPES.register ("blast_torpedo",()->
+            EntityType.Builder
+                    .<ProjectileTranquilizingTorpedo>of(ProjectileTranquilizingTorpedo::new,MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "tranquilizing_torpedo").toString()));
 }
