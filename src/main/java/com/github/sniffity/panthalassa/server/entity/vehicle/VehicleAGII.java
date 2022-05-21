@@ -90,7 +90,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!this.getPassengers().isEmpty()) {
-            if (getNetCatch()) {
+            if (getNetActivated()) {
                 event.getController().setAnimation(new AnimationBuilder()
                         .addAnimation("animation.ag2.swimming_open", true));
             } else {
@@ -99,7 +99,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
             }
             return PlayState.CONTINUE;
         } else {
-            if (getNetCatch()) {
+            if (getNetActivated()) {
                 event.getController().setAnimation(new AnimationBuilder()
                         .addAnimation("animation.ag2.open", true));
             } else {
