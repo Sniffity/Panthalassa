@@ -26,7 +26,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-
 public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     public float deltaRotation;
@@ -69,19 +68,14 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         if (compound.contains("netCatch")) {
             this.setNetCatch(compound.getBoolean("netCatch"));
         }
-
         super.readAdditionalSaveData(compound);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        {
-            compound.putBoolean("netActivated", this.getNetActivated());
-
-            compound.putBoolean("netCatch", this.getNetCatch());
-            super.addAdditionalSaveData(compound);
-        }
-
+        compound.putBoolean("netActivated", this.getNetActivated());
+        compound.putBoolean("netCatch", this.getNetCatch());
+        super.addAdditionalSaveData(compound);
     }
 
     @Override
@@ -89,19 +83,30 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         return this.getPassengers().size() < 2;
     }
 
-
     @Override
     public double getPassengersRidingOffset() {
-        return 0.6D;
+        return 0.3D;
     }
 
-
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (getNetActivated()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ag2.hook_deploy_hold", true));
+        if (!this.getPassengers().isEmpty()) {
+            if (getNetCatch()) {
+                event.getController().setAnimation(new AnimationBuilder()
+                        .addAnimation("animation.ag2.swimming_open", true));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder()
+                        .addAnimation("animation.ag2.swimming_closed", true));
+            }
             return PlayState.CONTINUE;
-        } else{
-            return PlayState.STOP;
+        } else {
+            if (getNetCatch()) {
+                event.getController().setAnimation(new AnimationBuilder()
+                        .addAnimation("animation.ag2.open", true));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder()
+                        .addAnimation("animation.ag2.closed", true));
+            }
+            return PlayState.CONTINUE;
         }
     }
 

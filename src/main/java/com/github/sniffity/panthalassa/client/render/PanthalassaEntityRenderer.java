@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.Entity;
@@ -69,12 +68,12 @@ public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends E
         return this.modelProvider.getTextureLocation(instance);
     }
 
-
     static {
         AnimationController.addModelFetcher((object) -> {
             return object instanceof Entity ? (IAnimatableModel)AnimationUtils.getGeoModelForEntity((Entity)object) : null;
         });
     }
+
     @Override
     protected int getBlockLightLevel(T entityIn, BlockPos partialTicks) {
         return 0;
