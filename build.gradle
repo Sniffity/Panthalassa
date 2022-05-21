@@ -82,6 +82,11 @@ repositories {
     }
 
     maven {
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+
+    maven {
         url "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
@@ -98,6 +103,8 @@ dependencies {
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67:api")
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.15')
     runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0") {transitive = false}
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174")
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
