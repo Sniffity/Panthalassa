@@ -50,7 +50,7 @@ public class VehicleECSV extends PanthalassaVehicle implements IAnimatable {
         this.entityData.define(MAX_HEALTH, 300F);
         this.entityData.define(HEALTH, 300F);
         this.entityData.define(ARMOR, 50F);
-        this.entityData.define(TORPEDO_COOLDOWN, 100F);
+        this.entityData.define(TORPEDO_COOLDOWN, 0F);
         this.entityData.define(TORPEDO_COUNT, 10);
         super.defineSynchedData();
     }
@@ -99,7 +99,9 @@ public class VehicleECSV extends PanthalassaVehicle implements IAnimatable {
 
     @Override
     public void tick() {
-        setTorpedoCooldown(getTorpedoCooldown() - 1);
+        if (this.getTorpedoCooldown()>-1) {
+            setTorpedoCooldown(getTorpedoCooldown() - 1);
+        }
         super.tick();
     }
 

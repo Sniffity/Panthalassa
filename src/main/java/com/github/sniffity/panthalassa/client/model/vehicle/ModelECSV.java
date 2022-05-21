@@ -15,7 +15,11 @@ public class ModelECSV extends AnimatedGeoModel<VehicleECSV>
 
     @Override
     public ResourceLocation getTextureLocation(VehicleECSV object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/ecsv/ecsv.png");
+        if (object.getTorpedoCount() > 0 && object.getTorpedoCooldown() < 0){
+            return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/ecsv/ecsv.png");
+        } else {
+            return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/ecsv/ecsv0.png");
+        }
     }
 
     @Override

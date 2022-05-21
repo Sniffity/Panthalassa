@@ -14,7 +14,11 @@ public class ModelPCSV extends AnimatedGeoModel<VehiclePCSV>
 
     @Override
     public ResourceLocation getTextureLocation(VehiclePCSV object) {
-        return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/pcsv/pcsv.png");
+        if (object.getTorpedoCount() > 0 && object.getTorpedoCooldown() < 0){
+            return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/pcsv/pcsv.png");
+        } else {
+            return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/pcsv/pcsv0.png");
+        }
     }
 
     @Override
