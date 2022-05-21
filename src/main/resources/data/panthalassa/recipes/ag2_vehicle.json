@@ -4,10 +4,14 @@
   [
     "vwv",
     "xyx",
-    "xzx"
+    "uzu"
   ],
   "key":
   {
+    "u":
+    {
+      "item": "panthalassa:hpr_vehicle_propeller"
+    },
     "v":
     {
       "item": "panthalassa:hpr_vehicle_light"
@@ -18,11 +22,11 @@
     },
     "x":
     {
-      "item": "panthalassa:hpr_vehicle_propeller"
+      "item": "panthalassa:hpr_vehicle_chassis"
     },
     "y":
     {
-      "item": "panthalassa:hpr_vehicle_chassis"
+      "item": "minecraft:red_dye"
     },
     "z":
     {
