@@ -108,6 +108,6 @@
 
     "item.panthalassa.pcsv_vehicle": "Proteus-class Submersible Vehicle",
     "item.panthalassa.blast_torpedo": "Blast Torpedo",
-    "item.panthalassa.vehicle_pickup_tool": "Vehicle Pickup Tool"
-
+    "item.panthalassa.vehicle_pickup_tool": "Vehicle Pickup Tool",
+    "item.panthalassa.pcsv_cpu": "PCSV CPU"
 }
