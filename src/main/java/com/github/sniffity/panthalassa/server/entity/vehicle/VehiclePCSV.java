@@ -30,8 +30,8 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
 
     public VehiclePCSV(EntityType<? extends PanthalassaVehicle> type, Level world) {
         super(type, world);
-        this.waterSpeed = 0.060F;
-        this.landSpeed = 0.006F;
+        this.waterSpeed = 0.040F;
+        this.landSpeed = 0.004F;
         this.itemStack = new ItemStack(PanthalassaItems.PCSV_VEHICLE.get(),1);
     }
 
