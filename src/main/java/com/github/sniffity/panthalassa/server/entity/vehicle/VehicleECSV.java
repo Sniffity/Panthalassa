@@ -25,19 +25,19 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class VehicleECSV extends PanthalassaVehicle implements IAnimatable {
 
-    protected static final EntityDataAccessor<Float> TORPEDO_COOLDOWN = SynchedEntityData.defineId(VehiclePCSV.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Integer> TORPEDO_COUNT = SynchedEntityData.defineId(VehiclePCSV.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Float> TORPEDO_COOLDOWN = SynchedEntityData.defineId(VehicleECSV.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Integer> TORPEDO_COUNT = SynchedEntityData.defineId(VehicleECSV.class, EntityDataSerializers.INT);
 
 
     public VehicleECSV(EntityType<? extends PanthalassaVehicle> type, Level world) {
         super(type, world);
         this.waterSpeed = 0.040F;
         this.landSpeed = 0.004F;
-        this.itemStack = new ItemStack(PanthalassaItems.PCSV_VEHICLE.get(),1);
+        this.itemStack = new ItemStack(PanthalassaItems.ECSV_VEHICLE.get(),1);
     }
 
     public VehicleECSV(Level p_i1705_1_, double x, double y, double z) {
-        this(PanthalassaEntityTypes.PCSV.get(), p_i1705_1_);
+        this(PanthalassaEntityTypes.ECSV.get(), p_i1705_1_);
         this.setPos(x, y, z);
         this.setDeltaMovement(Vec3.ZERO);
         this.xo = x;

@@ -645,4 +645,9 @@ public class PanthalassaVehicle extends Entity {
     public boolean fireImmune(){
         return true;
     }
+
+    @Override
+    public boolean ignoreExplosion() {
+        return true;
+    }
 }

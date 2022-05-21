@@ -1,9 +1,7 @@
 package com.github.sniffity.panthalassa.client.render.projectile;
 
-import com.github.sniffity.panthalassa.client.model.projectile.ModelBlastTorpedo;
 import com.github.sniffity.panthalassa.client.model.projectile.ModelTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.client.render.PanthalassaEntityRenderer;
-import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTranquilizingTorpedo;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;

@@ -7,6 +7,7 @@ import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
+import com.github.sniffity.panthalassa.server.item.vehicle.ItemECSV;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemMRSV;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemPCSV;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -193,5 +194,6 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> TRANQUILIZING_TORPEDO = ITEMS.register("tranquilizing_torpedo",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
-
+	public static final RegistryObject<Item> ECSV_VEHICLE = ITEMS.register("ecsv_vehicle",
+			() -> new ItemECSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 }

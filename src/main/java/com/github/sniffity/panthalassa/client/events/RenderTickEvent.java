@@ -1,11 +1,8 @@
 package com.github.sniffity.panthalassa.client.events;
 
 import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
-import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
-import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
+import com.github.sniffity.panthalassa.server.entity.vehicle.*;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
-import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
-import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -87,6 +84,35 @@ public class RenderTickEvent {
             }
 
             float torpedoCooldown = ((VehiclePCSV)vehicle).getTorpedoCooldown();
+            String torpedoCooldownText;
+            if (torpedoCount > 0) {
+                if (torpedoCooldown < 0) {
+                    torpedoCooldownText = "TORPEDO READY";
+                    game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.GREEN + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+
+                } else {
+                    torpedoCooldownText = new DecimalFormat("00").format(torpedoCooldown);
+                    game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.YELLOW + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+                }
+            } else {
+                torpedoCooldownText = "EMPTY";
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Cooldown: " + ChatFormatting.RED + torpedoCooldownText, 10, 95, Color.WHITE.getRGB());
+            }
+        }
+        if (vehicle instanceof VehicleECSV) {
+            vehicleText = "EPIMETHEUS-CLASS SUBMERSIBLE VEHICLE";
+            game.font.drawShadow(matrixStack, ChatFormatting.BOLD + vehicleText, 135, 10, Color.WHITE.getRGB());
+            int torpedoCount = ((VehicleECSV)vehicle).getTorpedoCount();
+            String torpedoCountText;
+            if (torpedoCount <= 0) {
+                torpedoCountText = "EMPTY";
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.RED + torpedoCountText, 10, 85, Color.WHITE.getRGB());
+            } else {
+                torpedoCountText = new DecimalFormat("00").format(torpedoCount);
+                game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Torpedo Count: " + ChatFormatting.YELLOW + torpedoCountText, 10, 85, Color.WHITE.getRGB());
+            }
+
+            float torpedoCooldown = ((VehicleECSV)vehicle).getTorpedoCooldown();
             String torpedoCooldownText;
             if (torpedoCount > 0) {
                 if (torpedoCooldown < 0) {

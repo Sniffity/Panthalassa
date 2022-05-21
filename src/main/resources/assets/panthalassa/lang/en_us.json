@@ -113,5 +113,7 @@
     "item.panthalassa.pcsv_cpu": "PCSV CPU",
 
     "entity.panthalassa.epimetheus_class_submersible_vehicle": "Epimetheus-class Submersible Vehicle",
-    "entity.panthalassa.tranquilizing_torpedo": "Tranquilizing Torpedo"
+    "entity.panthalassa.tranquilizing_torpedo": "Tranquilizing Torpedo",
+
+    "item.panthalassa.ecsv_vehicle": "Epimetheus-class Submersible Vehicle"
 }
