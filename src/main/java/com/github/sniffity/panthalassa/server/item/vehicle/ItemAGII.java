@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle.TEXTURE_VARIANT;
 import static com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle.VEHICLE_HEALTH;
 
 
@@ -62,6 +63,7 @@ public class ItemAGII extends Item {
                     if (!worldIn.isClientSide) {
                         if (itemstack.getTag() != null) {
                             vehicleAGII.setHealth(itemstack.getTag().getFloat(VEHICLE_HEALTH));
+                            vehicleAGII.setTextureVariant(itemstack.getTag().getInt(TEXTURE_VARIANT));
                         }
                         worldIn.addFreshEntity(vehicleAGII);
                         if (!player.getAbilities().instabuild) {
@@ -83,6 +85,44 @@ public class ItemAGII extends Item {
         if  (stack.getTag() != null) {
             Float health = stack.getTag().getFloat(VEHICLE_HEALTH);
             tooltip.add(new TextComponent("Vehicle Health: ").append(new TextComponent(health.toString())).withStyle(ChatFormatting.YELLOW));
+            int texture = stack.getTag().getInt(TEXTURE_VARIANT);
+            String textureString = "";
+            switch (texture) {
+                case 0: textureString = "Black";
+                    break;
+                case 1: textureString = "Red";
+                    break;
+                case 2: textureString = "Green";
+                    break;
+                case 3: textureString = "Brown";
+                    break;
+                case 4: textureString = "Blue";
+                    break;
+                case 5: textureString = "Purple";
+                    break;
+                case 6: textureString = "Cyan";
+                    break;
+                case 7: textureString = "Light gray";
+                    break;
+                case 8: textureString = "Gray";
+                    break;
+                case 9: textureString = "Pink";
+                    break;
+                case 10: textureString = "Lime";
+                    break;
+                case 11: textureString = "Yellow";
+                    break;
+                case 12: textureString = "Light blue";
+                    break;
+                case 13: textureString = "Magenta";
+                    break;
+                case 14: textureString = "Orange";
+                    break;
+                case 15: textureString = "White";
+                    break;
+            }
+            tooltip.add(new TextComponent("Vehicle Color: ").append(new TextComponent(textureString)).withStyle(ChatFormatting.GREEN));
+
         }
     }
 }

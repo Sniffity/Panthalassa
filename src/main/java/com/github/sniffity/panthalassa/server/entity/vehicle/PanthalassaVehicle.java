@@ -181,8 +181,11 @@ public class PanthalassaVehicle extends Entity {
             CompoundTag tag = itemStack.getOrCreateTag();
             tag.putFloat(VEHICLE_HEALTH,this.getHealth());
             itemStack.setTag(tag);
-            if (this instanceof  VehicleMRSV) {
+            if (this instanceof VehicleMRSV) {
                 tag.putInt(TEXTURE_VARIANT,((VehicleMRSV) this).getTextureVariant());
+            }
+            if (this instanceof VehicleAGII) {
+                tag.putInt(TEXTURE_VARIANT,((VehicleAGII) this).getTextureVariant());
             }
             this.spawnAtLocation(itemStack, 0.0F);
             return InteractionResult.sidedSuccess(level.isClientSide);

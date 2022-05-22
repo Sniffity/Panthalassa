@@ -2,6 +2,8 @@ package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +14,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
@@ -32,6 +36,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
 
     protected static final EntityDataAccessor<Boolean> NET_ACTIVATED = SynchedEntityData.defineId(VehicleAGII.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> NET_CATCH = SynchedEntityData.defineId(VehicleAGII.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(VehicleAGII.class, EntityDataSerializers.INT);
 
     public VehicleAGII(EntityType<? extends PanthalassaVehicle> type, Level world) {
         super(type, world);
@@ -56,7 +61,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         this.entityData.define(ARMOR, 40F);
         this.entityData.define(NET_ACTIVATED, Boolean.FALSE);
         this.entityData.define(NET_CATCH, Boolean.FALSE);
-
+        this.entityData.define(TEXTURE_VARIANT, 1);
         super.defineSynchedData();
     }
 
@@ -68,6 +73,9 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
         if (compound.contains("netCatch")) {
             this.setNetCatch(compound.getBoolean("netCatch"));
         }
+        if (compound.contains("textureVariant")) {
+            this.setTextureVariant(compound.getInt("textureVariant"));
+        }
         super.readAdditionalSaveData(compound);
     }
 
@@ -75,6 +83,7 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
     protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putBoolean("netActivated", this.getNetActivated());
         compound.putBoolean("netCatch", this.getNetCatch());
+        compound.putInt("textureVariant", this.getTextureVariant());
         super.addAdditionalSaveData(compound);
     }
 
@@ -232,6 +241,81 @@ public class VehicleAGII extends PanthalassaVehicle  implements IAnimatable {
     public boolean getNetCatch()
     {
         return this.entityData.get(NET_CATCH);
+    }
+
+    public void setTextureVariant(int variant) {
+        this.entityData.set(TEXTURE_VARIANT, variant);
+    }
+
+    public int getTextureVariant()
+    {
+        return this.entityData.get(TEXTURE_VARIANT);
+    }
+
+
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        Item item = stack.getItem();
+        int texture = 0;
+        boolean flag = false;
+        if (item == Items.BLACK_DYE) {
+            texture = 0;
+            flag = true;
+        } else if (item == Items.RED_DYE) {
+            texture = 1;
+            flag = true;
+        } else if (item == Items.GREEN_DYE) {
+            texture = 2;
+            flag = true;
+        } else if (item == Items.BROWN_DYE) {
+            texture = 3;
+            flag = true;
+        } else if (item == Items.BLUE_DYE) {
+            texture = 4;
+            flag = true;
+        }  else if (item == Items.PURPLE_DYE) {
+            texture = 5;
+            flag = true;
+        }  else if (item == Items.CYAN_DYE) {
+            texture = 6;
+            flag = true;
+        } else if (item == Items.LIGHT_GRAY_DYE) {
+            texture = 7;
+            flag = true;
+        } else if (item == Items.GRAY_DYE) {
+            texture = 8;
+            flag = true;
+        }  else if (item == Items.PINK_DYE) {
+            texture = 9;
+            flag = true;
+        } else if (item == Items.LIME_DYE) {
+            texture = 10;
+            flag = true;
+        } else if (item == Items.YELLOW_DYE) {
+            texture = 11;
+            flag = true;
+        } else if (item == Items.LIGHT_BLUE_DYE) {
+            texture = 12;
+            flag = true;
+        } else if (item == Items.MAGENTA_DYE) {
+            texture = 13;
+            flag = true;
+        } else if (item == Items.ORANGE_DYE) {
+            texture = 14;
+            flag = true;
+        } else if (item == Items.WHITE_DYE) {
+            texture = 15;
+            flag = true;
+        }
+        if (flag) {
+            this.setTextureVariant(texture);
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return super.interact(player,hand);
     }
 
     @Override
