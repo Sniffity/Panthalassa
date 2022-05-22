@@ -3,15 +3,11 @@
   "pattern":
   [
     "vwv",
-    "yuy",
+    "yyy",
     "xzx"
   ],
   "key":
   {
-    "u":
-    {
-      "item": "minecraft:yellow_dye"
-    },
     "v":
     {
       "item": "panthalassa:hpr_vehicle_light"

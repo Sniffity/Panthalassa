@@ -81,6 +81,7 @@ public class PanthalassaVehicle extends Entity {
     public ResourceKey<Level> prevDimension;
     public ItemStack itemStack;
     public static final String VEHICLE_HEALTH = "VehicleHealth";
+    public static final String TEXTURE_VARIANT = "TextureVariant";
 
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, Level worldIn) {
@@ -180,6 +181,9 @@ public class PanthalassaVehicle extends Entity {
             CompoundTag tag = itemStack.getOrCreateTag();
             tag.putFloat(VEHICLE_HEALTH,this.getHealth());
             itemStack.setTag(tag);
+            if (this instanceof  VehicleMRSV) {
+                tag.putInt(TEXTURE_VARIANT,((VehicleMRSV) this).getTextureVariant());
+            }
             this.spawnAtLocation(itemStack, 0.0F);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
