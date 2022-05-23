@@ -78,5 +78,4 @@ public class BlockPressureEqualizerBlockEntity extends BlockEntity implements IA
     public AnimationFactory getFactory() {
         return factory;
     }
-
 }
