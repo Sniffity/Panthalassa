@@ -4,7 +4,6 @@ import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.item.*;
 import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
-import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemECSV;
@@ -129,8 +128,7 @@ public class PanthalassaItems {
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
-			() -> new ItemGiantOrthoconeShell(
-					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_CORE = ITEMS.register("creature_synthesizer_core",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
