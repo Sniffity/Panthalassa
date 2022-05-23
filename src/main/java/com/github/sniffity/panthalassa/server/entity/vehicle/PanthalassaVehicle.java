@@ -541,8 +541,8 @@ public class PanthalassaVehicle extends Entity {
             for (Entity testEntity : entities) {
                 if (testEntity instanceof LivingEntity && !(testEntity instanceof Player)) {
                     if (testEntity instanceof PanthalassaEntity) {
-                        if (level.random.nextFloat() < 0.2) {
-                            ((PanthalassaEntity) testEntity).addEffect(new MobEffectInstance(PanthalassaEffects.DISORIENT.get(), 40, 0));
+                        if (level.random.nextFloat() < 0.75) {
+                            ((PanthalassaEntity) testEntity).addEffect(new MobEffectInstance(PanthalassaEffects.DISORIENT.get(), 30, 0));
                         }
                     }
                     float distance = distanceTo(testEntity);
