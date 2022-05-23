@@ -126,8 +126,6 @@ public class VehiclePCSV extends PanthalassaVehicle implements IAnimatable {
         return super.interact(player,hand);
     }
 
-    //TODO: Perhaps if on TORPEDO_COOLDOWN, apply a different texture, which does not have the torpedoes textured.
-    //TODO: If torpedo count = 0, same
     public void setTorpedoCount(int count)
     {
         this.entityData.set(TORPEDO_COUNT, count);
