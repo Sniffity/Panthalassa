@@ -4,6 +4,7 @@ package com.github.sniffity.panthalassa.server.entity.creature.ai;
 import java.util.EnumSet;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,11 +43,12 @@ public class PanthalassaMeleeAttackGoal extends Goal {
         if (!this.attacker.isInWater() && !this.attacker.level.getBlockState(new BlockPos(attacker.position()).below()).is(Blocks.WATER)){
             return false;
         }
-
+        if (this.attacker.hasEffect(PanthalassaEffects.DISORIENT.get())) {
+            return false;
+        }
         if (this.panthalassaEntity.isLandNavigator) {
             return false;
         }
-
         long i = this.attacker.level.getGameTime();
         if (i - this.lastCanUseCheck < 20L) {
             return false;
@@ -73,6 +75,9 @@ public class PanthalassaMeleeAttackGoal extends Goal {
     public boolean canContinueToUse() {
         LivingEntity livingentity = this.attacker.getTarget();
         if (livingentity == null) {
+            return false;
+        }
+        if (this.attacker.hasEffect(PanthalassaEffects.DISORIENT.get())) {
             return false;
         }
         if (!livingentity.isAlive()) {
