@@ -86,17 +86,17 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "abyss_glider_2_submersible_vehicle").toString()));
 
-    public static final RegistryObject<EntityType<DisplayGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell",()->
-            EntityType.Builder
-                    .<DisplayGiantOrthoconeShell>of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
-                    .sized(2.0F, 2.0F)
-                    .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell").toString()));
-
     public static final RegistryObject<EntityType<VehiclePCSV>> PCSV = ENTITY_TYPES.register ("proteus_class_submersible_vehicle",()->
             EntityType.Builder
                     .<VehiclePCSV>of(VehiclePCSV::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "proteus_class_submersible_vehicle").toString()));
+
+    public static final RegistryObject<EntityType<VehicleECSV>> ECSV = ENTITY_TYPES.register ("epimetheus_class_submersible_vehicle",()->
+            EntityType.Builder
+                    .<VehicleECSV>of(VehicleECSV::new,MobCategory.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "epimetheus_class_submersible_vehicle").toString()));
 
     public static final RegistryObject<EntityType<ProjectileBlastTorpedo>> BLAST_TORPEDO = ENTITY_TYPES.register ("blast_torpedo",()->
             EntityType.Builder
@@ -110,9 +110,10 @@ public class PanthalassaEntityTypes {
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(Panthalassa.MODID, "tranquilizing_torpedo").toString()));
 
-    public static final RegistryObject<EntityType<VehicleECSV>> ECSV = ENTITY_TYPES.register ("epimetheus_class_submersible_vehicle",()->
+    public static final RegistryObject<EntityType<DisplayGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell",()->
             EntityType.Builder
-                    .<VehicleECSV>of(VehicleECSV::new,MobCategory.MISC)
+                    .<DisplayGiantOrthoconeShell>of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
-                    .build(new ResourceLocation(Panthalassa.MODID, "epimetheus_class_submersible_vehicle").toString()));
+                    .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell").toString()));
+
 }

@@ -9,7 +9,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class PanthalassaStructures {
-
     public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Panthalassa.MODID);
 
     public static final RegistryObject<StructureFeature<?>> PANTHALASSA_LABORATORY = STRUCTURES.register("panthalassa_laboratory", StructurePanthalassaLaboratory::new);

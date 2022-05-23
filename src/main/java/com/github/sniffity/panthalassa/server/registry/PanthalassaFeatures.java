@@ -5,7 +5,6 @@ import com.github.sniffity.panthalassa.server.world.gen.feature.*;
 import net.minecraft.world.level.levelgen.feature.FossilFeatureConfiguration;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;

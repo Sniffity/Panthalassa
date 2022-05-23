@@ -1,7 +1,6 @@
 package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-
 import com.github.sniffity.panthalassa.server.block.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
@@ -9,11 +8,8 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.Locale;
 
 public class PanthalassaBlocks {
 
@@ -31,6 +27,28 @@ public class PanthalassaBlocks {
                     .sound(SoundType.WOOD)
                     .noOcclusion()));
 
+    public static final RegistryObject<GrowingPlantHeadBlock> KRETHROSS = BLOCKS.register("krethross",
+            () -> new BlockKrethrossTop(BlockBehaviour.Properties.of(Material.WATER_PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .lightLevel((n) -> 15)
+                    .sound(SoundType.WET_GRASS)));
+
+    public static final RegistryObject<GrowingPlantBlock> KRETHROSS_PLANT = BLOCKS.register("krethross_plant",
+            () -> new BlockKrethross(BlockBehaviour.Properties.of(Material.WATER_PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .lightLevel((n) -> 15)
+                    .sound(SoundType.WET_GRASS)));
+
+    public static final RegistryObject<BushBlock> FROSTGRASS = BLOCKS.register("frostgrass",
+            () -> new BlockFrostgrass(BlockBehaviour.Properties.of(Material.WATER_PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.WET_GRASS)));
 
     public static final RegistryObject<Block> PANTHALASSA_SOIL = BLOCKS.register("panthalassa_soil",
             () -> new Block(BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT)
@@ -87,6 +105,7 @@ public class PanthalassaBlocks {
                     .strength(0.5F)
                     .sound(SoundType.SAND)));
 
+
     public static final RegistryObject<Block> LIGHT_AIR = BLOCKS.register("light_air",
             () -> new AirBlock(BlockBehaviour.Properties.of(Material.AIR)
                     .noCollission()
@@ -104,29 +123,6 @@ public class PanthalassaBlocks {
             () -> new LiquidBlock(() -> Fluids.WATER, BlockBehaviour.Properties.of(Material.WATER)
                     .noCollission()
                     .noDrops()));
-
-    public static final RegistryObject<GrowingPlantHeadBlock> KRETHROSS = BLOCKS.register("krethross",
-            () -> new BlockKrethrossTop(BlockBehaviour.Properties.of(Material.WATER_PLANT)
-                    .noCollission()
-                    .randomTicks()
-                    .instabreak()
-                    .lightLevel((n) -> 15)
-                    .sound(SoundType.WET_GRASS)));
-
-    public static final RegistryObject<GrowingPlantBlock> KRETHROSS_PLANT = BLOCKS.register("krethross_plant",
-            () -> new BlockKrethross(BlockBehaviour.Properties.of(Material.WATER_PLANT)
-                    .noCollission()
-                    .randomTicks()
-                    .instabreak()
-                    .lightLevel((n) -> 15)
-                    .sound(SoundType.WET_GRASS)));
-
-    public static final RegistryObject<BushBlock> FROSTGRASS = BLOCKS.register("frostgrass",
-            () -> new BlockFrostgrass(BlockBehaviour.Properties.of(Material.WATER_PLANT)
-                    .noCollission()
-                    .randomTicks()
-                    .instabreak()
-                    .sound(SoundType.WET_GRASS)));
 
     public static final RegistryObject<Block> PRESSURE_EQUALIZER = BLOCKS.register("pressure_equalizer",
             BlockPressureEqualizer::new);
