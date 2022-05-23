@@ -168,6 +168,17 @@ public class RenderTickEvent {
             game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Entry Z: " + ChatFormatting.YELLOW + "???", 10, 65, Color.WHITE.getRGB());
         }
 
+        float sonarCooldown;
+        String sonarCooldownText;
+        sonarCooldown = vehicle.getSonarCooldown();
+        sonarCooldownText = new DecimalFormat ("00").format(sonarCooldown);
+        if (sonarCooldown<0) {
+            sonarCooldownText = "SONAR READY";
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Sonar Cooldown: " + ChatFormatting.YELLOW + sonarCooldownText, 10, 210, Color.WHITE.getRGB());
+        } else {
+            game.font.drawShadow(matrixStack, ChatFormatting.AQUA + "Sonar Cooldown: " + ChatFormatting.YELLOW + sonarCooldownText, 10, 210, Color.WHITE.getRGB());
+        }
+
         double nlfDistance;
         String nlfDistanceText;
         nlfDistance = vehicle.getNLFDistance();

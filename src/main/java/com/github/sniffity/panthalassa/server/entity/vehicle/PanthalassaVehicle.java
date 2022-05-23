@@ -1,7 +1,9 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
+import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEffects;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraftforge.network.NetworkHooks;
+import org.lwjgl.system.CallbackI;
 
 /**
  * Panthalassa Mod - Class: PanthalassaVehicle <br></br?>
@@ -53,12 +56,12 @@ public class PanthalassaVehicle extends Entity {
     protected static final EntityDataAccessor<Float> NLF_DISTANCE = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> FLOOR_DISTANCE = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> LIGHTS_ON = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.BOOLEAN);
-    protected static final EntityDataAccessor<Float> SONAR_LAST_CHECK = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> ENTRY_X = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> ENTRY_Z = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> LIGHT_X = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> LIGHT_Y = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> LIGHT_Z = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Float> SONAR_COOLDOWN = SynchedEntityData.defineId(VehicleMRSV.class, EntityDataSerializers.FLOAT);
 
     public float waterSpeed;
     public float landSpeed;
@@ -93,7 +96,7 @@ public class PanthalassaVehicle extends Entity {
         this.entityData.define(NLF_DISTANCE, -1.00F);
         this.entityData.define(FLOOR_DISTANCE, -1);
         this.entityData.define(LIGHTS_ON, Boolean.FALSE);
-        this.entityData.define(SONAR_LAST_CHECK, 0.00F);
+        this.entityData.define(SONAR_COOLDOWN, 0.00F);
         this.entityData.define(ENTRY_X, 0);
         this.entityData.define(ENTRY_Z, 0);
         this.entityData.define(LIGHT_X, 0);
@@ -122,8 +125,8 @@ public class PanthalassaVehicle extends Entity {
         if (compound.contains("LightsOn")) {
             this.setLightsOn(compound.getBoolean("LightsOn"));
         }
-        if (compound.contains("SonarLastCheck")) {
-            this.setSonarLastCheck(compound.getFloat("SonarLastCheck"));
+        if (compound.contains("SonarCooldown")) {
+            this.setSonarCooldown(compound.getFloat("SonarCooldown"));
         }
         if (compound.contains("LightX")) {
             this.setLightPosX(compound.getInt("LightX"));
@@ -144,7 +147,7 @@ public class PanthalassaVehicle extends Entity {
             compound.putFloat("NLFDistance", this.getNLFDistance());
             compound.putInt("FloorDistance", this.getFloorDistance());
             compound.putBoolean("LightsOn", this.getLightsOn());
-            compound.putFloat("SonarLastCheck", this.getSonarLastCheck());
+            compound.putFloat("SonarCooldown", this.getSonarCooldown());
             compound.putInt("LightX", this.getLightPos().getX());
             compound.putInt("LightY", this.getLightPos().getY());
             compound.putInt("LightZ", this.getLightPos().getZ());
@@ -174,7 +177,7 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!this.level.isClientSide && player.isShiftKeyDown() && stack.getItem() == PanthalassaItems.VEHICLE_PICKUP_TOOL.get()) {
+        if (!this.level.isClientSide && stack.getItem() == PanthalassaItems.VEHICLE_PICKUP_TOOL.get()) {
             if (isRemoved())
                 return InteractionResult.PASS;
             this.discard();
@@ -233,6 +236,10 @@ public class PanthalassaVehicle extends Entity {
         } else if (prevDimension == PanthalassaDimension.PANTHALASSA && this.level.dimension() != PanthalassaDimension.PANTHALASSA) {
             setEntryX(0);
             setEntryZ(0);
+        }
+
+        if (getSonarCooldown()>-1) {
+            setSonarCooldown(getSonarCooldown() - 1);
         }
 
         if (!passengers.isEmpty()) {
@@ -533,11 +540,17 @@ public class PanthalassaVehicle extends Entity {
         if (entities.size() != 0) {
             for (Entity testEntity : entities) {
                 if (testEntity instanceof LivingEntity && !(testEntity instanceof Player)) {
+                    if (testEntity instanceof PanthalassaEntity) {
+                        if (level.random.nextFloat() < 0.2) {
+                            ((PanthalassaEntity) testEntity).addEffect(new MobEffectInstance(PanthalassaEffects.DISORIENT.get(), 40, 0));
+                        }
+                    }
                     float distance = distanceTo(testEntity);
                     if (distance < closestDistance) {
                         closestDistance = distance;
                     }
                 }
+
             }
             if (closestDistance < 20 && closestDistance>0) {
                 return closestDistance;
@@ -580,14 +593,6 @@ public class PanthalassaVehicle extends Entity {
 
     public boolean getLightsOn() {
         return this.entityData.get(LIGHTS_ON);
-    }
-
-    public void setSonarLastCheck(float lastCheck) {
-        this.entityData.set(SONAR_LAST_CHECK,lastCheck);
-    }
-
-    public float getSonarLastCheck() {
-        return this.entityData.get(SONAR_LAST_CHECK);
     }
 
     public void setEntryX(int x) {
@@ -634,8 +639,8 @@ public class PanthalassaVehicle extends Entity {
 
     public void respondKeybindSonar() {
         if (!this.getPassengers().isEmpty()) {
-            if (this.level.getGameTime() - getSonarLastCheck() > 10) {
-                setSonarLastCheck(this.level.getGameTime());
+            if (this.getSonarCooldown() < 0) {
+                this.setSonarCooldown(200);
                 this.checkedNLFDistance = testNLFDistance(this);
                 setNLFDistance(checkedNLFDistance);
                 this.checkedFloorDistance = testFloorDistance(this, this.level);
@@ -656,5 +661,13 @@ public class PanthalassaVehicle extends Entity {
     @Override
     public boolean ignoreExplosion() {
         return true;
+    }
+
+    public void setSonarCooldown(float cooldown) {
+        this.entityData.set(SONAR_COOLDOWN,cooldown);
+    }
+
+    public float getSonarCooldown() {
+        return this.entityData.get(SONAR_COOLDOWN);
     }
 }
