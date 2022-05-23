@@ -188,7 +188,7 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> VEHICLE_PICKUP_TOOL = ITEMS.register("vehicle_pickup_tool",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
-	public static final RegistryObject<Item> PCSV_CPU = ITEMS.register("pcsv_cpu",
+	public static final RegistryObject<Item> TORPEDO_GUIDANCE_SYSTEM = ITEMS.register("torpedo_guidance_system",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> TRANQUILIZING_TORPEDO = ITEMS.register("tranquilizing_torpedo",

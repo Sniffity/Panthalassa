@@ -26,7 +26,7 @@
     },
     "x":
     {
-      "item": "panthalassa:pcsv_cpu"
+      "item": "panthalassa:torpedo_guidance_system"
     },
     "y":
     {
@@ -34,12 +34,12 @@
     },
     "z":
     {
-      "item": "panthalassa:blast_torpedo"
+      "item": "panthalassa:tranquilizing_torpedo"
     }
   },
   "result":
   {
-    "item": "panthalassa:pcsv_vehicle",
+    "item": "panthalassa:ecsv_vehicle",
     "count": 1
   }
 }

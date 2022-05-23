@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "tyw",
+    "vxz",
+    "tyu"
+  ],
+  "key":
+  {
+    "t":
+    {
+      "item": "panthalassa:hpr_vehicle_propeller"
+    },
+    "u":
+    {
+      "item": "panthalassa:hpr_vehicle_light"
+    },
+    "v":
+    {
+      "item": "panthalassa:hpr_vehicle_engine"
+    },
+    "w":
+    {
+      "item": "panthalassa:hpr_vehicle_cockpit"
+    },
+    "x":
+    {
+      "item": "panthalassa:torpedo_guidance_system"
+    },
+    "y":
+    {
+      "item": "panthalassa:hpr_vehicle_chassis"
+    },
+    "z":
+    {
+      "item": "panthalassa:blast_torpedo"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:pcsv_vehicle",
+    "count": 1
+  }
+}
