@@ -4,5 +4,11 @@
       "panthalassa:entity/creature/kronosaurus/kronosaurus_ambient"
     ],
     "subtitle": "subtitles.panthalassa.entity.creature.kronosaurus.kronosaurus_ambient"
+  },
+  "entity.vehicle.vehicle_sonar": {
+    "sounds": [
+      "panthalassa:entity/vehicle/vehicle_sonar"
+    ],
+    "subtitle": "subtitles.panthalassa.entity.vehicle.vehicle_sonar"
   }
 }

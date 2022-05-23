@@ -1,10 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.vehicle;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaEffects;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaItems;
+import com.github.sniffity.panthalassa.server.registry.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,7 +58,7 @@ public class PanthalassaVehicle extends Entity {
     protected static final EntityDataAccessor<Integer> LIGHT_X = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> LIGHT_Y = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> LIGHT_Z = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<Float> SONAR_COOLDOWN = SynchedEntityData.defineId(VehicleMRSV.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> SONAR_COOLDOWN = SynchedEntityData.defineId(PanthalassaVehicle.class, EntityDataSerializers.FLOAT);
 
     public float waterSpeed;
     public float landSpeed;
@@ -629,6 +626,14 @@ public class PanthalassaVehicle extends Entity {
         this.entityData.set(LIGHT_Z, blockPos.getZ());
     }
 
+    public void setSonarCooldown(float cooldown) {
+        this.entityData.set(SONAR_COOLDOWN,cooldown);
+    }
+
+    public float getSonarCooldown() {
+        return this.entityData.get(SONAR_COOLDOWN);
+    }
+
     public BlockPos getLightPos() {
         BlockPos blockpos = new BlockPos (this.entityData.get(LIGHT_X),this.entityData.get(LIGHT_Y), this.entityData.get(LIGHT_Z));
         return blockpos;
@@ -645,6 +650,9 @@ public class PanthalassaVehicle extends Entity {
                 setNLFDistance(checkedNLFDistance);
                 this.checkedFloorDistance = testFloorDistance(this, this.level);
                 setFloorDistance(checkedFloorDistance);
+                if (!this.isSilent()) {
+                    playSound(PanthalassaSounds.VEHICLE_SONAR.get(), 1, 1);
+                }
             }
         }
     }
@@ -663,11 +671,4 @@ public class PanthalassaVehicle extends Entity {
         return true;
     }
 
-    public void setSonarCooldown(float cooldown) {
-        this.entityData.set(SONAR_COOLDOWN,cooldown);
-    }
-
-    public float getSonarCooldown() {
-        return this.entityData.get(SONAR_COOLDOWN);
-    }
 }

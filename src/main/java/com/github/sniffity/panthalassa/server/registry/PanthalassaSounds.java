@@ -11,6 +11,7 @@ public class PanthalassaSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Panthalassa.MODID);
 
     public static final RegistryObject<SoundEvent> KRONOSAURUS_AMBIENT = create("entity.creature.kronosaurus.kronosaurus_ambient");
+    public static final RegistryObject<SoundEvent> VEHICLE_SONAR = create("entity.vehicle.vehicle_sonar");
 
     private static RegistryObject<SoundEvent> create(String name) {
         return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(Panthalassa.MODID, name)));

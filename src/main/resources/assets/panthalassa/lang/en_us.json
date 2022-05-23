@@ -117,5 +117,7 @@
 
     "item.panthalassa.ecsv_vehicle": "Epimetheus-class Submersible Vehicle",
 
-    "effect.panthalassa.disorient": "Disorient"
+    "effect.panthalassa.disorient": "Disorient",
+
+    "subtitles.panthalassa.entity.vehicle.vehicle_sonar": "Sonar ping."
 }
