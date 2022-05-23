@@ -80,14 +80,12 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        {
-            compound.putBoolean("isBoosting", this.getIsBoosting());
-            compound.putFloat("boostCooldown", this.getBoostCooldown());
-            compound.putFloat("boostingTimer", this.getBoostingTimer());
-            compound.putInt("textureVariant", this.getTextureVariant());
+        compound.putBoolean("isBoosting", this.getIsBoosting());
+        compound.putFloat("boostCooldown", this.getBoostCooldown());
+        compound.putFloat("boostingTimer", this.getBoostingTimer());
+        compound.putInt("textureVariant", this.getTextureVariant());
 
-            super.addAdditionalSaveData(compound);
-        }
+        super.addAdditionalSaveData(compound);
     }
 
     @Override
@@ -114,7 +112,9 @@ public class VehicleMRSV extends PanthalassaVehicle  implements IAnimatable {
 
     @Override
     public void tick() {
-        setBoostCooldown(getBoostCooldown() - 1);
+        if (getBoostCooldown()>-1) {
+            setBoostCooldown(getBoostCooldown() - 1);
+        }
         if (getIsBoosting()){
             setBoostingTimer(getBoostingTimer()+1);
             if (getBoostingTimer()>50) {
