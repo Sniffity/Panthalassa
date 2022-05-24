@@ -17,7 +17,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-
 public class PanthalassaItems {
 
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Panthalassa.MODID);
@@ -181,11 +180,11 @@ public class PanthalassaItems {
 
 
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
-			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",
-			() -> new ItemMRSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new ItemMRSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> PCSV_VEHICLE = ITEMS.register("pcsv_vehicle",
-			() -> new ItemPCSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new ItemPCSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> ECSV_VEHICLE = ITEMS.register("ecsv_vehicle",
-			() -> new ItemECSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new ItemECSV(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 }
