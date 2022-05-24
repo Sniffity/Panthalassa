@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 
 import com.github.sniffity.panthalassa.server.item.*;
 import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
+import com.github.sniffity.panthalassa.server.item.display.ItemArchelonShellDisplay;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.display.ItemKronosaurusSkullDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
@@ -145,6 +146,11 @@ public class PanthalassaItems {
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> KRONOSAURUS_SKULL_DISPLAY = ITEMS.register("kronosaurus_skull_display",
 			() -> new ItemKronosaurusSkullDisplay(
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> ARCHELON_SHELL = ITEMS.register("archelon_shell",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> ARCHELON_SHELL_DISPLAY = ITEMS.register("archelon_shell_display",
+			() -> new ItemArchelonShellDisplay(
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> PLIOSAUR_MEAT = ITEMS.register("pliosaur_meat",

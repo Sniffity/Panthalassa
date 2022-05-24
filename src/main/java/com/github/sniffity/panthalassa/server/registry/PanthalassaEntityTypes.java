@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
+import com.github.sniffity.panthalassa.server.entity.display.DisplayArchelonShell;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayKronosaurusSkull;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
@@ -116,11 +117,14 @@ public class PanthalassaEntityTypes {
                     .of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell_display").toString()));
-
     public static final RegistryObject<EntityType<DisplayKronosaurusSkull>> KRONOSAURUS_SKULL = ENTITY_TYPES.register ("kronosaurus_skull_display",()->
             EntityType.Builder
                     .of(DisplayKronosaurusSkull::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus_skull_display").toString()));
-
+    public static final RegistryObject<EntityType<DisplayArchelonShell>> ARCHELON_SHELL = ENTITY_TYPES.register ("archelon_shell_display",()->
+            EntityType.Builder
+                    .of(DisplayArchelonShell::new,MobCategory.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "archelon_shell_display").toString()));
 }

@@ -7,6 +7,7 @@ import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
 import com.github.sniffity.panthalassa.client.render.armor.RenderDivingSuit;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderHydrothermalVent;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderPressureEqualizer;
+import com.github.sniffity.panthalassa.client.render.display.RenderArchelonShell;
 import com.github.sniffity.panthalassa.client.render.display.RenderGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.client.render.display.RenderKronosaurusSkull;
 import com.github.sniffity.panthalassa.client.render.entity.*;
@@ -87,6 +88,8 @@ public class ClientHandler {
                 RenderGiantOrthoconeShell::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.KRONOSAURUS_SKULL.get(),
                 RenderKronosaurusSkull::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.ARCHELON_SHELL.get(),
+                RenderArchelonShell::new);
         event.registerBlockEntityRenderer(PanthalassaBlockEntities.HYDROTHERMAL_VENT_TE.get(),
                 RenderHydrothermalVent::new);
         event.registerBlockEntityRenderer(PanthalassaBlockEntities.PRESSURE_EQUALIZER_TE.get(),
