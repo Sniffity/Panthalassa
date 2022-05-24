@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "panthalassa:panthalassa_portal"
+    },
+    "title": {
+      "translate": "advancements.panthalassa.dimension.title"
+    },
+    "description": {
+      "translate": "advancements.panthalassa.dimension.desc"
+    },
+    "background": "minecraft:textures/block/stone.png",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden" : false
+  },
+  "parent": "panthalassa:root",
+  "criteria": {
+    "example": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "from": "minecraft:overworld",
+        "to": "panthalassa:panthalassa"
+      }
+    }
+  }
+}

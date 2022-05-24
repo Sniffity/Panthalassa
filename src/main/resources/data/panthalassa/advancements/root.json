@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "panthalassa:primordial_stalk"
+    },
+    "title": {
+      "translate": "advancements.panthalassa.root.title"
+    },
+    "description": {
+      "translate": "advancements.panthalassa.root.desc"
+    },
+    "background": "minecraft:textures/block/stone.png",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden" : false
+  },
+  "criteria": {
+    "custom_test_name": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}
