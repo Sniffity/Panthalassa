@@ -22,50 +22,11 @@ public class PanthalassaItems {
 
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Panthalassa.MODID);
 
-	public static final RegistryObject<Item> HPR_GLASS_SPHERE = ITEMS.register("hpr_glass_sphere",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_SEAT = ITEMS.register("hpr_vehicle_seat",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_PANEL = ITEMS.register("hpr_vehicle_panel",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_COCKPIT = ITEMS.register("hpr_vehicle_cockpit",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_CHASSIS = ITEMS.register("hpr_vehicle_chassis",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_PROPELLER = ITEMS.register("hpr_vehicle_propeller",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_ENGINE = ITEMS.register("hpr_vehicle_engine",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> HPR_VEHICLE_LIGHT = ITEMS.register("hpr_vehicle_light",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_CORE = ITEMS.register("creature_synthesizer_core",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_STABILIZER = ITEMS.register("creature_synthesizer_stabilizer",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> GENOME_PREDATOR_Y = ITEMS.register("genome_predator_y",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> GENOME_GHONZUL = ITEMS.register("genome_ghonzul",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> GENOME_VRAXAILS = ITEMS.register("genome_vraxails",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> PRESSURE_EQUALIZER_MATRIX = ITEMS.register("pressure_equalizer_matrix",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> TORPEDO_GUIDANCE_SYSTEM = ITEMS.register("torpedo_guidance_system",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> BLAST_TORPEDO = ITEMS.register("blast_torpedo",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> TRANQUILIZING_TORPEDO = ITEMS.register("tranquilizing_torpedo",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-	public static final RegistryObject<Item> VEHICLE_PICKUP_TOOL = ITEMS.register("vehicle_pickup_tool",
-			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
-
 	public static final RegistryObject<Item> KRONOSAURUS_SPAWN_EGG = ITEMS.register("kronosaurus_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
 					PanthalassaEntityTypes.KRONOSAURUS,
-							0x232E75,
-							0xC0C3DA,
+					0x232E75,
+					0xC0C3DA,
 					(new Item.Properties().tab(PanthalassaItemGroup.GROUP))));
 
 	public static final RegistryObject<Item> MEGALODON_SPAWN_EGG = ITEMS.register("megalodon_spawn_egg",
@@ -124,6 +85,46 @@ public class PanthalassaItems {
 					0x340c0c,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> HPR_GLASS_SPHERE = ITEMS.register("hpr_glass_sphere",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_SEAT = ITEMS.register("hpr_vehicle_seat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_PANEL = ITEMS.register("hpr_vehicle_panel",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_COCKPIT = ITEMS.register("hpr_vehicle_cockpit",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_CHASSIS = ITEMS.register("hpr_vehicle_chassis",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_PROPELLER = ITEMS.register("hpr_vehicle_propeller",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_ENGINE = ITEMS.register("hpr_vehicle_engine",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> HPR_VEHICLE_LIGHT = ITEMS.register("hpr_vehicle_light",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> GIANT_ORTHOCONE_SHELL = ITEMS.register("giant_orthocone_shell",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_CORE = ITEMS.register("creature_synthesizer_core",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> CREATURE_SYNTHESIZER_STABILIZER = ITEMS.register("creature_synthesizer_stabilizer",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> GENOME_PREDATOR_Y = ITEMS.register("genome_predator_y",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> GENOME_GHONZUL = ITEMS.register("genome_ghonzul",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> GENOME_VRAXAILS = ITEMS.register("genome_vraxails",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> PRESSURE_EQUALIZER_MATRIX = ITEMS.register("pressure_equalizer_matrix",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> TORPEDO_GUIDANCE_SYSTEM = ITEMS.register("torpedo_guidance_system",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> BLAST_TORPEDO = ITEMS.register("blast_torpedo",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> TRANQUILIZING_TORPEDO = ITEMS.register("tranquilizing_torpedo",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> VEHICLE_PICKUP_TOOL = ITEMS.register("vehicle_pickup_tool",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
+
 	public static final RegistryObject<Item> DIVING_SUIT_HELMET = ITEMS.register("diving_suit_helmet",
 			() -> new ItemDivingSuit(
 					ArmorMaterials.IRON, EquipmentSlot.HEAD));
@@ -141,30 +142,43 @@ public class PanthalassaItems {
 			() -> new ItemGiantOrthoconeShellDisplay(
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
-	public static final RegistryObject<Item> KRONOSAURUS_MEAT = ITEMS.register("kronosaurus_meat",
+	public static final RegistryObject<Item> PLIOSAUR_MEAT = ITEMS.register("pliosaur_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
-	public static final RegistryObject<Item> COOKED_KRONOSAUURS_MEAT = ITEMS.register("cooked_kronosaurus_meat",
+	public static final RegistryObject<Item> COOKED_PLIOSAUR_MEAT = ITEMS.register("cooked_pliosaur_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
-	public static final RegistryObject<Item> MOSASAURUS_MEAT = ITEMS.register("mosasaurus_meat",
+	public static final RegistryObject<Item> PRIMAL_SHARK_MEAT = ITEMS.register("primal_shark_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
-	public static final RegistryObject<Item> COOKED_MOSASAURUS_MEAT = ITEMS.register("cooked_mosasaurus_meat",
+	public static final RegistryObject<Item> COOKED_PRIMAL_SHARK_MEAT = ITEMS.register("cooked_primal_shark_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
-	public static final RegistryObject<Item> BASILOSAURUS_MEAT = ITEMS.register("basilosaurus_meat",
+	public static final RegistryObject<Item> PRIMAL_TURTLE_MEAT = ITEMS.register("primal_turtle_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
-	public static final RegistryObject<Item> COOKED_BASILOSAURUS_MEAT = ITEMS.register("cooked_basilosaurus_meat",
+	public static final RegistryObject<Item> COOKED_PRIMAL_TURTLE_MEAT = ITEMS.register("cooked_primal_turtle_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
-	public static final RegistryObject<Item> MEGALODON_MEAT = ITEMS.register("megalodon_meat",
+	public static final RegistryObject<Item> PRIMAL_WHALE_MEAT = ITEMS.register("primal_whale_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
-	public static final RegistryObject<Item> COOKED_MEGALODON_MEAT = ITEMS.register("cooked_megalodon_meat",
+	public static final RegistryObject<Item> COOKED_PRIMAL_WHALE_MEAT = ITEMS.register("cooked_primal_whale_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> MOSASAUR_MEAT = ITEMS.register("mosasaur_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+	public static final RegistryObject<Item> COOKED_MOSASAUR_MEAT = ITEMS.register("cooked_mosasaur_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> PRIMAL_FISH_MEAT = ITEMS.register("primal_fish_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+	public static final RegistryObject<Item> COOKED_PRIMAL_FISH_MEAT = ITEMS.register("cooked_primal_fish_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+
 
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
