@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xzx",
+    "xxx",
+    "xyx"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "y":
+    {
+      "item": "minecraft:iron_block"
+    },
+    "z":
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:diving_suit_chest",
+    "count": 1
+  }
+}

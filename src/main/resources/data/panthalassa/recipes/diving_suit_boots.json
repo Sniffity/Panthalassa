@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "   ",
+    "xyx",
+    "xyx"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    "y":
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:diving_suit_boots",
+    "count": 1
+  }
+}
