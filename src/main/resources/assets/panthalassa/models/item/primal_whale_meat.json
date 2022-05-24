@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "panthalassa:item/basilosaurus_meat"
+    "layer0": "panthalassa:item/primal_whale_meat"
   }
 }

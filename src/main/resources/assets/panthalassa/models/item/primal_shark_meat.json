@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "panthalassa:item/megalodon_meat"
+    "layer0": "panthalassa:item/primal_shark_meat"
   }
 }
