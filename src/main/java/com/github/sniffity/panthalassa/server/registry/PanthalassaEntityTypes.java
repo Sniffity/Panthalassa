@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
+import com.github.sniffity.panthalassa.server.entity.display.DisplayKronosaurusSkull;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
@@ -110,10 +111,16 @@ public class PanthalassaEntityTypes {
                     .sized(0.5F, 0.5F)
                     .build(new ResourceLocation(Panthalassa.MODID, "tranquilizing_torpedo").toString()));
 
-    public static final RegistryObject<EntityType<DisplayGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell",()->
+    public static final RegistryObject<EntityType<DisplayGiantOrthoconeShell>> GIANT_ORTHOCONE_SHELL = ENTITY_TYPES.register ("giant_orthocone_shell_display",()->
             EntityType.Builder
-                    .<DisplayGiantOrthoconeShell>of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
+                    .of(DisplayGiantOrthoconeShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
-                    .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell").toString()));
+                    .build(new ResourceLocation(Panthalassa.MODID, "giant_orthocone_shell_display").toString()));
+
+    public static final RegistryObject<EntityType<DisplayKronosaurusSkull>> KRONOSAURUS_SKULL = ENTITY_TYPES.register ("kronosaurus_skull_display",()->
+            EntityType.Builder
+                    .of(DisplayKronosaurusSkull::new,MobCategory.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus_skull_display").toString()));
 
 }

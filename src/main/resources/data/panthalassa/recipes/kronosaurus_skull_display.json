@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " z ",
+    " y ",
+    " x "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:stone_slab"
+    },
+    "y":
+    {
+      "item": "minecraft:stick"
+    },
+    "z":
+    {
+      "item": "panthalassa:kronosaurus_skull"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:kronosaurus_skull_display",
+    "count": 1
+  }
+}

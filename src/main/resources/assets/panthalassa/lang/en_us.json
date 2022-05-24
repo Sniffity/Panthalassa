@@ -42,8 +42,11 @@
 
     "item.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
     "item.panthalassa.giant_orthocone_shell": "Giant Orthocone Shell",
+    "item.panthalassa.kronosaurus_skull_display": "Kronosaurus Skull Display",
+    "item.panthalassa.kronosaurus_skull": "Kronosaurus Skull",
 
     "entity.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
+    "entity.panthalassa.kronosaurus_skull_display": "Kronosaurus Skull Display",
 
     "item.panthalassa.pliosaur_meat": "Pliosaur Meat",
     "item.panthalassa.cooked_pliosaur_meat": "Cooked Pliosaur Meat",
