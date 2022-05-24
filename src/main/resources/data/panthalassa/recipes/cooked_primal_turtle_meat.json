@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "panthalassa:primal_turtle_meat"
+  },
+  "result": "panthalassa:cooked_primal_turtle_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "panthalassa:primal_shark_meat"
+  },
+  "result": "panthalassa:cooked_primal_shark_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}

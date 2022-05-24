@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "panthalassa:pliosaur_meat"
+  },
+  "result": "panthalassa:cooked_pliosaur_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}

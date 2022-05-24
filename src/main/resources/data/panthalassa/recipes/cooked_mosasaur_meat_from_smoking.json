@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "panthalassa:mosasaur_meat"
+  },
+  "result": "panthalassa:cooked_mosasaur_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}

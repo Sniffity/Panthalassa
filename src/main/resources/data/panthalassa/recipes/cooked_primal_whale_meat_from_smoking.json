@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "panthalassa:primal_whale_meat"
+  },
+  "result": "panthalassa:cooked_primal_whale_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}

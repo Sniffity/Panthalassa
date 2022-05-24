@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "panthalassa:pliosaur_meat"
+  },
+  "result": "panthalassa:cooked_pliosaur_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}
