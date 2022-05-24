@@ -286,7 +286,6 @@ public class PanthalassaVehicle extends Entity {
                 BlockPos prevLight = this.getLightPos();
 
                 if (this.getLightsOn() && this.isInWater() && level.getBlockState(getLightPos()) != PanthalassaBlocks.LIGHT_WATER.get().defaultBlockState()) {
-                    //TODO: Kill lights here.
                     level.setBlock(vehiclePos, blockLightWater, 2);
                     this.setLightPos(vehiclePos);
                     if (prevLight != null) {
