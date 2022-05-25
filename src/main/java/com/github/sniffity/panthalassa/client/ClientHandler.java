@@ -80,6 +80,8 @@ public class ClientHandler {
                 RenderGiantOrthocone::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.BASILOSAURUS.get(),
                 RenderBasilosaurus::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.THALASSOMEDON.get(),
+                RenderThalassomedon::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),
@@ -144,7 +146,6 @@ public class ClientHandler {
                 PanthalassaBlocks.KRETHROSS_PLANT.get(),
                 PanthalassaBlocks.FROSTGRASS.get()
         );
-
     }
 
     public static void registerItemColors() {
