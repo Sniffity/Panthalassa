@@ -64,9 +64,11 @@ public final class Panthalassa {
 		PanthalassaPacketHandler.register();
 		event.enqueueWork(() -> {
 			PanthalassaSpawns.registerSpawnPlacementTypes();
+			PanthalassaProcessors.registerProcessors();
 		});
 	}
 
+	//TODO: Move to Event
 	@SubscribeEvent
 	public void onBiomeLoading(BiomeLoadingEvent event) {
 		PanthalassaSpawns.onBiomeLoading(event);
@@ -88,6 +90,7 @@ public final class Panthalassa {
 
 	}
 
+	//TODO: Move to Event
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
 		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {

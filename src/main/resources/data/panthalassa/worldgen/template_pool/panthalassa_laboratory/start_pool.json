@@ -11,7 +11,7 @@
 
         "location": "panthalassa:panthalassa_laboratory",
 
-        "processors": "minecraft:empty",
+        "processors": "panthalassa:panthalassa_laboratory_support",
 
         "projection": "rigid",
 

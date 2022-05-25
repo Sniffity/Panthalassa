@@ -1,0 +1,13 @@
+{
+  "processors": [
+    {
+      "processor_type": "panthalassa:laboratory_support",
+      "start_block": {
+        "Name": "minecraft:pink_concrete"
+      },
+      "support_block": {
+        "Name": "minecraft:gray_concrete"
+      }
+    }
+  ]
+}
