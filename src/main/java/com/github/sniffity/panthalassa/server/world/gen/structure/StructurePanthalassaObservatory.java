@@ -29,7 +29,7 @@ public class StructurePanthalassaObservatory extends StructureFeature<JigsawConf
 
     protected static int determineYHeight(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         //Start at the mid Y point of Panthalassa, no structures near the ceiling...
-        int start = 48;
+        int start = 24;
         BlockPos centerOfChunk = context.chunkPos().getWorldPosition();
         NoiseColumn columnOfBlocks = context.chunkGenerator().getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ(), context.heightAccessor());
         BlockState topBlock = columnOfBlocks.getBlock(start);
@@ -62,7 +62,7 @@ public class StructurePanthalassaObservatory extends StructureFeature<JigsawConf
         //We've found solid ground with a column of water above it.
         // If the column of water is large enough and we did not go too far down, proceed to generate the structure...
         if (k>10 && !flag) {
-            return ((start - j - i));
+            return centerOfChunk.above(start - j - i).getY();
         }
         //Else, return a value that will fail the next check.
         return 100;
