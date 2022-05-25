@@ -9,9 +9,9 @@
       "weight": 1,
       "element": {
 
-        "location": "panthalassa:panthalassa_laboratory",
+        "location": "panthalassa:panthalassa_observatory",
 
-        "processors": "minecraft:empty",
+        "processors": "panthalassa:panthalassa_laboratory_support",
 
         "projection": "rigid",
 

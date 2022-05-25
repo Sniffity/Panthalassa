@@ -16,10 +16,10 @@ import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 
 import java.util.Optional;
 
-public class StructureXYZLaboratory extends StructureFeature<JigsawConfiguration> {
+public class StructurePanthalassaObservatory extends StructureFeature<JigsawConfiguration> {
 
-    public StructureXYZLaboratory() {
-        super(JigsawConfiguration.CODEC, StructureXYZLaboratory::createPiecesGenerator, PostPlacementProcessor.NONE);
+    public StructurePanthalassaObservatory() {
+        super(JigsawConfiguration.CODEC, StructurePanthalassaObservatory::createPiecesGenerator, PostPlacementProcessor.NONE);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class StructureXYZLaboratory extends StructureFeature<JigsawConfiguration
 
     protected static int determineYHeight(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         //Start at the mid Y point of Panthalassa, no structures near the ceiling...
-        int start = 64;
+        int start = 48;
         BlockPos centerOfChunk = context.chunkPos().getWorldPosition();
         NoiseColumn columnOfBlocks = context.chunkGenerator().getBaseColumn(centerOfChunk.getX(), centerOfChunk.getZ(), context.heightAccessor());
         BlockState topBlock = columnOfBlocks.getBlock(start);
@@ -70,7 +70,7 @@ public class StructureXYZLaboratory extends StructureFeature<JigsawConfiguration
 
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
 
-        int yHeight = StructureXYZLaboratory.determineYHeight(context);
+        int yHeight = StructurePanthalassaObservatory.determineYHeight(context);
         if (yHeight!=100) {
             return Optional.empty();
         }
