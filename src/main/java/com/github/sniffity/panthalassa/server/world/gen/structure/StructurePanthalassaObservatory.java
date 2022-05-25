@@ -62,7 +62,7 @@ public class StructurePanthalassaObservatory extends StructureFeature<JigsawConf
         //We've found solid ground with a column of water above it.
         // If the column of water is large enough and we did not go too far down, proceed to generate the structure...
         if (k>10 && !flag) {
-            return (centerOfChunk.above(start - j - i).getY());
+            return ((start - j - i));
         }
         //Else, return a value that will fail the next check.
         return 100;
