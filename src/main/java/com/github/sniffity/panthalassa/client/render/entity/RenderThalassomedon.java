@@ -23,7 +23,7 @@ public class RenderThalassomedon extends GeoEntityRenderer<EntityThalassomedon> 
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn,
                 red, green, blue, partialTicks);
 
-        stackIn.scale(1.5F* PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue());
+        stackIn.scale(1.5F* PanthalassaClientConfig.thalassomedonSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue(), 1.5F*PanthalassaClientConfig.kronosaurusSizeMultiplier.get().floatValue());
 
     }
 }
