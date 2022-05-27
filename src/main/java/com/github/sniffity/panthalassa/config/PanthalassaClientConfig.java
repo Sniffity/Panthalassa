@@ -36,10 +36,8 @@ public class PanthalassaClientConfig {
                 .defineInRange("giant_orthocone_size_multiplier", 1.0D, 0.5D, 3.0D);
         basilosaurusSizeMultiplier = builder
                 .defineInRange("basilosaurus_size_multiplier", 1.0D, 0.5D, 3.0D);
-        builder.pop();
         thalassomedonSizeMultiplier = builder
                 .defineInRange("thalassomedon_size_multiplier", 1.0D, 0.5D, 3.0D);
-        builder.pop();
         acrolepisSizeMultiplier = builder
                 .defineInRange("acrolepis_size_multiplier", 1.0D, 0.5D, 3.0D);
         builder.pop();
