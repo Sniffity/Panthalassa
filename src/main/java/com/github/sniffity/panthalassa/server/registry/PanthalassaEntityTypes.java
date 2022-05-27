@@ -85,7 +85,7 @@ public class PanthalassaEntityTypes {
 
     public static final RegistryObject<EntityType<EntityAcrolepis>> ACROLEPIS = ENTITY_TYPES.register ("acrolepis",()->
             EntityType.Builder.of(EntityAcrolepis::new,MobCategory.MONSTER)
-                    .sized(1.8F, 1.2F)
+                    .sized(0.5F, 0.5F)
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "acrolepis").toString()));
 
