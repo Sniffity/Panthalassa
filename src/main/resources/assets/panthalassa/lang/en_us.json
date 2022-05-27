@@ -34,6 +34,8 @@
     "item.panthalassa.leedsichthys_spawn_egg": "Leedsichthys Spawn Egg",
     "item.panthalassa.giant_orthocone_spawn_egg": "Giant Orthocone Spawn Egg",
     "item.panthalassa.basilosaurus_spawn_egg": "Basilosaurus Spawn Egg",
+    "item.panthalassa.acrolepis_spawn_egg": "Acrolepis Spawn Egg",
+
 
     "item.panthalassa.diving_suit_helmet": "Diving Suit Helmet",
     "item.panthalassa.diving_suit_chest": "Diving Suit Chest",
@@ -104,6 +106,7 @@
     "entity.panthalassa.giant_orthocone": "Giant Orthocone",
     "entity.panthalassa.basilosaurus": "Basilosaurus",
     "entity.panthalassa.thalassomedon": "Thalassomedon",
+    "entity.panthalassa.acrolepis": "Acrolepis",
 
     "key.panthalassa.category": "Panthalassa Keybinds",
     "key.vehicle.lights": "Vehicle Lights",

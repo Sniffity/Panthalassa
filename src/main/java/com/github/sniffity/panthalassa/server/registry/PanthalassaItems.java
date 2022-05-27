@@ -77,6 +77,20 @@ public class PanthalassaItems {
 					0x6e1e1e,
 					0x340c0c,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+/*
+	public static final RegistryObject<Item> BASILOSAURUS_SPAWN_EGG = ITEMS.register("basilosaurus_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.BASILOSAURUS,
+					0x6e1e1e,
+					0x340c0c,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+*/
+	public static final RegistryObject<Item> ACROLEPIS_SPAWN_EGG = ITEMS.register("acrolepis_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.ACROLEPIS,
+					0x855D45,
+					0xc09a85,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));

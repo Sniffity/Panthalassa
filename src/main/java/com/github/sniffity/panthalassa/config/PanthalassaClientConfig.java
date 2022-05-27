@@ -37,6 +37,12 @@ public class PanthalassaClientConfig {
         basilosaurusSizeMultiplier = builder
                 .defineInRange("basilosaurus_size_multiplier", 1.0D, 0.5D, 3.0D);
         builder.pop();
+        thalassomedonSizeMultiplier = builder
+                .defineInRange("thalassomedon_size_multiplier", 1.0D, 0.5D, 3.0D);
+        builder.pop();
+        acrolepisSizeMultiplier = builder
+                .defineInRange("acrolepis_size_multiplier", 1.0D, 0.5D, 3.0D);
+        builder.pop();
 
         builder.push("Vehicle Overlay");
         builder.comment("This will determine whether the vehicle overlays are enabled or not.");
@@ -54,6 +60,8 @@ public class PanthalassaClientConfig {
     public static ForgeConfigSpec.DoubleValue mosasaurusSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue giantOrthoconeSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue basilosaurusSizeMultiplier;
+    public static ForgeConfigSpec.DoubleValue thalassomedonSizeMultiplier;
+    public static ForgeConfigSpec.DoubleValue acrolepisSizeMultiplier;
 
     public static ForgeConfigSpec.BooleanValue vehicleOverlayEnabled;
 

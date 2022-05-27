@@ -14,6 +14,7 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -81,6 +82,12 @@ public class PanthalassaEntityTypes {
                     .sized(1.8F, 1.2F)
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "thalassomedon").toString()));
+
+    public static final RegistryObject<EntityType<EntityAcrolepis>> ACROLEPIS = ENTITY_TYPES.register ("acrolepis",()->
+            EntityType.Builder.of(EntityAcrolepis::new,MobCategory.MONSTER)
+                    .sized(1.8F, 1.2F)
+                    .canSpawnFarFromPlayer()
+                    .build(new ResourceLocation(Panthalassa.MODID, "acrolepis").toString()));
 
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder

@@ -82,6 +82,8 @@ public class ClientHandler {
                 RenderBasilosaurus::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.THALASSOMEDON.get(),
                 RenderThalassomedon::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.ACROLEPIS.get(),
+                RenderAcrolepis::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),
