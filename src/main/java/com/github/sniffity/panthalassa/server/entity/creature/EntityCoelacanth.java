@@ -38,6 +38,7 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     public static final float SCHOOL_AVOID_RADIUS = 10.0F;
     public static int SCHOOL_MAX_SIZE = 4;
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityCoelacanth.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityCoelacanth.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -51,8 +52,7 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(LEADER, Boolean.FALSE);
-
-
+        this.entityData.define(TEXTURE_VARIANT, 0);
         super.defineSynchedData();
     }
 
@@ -81,6 +81,8 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, CompoundTag compound) {
+        int textureVariant = (int) (Math.random()*3);
+        this.setTextureVariant(textureVariant);
         return super.finalizeSpawn(world, difficulty, reason, livingdata, compound);
     }
 
@@ -101,6 +103,7 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.MOVEMENT_SPEED, (double) 1.5F);
+
     }
 
 
@@ -119,6 +122,14 @@ public class EntityCoelacanth extends PanthalassaEntity implements IAnimatable, 
 
     public boolean getIsLeader() {
         return this.entityData.get(LEADER);
+    }
+
+    public void setTextureVariant(int textureVariant) {
+        this.entityData.set(TEXTURE_VARIANT,textureVariant);
+    }
+
+    public int getTextureVariant() {
+        return this.entityData.get(TEXTURE_VARIANT);
     }
 
 }

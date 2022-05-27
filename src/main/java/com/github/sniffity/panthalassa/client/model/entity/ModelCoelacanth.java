@@ -21,10 +21,12 @@ public class ModelCoelacanth extends AnimatedGeoModel<EntityCoelacanth> {
 
     @Override
     public ResourceLocation getTextureLocation(EntityCoelacanth object) {
-        if (object.getIsLeader()) {
-            return new ResourceLocation(Panthalassa.MODID, "textures/creature/coelacanth/coelacanth_0.png");
+        if (object.getTextureVariant() == 0){
+            return new ResourceLocation(Panthalassa.MODID,"textures/creature/coelacanth/coelacanth_1.png");
+        } else if (object.getTextureVariant() == 1) {
+            return new ResourceLocation(Panthalassa.MODID,"textures/creature/coelacanth/coelacanth_2.png");
         } else {
-            return new ResourceLocation(Panthalassa.MODID, "textures/creature/coelacanth/coelacanth_1.png");
+            return new ResourceLocation(Panthalassa.MODID,"textures/creature/coelacanth/coelacanth_3.png");
         }
     }
 
