@@ -119,7 +119,7 @@
 				}
 			}
 		},
-		"animation.thalassomedon.swimming ": {
+		"animation.thalassomedon.swimming": {
 			"loop": true,
 			"animation_length": 2.25,
 			"bones": {
