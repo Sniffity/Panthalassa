@@ -88,8 +88,8 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> ACROLEPIS_SPAWN_EGG = ITEMS.register("acrolepis_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
 					PanthalassaEntityTypes.ACROLEPIS,
-					0x855D45,
 					0xc09a85,
+					0x855D45,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
