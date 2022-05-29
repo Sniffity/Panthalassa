@@ -1,0 +1,9 @@
+{
+  "type": "panthalassa:panthalassa_spawner",
+  "config": {
+    "type": "panthalassa:megalodon",
+    "spawnWeight": 100,
+    "minCount" : 1,
+    "maxCount" : 1
+  }
+}

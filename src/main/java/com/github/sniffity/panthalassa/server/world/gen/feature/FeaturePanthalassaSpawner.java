@@ -18,9 +18,7 @@ public class FeaturePanthalassaSpawner extends Feature<ConfigurationPanthalassaS
     public FeaturePanthalassaSpawner(Codec<ConfigurationPanthalassaSpawner> codec) {
         super(codec);
     }
-    //TODO: Could perhaps add IF conditions here...
-    //TODO: IF entity = Kronosaurus, do Kronosaurus weights instead of spawn weights...
-    //TODO: What about biomes? DataPack?
+
     public boolean place(FeaturePlaceContext<ConfigurationPanthalassaSpawner> context) {
         ConfigurationPanthalassaSpawner panathalassaSpawnerConfiguration = context.config();
         //Get all the relevant JSON values.
@@ -49,17 +47,17 @@ public class FeaturePanthalassaSpawner extends Feature<ConfigurationPanthalassaS
                         //Ensure that we have a valid minimum group size...
                         //Create entities until we have reached the minGroup
                         if (minGroupSize > 0) {
-                            for (int k = 0; k < minGroupSize + 1; k++) {
+                            for (int k = 0; k < minGroupSize; k++) {
                                 //Define the entity...
                                 Entity addedEntity = entityType.create(Objects.requireNonNull(Objects.requireNonNull(context.level().getServer()).getLevel(PanthalassaDimension.PANTHALASSA)));
                                 if (addedEntity != null) {
-                                    //Add it in...
                                     //TODO: will all entities just collide into each other?
-                                    context.level().addFreshEntity(addedEntity);
                                     //Reposition it...
                                     addedEntity.moveTo(new BlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ()), 0, 0);
                                     //Initial movement = 0
                                     addedEntity.setDeltaMovement(0, 0, 0);
+                                    //Add it in...
+                                    context.level().addFreshEntity(addedEntity);
                                 }
                             }
                         }
@@ -67,20 +65,19 @@ public class FeaturePanthalassaSpawner extends Feature<ConfigurationPanthalassaS
                         //We have reached the minGropSize...
                         if (maxGroupSize > minGroupSize) {
                             //Loop until we have reached the maxGroupSize...
-                            for (int k = minGroupSize; k < maxGroupSize + 1; k++)
+                            for (int k = minGroupSize; k < maxGroupSize; k++)
                                 //For each attempt at spawning entities between the minGroupSize and the maxGroupSize, give it a 50% chance to spawn
                                 if (rand.nextDouble() > 0.5) {
                                     //Define the entity...
-                                    //TODO: Add fresh entity
                                     Entity addedEntity = entityType.create(Objects.requireNonNull(Objects.requireNonNull(context.level().getServer()).getLevel(PanthalassaDimension.PANTHALASSA)));
                                     //TODO: will all entities just collide into each other?
                                     if (addedEntity != null) {
-                                        //Add it in...
-                                        context.level().addFreshEntity(addedEntity);
                                         //Reposition it...
                                         addedEntity.moveTo(new BlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ()), 0, 0);
                                         //Initial movement = 0
                                         addedEntity.setDeltaMovement(0, 0, 0);
+                                        //Add it in...
+                                        context.level().addFreshEntity(addedEntity);
                                     }
                                 }
 

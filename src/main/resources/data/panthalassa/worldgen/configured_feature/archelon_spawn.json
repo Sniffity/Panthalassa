@@ -1,0 +1,9 @@
+{
+  "type": "panthalassa:panthalassa_spawner",
+  "config": {
+    "type": "panthalassa:archelon",
+    "spawnWeight": 100,
+    "minCount" : 1,
+    "maxCount" : 2
+  }
+}

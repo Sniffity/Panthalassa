@@ -34,7 +34,10 @@
       "panthalassa:primordial_stalks",
       "panthalassa:panthalassa_sea_grass",
       "panthalassa:panthalassa_kelp",
-      "panthalassa:kronosaurus_spawn"
+
+      "panthalassa:kronosaurus_spawn",
+      "panthalassa:archelon_spawn",
+      "panthalassa:mosasaurus_spawn"
     ],
     []
   ],
