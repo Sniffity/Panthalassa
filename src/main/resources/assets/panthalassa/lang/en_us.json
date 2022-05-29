@@ -117,10 +117,5 @@
     "effect.panthalassa.disorient": "Disorient",
 
     "subtitles.panthalassa.entity.creature.kronosaurus.kronosaurus_ambient": "Kronosaurus growls.",
-    "subtitles.panthalassa.entity.vehicle.vehicle_sonar": "Sonar ping.",
-
-    "advancements.panthalassa.root.title": "Panthalassa awaits...",
-    "advancements.panthalassa.root.desc": "Panthalassa, the long forgotten prehistoric aquatic dimension, awaits you! Plan ahead for the extreme pressures - a special vehicle or diving suit will be necessary!",
-    "advancements.panthalassa.dimension.title": "20,000 blocks voyage!",
-    "advancements.panthalassa.dimension.desc": "Succesfully enter Panthalassa. Beware its prehistoric inhabitants!"
+    "subtitles.panthalassa.entity.vehicle.vehicle_sonar": "Sonar ping."
 }
