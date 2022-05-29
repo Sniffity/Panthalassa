@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -43,9 +44,20 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
     }
 
     public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (this.getAttackingState() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.thalassomedon.attack", true));
+            return PlayState.CONTINUE;
+        }
+        if ((this.getDeltaMovement().length()>0 && this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.thalassomedon.swimming", true));
+            return PlayState.CONTINUE;
+        }
+        if ((this.isOnGround() && !this.isInWater())) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.thalassomedon.beached", true));
+            return PlayState.CONTINUE;
+        }
         return PlayState.STOP;
     }
-
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
