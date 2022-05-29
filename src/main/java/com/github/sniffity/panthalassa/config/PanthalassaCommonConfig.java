@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -200,6 +202,32 @@ public final class PanthalassaCommonConfig {
         public final ExternalSpawningConfig externalSpawning;
     }
 
+    public static class Thalassomedon {
+        Thalassomedon(final ForgeConfigSpec.Builder builder) {
+            builder.push("thalassomedon");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    3,
+                    1,
+                    2,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Acrolepis {
+        Acrolepis(final ForgeConfigSpec.Builder builder) {
+            builder.push("acrolepis");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    3,
+                    1,
+                    2,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
     public static class EntitiesConfig {
         EntitiesConfig(final ForgeConfigSpec.Builder builder) {
             builder.push("entities");
@@ -212,6 +240,8 @@ public final class PanthalassaCommonConfig {
             LEEDSICHTHYS = new Leedischthys(builder);
             GIANT_ORTHOCONE = new GiantOrthocone(builder);
             BASILOSAURUS = new Basilosaurus(builder);
+            THALASSOMEDON = new Thalassomedon(builder);
+            ACROLEPIS = new Acrolepis(builder);
             builder.pop();
         }
         public final Kronosaurus KRONOSAURUS;
@@ -223,6 +253,8 @@ public final class PanthalassaCommonConfig {
         public final Leedischthys LEEDSICHTHYS;
         public final GiantOrthocone GIANT_ORTHOCONE;
         public final Basilosaurus BASILOSAURUS;
+        public final Thalassomedon THALASSOMEDON;
+        public final Acrolepis ACROLEPIS;
     }
 
     public static class Common {
