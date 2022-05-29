@@ -37,7 +37,9 @@
 
       "panthalassa:kronosaurus_spawn",
       "panthalassa:archelon_spawn",
-      "panthalassa:mosasaurus_spawn"
+      "panthalassa:mosasaurus_spawn",
+      "panthalassa:acrolepis_spawn",
+      "panthalassa:coelacanth_spawn"
     ],
     []
   ],

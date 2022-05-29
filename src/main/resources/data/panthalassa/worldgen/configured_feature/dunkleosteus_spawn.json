@@ -1,9 +1,9 @@
 {
   "type": "panthalassa:panthalassa_spawner",
   "config": {
-    "type": "panthalassa:mosasaurus",
+    "type": "panthalassa:dunkleosteus",
     "spawnWeight": 100,
     "minCount" : 1,
-    "maxCount" : 1
+    "maxCount" : 3
   }
 }

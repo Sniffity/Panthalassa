@@ -35,7 +35,10 @@
       "panthalassa:fossils",
       "panthalassa:panthalassa_rocks",
 
-      "panthalassa:megalodon_spawn"
+      "panthalassa:leedsichthys_spawn",
+      "panthalassa:megalodon_spawn",
+      "panthalassa:acrolepis_spawn",
+      "panthalassa:coelacanth_spawn"
     ],
     []
   ],

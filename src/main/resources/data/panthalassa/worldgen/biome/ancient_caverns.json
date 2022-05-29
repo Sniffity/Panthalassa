@@ -35,7 +35,10 @@
       "panthalassa:krethross",
       "panthalassa:panthalassa_rocks",
 
-      "panthalassa:archelon_spawn"
+      "panthalassa:archelon_spawn",
+      "panthalassa:dunkleosteus_spawn",
+      "panthalassa:acrolepis_spawn",
+      "panthalassa:coelacanth_spawn"
     ],
     []
   ],

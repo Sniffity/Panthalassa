@@ -1,5 +1,5 @@
 {
-  "feature": "panthalassa:archelon_spawn",
+  "feature": "panthalassa:acrolepis_spawn",
   "placement": [
     {
       "type": "minecraft:noise_based_count",
@@ -9,7 +9,7 @@
     },
     {
       "type": "minecraft:rarity_filter",
-      "chance": 4
+      "chance": 3
     },
     {
       "type": "minecraft:in_square"

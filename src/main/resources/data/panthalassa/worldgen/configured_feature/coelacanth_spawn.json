@@ -1,9 +1,9 @@
 {
   "type": "panthalassa:panthalassa_spawner",
   "config": {
-    "type": "panthalassa:mosasaurus",
+    "type": "panthalassa:coelacanth",
     "spawnWeight": 100,
-    "minCount" : 1,
-    "maxCount" : 1
+    "minCount" : 3,
+    "maxCount" : 6
   }
 }

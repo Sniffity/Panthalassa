@@ -1,5 +1,5 @@
 {
-  "feature": "panthalassa:archelon_spawn",
+  "feature": "panthalassa:leedsichthys_spawn",
   "placement": [
     {
       "type": "minecraft:noise_based_count",
