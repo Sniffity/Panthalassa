@@ -33,36 +33,17 @@
       "panthalassa:panthalassa_sea_grass",
       "panthalassa:panthalassa_kelp",
       "panthalassa:fossils",
-      "panthalassa:panthalassa_rocks"
+      "panthalassa:panthalassa_rocks",
+      "panthalassa:kronosaurus_spawn"
     ],
     []
   ],
   "spawners": {
-    "monster": [
-      {
-        "type": "panthalassa:megalodon",
-        "weight": 4,
-        "minCount": 1,
-        "maxCount": 1
-      },
-      {
-        "type": "panthalassa:coelacanth",
-        "weight": 80,
-        "minCount": 3,
-        "maxCount": 6
-      },
-      {
-        "type": "panthalassa:leedsichthys",
-        "weight": 24,
-        "minCount": 1,
-        "maxCount": 1
-      }
-    ],
+    "monster": [],
     "creature": [],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
-
     "water_creature": [],
     "water_ambient": [],
     "misc": []

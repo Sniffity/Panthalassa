@@ -1,0 +1,17 @@
+{
+  "feature": "panthalassa:kronosaurus_spawn",
+  "placement": [
+    {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 10,
+      "noise_factor": 10,
+      "noise_offset": 50
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

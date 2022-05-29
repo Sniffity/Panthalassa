@@ -31,31 +31,13 @@
     [],
     [
       "panthalassa:panthalassa_ice_spikes",
-      "panthalassa:frostgrass"
+      "panthalassa:frostgrass",
+      "panthalassa:kronosaurus_spawn"
     ],
     []
   ],
   "spawners": {
-    "monster": [
-      {
-        "type": "panthalassa:giant_orthocone",
-        "weight": 5,
-        "minCount": 1,
-        "maxCount": 1
-      },
-      {
-        "type": "panthalassa:coelacanth",
-        "weight": 60,
-        "minCount": 3,
-        "maxCount": 6
-      },
-      {
-        "type": "panthalassa:basilosaurus",
-        "weight": 40,
-        "minCount": 1,
-        "maxCount": 1
-      }
-    ],
+    "monster": [],
     "creature": [],
     "ambient": [],
     "axolotls": [],

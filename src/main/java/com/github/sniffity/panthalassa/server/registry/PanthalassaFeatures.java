@@ -62,4 +62,7 @@ public class PanthalassaFeatures {
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> DEAD_CORAL_TREE =
             FEATURES.register("dead_coral_tree", () -> new FeatureDeadCoralTree(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<ConfigurationPanthalassaSpawner>> SPAWNER =
+            FEATURES.register("panthalassa_spawner", () -> new FeaturePanthalassaSpawner(ConfigurationPanthalassaSpawner.CODEC));
 }

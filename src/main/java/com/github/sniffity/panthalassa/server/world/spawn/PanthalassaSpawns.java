@@ -24,22 +24,20 @@ import java.util.*;
 
 public class PanthalassaSpawns {
     public static void registerSpawnPlacementTypes() {
-        if (PanthalassaCommonConfig.COMMON.GENERAL.externalSpawningBoolean.get()) {
-            SpawnPlacements.register(PanthalassaEntityTypes.KRONOSAURUS.get(), SpawnPlacements.Type.IN_WATER,Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.MEGALODON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.ARCHELON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.MOSASAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.COELACANTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-            SpawnPlacements.register(PanthalassaEntityTypes.BASILOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
-        }
+        SpawnPlacements.register(PanthalassaEntityTypes.KRONOSAURUS.get(), SpawnPlacements.Type.IN_WATER,Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.MEGALODON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.ARCHELON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.MOSASAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.COELACANTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
+        SpawnPlacements.register(PanthalassaEntityTypes.BASILOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn);
     }
 
     public static void onBiomeLoading(BiomeLoadingEvent event) {
         ResourceLocation biomeName = event.getName();
-        if (biomeName == null || !PanthalassaCommonConfig.COMMON.GENERAL.externalSpawningBoolean.get())
+        if (biomeName == null)
             return;
         if (PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.spawnRate.get() > 0 && isBiomeInConfig(PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning.biomeSpawningConfig, biomeName)) {
             registerEntityWorldSpawn(PanthalassaEntityTypes.KRONOSAURUS.get(), PanthalassaCommonConfig.COMMON.ENTITIES.KRONOSAURUS.externalSpawning, MobCategory.MONSTER, event);

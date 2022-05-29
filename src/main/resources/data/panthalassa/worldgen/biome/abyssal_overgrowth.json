@@ -33,31 +33,13 @@
       "panthalassa:panthalassa_coral_reef",
       "panthalassa:primordial_stalks",
       "panthalassa:panthalassa_sea_grass",
-      "panthalassa:panthalassa_kelp"
+      "panthalassa:panthalassa_kelp",
+      "panthalassa:kronosaurus_spawn"
     ],
     []
   ],
   "spawners": {
-    "monster": [
-      {
-        "type": "panthalassa:kronosaurus",
-        "weight": 5,
-        "minCount": 1,
-        "maxCount": 1
-      },
-      {
-        "type": "panthalassa:coelacanth",
-        "weight": 30,
-        "minCount": 3,
-        "maxCount": 6
-      },
-      {
-        "type": "panthalassa:mosasaurus",
-        "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
-      }
-    ],
+    "monster": [],
     "creature": [],
     "ambient": [],
     "axolotls": [],
