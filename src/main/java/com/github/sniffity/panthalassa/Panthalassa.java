@@ -88,6 +88,7 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.ACROLEPIS.get(), EntityAcrolepis.acrolepisAttributes().build());
 		event.put(PanthalassaEntityTypes.CERATODUS.get(), EntityCeratodus.ceratodusAttributes().build());
 		event.put(PanthalassaEntityTypes.HELICOPRION.get(), EntityHelicoprion.helicoprionAttributes().build());
+		event.put(PanthalassaEntityTypes.ANGLERFISH.get(), EntityAnglerfish.anglerfishAttributes().build());
 		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
 		event.put(PanthalassaEntityTypes.KRONOSAURUS_SKULL.get(), PanthalassaDisplayEntity.displayAttributes().build());
 		event.put(PanthalassaEntityTypes.ARCHELON_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());

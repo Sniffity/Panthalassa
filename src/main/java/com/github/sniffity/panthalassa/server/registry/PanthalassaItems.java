@@ -106,6 +106,13 @@ public class PanthalassaItems {
 					0x82aba8,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> ANGLERFISH_SPAWN_EGG = ITEMS.register("anglerfish_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.ANGLERFISH,
+					0x794a2e,
+					0x82f4ed,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",

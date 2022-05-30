@@ -88,6 +88,8 @@ public class ClientHandler {
                 RenderCeratodus::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.HELICOPRION.get(),
                 RenderHelicoprion::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.ANGLERFISH.get(),
+                RenderAnglerfish::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),

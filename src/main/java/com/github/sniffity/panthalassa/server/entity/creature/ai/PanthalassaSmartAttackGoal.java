@@ -229,6 +229,9 @@ public class PanthalassaSmartAttackGoal extends Goal {
         if (test instanceof EntityHelicoprion) {
             return true;
         }
+        if (test instanceof EntityAnglerfish) {
+            return true;
+        }
         if (test instanceof Player) {
             return true;
         }

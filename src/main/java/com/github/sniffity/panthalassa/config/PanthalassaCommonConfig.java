@@ -253,6 +253,19 @@ public final class PanthalassaCommonConfig {
         public final ExternalSpawningConfig externalSpawning;
     }
 
+    public static class Anglerfish {
+        Anglerfish(final ForgeConfigSpec.Builder builder) {
+            builder.push("anglerfish");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    3,
+                    3,
+                    5,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
     public static class EntitiesConfig {
         EntitiesConfig(final ForgeConfigSpec.Builder builder) {
             builder.push("entities");
@@ -269,7 +282,7 @@ public final class PanthalassaCommonConfig {
             ACROLEPIS = new Acrolepis(builder);
             CERATODUS = new Ceratodus(builder);
             HELICOPRION = new Helicoprion(builder);
-
+            ANGLERFISH = new Anglerfish(builder);
             builder.pop();
         }
 
@@ -286,6 +299,8 @@ public final class PanthalassaCommonConfig {
         public final Acrolepis ACROLEPIS;
         public final Ceratodus CERATODUS;
         public final Helicoprion HELICOPRION;
+        public final Anglerfish ANGLERFISH;
+
     }
 
     public static class Common {

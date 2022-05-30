@@ -100,6 +100,12 @@ public class PanthalassaEntityTypes {
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "helicoprion").toString()));
 
+    public static final RegistryObject<EntityType<EntityAnglerfish>> ANGLERFISH = ENTITY_TYPES.register ("anglerfish",()->
+            EntityType.Builder.of(EntityAnglerfish::new,MobCategory.CREATURE)
+                    .sized(0.7F, 0.7F)
+                    .canSpawnFarFromPlayer()
+                    .build(new ResourceLocation(Panthalassa.MODID, "anglerfish").toString()));
+
     public static final RegistryObject<EntityType<VehicleMRSV>> MRSV = ENTITY_TYPES.register ("manta_ray_submersible_vehicle",()->
             EntityType.Builder
                     .<VehicleMRSV>of(VehicleMRSV::new,MobCategory.MISC)

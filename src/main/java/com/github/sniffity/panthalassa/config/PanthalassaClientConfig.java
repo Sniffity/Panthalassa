@@ -44,6 +44,8 @@ public class PanthalassaClientConfig {
                 .defineInRange("ceratodus_size_multiplier", 1.0D, 0.5D, 3.0D);
         helicoprionSizeMultiplier = builder
                 .defineInRange("helicoprion_size_multiplier", 1.0D, 0.5D, 3.0D);
+        anglerfishSizeMultiplier = builder
+                .defineInRange("anglerfish_size_multiplier", 1.0D, 0.5D, 3.0D);
         builder.pop();
 
         builder.push("Vehicle Overlay");
@@ -65,6 +67,7 @@ public class PanthalassaClientConfig {
     public static ForgeConfigSpec.DoubleValue acrolepisSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue ceratodusSizeMultiplier;
     public static ForgeConfigSpec.DoubleValue helicoprionSizeMultiplier;
+    public static ForgeConfigSpec.DoubleValue anglerfishSizeMultiplier;
 
     public static ForgeConfigSpec.BooleanValue vehicleOverlayEnabled;
 }
