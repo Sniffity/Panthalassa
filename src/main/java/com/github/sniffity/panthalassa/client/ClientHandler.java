@@ -86,6 +86,8 @@ public class ClientHandler {
                 RenderAcrolepis::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.CERATODUS.get(),
                 RenderCeratodus::new);
+        event.registerEntityRenderer(PanthalassaEntityTypes.HELICOPRION.get(),
+                RenderHelicoprion::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.MRSV.get(),
                 RenderMRSV::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.AGII.get(),

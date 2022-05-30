@@ -99,6 +99,13 @@ public class PanthalassaItems {
 					0x9ec153,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> HELICOPRION_SPAWN_EGG = ITEMS.register("helicoprion_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.HELICOPRION,
+					0xa8cbc8,
+					0x82aba8,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",

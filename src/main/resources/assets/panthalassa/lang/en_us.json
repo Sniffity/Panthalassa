@@ -37,6 +37,7 @@
     "item.panthalassa.thalassomedon_spawn_egg": "Thalassomedon Spawn Egg",
     "item.panthalassa.acrolepis_spawn_egg": "Acrolepis Spawn Egg",
     "item.panthalassa.ceratodus_spawn_egg": "Ceratodus Spawn Egg",
+    "item.panthalassa.helicoprion_spawn_egg": "Helicoprion Spawn Egg",
 
     "item.panthalassa.diving_suit_helmet": "Diving Suit Helmet",
     "item.panthalassa.diving_suit_chest": "Diving Suit Chest",
@@ -109,6 +110,8 @@
     "entity.panthalassa.thalassomedon": "Thalassomedon",
     "entity.panthalassa.acrolepis": "Acrolepis",
     "entity.panthalassa.ceratodus": "Ceratodus",
+    "entity.panthalassa.helicoprion": "Helicoprion",
+
 
     "key.panthalassa.category": "Panthalassa Keybinds",
     "key.vehicle.lights": "Vehicle Lights",
