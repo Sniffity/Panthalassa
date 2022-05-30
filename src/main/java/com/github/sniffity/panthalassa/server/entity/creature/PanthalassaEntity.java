@@ -215,6 +215,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
         return p_205019_1_.containsAnyLiquid(this.getBoundingBox());
     }
 
+    //TODO: Still necessary?
     //Method is overriden to ensure these entities do not despawn, despite them being in the MONSTER MobCategory.
     @Override
     public void checkDespawn() {

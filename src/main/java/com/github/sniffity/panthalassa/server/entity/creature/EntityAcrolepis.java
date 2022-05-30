@@ -87,5 +87,7 @@ public class EntityAcrolepis extends PanthalassaEntity implements IAnimatable, E
         this.goalSelector.addGoal(1, new PanthalassaPanicGoal(this, 0.7D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(2, new PanthalassaFindWaterGoal(this, 0.15F));
+
     }
 }

@@ -116,6 +116,7 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
         this.goalSelector.addGoal(0, new PanthalassaCrushAttackGoal(this, 2.0F));
         this.goalSelector.addGoal(1, new PanthalassaSmartAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(2, new PanthalassaFindWaterGoal(this, 0.15F));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
         //Self-defense target selector
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));

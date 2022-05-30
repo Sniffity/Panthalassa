@@ -101,7 +101,9 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     public void registerGoals() {
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(2, new PanthalassaFindWaterGoal(this, 0.15F));
         this.goalSelector.addGoal(3, new PanthalassaSmartAttackGoal(this, 1.3F, false));
+
         //Self-defense target selector
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         //Small fish target selector

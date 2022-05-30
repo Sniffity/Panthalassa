@@ -34,8 +34,7 @@ public class PanthalassaFindWaterGoal extends Goal {
     public boolean canUse() {
         //canUse if it's on ground, outside of the water...
         if (this.mob.isOnGround() && !this.mob.isInWater()){
-            targetPos = generateTarget();
-            return targetPos != null;
+            return false;
         }
         //canUse if it's in 1-block-deep water
         if (this.mob.isInWater() && this.mob.level.getBlockState(this.mob.blockPosition().below()).canOcclude() && this.mob.level.getBlockState(this.mob.blockPosition().above()).is(Blocks.AIR)) {
@@ -95,3 +94,4 @@ public class PanthalassaFindWaterGoal extends Goal {
         return blockpos;
     }
 }
+

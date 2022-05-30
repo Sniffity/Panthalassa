@@ -123,6 +123,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         this.goalSelector.addGoal(0, new PanthalassaDisorientGoal(this, 0.70D));
         this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0F));
         this.goalSelector.addGoal(2, new PanthalassaSmartAttackGoal(this, 2.2F, false));
+        this.goalSelector.addGoal(3, new PanthalassaFindWaterGoal(this, 0.15F));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.6F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         //Self-defense target selector

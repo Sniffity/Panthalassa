@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaFindWaterGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaPanicGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.nbt.CompoundTag;
@@ -91,5 +92,6 @@ public class EntityCeratodus extends PanthalassaEntity implements IAnimatable, E
         this.goalSelector.addGoal(1, new PanthalassaPanicGoal(this, 0.7D));
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
+        this.goalSelector.addGoal(2, new PanthalassaFindWaterGoal(this, 0.15F));
     }
 }

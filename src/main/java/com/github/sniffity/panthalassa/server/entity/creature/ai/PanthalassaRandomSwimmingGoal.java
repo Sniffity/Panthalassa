@@ -90,6 +90,7 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             if (distance < 10) {
                 return null;
             }
+
             if (PanthalassaCommonConfig.COMMON.GENERAL.randomSwimmingChecks.get()) {
                 for (int i = 0; i <= avoidDistance; i++) {
                     if (!this.creature.level.getFluidState(new BlockPos(targetBlockPos).north(i)).is(FluidTags.WATER)) {

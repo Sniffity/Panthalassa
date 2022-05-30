@@ -27,6 +27,10 @@ public class PanthalassaSwimmingHelper extends MoveControl {
     }
 
     public void tick() {
+        if (this.applyGravity && this.mob.isInWater()) {
+            this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
+        }
+
         if (this.operation == MoveControl.Operation.MOVE_TO && !this.mob.getNavigation().isDone()) {
             double d0 = this.wantedX - this.mob.getX();
             double d1 = this.wantedY - this.mob.getY();
