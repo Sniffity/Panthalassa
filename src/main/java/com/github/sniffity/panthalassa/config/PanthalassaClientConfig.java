@@ -43,7 +43,7 @@ public class PanthalassaClientConfig {
         ceratodusSizeMultiplier = builder
                 .defineInRange("ceratodus_size_multiplier", 1.0D, 0.5D, 3.0D);
         helicoprionSizeMultiplier = builder
-                .defineInRange("ceratodus_size_multiplier", 1.0D, 0.5D, 3.0D);
+                .defineInRange("helicoprion_size_multiplier", 1.0D, 0.5D, 3.0D);
         builder.pop();
 
         builder.push("Vehicle Overlay");
