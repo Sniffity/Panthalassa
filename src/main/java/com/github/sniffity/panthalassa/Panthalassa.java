@@ -74,6 +74,7 @@ public final class Panthalassa {
 		PanthalassaSpawns.onBiomeLoading(event);
 	}
 
+	//TODO: Move to EntityType Registry?
 	private void registerEntityAttributes(EntityAttributeCreationEvent event) {
 		event.put(PanthalassaEntityTypes.KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
 		event.put(PanthalassaEntityTypes.MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
@@ -89,6 +90,7 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.CERATODUS.get(), EntityCeratodus.ceratodusAttributes().build());
 		event.put(PanthalassaEntityTypes.HELICOPRION.get(), EntityHelicoprion.helicoprionAttributes().build());
 		event.put(PanthalassaEntityTypes.ANGLERFISH.get(), EntityAnglerfish.anglerfishAttributes().build());
+		event.put(PanthalassaEntityTypes.ANOMALOCARIS.get(), EntityAnomalocaris.anomalocarisAttributes().build());
 		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
 		event.put(PanthalassaEntityTypes.KRONOSAURUS_SKULL.get(), PanthalassaDisplayEntity.displayAttributes().build());
 		event.put(PanthalassaEntityTypes.ARCHELON_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());

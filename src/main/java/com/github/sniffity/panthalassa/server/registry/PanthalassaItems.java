@@ -113,6 +113,13 @@ public class PanthalassaItems {
 					0x82f4ed,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> ANOMALOCARIS_SPAWN_EGG = ITEMS.register("anomalocaris_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.ANOMALOCARIS,
+					0x4b1717,
+					0xbf2a2a,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",
