@@ -33,9 +33,11 @@
       "panthalassa:panthalassa_ice_spikes",
       "panthalassa:frostgrass",
 
+      "panthalassa:giant_orthocone_spawn",
+      "panthalassa:basilosaurus_spawn",
       "panthalassa:acrolepis_spawn",
       "panthalassa:coelacanth_spawn",
-      "panthalassa:giant_orthocone_spawn"
+      "panthalassa:ceratodus_spawn"
     ],
     []
   ],

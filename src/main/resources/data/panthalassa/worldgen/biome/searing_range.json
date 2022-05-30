@@ -34,9 +34,10 @@
       "panthalassa:rock_spikes",
       "panthalassa:dead_coral_tree",
 
+      "panthalassa:thalassomedon_spawn",
       "panthalassa:acrolepis_spawn",
       "panthalassa:coelacanth_spawn",
-      "panthalassa:thalassomedon_spawn"
+      "panthalassa:ceratodus_spawn"
     ],
     []
   ],

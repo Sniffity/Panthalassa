@@ -92,6 +92,13 @@ public class PanthalassaItems {
 					0x855D45,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
+	public static final RegistryObject<Item> CERATODUS_SPAWN_EGG = ITEMS.register("ceratodus_spawn_egg",
+			() -> new ItemPanthalassaSpawnEgg(
+					PanthalassaEntityTypes.CERATODUS,
+					0xffe17d,
+					0x9ec153,
+					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+
 	public static final RegistryObject<Item> AGII_VEHICLE = ITEMS.register("ag2_vehicle",
 			() -> new ItemAGII(new Item.Properties().tab(PanthalassaItemGroup.GROUP).stacksTo(1)));
 	public static final RegistryObject<Item> MRSV_VEHICLE = ITEMS.register("mrsv_vehicle",

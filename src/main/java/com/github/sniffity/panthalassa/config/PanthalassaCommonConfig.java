@@ -48,7 +48,6 @@ public final class PanthalassaCommonConfig {
             this.randomSwimmingChecks = builder
                     .comment("This boolean value will determine whether entities will try and avoid walls when randomly swimming")
                     .define("random_swimming_avoid", false);
-
             builder.pop();
         }
     }
@@ -220,8 +219,21 @@ public final class PanthalassaCommonConfig {
             builder.push("acrolepis");
             externalSpawning = new ExternalSpawningConfig(builder,
                     3,
-                    1,
-                    2,
+                    3,
+                    5,
+                    new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
+            builder.pop();
+        }
+        public final ExternalSpawningConfig externalSpawning;
+    }
+
+    public static class Ceratodus {
+        Ceratodus(final ForgeConfigSpec.Builder builder) {
+            builder.push("ceratodus");
+            externalSpawning = new ExternalSpawningConfig(builder,
+                    3,
+                    3,
+                    5,
                     new BiomeSpawningConfig(builder, Collections.singletonList("minecraft:cold_ocean,minecraft:deep_cold_ocean,minecraft:deep_frozen_ocean,minecraft:deep_lukewarm_ocean,minecraft:deep_ocean,minecraft:frozen_ocean,minecraft:lukewarm_ocean,minecraft:ocean,minecraft:warm_ocean,minecraft:frozen_river,minecraft:river")));
             builder.pop();
         }
@@ -242,8 +254,10 @@ public final class PanthalassaCommonConfig {
             BASILOSAURUS = new Basilosaurus(builder);
             THALASSOMEDON = new Thalassomedon(builder);
             ACROLEPIS = new Acrolepis(builder);
+            CERATODUS = new Ceratodus(builder);
             builder.pop();
         }
+
         public final Kronosaurus KRONOSAURUS;
         public final Megalodon MEGALODON;
         public final Archelon ARCHELON;
@@ -255,6 +269,7 @@ public final class PanthalassaCommonConfig {
         public final Basilosaurus BASILOSAURUS;
         public final Thalassomedon THALASSOMEDON;
         public final Acrolepis ACROLEPIS;
+        public final Ceratodus CERATODUS;
     }
 
     public static class Common {
