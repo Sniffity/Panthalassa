@@ -1,9 +1,10 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
-import com.github.sniffity.panthalassa.server.registry.PanthalassaSounds;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -27,10 +28,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 
-public class EntityThalassomedon extends PanthalassaEntity implements IAnimatable, Enemy {
+public class EntityThalassomedon extends PanthalassaEntity implements IAnimatable, Enemy, IHungry {
     public static final int BLOCKED_DISTANCE = 3;
 
     private AnimationFactory factory = new AnimationFactory(this);
+
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityThalassomedon.class, EntityDataSerializers.FLOAT);
+
 
     public EntityThalassomedon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -40,6 +44,7 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
@@ -91,13 +96,25 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaDisorientGoal(this, 0.70D));
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(1, new PanthalassaSmartAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
+        //Self-defense target selector
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
+        //Player target selector
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityThalassomedon) && !(entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)) ));
+        //Self-exclusive target-selector
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityThalassomedon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
+    }
+
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
     }
 
 }

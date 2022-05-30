@@ -1,6 +1,9 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -27,9 +30,11 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
-public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, Enemy {
+public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable, Enemy, IHungry {
 
     public static final int BLOCKED_DISTANCE = 2;
+
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityLeedsichthys.class, EntityDataSerializers.FLOAT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -42,6 +47,7 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
@@ -92,8 +98,26 @@ public class EntityLeedsichthys extends PanthalassaEntity implements IAnimatable
     public void registerGoals() {
         this.goalSelector.addGoal(1, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
-        this.goalSelector.addGoal(3, new PanthalassaMeleeAttackGoal(this, 1.3F, false));
+        this.goalSelector.addGoal(3, new PanthalassaSmartAttackGoal(this, 1.3F, false));
+        //Self-defense target selector
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof Cod || entity instanceof Salmon || entity instanceof TropicalFish)));
+        //Small fish target selector
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
+                entity -> (entity instanceof Cod
+                        || entity instanceof Salmon
+                        || entity instanceof TropicalFish
+                        || entity instanceof EntityAcrolepis
+                        || entity instanceof EntityCeratodus
+                        || entity instanceof EntityCoelacanth)));
+    }
+
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
     }
 }

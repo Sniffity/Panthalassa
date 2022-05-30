@@ -1,7 +1,6 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaMeleeAttackGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaPanicGoal;
 import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -101,9 +100,14 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.2D, 30));
         this.goalSelector.addGoal(3, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(4, new PanthalassaMeleeAttackGoal(this, 1.3, false));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> (entity instanceof Cod || entity instanceof Salmon || entity instanceof TropicalFish)));
-
+        //Small fish target selector
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
+                entity -> (entity instanceof Cod
+                        || entity instanceof Salmon
+                        || entity instanceof TropicalFish
+                        || entity instanceof EntityAcrolepis
+                        || entity instanceof EntityCeratodus
+                        || entity instanceof EntityCoelacanth)));
     }
 
 }

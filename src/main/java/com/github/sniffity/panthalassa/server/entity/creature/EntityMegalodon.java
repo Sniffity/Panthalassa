@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -31,7 +32,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
 
-public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
+public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable, IHungry {
 
     public static final int BLOCKED_DISTANCE = 3;
 
@@ -40,6 +41,7 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     protected static final EntityDataAccessor<Boolean> IS_BREACHING = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> BREACH_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityMegalodon.class, EntityDataSerializers.FLOAT);
 
     public EntityMegalodon(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -69,12 +71,15 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
         this.entityData.define(TEXTURE_VARIANT, 0);
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
     public void tick() {
         super.tick();
-        setBreachCooldown((getBreachCooldown())-1);
+        if (this.getBreachCooldown()>-1){
+            setBreachCooldown((getBreachCooldown())-1);
+        }
     }
 
     @Override
@@ -116,14 +121,17 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaDisorientGoal(this, 0.70D));
         this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0F));
-        this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(2, new PanthalassaSmartAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
+        //Self-defense target selector
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
+        //Necessary for IBreachable Entities
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
+       //Player target selector
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityMegalodon) && !(entity instanceof EntityArchelon)));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
+        //Self-exclusive target selector
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityMegalodon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))));
         super.registerGoals();
     }
 
@@ -163,5 +171,15 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
 
     public int getTextureVariant() {
         return this.entityData.get(TEXTURE_VARIANT);
+    }
+
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
     }
 }

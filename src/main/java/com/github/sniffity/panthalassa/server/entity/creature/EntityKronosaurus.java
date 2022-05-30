@@ -31,9 +31,10 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable {
+public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable, Enemy, ISchoolable, IHungry {
     public static final int BLOCKED_DISTANCE = 3;
     protected static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityKronosaurus.class, EntityDataSerializers.FLOAT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -46,6 +47,7 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
     @Override
     protected void defineSynchedData() {
         this.entityData.define(LEADER, Boolean.FALSE);
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
@@ -102,14 +104,16 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaDisorientGoal(this, 0.70D));
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(1, new PanthalassaSmartAttackGoal(this, 2.0F, false));
         //this.goalSelector.addGoal(2, new PanthalassaSchoolingGoal(this, 0.7F, 5));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
+        //Self-defense target selector
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
+        //PLayer target selector
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityKronosaurus) && !(entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)) ));
+        //Self-exclusive target selector
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityKronosaurus) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))) );
     }
 
     public void setLeader(boolean leaderStatus) {
@@ -120,4 +124,13 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
         return this.entityData.get(LEADER);
     }
 
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
+    }
 }

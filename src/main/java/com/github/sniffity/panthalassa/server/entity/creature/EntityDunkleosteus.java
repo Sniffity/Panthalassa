@@ -30,10 +30,11 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
-public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable, Enemy {
+public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable, Enemy, IHungry {
     public static final int BLOCKED_DISTANCE = 3;
 
     protected static final EntityDataAccessor<Integer> TEXTURE_VARIANT = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityDunkleosteus.class, EntityDataSerializers.FLOAT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -47,6 +48,7 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
     @Override
     protected void defineSynchedData() {
         this.entityData.define(TEXTURE_VARIANT, 0);
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
@@ -99,11 +101,14 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaDisorientGoal(this, 0.70D));
-        this.goalSelector.addGoal(1, new PanthalassaMeleeAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(1, new PanthalassaSmartAttackGoal(this, 2.0F, false));
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3F));
         this.goalSelector.addGoal(3, new PanthalassaRandomSwimmingGoal(this, 0.7F, 10, BLOCKED_DISTANCE));
+        //Self-defense target selector
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
+        //Player target selector
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER)))));
+        //Self-exclusive target selector
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityDunkleosteus) && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))));
     }
 
@@ -113,5 +118,15 @@ public class EntityDunkleosteus extends PanthalassaEntity implements IAnimatable
 
     public int getTextureVariant() {
         return this.entityData.get(TEXTURE_VARIANT);
+    }
+
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
     }
 }

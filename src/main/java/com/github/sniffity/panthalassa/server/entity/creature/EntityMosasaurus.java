@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
 import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -29,10 +30,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable {
+public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, Enemy, IBreachable, IHungry {
     public static final int BLOCKED_DISTANCE = 3;
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -40,6 +38,7 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     protected static final EntityDataAccessor<Boolean> BREACH_STATE = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> BREACH_COOLDOWN = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> IS_BREACHING = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityMosasaurus.class, EntityDataSerializers.FLOAT);
 
     public EntityMosasaurus(EntityType<? extends PanthalassaEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -95,13 +94,16 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         this.entityData.define(BREACH_STATE, Boolean.FALSE);
         this.entityData.define(IS_BREACHING, Boolean.FALSE);
         this.entityData.define(BREACH_COOLDOWN, 0.00F);
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
     @Override
     public void tick() {
         super.tick();
-        setBreachCooldown((getBreachCooldown())-1);
+        if (this.getBreachCooldown()>-1){
+            setBreachCooldown((getBreachCooldown())-1);
+        }
     }
 
     public static AttributeSupplier.Builder mosasaurusAttributes() {
@@ -117,14 +119,17 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     public void registerGoals() {
         this.goalSelector.addGoal(0, new PanthalassaDisorientGoal(this, 0.70D));
         this.goalSelector.addGoal(1, new PanthalassaBreachAttackGoal(this, 2.0F));
-        this.goalSelector.addGoal(2, new PanthalassaMeleeAttackGoal(this, 2.2F, false));
+        this.goalSelector.addGoal(2, new PanthalassaSmartAttackGoal(this, 2.2F, false));
         this.goalSelector.addGoal(3, new PanthalassaEscapeGoal(this, 1.6F));
         this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.9F, 10, BLOCKED_DISTANCE));
+        //Self-defense target selector
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
+        //Necessary for IBreachable Entities
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 1, true, false, entity -> (entity.getVehicle() != null)));
+        //Player target selector
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, entity -> (entity instanceof Player && !(this.level.getDifficulty() == Difficulty.PEACEFUL))));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityMosasaurus) && !(entity instanceof EntityArchelon)));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, true, false, entity -> (entity instanceof EntityArchelon)));
+        //Self-exclusive target selector
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity -> !(entity instanceof Player) && !(entity instanceof EntityMosasaurus)  && (entity.isInWater() || entity.level.getFluidState(entity.blockPosition().below()).is(FluidTags.WATER))));
         super.registerGoals();
     }
 
@@ -156,5 +161,15 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
     @Override
     public float getBreachCooldown() {
         return this.entityData.get(BREACH_COOLDOWN);
+    }
+
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
     }
 }

@@ -1,6 +1,5 @@
 package com.github.sniffity.panthalassa.server.entity.creature.ai;
 
-
 import java.util.EnumSet;
 
 import com.github.sniffity.panthalassa.server.entity.creature.PanthalassaEntity;
