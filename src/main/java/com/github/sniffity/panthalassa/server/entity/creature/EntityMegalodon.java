@@ -76,10 +76,13 @@ public class EntityMegalodon extends PanthalassaEntity implements IAnimatable, E
     }
 
     public void tick() {
-        super.tick();
+        if (this.getHungerCooldown()>-1){
+            setHungerCooldown((getHungerCooldown())-1);
+        }
         if (this.getBreachCooldown()>-1){
             setBreachCooldown((getBreachCooldown())-1);
         }
+        super.tick();
     }
 
     @Override

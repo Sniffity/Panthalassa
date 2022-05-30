@@ -104,6 +104,9 @@ public class EntityMosasaurus extends PanthalassaEntity implements IAnimatable, 
         if (this.getBreachCooldown()>-1){
             setBreachCooldown((getBreachCooldown())-1);
         }
+        if (this.getHungerCooldown()>-1){
+            setHungerCooldown((getHungerCooldown())-1);
+        }
     }
 
     public static AttributeSupplier.Builder mosasaurusAttributes() {

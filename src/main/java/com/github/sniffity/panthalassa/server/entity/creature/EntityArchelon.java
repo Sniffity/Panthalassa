@@ -1,8 +1,9 @@
 package com.github.sniffity.panthalassa.server.entity.creature;
 
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaEscapeGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaPanicGoal;
-import com.github.sniffity.panthalassa.server.entity.creature.ai.PanthalassaRandomSwimmingGoal;
+import com.github.sniffity.panthalassa.server.entity.creature.ai.*;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
@@ -30,8 +31,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
-public class EntityArchelon extends PanthalassaEntity implements IAnimatable, Enemy {
+public class EntityArchelon extends PanthalassaEntity implements IAnimatable, Enemy, IHungry {
     public static final int BLOCKED_DISTANCE = 2;
+    protected static final EntityDataAccessor<Float> HUNGER_COOLDOWN = SynchedEntityData.defineId(EntityArchelon.class, EntityDataSerializers.FLOAT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -42,6 +44,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(HUNGER_COOLDOWN, 0F);
         super.defineSynchedData();
     }
 
@@ -80,6 +83,9 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
 
     @Override
     public void tick() {
+        if (this.getHungerCooldown()>-1){
+            setHungerCooldown((getHungerCooldown())-1);
+        }
         super.tick();
     }
 
@@ -100,6 +106,7 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
         this.goalSelector.addGoal(2, new PanthalassaEscapeGoal(this, 1.3));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.2D, 30));
         this.goalSelector.addGoal(3, new TryFindWaterGoal(this));
+        this.goalSelector.addGoal(4, new PanthalassaSmartAttackGoal(this, 1.3F, false));
         //Small fish target selector
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
                 entity -> (entity instanceof Cod
@@ -110,4 +117,13 @@ public class EntityArchelon extends PanthalassaEntity implements IAnimatable, En
                         || entity instanceof EntityCoelacanth)));
     }
 
+    @Override
+    public void setHungerCooldown(float hungerCooldown) {
+        this.entityData.set(HUNGER_COOLDOWN, hungerCooldown);
+    }
+
+    @Override
+    public float getHungerCooldown() {
+        return this.entityData.get(HUNGER_COOLDOWN);
+    }
 }

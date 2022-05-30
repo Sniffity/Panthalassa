@@ -81,6 +81,9 @@ public class EntityThalassomedon extends PanthalassaEntity implements IAnimatabl
 
     @Override
     public void tick() {
+        if (this.getHungerCooldown()>-1){
+            setHungerCooldown((getHungerCooldown())-1);
+        }
         super.tick();
     }
 

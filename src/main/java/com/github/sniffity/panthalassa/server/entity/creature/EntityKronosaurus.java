@@ -89,6 +89,9 @@ public class EntityKronosaurus extends PanthalassaEntity implements IAnimatable,
 
     @Override
     public void tick() {
+        if (this.getHungerCooldown()>-1){
+            setHungerCooldown((getHungerCooldown())-1);
+        }
         super.tick();
     }
 

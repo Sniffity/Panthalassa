@@ -91,8 +91,13 @@ public class EntityGiantOrthocone extends PanthalassaEntity implements IAnimatab
 
     @Override
     public void tick() {
+        if (this.getHungerCooldown()>-1){
+            setHungerCooldown((getHungerCooldown())-1);
+        }
+        if (this.getCrushCooldown()>-1){
+            setCrushCooldown((getCrushCooldown())-1);
+        }
         super.tick();
-        setCrushCooldown((getCrushCooldown())-1);
     }
 
     public static AttributeSupplier.Builder giantOrthoconeAttributes() {
