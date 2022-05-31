@@ -2,23 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "zxz",
+    "xxx",
     "xyx",
-    "zxz"
+    "xxx"
   ],
   "key":
   {
     "x":
     {
-      "item": "minecraft:glass"
+      "item": "minecraft:white_terracotta"
     },
     "y":
     {
       "item": "panthalassa:pressure_equalizer_matrix"
-    },
-    "z":
-    {
-      "item": "minecraft:iron_ingot"
     }
   },
   "result":
