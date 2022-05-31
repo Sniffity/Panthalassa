@@ -44,8 +44,8 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> MOSASAURUS_SPAWN_EGG = ITEMS.register("mosasaurus_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
 					PanthalassaEntityTypes.MOSASAURUS,
-					0x54C07C,
-					0xCDE8D7,
+					0x283f36,
+					0x849d87,
 					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> COELACANTH_SPAWN_EGG = ITEMS.register("coelacanth_spawn_egg",
 			() -> new ItemPanthalassaSpawnEgg(
