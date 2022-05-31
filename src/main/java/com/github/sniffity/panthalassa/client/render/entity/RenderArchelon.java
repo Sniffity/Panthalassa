@@ -13,7 +13,7 @@ public class RenderArchelon extends GeoEntityRenderer<EntityArchelon> {
 
     public RenderArchelon(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelArchelon());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 1.5F;
     }
 
     @Override

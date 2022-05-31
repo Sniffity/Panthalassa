@@ -15,7 +15,7 @@ public class RenderCeratodus extends GeoEntityRenderer<EntityCeratodus> {
 
     public RenderCeratodus(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelCeratodus());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 0.5F;
     }
 
     @Override

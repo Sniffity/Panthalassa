@@ -15,7 +15,7 @@ public class RenderBasilosaurus extends GeoEntityRenderer<EntityBasilosaurus> {
 
     public RenderBasilosaurus(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelBasilosaurus());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 1.5F;
     }
 
     @Override

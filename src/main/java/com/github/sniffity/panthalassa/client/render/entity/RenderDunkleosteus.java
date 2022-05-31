@@ -13,7 +13,7 @@ public class RenderDunkleosteus extends GeoEntityRenderer<EntityDunkleosteus> {
 
     public RenderDunkleosteus(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelDunkleosteus());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 1.5F;
     }
 
     @Override

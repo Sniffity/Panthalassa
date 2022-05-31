@@ -13,7 +13,7 @@ public class RenderCoelacanth extends GeoEntityRenderer<EntityCoelacanth> {
 
     public RenderCoelacanth(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelCoelacanth());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 0.7F;
     }
 
     @Override

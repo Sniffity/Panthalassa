@@ -13,7 +13,7 @@ public class RenderAnomalocaris extends GeoEntityRenderer<EntityAnomalocaris> {
 
     public RenderAnomalocaris(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelAnomalocaris());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 0.5F;
     }
 
     @Override

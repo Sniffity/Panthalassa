@@ -16,7 +16,7 @@ public class RenderGiantOrthocone extends GeoEntityRenderer<EntityGiantOrthocone
 
     public RenderGiantOrthocone(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelGiantOrthocone());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 1.5F;
     }
 
     @Override

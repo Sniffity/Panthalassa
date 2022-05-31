@@ -16,7 +16,7 @@ public class RenderAnglerfish extends GeoEntityRenderer<EntityAnglerfish> {
 
     public RenderAnglerfish(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelAnglerfish());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 0.7F;
     }
 
     @Override

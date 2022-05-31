@@ -13,7 +13,7 @@ public class RenderLeedsichthys extends GeoEntityRenderer<EntityLeedsichthys> {
 
     public RenderLeedsichthys(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelLeedsichthys());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 1.5F;
     }
 
     @Override

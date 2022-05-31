@@ -17,7 +17,7 @@ public class RenderAcrolepis extends GeoEntityRenderer<EntityAcrolepis> {
 
     public RenderAcrolepis(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelAcrolepis());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 0.5F;
     }
 
     @Override
