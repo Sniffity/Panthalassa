@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "panthalassa:anomalocaris_meat"
+  },
+  "result": "panthalassa:cooked_anomalocaris_meat",
+  "experience": 1.0,
+  "cookingtime": 200
+}

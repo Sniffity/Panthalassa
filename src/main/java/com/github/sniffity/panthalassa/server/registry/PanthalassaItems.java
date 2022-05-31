@@ -231,4 +231,23 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> COOKED_PRIMAL_FISH_MEAT = ITEMS.register("cooked_primal_fish_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> PRIMAL_CALAMARI = ITEMS.register("primal_calamari",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+	public static final RegistryObject<Item> COOKED_PRIMAL_CALAMARI = ITEMS.register("cooked_primal_calamari",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> PLESIOSAUR_MEAT = ITEMS.register("plesiosaur_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+	public static final RegistryObject<Item> COOKED_PLESIOSAUR_MEAT = ITEMS.register("cooked_plesiosaur_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> ANOMALOCARIS_MEAT = ITEMS.register("anomalocaris_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
+	public static final RegistryObject<Item> COOKED_ANOMALOCARIS_MEAT = ITEMS.register("cooked_anomalocaris_meat",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
+					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+
 }

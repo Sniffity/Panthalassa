@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "panthalassa:primal_calamari"
+  },
+  "result": "panthalassa:cooked_primal_calamari",
+  "experience": 1.0,
+  "cookingtime": 200
+}
