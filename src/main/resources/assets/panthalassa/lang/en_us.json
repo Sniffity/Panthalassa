@@ -69,7 +69,12 @@
     "item.panthalassa.cooked_mosasaur_meat": "Cooked Mosasaur Meat",
     "item.panthalassa.primal_fish_meat": "Primal Fish Meat",
     "item.panthalassa.cooked_primal_fish_meat": "Cooked Primal Fish Meat",
-
+    "item.panthalassa.plesiosaur_meat": "Plesiosaur Meat",
+    "item.panthalassa.cooked_plesiosaur_meat": "Cooked Plesiosaur Meat",
+    "item.panthalassa.primal_calamari": "Primal Calamari",
+    "item.panthalassa.cooked_primal_calamari": "Cooked Primal Calamari",
+    "item.panthalassa.anomalocaris_meat": "Anomalocaris Meat",
+    "item.panthalassa.cooked_anomalocaris_meat": "Cooked Anomalocaris Meat",
     "block.panthalassa.panthalassa_soil": "Panthalassa Soil",
     "block.panthalassa.panthalassa_coarse_soil": "Panthalassa Coarse Soil",
     "block.panthalassa.panthalassa_loose_soil": "Panthalassa Loose Soil",
