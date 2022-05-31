@@ -48,7 +48,7 @@ public class PanthalassaEntityTypes {
 
     public static final RegistryObject<EntityType<EntityCoelacanth>> COELACANTH = ENTITY_TYPES.register ("coelacanth",()->
             EntityType.Builder.of(EntityCoelacanth::new,MobCategory.CREATURE)
-                    .sized(1.0F, 1.0F)
+                    .sized(0.7F, 0.7F)
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "coelacanth").toString()));
 
