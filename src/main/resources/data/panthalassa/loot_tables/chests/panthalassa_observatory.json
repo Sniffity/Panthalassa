@@ -33,6 +33,21 @@
           "name": "panthalassa:primal_fish_meat",
           "type": "minecraft:item",
           "weight": 100
+        },
+        {
+          "name": "panthalassa:plesiosaur_meat",
+          "type": "minecraft:item",
+          "weight": 100
+        },
+        {
+          "name": "panthalassa:primal_calamari",
+          "type": "minecraft:item",
+          "weight": 100
+        },
+        {
+          "name": "panthalassa:anomalocaris_meat",
+          "type": "minecraft:item",
+          "weight": 100
         }
       ]
     },
