@@ -82,6 +82,7 @@ public class PanthalassaVehicle extends Entity {
     public ItemStack itemStack;
     public static final String VEHICLE_HEALTH = "VehicleHealth";
     public static final String TEXTURE_VARIANT = "TextureVariant";
+    public static final String TORPEDO_COUNT = "TorpedoCount";
 
 
     public PanthalassaVehicle(EntityType<?> entityTypeIn, Level worldIn) {
@@ -186,6 +187,12 @@ public class PanthalassaVehicle extends Entity {
             }
             if (this instanceof VehicleAGII) {
                 tag.putInt(TEXTURE_VARIANT,((VehicleAGII) this).getTextureVariant());
+            }
+            if (this instanceof VehiclePCSV) {
+                tag.putInt(TORPEDO_COUNT,((VehiclePCSV) this).getTorpedoCount());
+            }
+            if (this instanceof VehicleECSV) {
+                tag.putInt(TORPEDO_COUNT,((VehicleECSV) this).getTorpedoCount());
             }
             this.spawnAtLocation(itemStack, 0.0F);
             return InteractionResult.sidedSuccess(level.isClientSide);

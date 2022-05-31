@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle.VEHICLE_HEALTH;
+import static com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle.*;
 
 public class ItemECSV extends Item {
     private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
@@ -61,6 +61,7 @@ public class ItemECSV extends Item {
                     if (!worldIn.isClientSide) {
                         if (itemstack.getTag() != null) {
                             vehicleECSV.setHealth(itemstack.getTag().getFloat(VEHICLE_HEALTH));
+                            vehicleECSV.setTorpedoCooldown(itemstack.getTag().getInt(TORPEDO_COUNT));
                         }
                         worldIn.addFreshEntity(vehicleECSV);
                         if (!player.getAbilities().instabuild) {
@@ -82,6 +83,8 @@ public class ItemECSV extends Item {
         if  (stack.getTag() != null) {
             Float health = stack.getTag().getFloat(VEHICLE_HEALTH);
             tooltip.add(new TextComponent("Vehicle Health: ").append(new TextComponent(health.toString())).withStyle(ChatFormatting.YELLOW));
+            int torpedoCount = stack.getTag().getInt(TORPEDO_COUNT);
+            tooltip.add(new TextComponent("Torpedo Count: ").append(new TextComponent(String.valueOf(torpedoCount))).withStyle(ChatFormatting.YELLOW));
         }
     }
 }

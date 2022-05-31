@@ -61,6 +61,7 @@ public class ItemPCSV extends Item {
                     if (!worldIn.isClientSide) {
                         if (itemstack.getTag() != null) {
                             vehiclePCSV.setHealth(itemstack.getTag().getFloat(VEHICLE_HEALTH));
+                            vehiclePCSV.setTorpedoCooldown(itemstack.getTag().getInt(TORPEDO_COUNT));
                         }
                         worldIn.addFreshEntity(vehiclePCSV);
                         if (!player.getAbilities().instabuild) {
@@ -82,6 +83,8 @@ public class ItemPCSV extends Item {
         if  (stack.getTag() != null) {
             Float health = stack.getTag().getFloat(VEHICLE_HEALTH);
             tooltip.add(new TextComponent("Vehicle Health: ").append(new TextComponent(health.toString())).withStyle(ChatFormatting.YELLOW));
+            int torpedoCount = stack.getTag().getInt(TORPEDO_COUNT);
+            tooltip.add(new TextComponent("Torpedo Count: ").append(new TextComponent(String.valueOf(torpedoCount))).withStyle(ChatFormatting.YELLOW));
         }
     }
 }

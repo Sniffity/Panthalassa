@@ -117,7 +117,7 @@ public class VehicleECSV extends PanthalassaVehicle implements IAnimatable {
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (player.isShiftKeyDown() && stack.getItem() == PanthalassaItems.TRANQUILIZING_TORPEDO.get() && this.getTorpedoCount()<10) {
+        if (stack.getItem() == PanthalassaItems.TRANQUILIZING_TORPEDO.get() && this.getTorpedoCount()<10) {
             this.setTorpedoCount(this.getTorpedoCount()+1);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
