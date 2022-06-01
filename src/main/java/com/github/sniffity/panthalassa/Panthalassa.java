@@ -9,6 +9,7 @@ import com.github.sniffity.panthalassa.server.registry.*;
 import com.github.sniffity.panthalassa.server.world.spawn.PanthalassaSpawns;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -25,6 +26,9 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Mod(Panthalassa.MODID)
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -99,9 +103,18 @@ public final class Panthalassa {
 	//TODO: Move to Event
 	@SubscribeEvent
 	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
-		PanthalassaBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block -> {
-			event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(PanthalassaItemGroup.GROUP))
-					.setRegistryName(block.getRegistryName()));
-		});
+		RegistryObject<Block>[] exclusionArray;
+		exclusionArray = new RegistryObject[4];
+		exclusionArray[0] =PanthalassaBlocks.PORTAL;
+		exclusionArray[1] =PanthalassaBlocks.LIGHT_AIR;
+		exclusionArray[2] =PanthalassaBlocks.LIGHT_WATER;
+		exclusionArray[3] =PanthalassaBlocks.PANTHALASSA_WATER;
+		List<RegistryObject<Block>> exclusionCollection = Arrays.asList(exclusionArray);
+		PanthalassaBlocks.BLOCKS.getEntries()
+				.stream()
+				.filter(i -> !exclusionCollection.contains(i))
+				.map(RegistryObject::get)
+				.forEach(block -> {event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(PanthalassaItemGroup.GROUP))
+					.setRegistryName(block.getRegistryName())); });
 	}
 }
