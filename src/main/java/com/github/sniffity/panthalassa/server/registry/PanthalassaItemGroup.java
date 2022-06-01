@@ -9,7 +9,7 @@ public class PanthalassaItemGroup {
     public static final CreativeModeTab GROUP = new CreativeModeTab("group_panthalassa") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(Blocks.CYAN_GLAZED_TERRACOTTA);
+            return new ItemStack(PanthalassaItems.PANTHALASSA_LOGO.get());
         }
     };
 }

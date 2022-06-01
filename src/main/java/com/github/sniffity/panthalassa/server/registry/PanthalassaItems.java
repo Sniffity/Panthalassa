@@ -249,5 +249,6 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> COOKED_ANOMALOCARIS_MEAT = ITEMS.register("cooked_anomalocaris_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
-
+	public static final RegistryObject<Item> PANTHALASSA_LOGO = ITEMS.register("panthalassa_logo",
+			() -> new Item(new Item.Properties()));
 }
