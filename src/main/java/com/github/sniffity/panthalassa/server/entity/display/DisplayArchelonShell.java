@@ -31,7 +31,7 @@ public class DisplayArchelonShell extends PanthalassaDisplayEntity implements IA
         if (isRemoved())
             return;
         this.discard();
-        ItemStack stack = new ItemStack(PanthalassaItems.KRONOSAURUS_SKULL_DISPLAY.get(), 1);
+        ItemStack stack = new ItemStack(PanthalassaItems.ARCHELON_SHELL_DISPLAY.get(), 1);
         if (!this.level.isClientSide)
             this.spawnAtLocation(stack, 0.0F);
     }
