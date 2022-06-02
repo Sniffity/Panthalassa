@@ -1,6 +1,5 @@
 package com.github.sniffity.panthalassa.server.registry;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
