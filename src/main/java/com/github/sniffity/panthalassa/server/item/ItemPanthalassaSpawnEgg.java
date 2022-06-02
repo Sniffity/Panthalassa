@@ -1,6 +1,5 @@
 package com.github.sniffity.panthalassa.server.item;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -9,21 +8,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.NonNullSupplier;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
-
-import net.minecraft.world.item.Item.Properties;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.RegistryObject;
 
 
 public class ItemPanthalassaSpawnEgg extends ForgeSpawnEggItem {
@@ -42,7 +29,5 @@ public class ItemPanthalassaSpawnEgg extends ForgeSpawnEggItem {
                         return stack;
                     }
                 });
-
-
     }
 }
