@@ -243,10 +243,10 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> COOKED_PLESIOSAUR_MEAT = ITEMS.register("cooked_plesiosaur_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
-	public static final RegistryObject<Item> ANOMALOCARIS_MEAT = ITEMS.register("anomalocaris_meat",
+	public static final RegistryObject<Item> PRIMAL_CRUSTACEAN_MEAT = ITEMS.register("primal_crustacean_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.4F).meat().build())));
-	public static final RegistryObject<Item> COOKED_ANOMALOCARIS_MEAT = ITEMS.register("cooked_anomalocaris_meat",
+	public static final RegistryObject<Item> COOKED_PRIMAL_CRUSTACEAN_MEAT = ITEMS.register("cooked_primal_crustacean_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)
 					.food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
 	public static final RegistryObject<Item> PANTHALASSA_LOGO = ITEMS.register("panthalassa_logo",
