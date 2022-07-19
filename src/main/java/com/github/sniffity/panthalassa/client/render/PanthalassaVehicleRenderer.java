@@ -41,8 +41,8 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((-entityIn.yRot)+180));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-entityIn.xRot));
         Minecraft.getInstance().textureManager.bind(this.getTextureLocation(entityIn));
-        Color renderColor = this.getRenderColor(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn);
-        RenderType renderType = this.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, this.getTextureLocation(entityIn));
+        Color renderColor = IGeoRenderer.super.getRenderColor(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn);
+        RenderType renderType = IGeoRenderer.super.getRenderType(entityIn, partialTicks, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, this.getTextureLocation(entityIn));
         this.render(model, entityIn, partialTicks, renderType, matrixStackIn, bufferIn, (IVertexBuilder)null, packedLightIn, getPackedOverlay(entityIn, 0.0F), (float)renderColor.getRed() / 255.0F, (float)renderColor.getGreen() / 255.0F, (float)renderColor.getBlue() / 255.0F, (float)renderColor.getAlpha() / 255.0F);
         float lastLimbDistance = 0.0F;
         float limbSwing = 0.0F;
