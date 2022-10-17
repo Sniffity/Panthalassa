@@ -3,7 +3,7 @@
   "config": {
     "type": "panthalassa:coelacanth",
     "spawnWeight": 100,
-    "minCount" : 3,
-    "maxCount" : 6
+    "minCount" : 1,
+    "maxCount" : 3
   }
 }
