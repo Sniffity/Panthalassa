@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xxx",
+    "xyx",
+    "xxx"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:smoonth_stone"
+    },
+    "y":
+    {
+      "item": "minecraft:lapis_block"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:panthalassa_portal_frame",
+    "count": 56
+  }
+}
