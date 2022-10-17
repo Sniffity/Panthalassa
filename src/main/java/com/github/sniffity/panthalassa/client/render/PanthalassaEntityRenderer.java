@@ -28,6 +28,7 @@ import software.bernie.geckolib3.util.AnimationUtils;
 
 public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends EntityRenderer<T> implements IGeoRenderer<T> {
     private final AnimatedGeoModel<T> modelProvider;
+    public MultiBufferSource rtb;
 
     protected PanthalassaEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> modelProvider) {
         super(renderManager);
@@ -58,6 +59,17 @@ public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends E
     public static int getPackedOverlay(Entity livingEntityIn, float uIn) {
         return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(false));
     }
+
+    @Override
+    public void setCurrentRTB(MultiBufferSource rtb) {
+        this.rtb = rtb;
+    }
+
+    @Override
+    public MultiBufferSource getCurrentRTB() {
+        return this.rtb;
+    }
+
 
     public GeoModelProvider<T> getGeoModelProvider() {
         return this.modelProvider;

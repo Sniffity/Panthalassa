@@ -10,13 +10,13 @@ buildscript {
         classpath 'org.apache.logging.log4j:log4j-core:2.11.2'
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
-
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
-
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 version = "${mod_version}-${minecraft_version}"
 group = 'com.github.sniffity.panthalassa'
@@ -25,7 +25,7 @@ archivesBaseName = "${mod_id}"
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: "official", version: "${minecraft_version}"
+    mappings channel: 'parchment', version: "${parchment_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -41,7 +41,6 @@ minecraft {
                 }
             }
         }
-
         server {
             workingDirectory project.file('run')
             arg "-mixin.config=" + project.getProperty('mod_id') + ".mixins.json"
@@ -54,7 +53,6 @@ minecraft {
                 }
             }
         }
-
         data {
             workingDirectory project.file('run')
             args '--mod', 'panthalassa', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
@@ -72,20 +70,14 @@ minecraft {
 }
 
 repositories {
-    maven {
-        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-    maven {
-        url = "https://maven.blamejared.com"
-    }
-    maven {
-        url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'
-    }
-
+    maven {url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+    maven {url = "https://maven.blamejared.com"}
+    maven {url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'}
+    maven {url = 'https://maven.parchmentmc.org' }
     maven {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-
     maven {
         url "https://cursemaven.com"
         content {
@@ -99,9 +91,9 @@ dependencies {
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67")
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67:api")
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.15')
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1:api")
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.45')
     runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0") {transitive = false}
     compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174")
