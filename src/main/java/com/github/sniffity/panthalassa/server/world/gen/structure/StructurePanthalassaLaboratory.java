@@ -32,12 +32,11 @@ public class StructurePanthalassaLaboratory extends StructureFeature<JigsawConfi
         BlockState topBlock = columnOfBlocks.getBlock(landHeight);
         if (topBlock.getFluidState().is(FluidTags.WATER)) {
             int i = 0;
-            while (!topBlock.canOcclude()) {
+            while (!topBlock.canOcclude() && centerOfChunk.above(landHeight - i).getY() > 0) {
                 i++;
                 topBlock = columnOfBlocks.getBlock(centerOfChunk.above(landHeight - i).getY());
             }
             float yHeight = (centerOfChunk.above(landHeight - i).getY());
-
             return (int) yHeight;
         }
         return 100;
