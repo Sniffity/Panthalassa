@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [256, 256],
 	"textures": {
-		"0": "megalodon_jaws_display"
+		"0": "panthalassa:item/giant_orthocone_shell_display"
 	},
 	"elements": [
 		{
