@@ -7,6 +7,7 @@ import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
 import com.github.sniffity.panthalassa.server.item.display.ItemArchelonShellDisplay;
 import com.github.sniffity.panthalassa.server.item.display.ItemGiantOrthoconeShellDisplay;
 import com.github.sniffity.panthalassa.server.item.display.ItemKronosaurusSkullDisplay;
+import com.github.sniffity.panthalassa.server.item.display.ItemMegalodonJawsDisplay;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemAGII;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemECSV;
 import com.github.sniffity.panthalassa.server.item.vehicle.ItemMRSV;
@@ -192,8 +193,11 @@ public class PanthalassaItems {
 	public static final RegistryObject<Item> ARCHELON_SHELL = ITEMS.register("archelon_shell",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 	public static final RegistryObject<Item> ARCHELON_SHELL_DISPLAY = ITEMS.register("archelon_shell_display",
-			() -> new ItemArchelonShellDisplay(
-					new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+			() -> new ItemArchelonShellDisplay(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> MEGALODON_JAWS = ITEMS.register("megalodon_jaws",
+			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
+	public static final RegistryObject<Item> MEGALODON_JAWS_DISPLAY = ITEMS.register("megalodon_jaws_display",
+			() -> new ItemMegalodonJawsDisplay(new Item.Properties().tab(PanthalassaItemGroup.GROUP)));
 
 	public static final RegistryObject<Item> PLIOSAUR_MEAT = ITEMS.register("pliosaur_meat",
 			() -> new Item(new Item.Properties().tab(PanthalassaItemGroup.GROUP)

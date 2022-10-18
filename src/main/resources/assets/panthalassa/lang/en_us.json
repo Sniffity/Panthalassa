@@ -54,10 +54,13 @@
     "item.panthalassa.kronosaurus_skull": "Kronosaurus Skull",
     "item.panthalassa.archelon_shell_display": "Archelon Shell Display",
     "item.panthalassa.archelon_shell": "Archelon Shell",
+    "item.panthalassa.megalodon_jaws_display": "Megalodon Jaws Display",
+    "item.panthalassa.megalodon_jaws": "Megalodon Jaws",
 
     "entity.panthalassa.giant_orthocone_shell_display": "Giant Orthocone Shell Display",
     "entity.panthalassa.kronosaurus_skull_display": "Kronosaurus Skull Display",
     "entity.panthalassa.archelon_shell_display": "Archelon Shell Display",
+    "entity.panthalassa.megalodon_jaws_display": "Megalodon Jaws Display",
 
     "item.panthalassa.pliosaur_meat": "Pliosaur Meat",
     "item.panthalassa.cooked_pliosaur_meat": "Cooked Pliosaur Meat",

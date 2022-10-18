@@ -98,6 +98,8 @@ public final class Panthalassa {
 		event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
 		event.put(PanthalassaEntityTypes.KRONOSAURUS_SKULL.get(), PanthalassaDisplayEntity.displayAttributes().build());
 		event.put(PanthalassaEntityTypes.ARCHELON_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
+		event.put(PanthalassaEntityTypes.MEGALODON_JAWS.get(), PanthalassaDisplayEntity.displayAttributes().build());
+
 	}
 
 	//TODO: Move to Event

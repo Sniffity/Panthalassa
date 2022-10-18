@@ -1,7 +1,6 @@
 package com.github.sniffity.panthalassa.client.model.display;
 
 import com.github.sniffity.panthalassa.Panthalassa;
-import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayKronosaurusSkull;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;

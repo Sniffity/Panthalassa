@@ -5,6 +5,7 @@ import com.github.sniffity.panthalassa.server.entity.creature.*;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayArchelonShell;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
 import com.github.sniffity.panthalassa.server.entity.display.DisplayKronosaurusSkull;
+import com.github.sniffity.panthalassa.server.entity.display.DisplayMegalodonJaws;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
@@ -163,4 +164,9 @@ public class PanthalassaEntityTypes {
                     .of(DisplayArchelonShell::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "archelon_shell_display").toString()));
+    public static final RegistryObject<EntityType<DisplayMegalodonJaws>> MEGALODON_JAWS = ENTITY_TYPES.register ("megalodon_jaws_display",()->
+            EntityType.Builder
+                    .of(DisplayMegalodonJaws::new,MobCategory.MISC)
+                    .sized(2.0F, 2.0F)
+                    .build(new ResourceLocation(Panthalassa.MODID, "megalodon_jaws_display").toString()));
 }

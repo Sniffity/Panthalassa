@@ -72,6 +72,11 @@
           "name": "panthalassa:archelon_shell",
           "type": "minecraft:item",
           "weight": 10
+        },
+        {
+          "name": "panthalassa:megalodon_jaws",
+          "type": "minecraft:item",
+          "weight": 10
         }
       ]
     },

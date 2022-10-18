@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " z ",
+    "yyy",
+    "xxx"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:stone_slab"
+    },
+    "y":
+    {
+      "item": "minecraft:stick"
+    },
+    "z":
+    {
+      "item": "panthalassa:megalodon_jaws"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:megalodon_jaws_display",
+    "count": 1
+  }
+}
