@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "   ",
+    "xxy",
+    "   "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    "y":
+    {
+      "item": "minecraft:fermented_spider_eye"
+    }
+  },
+  "result":
+  {
+    "item": "panthalassa:tranquilizing_torpedo",
+    "count": 1
+  }
+}

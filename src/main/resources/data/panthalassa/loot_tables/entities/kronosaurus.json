@@ -16,6 +16,26 @@
           "name": "panthalassa:pliosaur_meat"
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 90
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1
+            }
+          ],
+          "name": "panthalassa:kronosaurus_skull"
+        }
+      ]
     }
   ]
 }

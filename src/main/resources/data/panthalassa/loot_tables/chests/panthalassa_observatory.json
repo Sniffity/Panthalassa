@@ -115,6 +115,16 @@
           "name": "panthalassa:genome_predator_y",
           "type": "minecraft:item",
           "weight": 10
+        },
+        {
+          "name": "panthalassa:creature_synthesizer_core",
+          "type": "minecraft:item",
+          "weight": 10
+        },
+        {
+          "name": "panthalassa:creature_synthesizer_stabilizer",
+          "type": "minecraft:item",
+          "weight": 10
         }
       ]
     }
