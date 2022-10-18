@@ -45,8 +45,6 @@ public class LaboratorySupportProcessor extends StructureProcessor {
             BlockState replacementState = supportBlockState;
             //Define a mutableBlockPos which we will move to replace the blocks in a downwards column...
             BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos().set(worldPos);
-            //Replace the initial block, where we are starting...
-            levelReader.getChunk(currentPos).setBlockState(currentPos, replacementState, false);
             //Move down, we are ready to start the loop...
             BlockState currentBlock = levelReader.getBlockState(currentPos.below());
             //Replace blocks with the replacementBlock until we hit a solid block...
@@ -59,6 +57,7 @@ public class LaboratorySupportProcessor extends StructureProcessor {
                     break;
                 }
             }
+            return new StructureTemplate.StructureBlockInfo(worldPos, replacementState, null);
         }
         return structureBlockInfoWorld;
     }
