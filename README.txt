@@ -34,3 +34,4 @@ Additionally, many thanks to the amazing team of bug testers:
 -Bobbywick
 -BurningLake
 -KannaSK
+-Allee
