@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "panthalassa.refmap.json",
   "mixins": [
+    "StructureProcessorAccessor",
+    "StructureTemplateMixin"
   ],
   "minVersion": "0.8"
 }
