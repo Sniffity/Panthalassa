@@ -35,11 +35,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.console.level', 'debug'
-            mods {
-                panthalassa {
-                    source sourceSets.main
-                }
-            }
+            mods {panthalassa {source sourceSets.main}}
         }
         server {
             workingDirectory project.file('run')
