@@ -41,7 +41,7 @@ public final class PanthalassaCommonConfig {
                     .define("give_journal", true);
             this.externalSpawningBoolean = builder
                     .comment("This boolean value will determine whether Panthalassa's creatures spawn outside the Panthalassa Dimension")
-                    .define("external_spawning", true);
+                    .define("external_spawning", false);
             this.crushDepth = builder
                     .comment("This boolean value will determine whether the crush depth mechanic is enabled within Panthalassa")
                     .define("crush_depth", false);
