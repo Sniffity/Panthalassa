@@ -61,7 +61,7 @@ public class ItemECSV extends Item {
                     if (!worldIn.isClientSide) {
                         if (itemstack.getTag() != null) {
                             vehicleECSV.setHealth(itemstack.getTag().getFloat(VEHICLE_HEALTH));
-                            vehicleECSV.setTorpedoCooldown(itemstack.getTag().getInt(TORPEDO_COUNT));
+                            vehicleECSV.setTorpedoCount(itemstack.getTag().getInt(TORPEDO_COUNT));
                         }
                         worldIn.addFreshEntity(vehicleECSV);
                         if (!player.getAbilities().instabuild) {

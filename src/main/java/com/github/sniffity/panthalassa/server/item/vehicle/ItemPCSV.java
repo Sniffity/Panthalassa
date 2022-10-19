@@ -61,7 +61,7 @@ public class ItemPCSV extends Item {
                     if (!worldIn.isClientSide) {
                         if (itemstack.getTag() != null) {
                             vehiclePCSV.setHealth(itemstack.getTag().getFloat(VEHICLE_HEALTH));
-                            vehiclePCSV.setTorpedoCooldown(itemstack.getTag().getInt(TORPEDO_COUNT));
+                            vehiclePCSV.setTorpedoCount(itemstack.getTag().getInt(TORPEDO_COUNT));
                         }
                         worldIn.addFreshEntity(vehiclePCSV);
                         if (!player.getAbilities().instabuild) {
