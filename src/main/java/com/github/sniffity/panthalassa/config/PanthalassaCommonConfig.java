@@ -41,10 +41,10 @@ public final class PanthalassaCommonConfig {
                     .define("give_journal", true);
             this.externalSpawningBoolean = builder
                     .comment("This boolean value will determine whether Panthalassa's creatures spawn outside the Panthalassa Dimension")
-                    .define("external_spawning", false);
+                    .define("external_spawning", true);
             this.crushDepth = builder
                     .comment("This boolean value will determine whether the crush depth mechanic is enabled within Panthalassa")
-                    .define("crush_depth", true);
+                    .define("crush_depth", false);
             this.randomSwimmingChecks = builder
                     .comment("This boolean value will determine whether entities will try and avoid walls when randomly swimming")
                     .define("random_swimming_avoid", false);
@@ -66,7 +66,6 @@ public final class PanthalassaCommonConfig {
                     .defineInRange("max_group_size", maxGroupSize, 1, Integer.MAX_VALUE);
             this.biomeSpawningConfig = biomeSpawningConfig;
         }
-
         public final ForgeConfigSpec.IntValue spawnRate;
         public final ForgeConfigSpec.IntValue minGroupSize;
         public final ForgeConfigSpec.IntValue maxGroupSize;
@@ -80,7 +79,6 @@ public final class PanthalassaCommonConfig {
                     .defineList("biome_whitelist", biomeWhitelist, STRING_PREDICATE);
             builder.pop();
         }
-
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> biomeWhitelist;
     }
 
@@ -315,7 +313,6 @@ public final class PanthalassaCommonConfig {
         public final Helicoprion HELICOPRION;
         public final Anglerfish ANGLERFISH;
         public final Anomalocaris ANOMALOCARIS;
-
     }
 
     public static class Common {

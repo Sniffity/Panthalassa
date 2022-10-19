@@ -203,7 +203,7 @@ public abstract class PanthalassaEntity extends PathfinderMob {
 
 
     public static boolean canPanthalassaEntitySpawn(EntityType<? extends PanthalassaEntity> type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        if (randomIn.nextDouble() > 0.5) {
+        if (randomIn.nextDouble() > 0.8) {
                 return true;
         }
         return false;
