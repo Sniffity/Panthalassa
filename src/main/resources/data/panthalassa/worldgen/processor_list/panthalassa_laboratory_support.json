@@ -8,9 +8,6 @@
       "support_block": {
         "Name": "minecraft:gray_concrete"
       }
-    },
-    {
-      "processor_type": "panthalassa:waterlogging_fix"
     }
   ]
 }
