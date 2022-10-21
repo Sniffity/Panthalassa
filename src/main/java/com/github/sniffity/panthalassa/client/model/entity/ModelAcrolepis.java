@@ -24,7 +24,7 @@ public class ModelAcrolepis extends AnimatedGeoModel<EntityAcrolepis> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityAcrolepis animatable) {
+    public ResourceLocation getAnimationResource(EntityAcrolepis animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/acrolepis/acrolepis.json");
     }
 

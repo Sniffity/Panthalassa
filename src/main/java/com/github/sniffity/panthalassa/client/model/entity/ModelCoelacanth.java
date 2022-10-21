@@ -31,7 +31,7 @@ public class ModelCoelacanth extends AnimatedGeoModel<EntityCoelacanth> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityCoelacanth animatable) {
+    public ResourceLocation getAnimationResource(EntityCoelacanth animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/coelacanth/coelacanth.json");
     }
 

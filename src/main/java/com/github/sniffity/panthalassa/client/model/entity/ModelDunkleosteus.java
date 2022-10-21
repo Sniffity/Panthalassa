@@ -32,7 +32,7 @@ public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityDunkleosteus animatable) {
+    public ResourceLocation getAnimationResource(EntityDunkleosteus animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/dunkleosteus/dunkleosteus.json");
     }
 

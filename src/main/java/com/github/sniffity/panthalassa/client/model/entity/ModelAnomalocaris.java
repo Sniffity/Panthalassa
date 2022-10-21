@@ -23,7 +23,7 @@ public class ModelAnomalocaris extends AnimatedGeoModel<EntityAnomalocaris> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityAnomalocaris animatable) {
+    public ResourceLocation getAnimationResource(EntityAnomalocaris animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/anomalocaris/anomalocaris.json");
     }
 

@@ -25,7 +25,7 @@ public class ModelGiantOrthocone extends AnimatedGeoModel<EntityGiantOrthocone>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityGiantOrthocone animatable) {
+    public ResourceLocation getAnimationResource(EntityGiantOrthocone animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/giant_orthocone/giant_orthocone.json");
     }
 

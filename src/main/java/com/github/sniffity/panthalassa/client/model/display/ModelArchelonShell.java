@@ -24,7 +24,7 @@ public class ModelArchelonShell extends AnimatedGeoModel<DisplayArchelonShell>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(DisplayArchelonShell animatable) {
+    public ResourceLocation getAnimationResource(DisplayArchelonShell animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/display/archelon_shell/archelon_shell.json");
     }
 

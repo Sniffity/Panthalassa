@@ -28,7 +28,7 @@ public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityMegalodon animatable) {
+    public ResourceLocation getAnimationResource(EntityMegalodon animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/megalodon/megalodon.json");
     }
 

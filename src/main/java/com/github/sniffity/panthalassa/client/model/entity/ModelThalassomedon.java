@@ -24,7 +24,7 @@ public class ModelThalassomedon extends AnimatedGeoModel<EntityThalassomedon> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityThalassomedon animatable) {
+    public ResourceLocation getAnimationResource(EntityThalassomedon animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/thalassomedon/thalassomedon.json");
     }
 

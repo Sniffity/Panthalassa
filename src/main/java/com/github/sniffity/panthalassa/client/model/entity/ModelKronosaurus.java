@@ -23,7 +23,7 @@ public class ModelKronosaurus extends AnimatedGeoModel<EntityKronosaurus>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityKronosaurus animatable) {
+    public ResourceLocation getAnimationResource(EntityKronosaurus animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/kronosaurus/kronosaurus.json");
     }
 

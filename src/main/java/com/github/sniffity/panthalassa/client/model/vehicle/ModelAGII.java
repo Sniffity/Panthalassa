@@ -52,7 +52,7 @@ public class ModelAGII extends AnimatedGeoModel<VehicleAGII>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(VehicleAGII animatable) {
+    public ResourceLocation getAnimationResource(VehicleAGII animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/vehicle/ag2/ag2.json");
     }
 }

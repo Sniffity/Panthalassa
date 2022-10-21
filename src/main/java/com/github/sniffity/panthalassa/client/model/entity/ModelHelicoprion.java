@@ -25,7 +25,7 @@ public class ModelHelicoprion extends AnimatedGeoModel<EntityHelicoprion> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityHelicoprion animatable) {
+    public ResourceLocation getAnimationResource(EntityHelicoprion animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/helicoprion/helicoprion.json");
     }
 

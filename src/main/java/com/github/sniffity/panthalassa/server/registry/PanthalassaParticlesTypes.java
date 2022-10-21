@@ -6,7 +6,7 @@ import net.minecraft.client.particle.CampfireSmokeParticle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,7 +21,7 @@ public class PanthalassaParticlesTypes {
             () -> new SimpleParticleType(false));
 
     @SubscribeEvent
-    public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+    public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
         ParticleEngine engine = Minecraft.getInstance().particleEngine;
         engine.register(VENT_SMOKE.get(), CampfireSmokeParticle.SignalProvider::new);
     }

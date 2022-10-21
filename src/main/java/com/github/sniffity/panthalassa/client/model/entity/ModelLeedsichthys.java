@@ -26,7 +26,7 @@ public class ModelLeedsichthys extends AnimatedGeoModel<EntityLeedsichthys>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityLeedsichthys animatable) {
+    public ResourceLocation getAnimationResource(EntityLeedsichthys animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/leedsichthys/leedsichthys.json");
     }
 

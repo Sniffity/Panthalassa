@@ -14,9 +14,9 @@ public class PanthalassaDimension {
     public static final ResourceKey<DimensionType> PANTHALASSA_TYPE = ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(Panthalassa.MODID, "panthalassa"));
     public static final ResourceKey<Level> PANTHALASSA = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(Panthalassa.MODID, "panthalassa"));
 
-    public static void worldTick(TickEvent.WorldTickEvent event){
-        if(event.phase == TickEvent.Phase.END && !event.world.isClientSide()){
-            PanthalassaWorldSavedData.tick((ServerLevel) event.world);
+    public static void worldTick(TickEvent.LevelTickEvent event){
+        if(event.phase == TickEvent.Phase.END && !event.level.isClientSide()){
+            PanthalassaWorldSavedData.tick((ServerLevel) event.level);
         }
     }
 }

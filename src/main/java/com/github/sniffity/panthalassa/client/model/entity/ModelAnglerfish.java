@@ -24,7 +24,7 @@ public class ModelAnglerfish extends AnimatedGeoModel<EntityAnglerfish> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityAnglerfish animatable) {
+    public ResourceLocation getAnimationResource(EntityAnglerfish animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/anglerfish/anglerfish.json");
     }
 

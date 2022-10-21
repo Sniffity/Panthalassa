@@ -24,7 +24,7 @@ public class ModelCeratodus extends AnimatedGeoModel<EntityCeratodus> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityCeratodus animatable) {
+    public ResourceLocation getAnimationResource(EntityCeratodus animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/ceratodus/ceratodus.json");
     }
 

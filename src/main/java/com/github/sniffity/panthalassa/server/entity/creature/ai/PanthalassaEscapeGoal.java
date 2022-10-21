@@ -43,7 +43,7 @@ public class PanthalassaEscapeGoal extends Goal {
             int searchRadius = 10;
             PoiManager pointofinterestmanager = ((ServerLevel) creature.level).getPoiManager();
             Optional<PoiRecord> portalPOI = pointofinterestmanager.getInRange(
-                    (pointOfInterestType) -> pointOfInterestType == PanthalassaPOI.PANTHALASSA_POI_PORTAL.get(),
+                    (pointOfInterestType) -> pointOfInterestType == PanthalassaPOI.PANTHALASSA_POI_PORTAL.getKey(),
                     creature.blockPosition(),
                     searchRadius,
                     PoiManager.Occupancy.ANY)

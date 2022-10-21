@@ -23,7 +23,7 @@ public class ModelECSV extends AnimatedGeoModel<VehicleECSV>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(VehicleECSV animatable) {
+    public ResourceLocation getAnimationResource(VehicleECSV animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/vehicle/ecsv/ecsv.json");
     }
 }

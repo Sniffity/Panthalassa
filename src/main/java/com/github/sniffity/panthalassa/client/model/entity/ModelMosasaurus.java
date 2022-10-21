@@ -24,7 +24,7 @@ public class ModelMosasaurus extends AnimatedGeoModel<EntityMosasaurus>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityMosasaurus animatable) {
+    public ResourceLocation getAnimationResource(EntityMosasaurus animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/mosasaurus/mosasaurus.json");
     }
 

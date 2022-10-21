@@ -23,7 +23,7 @@ public class ModelBasilosaurus extends AnimatedGeoModel<EntityBasilosaurus>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(EntityBasilosaurus animatable) {
+    public ResourceLocation getAnimationResource(EntityBasilosaurus animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/creature/basilosaurus/basilosaurus.json");
     }
 

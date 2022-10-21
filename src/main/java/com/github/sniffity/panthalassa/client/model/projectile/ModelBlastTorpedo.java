@@ -19,7 +19,7 @@ public class ModelBlastTorpedo extends AnimatedGeoModel<ProjectileBlastTorpedo>
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ProjectileBlastTorpedo animatable) {
+    public ResourceLocation getAnimationResource(ProjectileBlastTorpedo animatable) {
         return new ResourceLocation(Panthalassa.MODID,"animations/projectile/torpedo/torpedo.json");
     }
 }

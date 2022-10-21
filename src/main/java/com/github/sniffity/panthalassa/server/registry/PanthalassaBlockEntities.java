@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class PanthalassaBlockEntities {
 
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Panthalassa.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Panthalassa.MODID);
     public static final RegistryObject<BlockEntityType<BlockPortalBlockEntity>> PORTAL_TE = BLOCK_ENTITY_TYPES.register(
             "portal", () -> BlockEntityType.Builder.of(BlockPortalBlockEntity::new, PanthalassaBlocks.PORTAL.get()).build(null));
     public static final RegistryObject<BlockEntityType<BlockPressureEqualizerBlockEntity>> PRESSURE_EQUALIZER_TE = BLOCK_ENTITY_TYPES.register(
