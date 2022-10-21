@@ -14,12 +14,12 @@ import static java.lang.Math.PI;
 public class ModelMegalodonJaws extends AnimatedGeoModel<DisplayMegalodonJaws>
 {
     @Override
-    public ResourceLocation getModelLocation(DisplayMegalodonJaws object) {
+    public ResourceLocation getModelResource(DisplayMegalodonJaws object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/display/megalodon_jaws/megalodon_jaws.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DisplayMegalodonJaws object) {
+    public ResourceLocation getTextureResource(DisplayMegalodonJaws object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/display/megalodon_jaws/megalodon_jaws.png");
     }
 

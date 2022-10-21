@@ -15,12 +15,12 @@ import static java.lang.Math.PI;
 public class ModelCoelacanth extends AnimatedGeoModel<EntityCoelacanth> {
 
     @Override
-    public ResourceLocation getModelLocation(EntityCoelacanth object) {
+    public ResourceLocation getModelResource(EntityCoelacanth object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/coelacanth/coelacanth.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityCoelacanth object) {
+    public ResourceLocation getTextureResource(EntityCoelacanth object) {
         if (object.getTextureVariant() == 0){
             return new ResourceLocation(Panthalassa.MODID,"textures/creature/coelacanth/coelacanth_1.png");
         } else if (object.getTextureVariant() == 1) {

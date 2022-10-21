@@ -16,12 +16,12 @@ import static java.lang.Math.PI;
 public class ModelDunkleosteus extends AnimatedGeoModel<EntityDunkleosteus>
 {
     @Override
-    public ResourceLocation getModelLocation(EntityDunkleosteus object) {
+    public ResourceLocation getModelResource(EntityDunkleosteus object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/dunkleosteus/dunkleosteus.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityDunkleosteus object) {
+    public ResourceLocation getTextureResource(EntityDunkleosteus object) {
         if (object.getTextureVariant() == 0){
             return new ResourceLocation(Panthalassa.MODID,"textures/creature/dunkleosteus/dunkleosteus_blue.png");
         } else if (object.getTextureVariant() == 1) {

@@ -16,12 +16,12 @@ import static java.lang.Math.PI;
 public class ModelLeedsichthys extends AnimatedGeoModel<EntityLeedsichthys>
 {
     @Override
-    public ResourceLocation getModelLocation(EntityLeedsichthys object) {
+    public ResourceLocation getModelResource(EntityLeedsichthys object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/leedsichthys/leedsichthys.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityLeedsichthys object) {
+    public ResourceLocation getTextureResource(EntityLeedsichthys object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/leedsichthys/leedsichthys.png");
     }
 

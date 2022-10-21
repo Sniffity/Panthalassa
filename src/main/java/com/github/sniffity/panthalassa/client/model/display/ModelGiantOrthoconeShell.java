@@ -15,12 +15,12 @@ import static java.lang.Math.PI;
 public class ModelGiantOrthoconeShell extends AnimatedGeoModel<DisplayGiantOrthoconeShell>
 {
     @Override
-    public ResourceLocation getModelLocation(DisplayGiantOrthoconeShell object) {
+    public ResourceLocation getModelResource(DisplayGiantOrthoconeShell object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/display/giant_orthocone_shell/giant_orthocone_shell.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DisplayGiantOrthoconeShell object) {
+    public ResourceLocation getTextureResource(DisplayGiantOrthoconeShell object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/display/giant_orthocone_shell/giant_orthocone_shell.png");
     }
 

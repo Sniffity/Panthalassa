@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.block;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -103,12 +104,12 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
         return false;
     }
 
-    public static void generatePlant(LevelAccessor p_185603_0_, BlockPos p_185603_1_, Random p_185603_2_, int p_185603_3_) {
+    public static void generatePlant(LevelAccessor p_185603_0_, BlockPos p_185603_1_, RandomSource p_185603_2_, int p_185603_3_) {
         p_185603_0_.setBlock(p_185603_1_, ((BlockPrimordialStalk) PanthalassaBlocks.PRIMORDIAL_STALK.get()).getStateForPlacement(p_185603_0_, p_185603_1_), 2);
         growTreeRecursive(p_185603_0_, p_185603_1_, p_185603_2_, p_185603_1_, p_185603_3_, 0);
     }
 
-    private static void growTreeRecursive(LevelAccessor p_185601_0_, BlockPos p_185601_1_, Random p_185601_2_, BlockPos p_185601_3_, int p_185601_4_, int p_185601_5_) {
+    private static void growTreeRecursive(LevelAccessor p_185601_0_, BlockPos p_185601_1_, RandomSource p_185601_2_, BlockPos p_185601_3_, int p_185601_4_, int p_185601_5_) {
         BlockPrimordialStalk primordialStalk = (BlockPrimordialStalk) PanthalassaBlocks.PRIMORDIAL_STALK.get();
         int i = p_185601_2_.nextInt(20) + 1;
         if (p_185601_5_ == 0) {

@@ -14,12 +14,12 @@ import javax.annotation.Nullable;
 public class ModelAnglerfish extends AnimatedGeoModel<EntityAnglerfish> {
 
     @Override
-    public ResourceLocation getModelLocation(EntityAnglerfish object) {
+    public ResourceLocation getModelResource(EntityAnglerfish object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/anglerfish/anglerfish.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityAnglerfish object) {
+    public ResourceLocation getTextureResource(EntityAnglerfish object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/anglerfish/anglerfish.png");
     }
 

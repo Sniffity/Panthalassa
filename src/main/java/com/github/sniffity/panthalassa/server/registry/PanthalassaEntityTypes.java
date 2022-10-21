@@ -2,10 +2,7 @@ package com.github.sniffity.panthalassa.server.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.entity.creature.*;
-import com.github.sniffity.panthalassa.server.entity.display.DisplayArchelonShell;
-import com.github.sniffity.panthalassa.server.entity.display.DisplayGiantOrthoconeShell;
-import com.github.sniffity.panthalassa.server.entity.display.DisplayKronosaurusSkull;
-import com.github.sniffity.panthalassa.server.entity.display.DisplayMegalodonJaws;
+import com.github.sniffity.panthalassa.server.entity.display.*;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileBlastTorpedo;
 import com.github.sniffity.panthalassa.server.entity.projectile.ProjectileTranquilizingTorpedo;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleAGII;
@@ -15,13 +12,19 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class PanthalassaEntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Panthalassa.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Panthalassa.MODID);
 
     public static final RegistryObject<EntityType<EntityKronosaurus>> KRONOSAURUS = ENTITY_TYPES.register ("kronosaurus",()->
             EntityType.Builder.of(EntityKronosaurus::new,MobCategory.MONSTER)
@@ -30,7 +33,7 @@ public class PanthalassaEntityTypes {
                     .build(new ResourceLocation(Panthalassa.MODID, "kronosaurus").toString()));
 
     public static final RegistryObject<EntityType<EntityMegalodon>> MEGALODON = ENTITY_TYPES.register ("megalodon",()->
-            EntityType.Builder.of(EntityMegalodon::new,MobCategory.MONSTER)
+            EntityType.Builder.<EntityMegalodon>of(EntityMegalodon::new,MobCategory.MONSTER)
                     .sized(1.0F, 1.0F)
                     .canSpawnFarFromPlayer()
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon").toString()));
@@ -169,4 +172,47 @@ public class PanthalassaEntityTypes {
                     .of(DisplayMegalodonJaws::new,MobCategory.MISC)
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon_jaws_display").toString()));
+
+    @SubscribeEvent
+    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+        event.register(KRONOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(MEGALODON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ARCHELON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(MOSASAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(COELACANTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(BASILOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(THALASSOMEDON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ACROLEPIS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(CERATODUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(HELICOPRION.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ANGLERFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ANOMALOCARIS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
+    }
+
+    @SubscribeEvent
+    private void registerEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(PanthalassaEntityTypes.KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
+        event.put(PanthalassaEntityTypes.MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
+        event.put(PanthalassaEntityTypes.ARCHELON.get(), EntityArchelon.archelonAttributes().build());
+        event.put(PanthalassaEntityTypes.MOSASAURUS.get(), EntityMosasaurus.mosasaurusAttributes().build());
+        event.put(PanthalassaEntityTypes.COELACANTH.get(), EntityCoelacanth.coelacanthAttributes().build());
+        event.put(PanthalassaEntityTypes.DUNKLEOSTEUS.get(), EntityDunkleosteus.dunkleosteusAttributes().build());
+        event.put(PanthalassaEntityTypes.LEEDSICHTHYS.get(), EntityLeedsichthys.leedsichthysAttributes().build());
+        event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE.get(), EntityGiantOrthocone.giantOrthoconeAttributes().build());
+        event.put(PanthalassaEntityTypes.BASILOSAURUS.get(), EntityBasilosaurus.basilosaurusAttributes().build());
+        event.put(PanthalassaEntityTypes.THALASSOMEDON.get(), EntityThalassomedon.thalassomedonAttributes().build());
+        event.put(PanthalassaEntityTypes.ACROLEPIS.get(), EntityAcrolepis.acrolepisAttributes().build());
+        event.put(PanthalassaEntityTypes.CERATODUS.get(), EntityCeratodus.ceratodusAttributes().build());
+        event.put(PanthalassaEntityTypes.HELICOPRION.get(), EntityHelicoprion.helicoprionAttributes().build());
+        event.put(PanthalassaEntityTypes.ANGLERFISH.get(), EntityAnglerfish.anglerfishAttributes().build());
+        event.put(PanthalassaEntityTypes.ANOMALOCARIS.get(), EntityAnomalocaris.anomalocarisAttributes().build());
+        event.put(PanthalassaEntityTypes.GIANT_ORTHOCONE_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
+        event.put(PanthalassaEntityTypes.KRONOSAURUS_SKULL.get(), PanthalassaDisplayEntity.displayAttributes().build());
+        event.put(PanthalassaEntityTypes.ARCHELON_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
+        event.put(PanthalassaEntityTypes.MEGALODON_JAWS.get(), PanthalassaDisplayEntity.displayAttributes().build());
+
+    }
 }

@@ -36,7 +36,7 @@ public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends E
     }
 
     public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelLocation(entityIn));
+        GeoModel model = this.modelProvider.getModel(this.modelProvider.getModelResource(entityIn));
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((-entityIn.yRot)+180));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-entityIn.xRot));
@@ -77,7 +77,7 @@ public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends E
 
     @Override
     public ResourceLocation getTextureLocation(T instance) {
-        return this.modelProvider.getTextureLocation(instance);
+        return this.modelProvider.getTextureResource(instance);
     }
 
     static {

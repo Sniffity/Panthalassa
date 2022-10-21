@@ -3,12 +3,12 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -18,9 +18,10 @@ public class FeatureCoralTree extends FeaturePanthalassaAbstractCoral {
         super(p_i231942_1_);
     }
 
-    protected boolean placeFeature(LevelAccessor p_65490_, Random p_65491_, BlockPos p_65492_, BlockState p_65493_) {
+    protected boolean placeFeature(LevelAccessor p_65490_, RandomSource p_65491_, BlockPos p_65492_, BlockState p_65493_) {
         double r = Math.floor(Math.random() * (81) + 20);
         BlockPos blockposAdjusted = new BlockPos(p_65492_.getX(), r, p_65492_.getZ());
+        Random random = new Random();
 
         if (p_65490_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_SAND.get()) || p_65490_.getBlockState(blockposAdjusted.below()).is(PanthalassaBlocks.PANTHALASSA_OVERGROWN_SAND.get())) {
             BlockPos.MutableBlockPos blockpos$mutableblockpos = blockposAdjusted.mutable();
@@ -37,7 +38,7 @@ public class FeatureCoralTree extends FeaturePanthalassaAbstractCoral {
             BlockPos blockpos = blockpos$mutableblockpos.immutable();
             int k = p_65491_.nextInt(3) + 2;
             List<Direction> list = Lists.newArrayList(Direction.Plane.HORIZONTAL);
-            Collections.shuffle(list, p_65491_);
+            Collections.shuffle(list, random);
 
             for (Direction direction : list.subList(0, k)) {
                 blockpos$mutableblockpos.set(blockpos);

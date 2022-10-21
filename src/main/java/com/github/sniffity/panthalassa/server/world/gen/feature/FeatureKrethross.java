@@ -3,6 +3,7 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.block.BlockKrethrossTop;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -10,15 +11,13 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-import java.util.Random;
-
 public class FeatureKrethross extends Feature<NoneFeatureConfiguration> {
     public FeatureKrethross(Codec<NoneFeatureConfiguration> p_i231967_1_) {
         super(p_i231967_1_);
     }
 
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159956_) {
-        Random rand = p_159956_.random();
+        RandomSource rand = p_159956_.random();
         WorldGenLevel worldgenlevel = p_159956_.level();
         BlockPos pos = p_159956_.origin();
 

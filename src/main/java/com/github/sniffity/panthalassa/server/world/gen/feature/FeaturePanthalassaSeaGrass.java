@@ -2,8 +2,7 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
-import java.util.Random;
-
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.TallSeagrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -20,8 +19,7 @@ public class FeaturePanthalassaSeaGrass extends Feature<ProbabilityFeatureConfig
     }
 
     public boolean place(FeaturePlaceContext<ProbabilityFeatureConfiguration> p_159884_) {
-
-        Random rand = p_159884_.random();
+        RandomSource rand = p_159884_.random();
         WorldGenLevel worldgenlevel = p_159884_.level();
         BlockPos pos = p_159884_.origin();
         ProbabilityFeatureConfiguration probabilityfeatureconfiguration = p_159884_.config();

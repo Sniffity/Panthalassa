@@ -180,11 +180,6 @@ public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalS
     }
 
     @Override
-    public float getBrightness() {
-        return 1f;
-    }
-
-    @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;
     }
@@ -210,7 +205,6 @@ public class ProjectileBlastTorpedo extends Entity implements IEntityAdditionalS
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-
     }
 
     @Override

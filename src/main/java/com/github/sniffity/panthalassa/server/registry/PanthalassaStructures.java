@@ -3,15 +3,23 @@ package com.github.sniffity.panthalassa.server.registry;
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaLaboratory;
 import com.github.sniffity.panthalassa.server.world.gen.structure.StructurePanthalassaObservatory;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class PanthalassaStructures {
-    public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Panthalassa.MODID);
+    public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Panthalassa.MODID);
 
-    public static final RegistryObject<StructureFeature<?>> PANTHALASSA_LABORATORY = STRUCTURES.register("panthalassa_laboratory", StructurePanthalassaLaboratory::new);
-    public static final RegistryObject<StructureFeature<?>> PANTHALASSA_OBSERVATORY = STRUCTURES.register("panthalassa_observatory", StructurePanthalassaObservatory::new);
+    public static final RegistryObject<StructureType<StructurePanthalassaLaboratory>> PANTHALASSA_LABORATORY =
+            STRUCTURES.register("panthalassa_laboratory", () -> typingFix(StructurePanthalassaLaboratory.CODEC));
 
+    public static final RegistryObject<StructureType<StructurePanthalassaObservatory>> PANTHALASSA_OBSERVATORY =
+            STRUCTURES.register("panthalassa_observatory", () -> typingFix(StructurePanthalassaObservatory.CODEC));
+
+    public static <T extends Structure> StructureType<T> typingFix(Codec<T> codec){
+        return () -> codec;
+    }
 }

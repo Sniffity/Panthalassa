@@ -9,22 +9,28 @@ import com.github.sniffity.panthalassa.server.network.packets.PacketCameraSwitch
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEffects;
+import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ThrowingComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -46,7 +52,7 @@ public class PanthalassaEventListener {
 
     @SubscribeEvent
     public static void onPlayerDamage(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof Player player) {
+        if (event.getEntity() instanceof Player player) {
             Entity vehicle = player.getVehicle();
             if (vehicle instanceof PanthalassaVehicle) {
                 event.setCanceled(true);
@@ -56,7 +62,7 @@ public class PanthalassaEventListener {
     }
 
     @SubscribeEvent
-    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+    public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
         if (PanthalassaCommonConfig.COMMON.GENERAL.crushDepth.get()) {
             Entity entity = event.getEntity();
             if (entity instanceof LivingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)) {
@@ -81,8 +87,7 @@ public class PanthalassaEventListener {
             BlockState blockstate = event.getPlacedBlock();
             if (blockstate.getBlock() == PanthalassaBlocks.PORTAL.get()) {
                 event.setCanceled(true);
-                player.sendMessage(new TranslatableComponent("block.panthalassa.panthalassa_portal.message"), Util.NIL_UUID);
-
+                player.sendSystemMessage(Component.translatable("block.panthalassa.panthalassa_portal.message"));
             }
         }
      }
@@ -99,13 +104,14 @@ public class PanthalassaEventListener {
     @SubscribeEvent
     public static void onPLayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (PanthalassaCommonConfig.COMMON.GENERAL.giveJournal.get()) {
-            CompoundTag playerData = event.getPlayer().getPersistentData();
+            CompoundTag playerData = event.getEntity().getPersistentData();
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("panthalassa_received_journal")) {
-                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), (PatchouliAPI.get().getBookStack(new ResourceLocation(Panthalassa.MODID,"journal"))));
+                ItemHandlerHelper.giveItemToPlayer(event.getEntity(), (PatchouliAPI.get().getBookStack(new ResourceLocation(Panthalassa.MODID,"journal"))));
                 data.putBoolean("panthalassa_received_journal", true);
                 playerData.put(Player.PERSISTED_NBT_TAG, data);
             }
         }
     }
+
 }

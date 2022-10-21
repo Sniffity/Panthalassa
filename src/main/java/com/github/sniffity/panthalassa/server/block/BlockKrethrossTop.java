@@ -1,6 +1,7 @@
 package com.github.sniffity.panthalassa.server.block;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -29,6 +30,11 @@ public class BlockKrethrossTop extends GrowingPlantHeadBlock implements LiquidBl
         super(p_i48781_1_, Direction.UP, SHAPE, true, 0.14D);
     }
 
+    @Override
+    protected int getBlocksToGrowWhenBonemealed(RandomSource pRandom) {
+        return 1;
+    }
+
     protected boolean canGrowInto(BlockState blockState) {
         return blockState.is(Blocks.WATER);
     }
@@ -47,10 +53,6 @@ public class BlockKrethrossTop extends GrowingPlantHeadBlock implements LiquidBl
 
     public boolean placeLiquid(LevelAccessor p_204509_1_, BlockPos p_204509_2_, BlockState p_204509_3_, FluidState p_204509_4_) {
         return false;
-    }
-
-    protected int getBlocksToGrowWhenBonemealed(Random p_230332_1_) {
-        return 1;
     }
 
     @Nullable

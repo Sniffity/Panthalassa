@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.KelpBlock;
@@ -21,7 +21,7 @@ public class FeaturePrimevalExpanseKelp extends Feature<NoneFeatureConfiguration
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159446_) {
         BlockPos pos = p_159446_.origin();
         WorldGenLevel worldgenlevel = p_159446_.level();
-        Random rand = p_159446_.random();
+        RandomSource rand = p_159446_.random();
 
         int i = 0;
         int kelp_limit = 128;

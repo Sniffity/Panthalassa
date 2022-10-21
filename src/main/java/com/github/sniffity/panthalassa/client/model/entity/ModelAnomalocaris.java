@@ -13,12 +13,12 @@ import javax.annotation.Nullable;
 public class ModelAnomalocaris extends AnimatedGeoModel<EntityAnomalocaris> {
 
     @Override
-    public ResourceLocation getModelLocation(EntityAnomalocaris object) {
+    public ResourceLocation getModelResource(EntityAnomalocaris object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/anomalocaris/anomalocaris.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityAnomalocaris object) {
+    public ResourceLocation getTextureResource(EntityAnomalocaris object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/anomalocaris/anomalocaris.png");
     }
 

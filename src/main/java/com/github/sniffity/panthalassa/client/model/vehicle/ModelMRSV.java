@@ -8,12 +8,12 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ModelMRSV extends AnimatedGeoModel<VehicleMRSV>
 {
     @Override
-    public ResourceLocation getModelLocation(VehicleMRSV object) {
+    public ResourceLocation getModelResource(VehicleMRSV object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/mrsv/mrsv.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(VehicleMRSV object) {
+    public ResourceLocation getTextureResource(VehicleMRSV object) {
         switch (object.getTextureVariant()) {
             case 0:
                 return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/mrsv/mrsv0.png");

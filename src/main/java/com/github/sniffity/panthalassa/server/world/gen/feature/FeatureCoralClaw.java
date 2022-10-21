@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.Util;
@@ -18,9 +19,10 @@ public class FeatureCoralClaw extends FeaturePanthalassaAbstractCoral {
         super(p_i231939_1_);
     }
 
-    protected boolean placeFeature(LevelAccessor p_65424_, Random p_65425_, BlockPos p_65426_, BlockState p_65427_) {
+    protected boolean placeFeature(LevelAccessor p_65424_, RandomSource p_65425_, BlockPos p_65426_, BlockState p_65427_) {
         double r = Math.floor(Math.random() * (81) + 20);
         BlockPos blockposAdjusted = new BlockPos(p_65426_.getX(), r, p_65426_.getZ());
+        Random random = new Random();
 
 
         if (!this.placeCoralBlock(p_65424_, p_65425_, blockposAdjusted, p_65427_)) {
@@ -29,7 +31,7 @@ public class FeatureCoralClaw extends FeaturePanthalassaAbstractCoral {
             Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(p_65425_);
             int i = p_65425_.nextInt(2) + 2;
             List<Direction> list = Lists.newArrayList(direction, direction.getClockWise(), direction.getCounterClockWise());
-            Collections.shuffle(list, p_65425_);
+            Collections.shuffle(list, random);
 
             for (Direction direction1 : list.subList(0, i)) {
                 BlockPos.MutableBlockPos blockpos$mutableblockpos = blockposAdjusted.mutable();

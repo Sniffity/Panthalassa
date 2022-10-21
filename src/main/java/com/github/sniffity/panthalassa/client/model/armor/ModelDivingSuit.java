@@ -7,17 +7,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class ModelDivingSuit extends AnimatedGeoModel<ItemDivingSuit> {
     @Override
-    public ResourceLocation getModelLocation(ItemDivingSuit object) {
+    public ResourceLocation getModelResource(ItemDivingSuit object) {
         return new ResourceLocation(Panthalassa.MODID, "geo/armor/diving_suit/diving_suit.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ItemDivingSuit object) {
+    public ResourceLocation getTextureResource(ItemDivingSuit object) {
         return new ResourceLocation(Panthalassa.MODID, "textures/armor/diving_suit/diving_suit.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ItemDivingSuit animatable) {
+    public ResourceLocation getAnimationResource(ItemDivingSuit animatable) {
         return new ResourceLocation(Panthalassa.MODID, "animations/armor/diving_suit/diving_suit.json");
     }
 }

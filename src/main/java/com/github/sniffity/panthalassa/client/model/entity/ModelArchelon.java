@@ -15,12 +15,12 @@ import static java.lang.Math.PI;
 public class ModelArchelon extends AnimatedGeoModel<EntityArchelon>
 {
     @Override
-    public ResourceLocation getModelLocation(EntityArchelon object) {
+    public ResourceLocation getModelResource(EntityArchelon object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/archelon/archelon.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityArchelon object) {
+    public ResourceLocation getTextureResource(EntityArchelon object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/archelon/archelon.png");
     }
 

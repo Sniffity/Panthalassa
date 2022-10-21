@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ConfigurationPanthalassaSpawner implements FeatureConfiguration {
     public static final Codec<ConfigurationPanthalassaSpawner> CODEC = RecordCodecBuilder.create((p_151822_) -> {
         return p_151822_.group(
-                ForgeRegistries.ENTITIES.getCodec().fieldOf("type").forGetter((p_151826_) -> {
+                ForgeRegistries.ENTITY_TYPES.getCodec().fieldOf("type").forGetter((p_151826_) -> {
                     return p_151826_.type;
                 }),
                 Codec.INT.fieldOf("spawnWeight").forGetter((p_424242) -> {

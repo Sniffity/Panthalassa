@@ -23,7 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class KeyInputEvent {
 
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
+    public void onKeyInput(KeyInputEvent event) {
         Minecraft game = Minecraft.getInstance();
         if (game.player != null) {
             Entity vehicle = getVehicle(game.player);

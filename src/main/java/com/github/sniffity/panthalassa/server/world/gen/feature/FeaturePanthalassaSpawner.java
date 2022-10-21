@@ -4,14 +4,13 @@ import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaDimension;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-
 import java.util.Objects;
-import java.util.Random;
 
 public class FeaturePanthalassaSpawner extends Feature<ConfigurationPanthalassaSpawner> {
 
@@ -29,7 +28,7 @@ public class FeaturePanthalassaSpawner extends Feature<ConfigurationPanthalassaS
         int maxGroupSize = panathalassaSpawnerConfiguration.maxCount;
 
         //Find a random position for spawning.
-        Random rand = context.random();
+        RandomSource rand = context.random();
         BlockPos pos = context.origin();
         int i = rand.nextInt(8) - rand.nextInt(8);
         int j = rand.nextInt(8) - rand.nextInt(8);

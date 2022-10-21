@@ -14,12 +14,12 @@ import static java.lang.Math.PI;
 public class ModelArchelonShell extends AnimatedGeoModel<DisplayArchelonShell>
 {
     @Override
-    public ResourceLocation getModelLocation(DisplayArchelonShell object) {
+    public ResourceLocation getModelResource(DisplayArchelonShell object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/display/archelon_shell/archelon_shell.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DisplayArchelonShell object) {
+    public ResourceLocation getTextureResource(DisplayArchelonShell object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/display/archelon_shell/archelon_shell.png");
     }
 

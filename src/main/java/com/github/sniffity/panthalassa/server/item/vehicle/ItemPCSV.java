@@ -2,8 +2,7 @@ package com.github.sniffity.panthalassa.server.item.vehicle;
 
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.ChatFormatting;
-    import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -82,9 +81,9 @@ public class ItemPCSV extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
         if  (stack.getTag() != null) {
             Float health = stack.getTag().getFloat(VEHICLE_HEALTH);
-            tooltip.add(new TextComponent("Vehicle Health: ").append(new TextComponent(health.toString())).withStyle(ChatFormatting.YELLOW));
+            tooltip.add(Component.literal("Vehicle Health: ").append(Component.literal(health.toString())).withStyle(ChatFormatting.YELLOW));
             int torpedoCount = stack.getTag().getInt(TORPEDO_COUNT);
-            tooltip.add(new TextComponent("Torpedo Count: ").append(new TextComponent(String.valueOf(torpedoCount))).withStyle(ChatFormatting.YELLOW));
+            tooltip.add(Component.literal("Torpedo Count: ").append(Component.literal(String.valueOf(torpedoCount))).withStyle(ChatFormatting.YELLOW));
         }
     }
 }

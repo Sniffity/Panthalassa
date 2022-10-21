@@ -13,12 +13,12 @@ import javax.annotation.Nullable;
 public class ModelBasilosaurus extends AnimatedGeoModel<EntityBasilosaurus>
 {
     @Override
-    public ResourceLocation getModelLocation(EntityBasilosaurus object) {
+    public ResourceLocation getModelResource(EntityBasilosaurus object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/basilosaurus/basilosaurus.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityBasilosaurus object) {
+    public ResourceLocation getTextureResource(EntityBasilosaurus object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/basilosaurus/basilosaurus.png");
     }
 

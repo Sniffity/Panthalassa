@@ -9,12 +9,12 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ModelBlastTorpedo extends AnimatedGeoModel<ProjectileBlastTorpedo>
 {
     @Override
-    public ResourceLocation getModelLocation(ProjectileBlastTorpedo object) {
+    public ResourceLocation getModelResource(ProjectileBlastTorpedo object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/projectile/torpedo/torpedo.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ProjectileBlastTorpedo object) {
+    public ResourceLocation getTextureResource(ProjectileBlastTorpedo object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/projectile/torpedo/blast_torpedo.png");
     }
 

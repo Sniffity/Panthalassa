@@ -89,20 +89,19 @@ dependencies {
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1:api")
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.45')
-    runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0") {transitive = false}
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77:api")
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.28')
+    runtimeOnly fg.deobf("curse.maven:cyanide-541676:3832812")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271")
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,
-                         mod_authors: mod_authors, mod_description: mod_description,
-                         minecraft_version_range: minecraft_version_range, forge_version_range: forge_version_range,
-                         loader_version_range: loader_version_range]
+def replaceProperties = [mod_id: mod_id, mod_name: mod_name, mod_version: mod_version, mod_authors: mod_authors, mod_description: mod_description,
+                         minecraft_version_range: minecraft_version_range, forge_version_range: forge_version_range, loader_version_range: loader_version_range,
+                         geckolib_version_range: geckolib_version_range, patchouli_version_range:patchouli_version_range]
 processResources {
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
@@ -127,4 +126,3 @@ processResources {
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
 }
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'

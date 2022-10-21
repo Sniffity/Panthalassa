@@ -198,7 +198,7 @@ public class PanthalassaWorldSavedData extends SavedData {
 
     public void addPlayerTP(Player player, ResourceKey<Level> destination, Vec3 targetVec, float yaw,
                             float pitch) {
-        this.playerTeleportQueue.add(new PlayerTeleportEntry(Player.createPlayerUUID(player.getGameProfile()), destination, targetVec, yaw, pitch));
+        this.playerTeleportQueue.add(new PlayerTeleportEntry(player.getUUID(), destination, targetVec, yaw, pitch));
     }
 
 

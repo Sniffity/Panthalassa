@@ -8,12 +8,12 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ModelPCSV extends AnimatedGeoModel<VehiclePCSV>
 {
     @Override
-    public ResourceLocation getModelLocation(VehiclePCSV object) {
+    public ResourceLocation getModelResource(VehiclePCSV object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/pcsv/pcsv.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(VehiclePCSV object) {
+    public ResourceLocation getTextureResource(VehiclePCSV object) {
         if (object.getTorpedoCount() > 0 && object.getTorpedoCooldown() < 0){
             return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/pcsv/pcsv.png");
         } else {

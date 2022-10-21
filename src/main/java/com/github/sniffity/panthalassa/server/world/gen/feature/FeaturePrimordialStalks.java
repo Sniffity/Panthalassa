@@ -4,12 +4,11 @@ import com.github.sniffity.panthalassa.server.block.BlockPrimordialStalk;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import java.util.Random;
 
 public class FeaturePrimordialStalks extends Feature<NoneFeatureConfiguration> {
     public FeaturePrimordialStalks(Codec<NoneFeatureConfiguration> p_i231936_1_) {
@@ -19,7 +18,7 @@ public class FeaturePrimordialStalks extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159446_) {
         BlockPos pos = p_159446_.origin();
         WorldGenLevel worldgenlevel = p_159446_.level();
-        Random rand = p_159446_.random();
+        RandomSource rand = p_159446_.random();
 
         double r = Math.floor(Math.random()*(41)+20);
         BlockPos blockpos = new BlockPos(pos.getX(), r, pos.getZ());;

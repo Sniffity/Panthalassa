@@ -2,20 +2,19 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-import java.util.Random;
-
 public class FeatureCoralMushroom extends FeaturePanthalassaAbstractCoral {
     public FeatureCoralMushroom(Codec<NoneFeatureConfiguration> p_i231941_1_) {
         super(p_i231941_1_);
     }
 
-    protected boolean placeFeature(LevelAccessor p_65454_, Random p_65455_, BlockPos p_65456_, BlockState p_65457_) {
+    protected boolean placeFeature(LevelAccessor p_65454_, RandomSource p_65455_, BlockPos p_65456_, BlockState p_65457_) {
         double r = Math.floor(Math.random() * (81) + 20);
         BlockPos blockposAdjusted = new BlockPos(p_65456_.getX(), r, p_65456_.getZ());
 

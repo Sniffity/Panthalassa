@@ -14,12 +14,12 @@ import static java.lang.Math.PI;
 public class ModelMosasaurus extends AnimatedGeoModel<EntityMosasaurus>
 {
     @Override
-    public ResourceLocation getModelLocation(EntityMosasaurus object) {
+    public ResourceLocation getModelResource(EntityMosasaurus object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/mosasaurus/mosasaurus.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityMosasaurus object) {
+    public ResourceLocation getTextureResource(EntityMosasaurus object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/mosasaurus/mosasaurus.png");
     }
 

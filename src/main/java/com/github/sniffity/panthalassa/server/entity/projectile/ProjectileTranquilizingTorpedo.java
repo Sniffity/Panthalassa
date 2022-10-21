@@ -175,11 +175,6 @@ public class ProjectileTranquilizingTorpedo extends Entity implements IEntityAdd
     }
 
     @Override
-    public float getBrightness() {
-        return 1f;
-    }
-
-    @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;
     }
@@ -197,7 +192,6 @@ public class ProjectileTranquilizingTorpedo extends Entity implements IEntityAdd
     @Override
     protected void defineSynchedData() {
     }
-
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

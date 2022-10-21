@@ -14,12 +14,12 @@ import javax.annotation.Nullable;
 
 public class ModelHelicoprion extends AnimatedGeoModel<EntityHelicoprion> {
     @Override
-    public ResourceLocation getModelLocation(EntityHelicoprion object) {
+    public ResourceLocation getModelResource(EntityHelicoprion object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/helicoprion/helicoprion.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityHelicoprion object) {
+    public ResourceLocation getTextureResource(EntityHelicoprion object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/helicoprion/helicoprion.png");
 
     }

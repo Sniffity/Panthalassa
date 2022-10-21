@@ -9,12 +9,12 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ModelECSV extends AnimatedGeoModel<VehicleECSV>
 {
     @Override
-    public ResourceLocation getModelLocation(VehicleECSV object) {
+    public ResourceLocation getModelResource(VehicleECSV object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/ecsv/ecsv.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(VehicleECSV object) {
+    public ResourceLocation getTextureResource(VehicleECSV object) {
         if (object.getTorpedoCount() > 0 && object.getTorpedoCooldown() < 0){
             return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/ecsv/ecsv.png");
         } else {

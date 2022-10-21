@@ -3,16 +3,12 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.TallSeagrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
-
-import java.util.Random;
 
 public class FeatureFrostgrass extends Feature<ProbabilityFeatureConfiguration> {
     public FeatureFrostgrass(Codec<ProbabilityFeatureConfiguration> p_i231988_1_) {
@@ -21,7 +17,7 @@ public class FeatureFrostgrass extends Feature<ProbabilityFeatureConfiguration> 
 
     public boolean place(FeaturePlaceContext<ProbabilityFeatureConfiguration> p_159884_) {
 
-        Random rand = p_159884_.random();
+        RandomSource rand = p_159884_.random();
         WorldGenLevel worldgenlevel = p_159884_.level();
         BlockPos pos = p_159884_.origin();
 

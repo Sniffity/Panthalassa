@@ -4,7 +4,6 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
-import com.github.sniffity.panthalassa.client.render.armor.RenderDivingSuit;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderHydrothermalVent;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderPressureEqualizer;
 import com.github.sniffity.panthalassa.client.render.display.RenderArchelonShell;
@@ -22,29 +21,23 @@ import com.github.sniffity.panthalassa.server.item.armor.ItemDivingSuit;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlockEntities;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaEntityTypes;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
 import org.lwjgl.glfw.GLFW;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
-
 import java.awt.*;
-import java.util.function.Supplier;
 
 
 @Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -55,11 +48,17 @@ public class ClientHandler {
         MinecraftForge.EVENT_BUS.register(new KeyInputEvent());
         MinecraftForge.EVENT_BUS.register(new RenderTickEvent());
         MinecraftForge.EVENT_BUS.register(new CameraSetupEvent());
-        registerKeybinds();
         registerBlockColors();
         registerItemColors();
-        registerBlockRenderers();
     }
+
+    @SubscribeEvent
+    public static void registerKeybinds(RegisterKeyMappingsEvent event) {
+        event.register(KEY_VEHICLE_LIGHTS);
+        event.register(KEY_VEHICLE_SPECIAL);
+        event.register(KEY_VEHICLE_SONAR);
+    }
+
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -119,36 +118,9 @@ public class ClientHandler {
                 RenderTranquilizingTorpedo::new);
     }
 
-    @SubscribeEvent
-    public static void registerRenderers(final EntityRenderersEvent.AddLayers event) {
-        GeoArmorRenderer.registerArmorRenderer(ItemDivingSuit.class, new RenderDivingSuit());
-    }
-
     public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
     public static final KeyMapping KEY_VEHICLE_SPECIAL = new KeyMapping("key.vehicle.special", GLFW.GLFW_KEY_Y, "key.panthalassa.category");
     public static final KeyMapping KEY_VEHICLE_SONAR = new KeyMapping("key.vehicle.sonar", GLFW.GLFW_KEY_N, "key.panthalassa.category");
-
-    public static void registerKeybinds() {
-        ClientRegistry.registerKeyBinding(KEY_VEHICLE_LIGHTS);
-        ClientRegistry.registerKeyBinding(KEY_VEHICLE_SPECIAL);
-        ClientRegistry.registerKeyBinding(KEY_VEHICLE_SONAR);
-
-    }
-
-    private static void render(Supplier<? extends Block> block, RenderType render) {
-        ItemBlockRenderTypes.setRenderLayer(block.get(), render);
-    }
-
-    public static void registerBlockRenderers() {
-        RenderType cutout = RenderType.cutout();
-        RenderType mipped = RenderType.cutoutMipped();
-        RenderType translucent = RenderType.translucent();
-
-        render(PanthalassaBlocks.KRETHROSS, cutout);
-        render(PanthalassaBlocks.KRETHROSS_PLANT, cutout);
-        render(PanthalassaBlocks.FROSTGRASS, cutout);
-
-    }
 
     public static void registerBlockColors() {
         BlockColors colors = Minecraft.getInstance().getBlockColors();

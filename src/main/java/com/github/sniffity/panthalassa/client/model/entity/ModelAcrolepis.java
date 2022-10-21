@@ -14,12 +14,12 @@ import javax.annotation.Nullable;
 public class ModelAcrolepis extends AnimatedGeoModel<EntityAcrolepis> {
 
     @Override
-    public ResourceLocation getModelLocation(EntityAcrolepis object) {
+    public ResourceLocation getModelResource(EntityAcrolepis object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/acrolepis/acrolepis.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityAcrolepis object) {
+    public ResourceLocation getTextureResource(EntityAcrolepis object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/acrolepis/acrolepis.png");
     }
 

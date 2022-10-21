@@ -14,12 +14,12 @@ import static java.lang.Math.PI;
 public class ModelKronosaurusSkull extends AnimatedGeoModel<DisplayKronosaurusSkull>
 {
     @Override
-    public ResourceLocation getModelLocation(DisplayKronosaurusSkull object) {
+    public ResourceLocation getModelResource(DisplayKronosaurusSkull object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/display/kronosaurus_skull/kronosaurus_skull.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DisplayKronosaurusSkull object) {
+    public ResourceLocation getTextureResource(DisplayKronosaurusSkull object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/display/kronosaurus_skull/kronosaurus_skull.png");
     }
 

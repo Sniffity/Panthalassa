@@ -3,7 +3,6 @@ package com.github.sniffity.panthalassa.server.item.vehicle;
 import com.github.sniffity.panthalassa.server.entity.vehicle.VehicleMRSV;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -83,7 +82,7 @@ public class ItemMRSV extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
         if  (stack.getTag() != null) {
             Float health = stack.getTag().getFloat(VEHICLE_HEALTH);
-            tooltip.add(new TextComponent("Vehicle Health: ").append(new TextComponent(health.toString())).withStyle(ChatFormatting.YELLOW));
+            tooltip.add(Component.literal("Vehicle Health: ").append(Component.literal(health.toString())).withStyle(ChatFormatting.YELLOW));
             int texture = stack.getTag().getInt(TEXTURE_VARIANT);
             String textureString = "";
             switch (texture) {
@@ -120,7 +119,7 @@ public class ItemMRSV extends Item {
                 case 15: textureString = "White";
                     break;
             }
-            tooltip.add(new TextComponent("Vehicle Color: ").append(new TextComponent(textureString)).withStyle(ChatFormatting.GREEN));
+            tooltip.add(Component.literal("Vehicle Color: ").append(Component.literal(textureString)).withStyle(ChatFormatting.GREEN));
         }
     }
 }

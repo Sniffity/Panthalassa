@@ -14,12 +14,12 @@ import javax.annotation.Nullable;
 public class ModelCeratodus extends AnimatedGeoModel<EntityCeratodus> {
 
     @Override
-    public ResourceLocation getModelLocation(EntityCeratodus object) {
+    public ResourceLocation getModelResource(EntityCeratodus object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/ceratodus/ceratodus.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityCeratodus object) {
+    public ResourceLocation getTextureResource(EntityCeratodus object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/ceratodus/ceratodus.png");
     }
 

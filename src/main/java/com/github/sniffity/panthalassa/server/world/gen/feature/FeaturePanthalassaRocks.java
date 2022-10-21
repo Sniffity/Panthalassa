@@ -3,11 +3,11 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import java.util.Random;
 
 public class FeaturePanthalassaRocks extends Feature<BlockStateConfiguration> {
     public FeaturePanthalassaRocks(Codec<BlockStateConfiguration> p_i231931_1_) {
@@ -15,7 +15,7 @@ public class FeaturePanthalassaRocks extends Feature<BlockStateConfiguration> {
     }
 
     public boolean place(FeaturePlaceContext<BlockStateConfiguration> p_159884_) {
-        Random rand = p_159884_.random();
+        RandomSource rand = p_159884_.random();
         WorldGenLevel worldgenlevel = p_159884_.level();
         BlockPos pos = p_159884_.origin();
 

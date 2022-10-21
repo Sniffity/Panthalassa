@@ -13,12 +13,12 @@ import javax.annotation.Nullable;
 
 public class ModelThalassomedon extends AnimatedGeoModel<EntityThalassomedon> {
     @Override
-    public ResourceLocation getModelLocation(EntityThalassomedon object) {
+    public ResourceLocation getModelResource(EntityThalassomedon object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/thalassomedon/thalassomedon.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityThalassomedon object) {
+    public ResourceLocation getTextureResource(EntityThalassomedon object) {
         return new ResourceLocation(Panthalassa.MODID,"textures/creature/thalassomedon/thalassomedon.png");
 
     }

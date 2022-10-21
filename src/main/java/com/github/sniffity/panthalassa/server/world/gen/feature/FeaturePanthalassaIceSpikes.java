@@ -4,14 +4,13 @@ import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import java.util.Random;
 
 public class FeaturePanthalassaIceSpikes extends Feature<NoneFeatureConfiguration> {
     public FeaturePanthalassaIceSpikes(Codec<NoneFeatureConfiguration> p_66003_) {
@@ -20,7 +19,7 @@ public class FeaturePanthalassaIceSpikes extends Feature<NoneFeatureConfiguratio
 
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159882_) {
         BlockPos blockpos0 = p_159882_.origin();
-        Random random = p_159882_.random();
+        RandomSource random = p_159882_.random();
         double r = Math.floor(Math.random() * (81) + 20);
         BlockPos pos0 = new BlockPos(blockpos0.getX(), r, blockpos0.getZ());
 

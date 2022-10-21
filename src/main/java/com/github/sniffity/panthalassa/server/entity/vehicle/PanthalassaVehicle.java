@@ -331,7 +331,7 @@ public class PanthalassaVehicle extends Entity {
     public void vehicleTick() {
         if (this.isControlledByLocalInstance()) {
             this.newPosRotationIncrements = 0;
-            this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
+            this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
         }
 
         Vec3 vector3d = this.getDeltaMovement();

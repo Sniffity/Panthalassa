@@ -2,8 +2,8 @@ package com.github.sniffity.panthalassa.server.world.gen.feature;
 
 import com.github.sniffity.panthalassa.server.registry.PanthalassaBlocks;
 import com.mojang.serialization.Codec;
-import java.util.Random;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
@@ -27,7 +27,7 @@ public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
     }
 
     public boolean place(FeaturePlaceContext<FossilFeatureConfiguration> p_159789_) {
-        Random rand = p_159789_.random();
+        RandomSource rand = p_159789_.random();
         WorldGenLevel worldgenlevel = p_159789_.level();
         BlockPos p_241855_4_ = p_159789_.origin();
         FossilFeatureConfiguration fossilfeatureconfiguration = p_159789_.config();
@@ -37,7 +37,7 @@ public class FeatureFossils extends Feature<FossilFeatureConfiguration> {
 
         Rotation rotation = Rotation.getRandom(rand);
         int i = rand.nextInt(fossilfeatureconfiguration.fossilStructures.size());
-        StructureManager templatemanager = worldgenlevel.getLevel().getServer().getStructureManager();
+        StructureTemplateManager templatemanager = worldgenlevel.getLevel().getServer().getStructureManager();
         StructureTemplate structuretemplate = templatemanager.getOrCreate(fossilfeatureconfiguration.fossilStructures.get(i));
         StructureTemplate structuretemplate1 = templatemanager.getOrCreate(fossilfeatureconfiguration.overlayStructures.get(i));
         ChunkPos chunkpos = new ChunkPos(blockpos0);

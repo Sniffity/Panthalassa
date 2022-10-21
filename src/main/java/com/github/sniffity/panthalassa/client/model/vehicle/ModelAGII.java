@@ -8,12 +8,12 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ModelAGII extends AnimatedGeoModel<VehicleAGII>
 {
     @Override
-    public ResourceLocation getModelLocation(VehicleAGII object) {
+    public ResourceLocation getModelResource(VehicleAGII object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/vehicle/ag2/ag2.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(VehicleAGII object) {
+    public ResourceLocation getTextureResource(VehicleAGII object) {
         switch (object.getTextureVariant()) {
             case 0:
                 return new ResourceLocation(Panthalassa.MODID,"textures/vehicle/ag2/ag20.png");

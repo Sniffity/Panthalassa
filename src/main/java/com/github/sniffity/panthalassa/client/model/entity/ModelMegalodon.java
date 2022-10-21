@@ -12,12 +12,12 @@ import static java.lang.Math.PI;
 
 public class ModelMegalodon extends AnimatedGeoModel<EntityMegalodon> {
     @Override
-    public ResourceLocation getModelLocation(EntityMegalodon object) {
+    public ResourceLocation getModelResource(EntityMegalodon object) {
         return new ResourceLocation(Panthalassa.MODID,"geo/creature/megalodon/megalodon.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EntityMegalodon object) {
+    public ResourceLocation getTextureResource(EntityMegalodon object) {
         if (object.getTextureVariant() == 0){
             return new ResourceLocation(Panthalassa.MODID,"textures/creature/megalodon/megalodon_white.png");
         } else if (object.getTextureVariant() == 1) {
