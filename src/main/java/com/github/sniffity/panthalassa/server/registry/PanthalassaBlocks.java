@@ -22,8 +22,8 @@ public class PanthalassaBlocks {
     public static final RegistryObject<Block> PORTAL_FRAME = register("panthalassa_portal_frame",
             BlockPortalFrame::new, new Item.Properties().tab(PanthalassaItemGroup.GROUP));
 
-    public static final RegistryObject<Block> PORTAL = register("panthalassa_portal",
-            BlockPortal::new, new Item.Properties().tab(PanthalassaItemGroup.GROUP));
+    public static final RegistryObject<Block> PORTAL = BLOCKS.register("panthalassa_portal",
+            BlockPortal::new);
 
     public static final RegistryObject<Block> PRIMORDIAL_STALK = register("primordial_stalk",
             () -> new BlockPrimordialStalk(BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN)

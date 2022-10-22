@@ -4,6 +4,7 @@ import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.events.CameraSetupEvent;
 import com.github.sniffity.panthalassa.client.events.KeyInputEvent;
 import com.github.sniffity.panthalassa.client.events.RenderTickEvent;
+import com.github.sniffity.panthalassa.client.render.armor.RenderDivingSuit;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderHydrothermalVent;
 import com.github.sniffity.panthalassa.client.render.blockentity.RenderPressureEqualizer;
 import com.github.sniffity.panthalassa.client.render.display.RenderArchelonShell;
@@ -37,6 +38,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
+import software.bernie.example.client.renderer.armor.GeckoArmorRenderer;
+
 import java.awt.*;
 
 
@@ -116,6 +119,11 @@ public class ClientHandler {
                 RenderBlastTorpedo::new);
         event.registerEntityRenderer(PanthalassaEntityTypes.TRANQUILIZING_TORPEDO.get(),
                 RenderTranquilizingTorpedo::new);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(final EntityRenderersEvent.AddLayers event) {
+        RenderDivingSuit.registerArmorRenderer(ItemDivingSuit.class, ()-> new RenderDivingSuit());
     }
 
     public static final KeyMapping KEY_VEHICLE_LIGHTS = new KeyMapping("key.vehicle.lights",  GLFW.GLFW_KEY_H, "key.panthalassa.category");
