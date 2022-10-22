@@ -9,6 +9,7 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.PanthalassaVehicle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
@@ -23,7 +24,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class KeyInputEvent {
 
     @SubscribeEvent
-    public void onKeyInput(KeyInputEvent event) {
+    public void onKeyInput(TickEvent.ClientTickEvent event) {
         Minecraft game = Minecraft.getInstance();
         if (game.player != null) {
             Entity vehicle = getVehicle(game.player);

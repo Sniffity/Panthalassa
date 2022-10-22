@@ -2,6 +2,7 @@ package com.github.sniffity.panthalassa;
 
 import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
+import com.github.sniffity.panthalassa.server.events.PanthalassaEventListener;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,7 +19,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
 
 @Mod(Panthalassa.MODID)
-@Mod.EventBusSubscriber(modid = Panthalassa.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 
 public final class Panthalassa {
 	public static final String MODID = "panthalassa";
@@ -31,6 +31,7 @@ public final class Panthalassa {
 		forgeBus.addListener(EventPriority.NORMAL, PanthalassaDimension::worldTick);
 
 		modBus.addListener(this::setup);
+		modBus.addListener(PanthalassaEntityTypes::registerEntityAttributes);
 
 		PanthalassaBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
 		PanthalassaEntityTypes.ENTITY_TYPES.register(modBus);

@@ -12,15 +12,10 @@ import com.github.sniffity.panthalassa.server.entity.vehicle.VehiclePCSV;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class PanthalassaEntityTypes {
 
@@ -173,27 +168,7 @@ public class PanthalassaEntityTypes {
                     .sized(2.0F, 2.0F)
                     .build(new ResourceLocation(Panthalassa.MODID, "megalodon_jaws_display").toString()));
 
-    @SubscribeEvent
-    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
-        event.register(KRONOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(MEGALODON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(ARCHELON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(MOSASAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(COELACANTH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(DUNKLEOSTEUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(LEEDSICHTHYS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(GIANT_ORTHOCONE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(BASILOSAURUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(THALASSOMEDON.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(ACROLEPIS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(CERATODUS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(HELICOPRION.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(ANGLERFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(ANOMALOCARIS.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING, PanthalassaEntity::canPanthalassaEntitySpawn,SpawnPlacementRegisterEvent.Operation.REPLACE);
-    }
-
-    @SubscribeEvent
-    private void registerEntityAttributes(EntityAttributeCreationEvent event) {
+    public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(PanthalassaEntityTypes.KRONOSAURUS.get(), EntityKronosaurus.kronosaurusAttributes().build());
         event.put(PanthalassaEntityTypes.MEGALODON.get(), EntityMegalodon.megalodonAttributes().build());
         event.put(PanthalassaEntityTypes.ARCHELON.get(), EntityArchelon.archelonAttributes().build());
@@ -213,6 +188,5 @@ public class PanthalassaEntityTypes {
         event.put(PanthalassaEntityTypes.KRONOSAURUS_SKULL.get(), PanthalassaDisplayEntity.displayAttributes().build());
         event.put(PanthalassaEntityTypes.ARCHELON_SHELL.get(), PanthalassaDisplayEntity.displayAttributes().build());
         event.put(PanthalassaEntityTypes.MEGALODON_JAWS.get(), PanthalassaDisplayEntity.displayAttributes().build());
-
     }
 }
