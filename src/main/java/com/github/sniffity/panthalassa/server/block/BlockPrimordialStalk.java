@@ -66,13 +66,14 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
 
 
     public void tick(BlockState p_51714_, ServerLevel p_51715_, BlockPos p_51716_, Random p_51717_) {
-        if (!p_51714_.canSurvive(p_51715_, p_51716_)) {
+        if (!this.canSurvive(p_51714_, p_51715_,p_51716_)) {
             p_51715_.destroyBlock(p_51716_, true);
         }
 
     }
-    public boolean canSurvive(BlockState p_51724_, LevelReader p_51725_, BlockPos p_51726_) {
 
+    @Override
+    public boolean canSurvive(BlockState p_51724_, LevelReader p_51725_, BlockPos p_51726_) {
         BlockState blockstate = p_51725_.getBlockState(p_51726_.below());
         boolean flag = !p_51725_.getBlockState(p_51726_.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
 
