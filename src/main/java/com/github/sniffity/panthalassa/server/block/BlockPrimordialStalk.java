@@ -65,27 +65,26 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
     }
 
 
-    public void tick(BlockState p_51714_, ServerLevel p_51715_, BlockPos p_51716_, Random p_51717_) {
-        if (!this.canSurvive(p_51714_, p_51715_,p_51716_)) {
-            p_51715_.destroyBlock(p_51716_, true);
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+        if (!pState.canSurvive(pLevel, pPos)) {
+            pLevel.destroyBlock(pPos, true);
         }
 
     }
 
     @Override
-    public boolean canSurvive(BlockState p_51724_, LevelReader p_51725_, BlockPos p_51726_) {
-        BlockState blockstate = p_51725_.getBlockState(p_51726_.below());
-        boolean flag = !p_51725_.getBlockState(p_51726_.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        BlockState blockstate = pLevel.getBlockState(pPos.below());
+        boolean flag = !pLevel.getBlockState(pPos.above()).is(Blocks.WATER) && !blockstate.is(Blocks.WATER) ;
 
         for(Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos blockpos = p_51726_.relative(direction);
-            BlockState blockstate1 = p_51725_.getBlockState(blockpos);
+            BlockPos blockpos = pPos.relative(direction);
+            BlockState blockstate1 = pLevel.getBlockState(blockpos);
             if (blockstate1.is(this)) {
                 if (flag) {
                     return false;
                 }
-
-                BlockState blockstate2 = p_51725_.getBlockState(blockpos.below());
+                BlockState blockstate2 = pLevel.getBlockState(blockpos.below());
                 if (blockstate2.is(this) || blockstate2.is(PanthalassaBlocks.PANTHALASSA_SAND.get())) {
                     return true;
                 }
@@ -93,6 +92,8 @@ public class BlockPrimordialStalk extends PipeBlock implements SimpleWaterlogged
         }
         return blockstate.is(this) || blockstate.is(PanthalassaBlocks.PANTHALASSA_SAND.get());
     }
+
+
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
         p_206840_1_.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
