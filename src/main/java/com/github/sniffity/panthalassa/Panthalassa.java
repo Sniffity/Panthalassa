@@ -2,12 +2,10 @@ package com.github.sniffity.panthalassa;
 
 import com.github.sniffity.panthalassa.config.PanthalassaClientConfig;
 import com.github.sniffity.panthalassa.config.PanthalassaCommonConfig;
-import com.github.sniffity.panthalassa.server.events.PanthalassaEventListener;
 import com.github.sniffity.panthalassa.server.network.PanthalassaPacketHandler;
 import com.github.sniffity.panthalassa.server.registry.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
