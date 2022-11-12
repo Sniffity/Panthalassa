@@ -49,7 +49,7 @@ public class PanthalassaEntityRenderer<T extends Entity & IAnimatable> extends E
         EntityModelData entityModelData = new EntityModelData();
         AnimationEvent<T> predicate = new AnimationEvent((IAnimatable)entityIn, limbSwing, lastLimbDistance, partialTicks, !(lastLimbDistance > -0.15F) || !(lastLimbDistance < 0.15F), Collections.singletonList(entityModelData));
         if (this.modelProvider instanceof IAnimatableModel) {
-            this.modelProvider.setLivingAnimations(entityIn, this.getUniqueID(entityIn), predicate);
+            this.modelProvider.setCustomAnimations(entityIn, this.getInstanceId(entityIn), predicate);
         }
 
         matrixStackIn.popPose();
