@@ -46,12 +46,10 @@ public class PanthalassaEventListener {
     public static void onPlayerDamage(LivingHurtEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            if (player != null) {
-                Entity vehicle = player.getVehicle();
-                if (vehicle instanceof PanthalassaVehicle) {
-                    event.setCanceled(true);
-                    vehicle.hurt(event.getSource(), event.getAmount());
-                }
+            Entity vehicle = player.getVehicle();
+            if (vehicle instanceof PanthalassaVehicle) {
+                event.setCanceled(true);
+                vehicle.hurt(event.getSource(), event.getAmount());
             }
         }
     }

@@ -2,7 +2,6 @@ package com.github.sniffity.panthalassa.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import java.awt.Color;
 import java.util.Collections;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -13,13 +12,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.LightType;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimatableModel;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.GeoModelProvider;
@@ -58,6 +56,11 @@ public class PanthalassaVehicleRenderer<T extends Entity & IAnimatable> extends 
 
     public static int getPackedOverlay(Entity livingEntityIn, float uIn) {
         return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(false));
+    }
+
+    @Override
+    public IRenderTypeBuffer getCurrentRTB() {
+        return null;
     }
 
     public GeoModelProvider<T> getGeoModelProvider() {

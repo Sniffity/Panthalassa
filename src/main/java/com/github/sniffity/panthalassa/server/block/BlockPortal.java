@@ -301,7 +301,7 @@ public class BlockPortal extends Block implements ITileEntityProvider {
                         if (tileEntity instanceof BlockPortalTileEntity) {
                             ((BlockPortalTileEntity) tileEntity).offsetFromCenter = new BlockPos(x, 0, z);
                         }
-
+                        tileEntity.setChanged();
                         // Helps create some space for mobs to swim into portal
                         if (((ServerWorld) this.world).dimension() == PanthalassaDimension.PANTHALASSA) {
                             while (mutable.move(Direction.UP).getY() < this.world.getHeight() && !this.world.getBlockState(mutable).is(Blocks.BEDROCK) && mutable.getY() < this.centerPosition.getY() + 7) {
@@ -321,10 +321,10 @@ public class BlockPortal extends Block implements ITileEntityProvider {
                 for (int z = (int) -maxPortalFrameRadius; z < maxPortalFrameRadius; z++) {
                     int distSq = x * x + z * z;
                     if (distSq <= minRadiusSq) {
-                        mutable1.set(this.centerPosition).move(x, 0, z);
+                        mutable1.set(centerPosition).move(x, 0, z);
                         mutable2.set(centerOfOtherPortal).move(x, 0, z);
 
-                        TileEntity tileEntity1 = this.world.getBlockEntity(mutable1);
+                        TileEntity tileEntity1 = world.getBlockEntity(mutable1);
                         TileEntity tileEntity2 = otherWorld.getBlockEntity(mutable2);
                         if (tileEntity1 instanceof BlockPortalTileEntity && tileEntity2 instanceof BlockPortalTileEntity) {
                             BlockPortalTileEntity portal1 = ((BlockPortalTileEntity) tileEntity1);
@@ -335,6 +335,9 @@ public class BlockPortal extends Block implements ITileEntityProvider {
 
                             portal2.destinationPos = portal1.getBlockPos();
                             portal2.destinationWorld = portal1.getLevel().dimension();
+
+                            portal1.setChanged();
+                            portal2.setChanged();
                         }
                     }
                 }
