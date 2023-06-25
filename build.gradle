@@ -91,7 +91,7 @@ dependencies {
     }
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1:api")
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.45')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.57')
     runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0") {transitive = false}
     compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.5.174")
