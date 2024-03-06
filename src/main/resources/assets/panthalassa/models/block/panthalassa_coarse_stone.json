@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "panthalassa:block/panthalassa_coarse_stone"
-  }
-}

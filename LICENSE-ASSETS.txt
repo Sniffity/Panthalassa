@@ -1,1 +1,0 @@
-All assets, which include textures, models and animations made for this mod are ARR (All Rights Reserved).

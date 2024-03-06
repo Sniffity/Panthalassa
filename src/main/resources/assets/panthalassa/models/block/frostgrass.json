@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/template_seagrass",
-  "textures": {
-    "texture": "panthalassa:block/frostgrass"
-  },
-  "render_type": "cutout"
-}

@@ -1,6 +1,0 @@
-{
-  "name": "Vehicles",
-  "description": "Panthalassa immense pressure would instantly crush any explorer that dares venture within. Highly specialized vehicles are required for those seeking to brave the depths.$(br2) Press Y (default) for Vehicle Special Ability.$(br) Press H (default) for Vehicle Headlights.$(br) Press N (default) to ping on Sonar.",
-  "icon": "panthalassa:book/vehicle.png",
-  "sortnum": 1
-}

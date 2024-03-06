@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:campfire_cooking",
-  "ingredient": {
-    "item": "panthalassa:primal_crustacean_meat"
-  },
-  "result": "panthalassa:cooked_primal_crustacean_meat",
-  "experience": 1.0,
-  "cookingtime": 200
-}

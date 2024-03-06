@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smoking",
-  "ingredient": {
-    "item": "panthalassa:plesiosaur_meat"
-  },
-  "result": "panthalassa:cooked_plesiosaur_meat",
-  "experience": 1.0,
-  "cookingtime": 200
-}

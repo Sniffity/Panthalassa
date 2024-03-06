@@ -1,8 +1,0 @@
-{
-  "type": "panthalassa:panthalassa_rocks",
-  "config": {
-    "state": {
-      "Name": "panthalassa:panthalassa_rock"
-    }
-  }
-}
