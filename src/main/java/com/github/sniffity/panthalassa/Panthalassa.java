@@ -14,6 +14,7 @@ public class Panthalassa
     public static final String MODID = "panthalassa";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    //ToDo: GeckoLib dependency - configure version in properties + mods.toml
     public Panthalassa(IEventBus modEventBus)
     {
 
