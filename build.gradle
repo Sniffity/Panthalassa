@@ -10,6 +10,16 @@ version = "${mod_version}-${minecraft_version}"
 
 repositories {
     mavenLocal()
+
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroupByRegex("software\\.bernie.*")
+            includeGroup("com.eliotlash.mclib")
+        }
+    }
+
 }
 
 base {
@@ -49,9 +59,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
+    implementation 'software.bernie.geckolib:geckolib-forge-1.20.4:4.4.2'
 }
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
