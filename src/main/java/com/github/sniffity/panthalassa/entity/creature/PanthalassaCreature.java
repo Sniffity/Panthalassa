@@ -1,12 +1,21 @@
 package com.github.sniffity.panthalassa.entity.creature;
 
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.InstancedAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static java.lang.Math.PI;
 
-public abstract class PanthalassaCreature extends PathfinderMob {
+public abstract class PanthalassaCreature extends PathfinderMob implements GeoEntity {
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -22,15 +31,90 @@ public abstract class PanthalassaCreature extends PathfinderMob {
     private float prevSetYaw;
     private float setYaw;
 
+
+    public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.STRING);
+    public static final EntityDataAccessor<Integer> ANIMATION_TYPE = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.INT);
+
     @Override
     protected void defineSynchedData(){
         super.defineSynchedData();
+        entityData.define(ANIMATION,"base");
+        entityData.define(ANIMATION_TYPE,0);
+
+    }
+
+    // =========================================
+    // ANIMATION METHODS
+    // =========================================
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
+    }
+
+    @Override
+    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controllerAbility", 5, this::abilityAnimController));
+        controllers.add(new AnimationController<>(this, "controllerLocomotion", 5, this::locomotionAnimController));
     }
 
 
+    protected static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("move.fly");
+
+    protected <E extends PanthalassaCreature> PlayState abilityAnimController(final AnimationState<E> event) {
+        //BoneType: INVISIBLE Bones
+
+        //All Ability Animations to be played are stored as DataParameters Strings
+        //We begin by getting the animation that should be played.
+        //This string may have been set as part of an AnimatedGoal that requires a one-shot ability animation to play..
+        String animation = this.getAnimation();
+        //If we do have a one-shot ability animation, we will play that.
+        //"base" is the null value for getAnimation
+        if (!animation.equals("base")) {
+            //If we do have an ability animation, we get the type (Loop (1), Play once (2), Hold on last frame (3))
+            int animationType = this.getAnimationType();
+            RawAnimation abilityAnimation;
+
+            switch (animationType) {
+                case 1 -> abilityAnimation = RawAnimation.begin().then(animation,Animation.LoopType.LOOP);
+                case 2 -> abilityAnimation = RawAnimation.begin().then(animation,Animation.LoopType.PLAY_ONCE);
+                case 3 -> abilityAnimation = RawAnimation.begin().then(animation,Animation.LoopType.HOLD_ON_LAST_FRAME);
+                default -> {return PlayState.STOP;}
+            }
+
+            //We proceed to play the corresponding animation...
+            return event.setAndContinue(abilityAnimation);
+        }
+        //Else, just return base:
+        //This will not cause a transition to a stiff pose, as walking animations will be running concurrently...
+        //We are only resetting the position of the iBones/Bones here
+        return event.setAndContinue(RawAnimation.begin().then("base",Animation.LoopType.LOOP));
+    }
+
+    protected <E extends PanthalassaCreature> PlayState locomotionAnimController(final AnimationState<E> event) {
+        //locomotion Methods
+        return PlayState.STOP;
+    }
+
+    public void setAnimation(String animation) {
+        entityData.set(ANIMATION,animation);
+    }
+
+    public String getAnimation() {
+        return entityData.get(ANIMATION);
+    }
+
+    public void setAnimationType(int animationType) {
+        entityData.set(ANIMATION_TYPE,animationType);
+    }
+
+    public int getAnimationType(){
+        return entityData.get(ANIMATION_TYPE);
+    }
 
     // =========================================
-    // Species Methods
+    // SPECIES METHODS
     // =========================================
     protected abstract boolean speciesUnderwaterBreathing();
 
