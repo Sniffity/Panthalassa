@@ -2,7 +2,7 @@ package com.github.sniffity.panthalassa.lib.entity;
 
 import net.minecraft.world.entity.PathfinderMob;
 
-public class SniffityAquaticCreature {
+public class SniffityAquaticEntity {
 
     //ToDo: Pending Extraction
     public void handleDynamicAquaticYaw(PathfinderMob entity) {
