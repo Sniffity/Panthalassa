@@ -19,8 +19,6 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
-
 
 runs {
     // applies to all the run configs below
