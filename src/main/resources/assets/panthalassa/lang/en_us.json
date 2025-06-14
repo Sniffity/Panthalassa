@@ -1,0 +1,13 @@
+{
+  "itemGroup.panthalassa": "Example Mod Tab",
+  "block.panthalassa.example_block": "Example Block",
+  "item.panthalassa.example_item": "Example Item",
+
+  "panthalassa.configuration.title": "Panthalassa Configs",
+  "panthalassa.configuration.section.panthalassa.common.toml": "Panthalassa Configs",
+  "panthalassa.configuration.section.panthalassa.common.toml.title": "Panthalassa Configs",
+  "panthalassa.configuration.items": "Item List",
+  "panthalassa.configuration.logDirtBlock": "Log Dirt Block",
+  "panthalassa.configuration.magicNumberIntroduction": "Magic Number Text",
+  "panthalassa.configuration.magicNumber": "Magic Number"
+}
