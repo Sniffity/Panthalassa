@@ -112,6 +112,8 @@ configurations {
 }
 
 dependencies {
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+
     repositories {
         maven {
             name = 'GeckoLib'
