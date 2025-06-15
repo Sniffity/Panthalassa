@@ -31,6 +31,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     private float prevYawRot;
     private float deltaYawRot;
 
+
     private int yawTickCounter;
 
 
@@ -38,6 +39,10 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     private double angle = 0; // in radians
     private float radius;
     private final double speed = 0.01; // radians per tick
+
+    private double prevAngle = 0.0;
+    public double angularSpeedEstimate = 0.0;
+
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -209,15 +214,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         angle += speed;
         if (angle > 2 * Math.PI) angle -= 2 * Math.PI;
 
-
-
-
         double targetX = center.x + radius * Math.cos(angle);
         double targetZ = center.z + radius * Math.sin(angle);
-
-
-
-
 
         //FIGURE 8
 /*
@@ -225,12 +223,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         double targetZ = center.z + radius * Math.sin(angle) * Math.cos(angle);
  * */
 
-
-
         double motionX = targetX - this.getX();
         double motionZ = targetZ - this.getZ();
-
-
 
         this.setDeltaMovement(motionX * 0.1, 0, motionZ * 0.1);
 
@@ -238,7 +232,21 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         Vec3 motion = this.getDeltaMovement();
         double dx = motion.x;
         double dz = motion.z;
-        float yaw = (float)(Math.atan2(dz, dx) * (180F / Math.PI))-90;
+        float yaw = (float)(Math.atan2(dz, dx) * (180F / Math.PI))+180F;
+
+
+        if (motion.lengthSqr() > 1.0E-6) {
+            double currAngle = Math.atan2(motion.z, motion.x); // yaw angle in radians
+            double deltaAngle = currAngle - prevAngle;
+
+            // Normalise to [-π, π]
+            deltaAngle = Mth.wrapDegrees(Math.toDegrees(deltaAngle))  * (Math.PI / 180);;
+
+            angularSpeedEstimate = deltaAngle; // radians per tick
+            prevAngle = currAngle;
+        }
+
+
 
         //this.setYRot(yaw);
         //this.setYRot(yaw);
@@ -246,47 +254,45 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         //this.setYHeadRot(-yaw);   // Optional: keeps head aligned
 
 
-
         if (level().isClientSide){
             yawTickCounter = (yawTickCounter + 1) % 3;
             if (yawTickCounter == 0) {
                 handleDynamicYawOperations();
             }
-
-
         }
-
-
     }
 
     private void handleDynamicYawOperations() {
         float adjustment = 0.10F;
 
-        // 1) Always compute from the *current* body yaw:
         float rawDelta = Mth.wrapDegrees(this.yBodyRot - prevYawRot);
         prevYawRot = this.yBodyRot;
 
-        // 2) Smooth‑chase toward that:
         if (adjustYaw > rawDelta) {
             adjustYaw = Math.max(adjustYaw - adjustment, rawDelta);
         } else if (adjustYaw < rawDelta) {
             adjustYaw = Math.min(adjustYaw + adjustment, rawDelta);
         }
 
-        // 3) Store for the model (in radians):
         prevSetYaw = setYaw;
 
-        /*
+
+
+        //System.out.println("Angular Speed:"+(speed));
+        System.out.println("Angular Speed Estimate: " +angularSpeedEstimate);
+        //System.out.println("Linear Speed:"+(getDeltaMovement().length()));
+
         for (Player player : level().players()) {
             if (player.distanceTo(this) < 16) { // Optional: limit to nearby players
-                player.sendSystemMessage(Component.literal(Float.toString(adjustYaw)));
+
+                //player.sendSystemMessage(Component.literal("Angular Speed:"+(speed)));
+                //player.sendSystemMessage(Component.literal("Linear Speed:"+(getDeltaMovement().length())));
+
             }
         }
 
-         */
 
-        setYaw = adjustYaw * ((float)Math.PI / 180F);
-
+        setYaw = (adjustYaw) * ((float)Math.PI/180F);
 
     }
 

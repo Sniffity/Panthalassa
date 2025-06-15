@@ -22,6 +22,6 @@ public class RenderKronosaurus extends GeoEntityRenderer<CreatureKronosaurus> {
     @Override
     public void preRender(PoseStack poseStack, CreatureKronosaurus animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
-        poseStack.scale(1.5F, 1.5F, 1.5F);
+        poseStack.scale(2.0F, 2.0F, 2.0F);
     }
 }
