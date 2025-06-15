@@ -11,6 +11,18 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static java.lang.Math.PI;
 
 public abstract class PanthalassaCreature extends PathfinderMob implements GeoEntity {
+
+    public boolean isLandNavigator;
+    public float rotationPitch;
+    public float prevRotationPitch;
+    public float prevYRot;
+    public float deltaYRot;
+    public float adjustYaw;
+    public float adjustment;
+    public boolean canBreatheOutsideWater;
+    public float prevSetYaw;
+    public float setYaw;
+
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -154,6 +166,40 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         if (speciesReturnsToWater()) {
 
         }
+    }
+
+    public void yawOperations(){
+        //YAW OPERATIONS:
+        //The following lines of code handle the dynamic yaw animations for entities...
+        //Grab the change in the entity's Yaw, deltaYRot...
+        //deltaYaw will tell us in which direction the entity is rotating...
+        deltaYRot = this.yBodyRot - prevYRot;
+        //Stor the previous yaw value, so we can use itn ext tick to calculate deltaYaw...
+        prevYRot = this.yBodyRot;
+        //adjustYaw is a local variable that changes to try and match the change in Yaw....
+        //So, adjustYaw starts at 0.
+        // If it's rotating in the negative direction (deltaYRot negative), adjustYaw will start decreasing to catch up...
+        // Likewise, if it's rotating in the positive direction (deltaYRot positive) adjustYaw will start increasing to catch up...
+        //The increase or decrease always depends on the adjustment variable. This determines how "fast" adjustYaw will catch up.
+        //The max and min functions ensure that adjustYaw doesn't overshoot deltaYRot...
+        //Thus, adjustment will determine --how fast-- the pieces of the entity's model change their rotation.
+        //The multiplying factor in the corresponding entity's model will determine --how far-- they rotate.
+        //We store the prevAdjustYaw value and use this and the current adjustYaw value for partial tick methods.
+        //Troubleshooting:
+        // If the rotation "lags behind" (does not change directions fast enough) increase adjustment.
+        // If the rotation looks choppy (adjusts too fast), decrease adjustment
+        // If the entity seems to "dislocate", reduce the multipliers for bone rotation in the Model class.
+        // Reducing rotation multiplier in model class can also reduce choppiness, at the cost of how wide the bone rotation is.
+        prevSetYaw = setYaw;
+
+        if (adjustYaw > deltaYRot) {
+            adjustYaw = adjustYaw - adjustment;
+            adjustYaw = Math.max(adjustYaw, deltaYRot);
+        } else if (adjustYaw < deltaYRot) {
+            adjustYaw = adjustYaw + adjustment;
+            adjustYaw = Math.min(adjustYaw, deltaYRot);
+        }
+        setYaw = (float) (adjustYaw*(PI/180.0F));
     }
 
     private void handleDynamicYawOperations(){
