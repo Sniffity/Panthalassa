@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import org.w3c.dom.Attr;
 
 
 @EventBusSubscriber(bus =  EventBusSubscriber.Bus.MOD, modid = Panthalassa.MODID)
@@ -21,10 +22,8 @@ public class PanthalassaEventHandler {
                 // if you want, see the source of LivingEntity#createLivingAttributes for an example.
                 LivingEntity.createLivingAttributes()
                         // Add an attribute with its default value.
-                        .add(Attributes.MAX_HEALTH)
-                        // Add an attribute with a non-default value.
-                        .add(Attributes.MAX_HEALTH, 50)
-                        // Build the AttributeSupplier.
+                        .add(Attributes.MAX_HEALTH,50)
+                        .add(Attributes.FOLLOW_RANGE)
                         .build()
         );
     }
