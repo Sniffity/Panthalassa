@@ -1,5 +1,6 @@
 package com.github.sniffity.entity.creature;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +36,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     private final Vec3 center = new Vec3(0, 5, 0);
     private double angle = 0; // in radians
-    private final double radius = 15;
+    private float radius;
     private final double speed = 0.01; // radians per tick
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
@@ -79,6 +80,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
  */
 
+
     // =========================================
     // ANIMATION METHODS
     // =========================================
@@ -94,6 +96,16 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         controllers.add(new AnimationController<>(this, "controllerAbility", 5, this::abilityAnimController));
         controllers.add(new AnimationController<>(this, "controllerLocomotion", 5, this::locomotionAnimController));
     }
+    @Override
+
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+
+        if (tag.contains("Radius")) {
+            this.radius = tag.getFloat("Radius");
+        }
+    }
+
 
 
     protected static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("move.fly");
@@ -199,17 +211,21 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
 
 
-        //CIRCLE
+
         double targetX = center.x + radius * Math.cos(angle);
         double targetZ = center.z + radius * Math.sin(angle);
 
 
 
+
+
         //FIGURE 8
-        /*
-        double targetX = center.x + radius * Math.sin(angle);
+/*
+       double targetX = center.x + radius * Math.sin(angle);
         double targetZ = center.z + radius * Math.sin(angle) * Math.cos(angle);
-        */
+ * */
+
+
 
         double motionX = targetX - this.getX();
         double motionZ = targetZ - this.getZ();
@@ -228,14 +244,19 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         //this.setYRot(yaw);
         this.setYBodyRot(yaw);
         //this.setYHeadRot(-yaw);   // Optional: keeps head aligned
+
+
+
         if (level().isClientSide){
             yawTickCounter = (yawTickCounter + 1) % 3;
             if (yawTickCounter == 0) {
-                //handleDynamicYawOperations();
+                handleDynamicYawOperations();
             }
 
 
         }
+
+
     }
 
     private void handleDynamicYawOperations() {
