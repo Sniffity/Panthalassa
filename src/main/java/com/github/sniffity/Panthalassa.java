@@ -1,5 +1,10 @@
 package com.github.sniffity;
 
+import com.github.sniffity.entity.creature.PanthalassaCreature;
+import com.github.sniffity.entity.registry.PanthalassaEntityTypes;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -71,7 +76,7 @@ public class Panthalassa {
     public Panthalassa(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
+        PanthalassaEntityTypes.ENTITY_TYPES.register(modEventBus);
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
@@ -128,4 +133,5 @@ public class Panthalassa {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
     }
+
 }
