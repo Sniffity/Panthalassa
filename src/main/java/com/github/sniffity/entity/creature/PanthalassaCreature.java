@@ -204,7 +204,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         Vec3 motion = this.getDeltaMovement();
         double dx = motion.x;
         double dz = motion.z;
-        float yaw = (float)(Math.atan2(dz, dx) * (180F / Math.PI))+90;
+        float yaw = (float)(Math.atan2(dz, dx) * (180F / Math.PI))-90;
 
         //this.setYRot(yaw);
 
@@ -218,7 +218,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
 
     private void handleDynamicYawOperations() {
-        float adjustment = 0.05F;
+        float adjustment = 0.25F;
         //YAW OPERATIONS:
         //The following lines of code handle the dynamic yaw animations for entities...
 

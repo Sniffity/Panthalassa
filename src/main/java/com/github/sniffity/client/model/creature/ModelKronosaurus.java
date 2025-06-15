@@ -37,15 +37,16 @@ public class ModelKronosaurus extends GeoModel<CreatureKronosaurus> {
     }
 
     public void dynamicYaw1(CreatureKronosaurus entity, AnimationState<CreatureKronosaurus> animationState){
-        float multiplier = 5.0F;
+        float multiplier = 10.0F;
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*animationState.getPartialTick();
         (this.getAnimationProcessor().getBone("lower_torso")).setRotY(setYawValue*multiplier);
         (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotY(setYawValue*multiplier);
-        (this.getAnimationProcessor().getBone("tail_section_1")).setRotY(setYawValue*4.0F);
-        (this.getAnimationProcessor().getBone("tail_section_2")).setRotY(setYawValue*3.0F);
-        (this.getAnimationProcessor().getBone("tail_section_3")).setRotY(setYawValue*2.0F);
-        (this.getAnimationProcessor().getBone("tail_section_4")).setRotY(setYawValue);
-        (this.getAnimationProcessor().getBone("neck")).setRotY(-setYawValue*10F);
+        (this.getAnimationProcessor().getBone("tail_section_1")).setRotY(setYawValue*multiplier);
+        (this.getAnimationProcessor().getBone("tail_section_2")).setRotY(setYawValue*multiplier);
+        (this.getAnimationProcessor().getBone("tail_section_3")).setRotY(setYawValue*multiplier);
+        (this.getAnimationProcessor().getBone("tail_section_4")).setRotY(setYawValue*multiplier);
+        (this.getAnimationProcessor().getBone("neck")).setRotY(-setYawValue*multiplier*3);
+        //(this.getAnimationProcessor().getBone("torso")).setRotZ(45);
     }
 
     @Override
