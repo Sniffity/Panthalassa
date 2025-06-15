@@ -1,10 +1,12 @@
 package com.github.sniffity;
 
+import com.github.sniffity.client.render.creature.RenderKronosaurus;
 import com.github.sniffity.entity.registry.PanthalassaEntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import org.w3c.dom.Attr;
 
@@ -22,9 +24,15 @@ public class PanthalassaEventHandler {
                 // if you want, see the source of LivingEntity#createLivingAttributes for an example.
                 LivingEntity.createLivingAttributes()
                         // Add an attribute with its default value.
-                        .add(Attributes.MAX_HEALTH,50)
+                        .add(Attributes.MAX_HEALTH, 50)
                         .add(Attributes.FOLLOW_RANGE)
                         .build()
         );
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(PanthalassaEntityTypes.KRONOSAURUS.get(),
+                RenderKronosaurus::new);
     }
 }
