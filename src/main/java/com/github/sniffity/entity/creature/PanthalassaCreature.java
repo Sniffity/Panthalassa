@@ -1,9 +1,12 @@
 package com.github.sniffity.entity.creature;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -26,6 +29,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     public float setYaw;
     private float prevYawRot;
     private float deltaYawRot;
+
+    private int yawTickCounter;
 
 
     private final Vec3 center = new Vec3(0, 5, 0);
@@ -192,11 +197,24 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         angle += speed;
         if (angle > 2 * Math.PI) angle -= 2 * Math.PI;
 
+
+
+        //CIRCLE
         double targetX = center.x + radius * Math.cos(angle);
         double targetZ = center.z + radius * Math.sin(angle);
 
+
+
+        //FIGURE 8
+        /*
+        double targetX = center.x + radius * Math.sin(angle);
+        double targetZ = center.z + radius * Math.sin(angle) * Math.cos(angle);
+        */
+
         double motionX = targetX - this.getX();
         double motionZ = targetZ - this.getZ();
+
+
 
         this.setDeltaMovement(motionX * 0.1, 0, motionZ * 0.1);
 
@@ -207,63 +225,52 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         float yaw = (float)(Math.atan2(dz, dx) * (180F / Math.PI))-90;
 
         //this.setYRot(yaw);
-
         //this.setYRot(yaw);
         this.setYBodyRot(yaw);
         //this.setYHeadRot(-yaw);   // Optional: keeps head aligned
         if (level().isClientSide){
-            handleDynamicYawOperations();
+            yawTickCounter = (yawTickCounter + 1) % 3;
+            if (yawTickCounter == 0) {
+                //handleDynamicYawOperations();
+            }
+
+
         }
     }
-
 
     private void handleDynamicYawOperations() {
-        float adjustment = 0.25F;
-        //YAW OPERATIONS:
-        //The following lines of code handle the dynamic yaw animations for entities...
+        float adjustment = 0.10F;
 
-        //Grab the change in the entity's Yaw, deltaYRot...
-        //deltaYaw will tell us in which direction the entity is rotating...
-        deltaYawRot = this.yBodyRot - prevYawRot;
-        //System.out.print("DeltaYawRot: "+deltaYawRot);
-        //Store the previous yaw value, so we can use it next tick to calculate deltaYaw...
+        // 1) Always compute from the *current* body yaw:
+        float rawDelta = Mth.wrapDegrees(this.yBodyRot - prevYawRot);
         prevYawRot = this.yBodyRot;
-        //System.out.print("prevYawRot: "+prevYawRot);
 
-
-        //adjustYaw is a local variable that changes to try and match the change in Yaw....
-        //This is what we will set each bone's yaw to...
-        //So, adjustYaw starts at 0.
-        // If it's rotating in the negative direction (deltaYRot negative), adjustYaw will start decreasing to catch up...
-        // Likewise, if it's rotating in the positive direction (deltaYRot positive) adjustYaw will start increasing to catch up...
-
-        //The increase or decrease always depends on the adjustment variable. This determines how "fast" adjustYaw will catch up.
-        //The max and min functions ensure that adjustYaw doesn't overshoot deltaYRot...
-        //Thus, adjustment will determine --how fast-- the pieces of the entity's model change their rotation.
-        //The multiplying factor in the corresponding entity's model will determine --how far-- they rotate.
-
-        if (adjustYaw > deltaYawRot) {
-            adjustYaw = adjustYaw - adjustment;
-
-            adjustYaw = Math.max(adjustYaw, deltaYawRot);
-        } else if (adjustYaw < deltaYawRot) {
-            adjustYaw = adjustYaw + adjustment;
-            adjustYaw = Math.min(adjustYaw, deltaYawRot);
-
+        // 2) Smooth‑chase toward that:
+        if (adjustYaw > rawDelta) {
+            adjustYaw = Math.max(adjustYaw - adjustment, rawDelta);
+        } else if (adjustYaw < rawDelta) {
+            adjustYaw = Math.min(adjustYaw + adjustment, rawDelta);
         }
 
-
-        //We store the prevAdjustYaw value and use this and the current adjustYaw value for partial tick methods.
+        // 3) Store for the model (in radians):
         prevSetYaw = setYaw;
-        //Finally, the yaw value is converted to radians, for use in the model class
-        setYaw = (float) (adjustYaw * (PI / 180.0F));
 
-        //Troubleshooting:
-        // If the rotation "lags behind" (does not change directions fast enough) increase adjustment.
-        // If the rotation looks choppy (adjusts too fast), decrease adjustment
-        // If the entity seems to "dislocate", reduce the multipliers for bone rotation in the Model class.
-        // Reducing rotation multiplier in model class can also reduce choppiness, at the cost of how wide the bone rotation is.
+        /*
+        for (Player player : level().players()) {
+            if (player.distanceTo(this) < 16) { // Optional: limit to nearby players
+                player.sendSystemMessage(Component.literal(Float.toString(adjustYaw)));
+            }
+        }
+
+         */
+
+        setYaw = adjustYaw * ((float)Math.PI / 180F);
+
+
     }
+
+
+
 
     private void handleDynamicPitchOperations() {
         prevRotationPitch = rotationPitch;
@@ -273,5 +280,10 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     @Override
     public void registerGoals() {
 
+    }
+
+    @Override
+    public boolean isNoGravity() {
+        return true;
     }
 }
