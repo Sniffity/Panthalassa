@@ -217,6 +217,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         double targetX = center.x + radius * Math.cos(angle);
         double targetZ = center.z + radius * Math.sin(angle);
 
+        //ToDo: Test with Figure 8 methods - ensure it still works, and it works when swapping directions
+
         //FIGURE 8
 /*
        double targetX = center.x + radius * Math.sin(angle);
