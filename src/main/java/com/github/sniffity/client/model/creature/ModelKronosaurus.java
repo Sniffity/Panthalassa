@@ -37,8 +37,8 @@ public class ModelKronosaurus extends GeoModel<CreatureKronosaurus> {
     }
 
     public void dynamicYaw1(CreatureKronosaurus entity, AnimationState<CreatureKronosaurus> animationState){
-        float multiplier = (0.11504f / ((float)entity.angularSpeedEstimate + 0.01667f)) - 1.28407f;
-
+        float multiplier = 5.175F / entity.adjustYaw;
+        
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*animationState.getPartialTick();
         (this.getAnimationProcessor().getBone("lower_torso")).setRotY(setYawValue*multiplier);
         (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotY(setYawValue*multiplier);

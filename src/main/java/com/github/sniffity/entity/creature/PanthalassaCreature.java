@@ -38,7 +38,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     private final Vec3 center = new Vec3(0, 5, 0);
     private double angle = 0; // in radians
     private float radius;
-    private final double speed = 0.01; // radians per tick
+    private final double speed = 0.03; // radians per tick
 
     private double prevAngle = 0.0;
     public double angularSpeedEstimate = 0.0;
@@ -282,6 +282,9 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
         //System.out.println("Angular Speed:"+(speed));
         System.out.println("Angular Speed Estimate: " +angularSpeedEstimate);
+        System.out.println("Adjust Yaw: " +adjustYaw);
+
+
         //System.out.println("Linear Speed:"+(getDeltaMovement().length()));
 
         for (Player player : level().players()) {
