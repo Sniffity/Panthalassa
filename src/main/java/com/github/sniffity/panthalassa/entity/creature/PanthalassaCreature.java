@@ -9,6 +9,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -46,46 +47,9 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.navigation = new FlyingPathNavigation(this,this.level());
+        this.navigation = new GroundPathNavigation(this,this.level());
         this.moveControl = new PanthalassaMoveControl(this, 85, 1F, 1F, true);
-
-        this.lookControl = new LookControl(this) {
-            @Override
-            public void tick() {
-                // Do nothing — disables automatic look updates
-            }
-
-            @Override
-            public void setLookAt(double x, double y, double z) {
-                // Do nothing — disables manual look-at
-            }
-
-            @Override
-            public void setLookAt(double x, double y, double z, float deltaYaw, float deltaPitch) {
-                // Do nothing
-            }
-
-            @Override
-            public void setLookAt(Entity entity, float deltaYaw, float deltaPitch) {
-                // Do nothing
-            }
-        };
-
     }
-
-/*
-    public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.STRING);
-    public static final EntityDataAccessor<Integer> ANIMATION_TYPE = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.INT);
-
-    @Override
-    protected void defineSynchedData(){
-        super.defineSynchedData();
-        entityData.define(ANIMATION,"base");
-        entityData.define(ANIMATION_TYPE,0);
-
-    }
-
- */
 
 
     // =========================================
@@ -177,6 +141,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
      */
 
+
+
     // =========================================
     // SPECIES METHODS
     // =========================================
@@ -195,6 +161,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     public void tick() {
         super.tick();
 
+        /*
         handleDynamicPitchOperations();
 
 
@@ -215,6 +182,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         if (speciesReturnsToWater()) {
 
         }
+
+         */
 
     }
 
@@ -329,9 +298,6 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         setYaw = (adjustYaw) * ((float)Math.PI/180F);
 
     }
-
-
-
 
     private void handleDynamicPitchOperations() {
         prevRotationPitch = rotationPitch;

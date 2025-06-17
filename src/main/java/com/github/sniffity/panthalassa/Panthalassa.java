@@ -29,6 +29,7 @@ public class Panthalassa {
         modEventBus.addListener(this::commonSetup);
         PanthalassaEntityTypes.ENTITY_TYPES.register(modEventBus);
 
+
         /*
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
