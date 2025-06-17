@@ -1,9 +1,8 @@
-package com.github.sniffity.client.model.creature;
+package com.github.sniffity.panthalassa.client.model.creature;
 
-import com.github.sniffity.Panthalassa;
-import com.github.sniffity.entity.creature.CreatureKronosaurus;
+import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.entity.creature.CreatureKronosaurus;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
@@ -31,14 +30,14 @@ public class ModelKronosaurus extends GeoModel<CreatureKronosaurus> {
 
     @Override
     public void setCustomAnimations(CreatureKronosaurus entity, long instanceID, @Nullable AnimationState<CreatureKronosaurus> animationState) {
-        dynamicYaw1(entity, animationState);
+        //dynamicYaw1(entity, animationState);
         super.setCustomAnimations(entity, instanceID,animationState);
 
     }
 
     public void dynamicYaw1(CreatureKronosaurus entity, AnimationState<CreatureKronosaurus> animationState){
         float multiplier = 5.175F / entity.adjustYaw;
-        
+
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*animationState.getPartialTick();
         (this.getAnimationProcessor().getBone("lower_torso")).setRotY(setYawValue*multiplier);
         (this.getAnimationProcessor().getBone("lower_torso_tail")).setRotY(setYawValue*multiplier);

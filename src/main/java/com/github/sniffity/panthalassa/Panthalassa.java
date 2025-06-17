@@ -1,6 +1,6 @@
-package com.github.sniffity;
+package com.github.sniffity.panthalassa;
 
-import com.github.sniffity.entity.registry.PanthalassaEntityTypes;
+import com.github.sniffity.panthalassa.entity.registry.PanthalassaEntityTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;

@@ -1,12 +1,14 @@
-package com.github.sniffity.entity.creature;
+package com.github.sniffity.panthalassa.entity.creature;
 
+import com.github.sniffity.panthalassa.entity.creature.ai.movement.PanthalassaMoveControl;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -14,8 +16,6 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import static java.lang.Math.PI;
 
 public abstract class PanthalassaCreature extends PathfinderMob implements GeoEntity {
 
@@ -46,6 +46,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.navigation = new FlyingPathNavigation(this,this.level());
+        this.moveControl = new PanthalassaMoveControl(this, 85, 1F, 1F, true);
 
         this.lookControl = new LookControl(this) {
             @Override
@@ -188,8 +190,35 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     protected abstract boolean speciesReturnsToWater();
 
+
     @Override
     public void tick() {
+        super.tick();
+
+        handleDynamicPitchOperations();
+
+
+        if (speciesUnderwaterBreathing()) {
+
+        }
+
+        if (speciesDynamicYaw()) {
+        }
+
+        if (speciesDynamicPitch()) {
+        }
+
+        if (speciesAmphibious()) {
+
+        }
+
+        if (speciesReturnsToWater()) {
+
+        }
+
+    }
+
+    public void tickMotion() {
         handleDynamicPitchOperations();
 
         super.tick();
@@ -281,8 +310,8 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
 
         //System.out.println("Angular Speed:"+(speed));
-        System.out.println("Angular Speed Estimate: " +angularSpeedEstimate);
-        System.out.println("Adjust Yaw: " +adjustYaw);
+        //System.out.println("Angular Speed Estimate: " +angularSpeedEstimate);
+        //System.out.println("Adjust Yaw: " +adjustYaw);
 
 
         //System.out.println("Linear Speed:"+(getDeltaMovement().length()));
@@ -311,11 +340,12 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     @Override
     public void registerGoals() {
+        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 2.0F,1,false));
 
     }
 
     @Override
     public boolean isNoGravity() {
-        return true;
+        return false;
     }
 }

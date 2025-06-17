@@ -1,7 +1,7 @@
-package com.github.sniffity.entity.registry;
+package com.github.sniffity.panthalassa.entity.registry;
 
-import com.github.sniffity.Panthalassa;
-import com.github.sniffity.entity.creature.CreatureKronosaurus;
+import com.github.sniffity.panthalassa.Panthalassa;
+import com.github.sniffity.panthalassa.entity.creature.CreatureKronosaurus;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;

@@ -1,12 +1,11 @@
-package com.github.sniffity.client.render.creature;
+package com.github.sniffity.panthalassa.client.render.creature;
 
-import com.github.sniffity.client.model.creature.ModelKronosaurus;
-import com.github.sniffity.entity.creature.CreatureKronosaurus;
+import com.github.sniffity.panthalassa.client.model.creature.ModelKronosaurus;
+import com.github.sniffity.panthalassa.entity.creature.CreatureKronosaurus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;

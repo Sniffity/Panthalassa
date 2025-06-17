@@ -1,14 +1,13 @@
-package com.github.sniffity;
+package com.github.sniffity.panthalassa;
 
-import com.github.sniffity.client.render.creature.RenderKronosaurus;
-import com.github.sniffity.entity.registry.PanthalassaEntityTypes;
+import com.github.sniffity.panthalassa.client.render.creature.RenderKronosaurus;
+import com.github.sniffity.panthalassa.entity.registry.PanthalassaEntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import org.w3c.dom.Attr;
 
 
 @EventBusSubscriber(bus =  EventBusSubscriber.Bus.MOD, modid = Panthalassa.MODID)

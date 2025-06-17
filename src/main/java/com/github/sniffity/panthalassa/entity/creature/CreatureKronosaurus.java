@@ -1,4 +1,4 @@
-package com.github.sniffity.entity.creature;
+package com.github.sniffity.panthalassa.entity.creature;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;

@@ -1,4 +1,4 @@
-package com.github.sniffity;
+package com.github.sniffity.panthalassa;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
