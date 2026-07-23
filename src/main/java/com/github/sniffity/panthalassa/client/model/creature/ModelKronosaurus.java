@@ -30,12 +30,12 @@ public class ModelKronosaurus extends GeoModel<CreatureKronosaurus> {
 
     @Override
     public void setCustomAnimations(CreatureKronosaurus entity, long instanceID, @Nullable AnimationState<CreatureKronosaurus> animationState) {
-        //dynamicYaw1(entity, animationState);
+        dynamicYaw(entity, animationState);
         super.setCustomAnimations(entity, instanceID,animationState);
 
     }
 
-    public void dynamicYaw1(CreatureKronosaurus entity, AnimationState<CreatureKronosaurus> animationState){
+    public void dynamicYaw(CreatureKronosaurus entity, AnimationState<CreatureKronosaurus> animationState){
         float multiplier = 5.175F / entity.adjustYaw;
 
         float setYawValue = entity.prevSetYaw+(entity.setYaw-entity.prevSetYaw)*animationState.getPartialTick();
@@ -47,7 +47,7 @@ public class ModelKronosaurus extends GeoModel<CreatureKronosaurus> {
         (this.getAnimationProcessor().getBone("tail_section_4")).setRotY(setYawValue*multiplier);
         (this.getAnimationProcessor().getBone("neck")).setRotY(-setYawValue*multiplier);
 
-        float rollMultiplier = 30.0F;
+        //float rollMultiplier = 30.0F;
 
         //(this.getAnimationProcessor().getBone("torso")).setRotZ(-setYawValue*rollMultiplier);
     }

@@ -39,6 +39,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     private final Vec3 center = new Vec3(0, 5, 0);
     private double angle = 0; // in radians
     private float radius;
+    private float figure;
     private final double speed = 0.03; // radians per tick
 
     private double prevAngle = 0.0;
@@ -74,6 +75,10 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
         if (tag.contains("Radius")) {
             this.radius = tag.getFloat("Radius");
+        }
+
+        if (tag.contains("Figure")) {
+            this.figure = tag.getFloat("Figure");
         }
     }
 
@@ -160,6 +165,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     @Override
     public void tick() {
         super.tick();
+        tickMotion();
 
         /*
         handleDynamicPitchOperations();
@@ -190,7 +196,6 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     public void tickMotion() {
         handleDynamicPitchOperations();
 
-        super.tick();
         if (speciesUnderwaterBreathing()) {
 
         }
@@ -210,18 +215,23 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         }
 
         angle += speed;
-        if (angle > 2 * Math.PI) angle -= 2 * Math.PI;
+        /*
+        if (angle > 2 * Math.PI) {
+            angle -= 2 * Math.PI;
+        }
 
-        double targetX = center.x + radius * Math.cos(angle);
-        double targetZ = center.z + radius * Math.sin(angle);
+         */
 
-        //ToDo: Test with Figure 8 methods - ensure it still works, and it works when swapping directions
+        double targetX;
+        double targetZ;
 
-        //FIGURE 8
-/*
-       double targetX = center.x + radius * Math.sin(angle);
-        double targetZ = center.z + radius * Math.sin(angle) * Math.cos(angle);
- * */
+        if (figure == 1) {
+            targetX = center.x + radius * Math.sin(angle);
+            targetZ = center.z + radius * Math.sin(angle) * Math.cos(angle);
+        } else {
+            targetX = center.x + radius * Math.cos(angle);
+            targetZ = center.z + radius * Math.sin(angle);
+        }
 
         double motionX = targetX - this.getX();
         double motionZ = targetZ - this.getZ();
@@ -232,9 +242,11 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         Vec3 motion = this.getDeltaMovement();
         double dx = motion.x;
         double dz = motion.z;
-        float yaw = (float)(Math.atan2(dz, dx) * (180F / Math.PI))+180F;
+        float yaw = (float) Math.toDegrees(-Math.atan2(-dx, dz));
+        System.out.println("tick pos=(" + this.getX() + "," + this.getZ() + ") motion=(" + dx + "," + dz + ") yaw=" + yaw);
 
 
+        /*
         if (motion.lengthSqr() > 1.0E-6) {
             double currAngle = Math.atan2(motion.z, motion.x); // yaw angle in radians
             double deltaAngle = currAngle - prevAngle;
@@ -246,20 +258,20 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
             prevAngle = currAngle;
         }
 
+         */
+
 
 
         //this.setYRot(yaw);
-        //this.setYRot(yaw);
-        this.setYBodyRot(yaw);
+        this.setYBodyRot(-yaw-90F);
         //this.setYHeadRot(-yaw);   // Optional: keeps head aligned
 
 
         if (level().isClientSide){
-            yawTickCounter = (yawTickCounter + 1) % 3;
-            if (yawTickCounter == 0) {
-                handleDynamicYawOperations();
-            }
+            handleDynamicYawOperations();
         }
+
+
     }
 
     private void handleDynamicYawOperations() {
@@ -276,25 +288,6 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
         prevSetYaw = setYaw;
 
-
-
-        //System.out.println("Angular Speed:"+(speed));
-        //System.out.println("Angular Speed Estimate: " +angularSpeedEstimate);
-        //System.out.println("Adjust Yaw: " +adjustYaw);
-
-
-        //System.out.println("Linear Speed:"+(getDeltaMovement().length()));
-
-        for (Player player : level().players()) {
-            if (player.distanceTo(this) < 16) { // Optional: limit to nearby players
-
-                //player.sendSystemMessage(Component.literal("Angular Speed:"+(speed)));
-                //player.sendSystemMessage(Component.literal("Linear Speed:"+(getDeltaMovement().length())));
-
-            }
-        }
-
-
         setYaw = (adjustYaw) * ((float)Math.PI/180F);
 
     }
@@ -306,7 +299,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     @Override
     public void registerGoals() {
-        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 2.0F,1,false));
+        //this.goalSelector.addGoal(1, new RandomStrollGoal(this, 2.0F,1,false));
 
     }
 
