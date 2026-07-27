@@ -47,9 +47,8 @@ public class ModelKronosaurus extends GeoModel<CreatureKronosaurus> {
         (this.getAnimationProcessor().getBone("tail_section_4")).setRotY(setYawValue*multiplier);
         (this.getAnimationProcessor().getBone("neck")).setRotY(-setYawValue*multiplier);
 
-        //float rollMultiplier = 30.0F;
-
-        //(this.getAnimationProcessor().getBone("torso")).setRotZ(-setYawValue*rollMultiplier);
+        float rollMultiplier = 30.0F;
+        (this.getAnimationProcessor().getBone("torso")).setRotZ(-setYawValue*rollMultiplier);
     }
 
 
