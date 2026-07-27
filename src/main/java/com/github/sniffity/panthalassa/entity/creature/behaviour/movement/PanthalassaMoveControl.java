@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.entity.creature.ai.movement;
+package com.github.sniffity.panthalassa.entity.creature.behaviour.movement;
 
 import com.github.sniffity.panthalassa.entity.creature.PanthalassaCreature;
 import net.minecraft.core.BlockPos;

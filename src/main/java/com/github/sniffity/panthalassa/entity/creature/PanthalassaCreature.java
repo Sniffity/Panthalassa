@@ -1,16 +1,11 @@
 package com.github.sniffity.panthalassa.entity.creature;
 
-import com.github.sniffity.panthalassa.entity.creature.ai.movement.PanthalassaMoveControl;
+import com.github.sniffity.panthalassa.entity.creature.behaviour.movement.PanthalassaMoveControl;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -270,7 +265,6 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         if (level().isClientSide){
             handleDynamicYawOperations();
         }
-
 
     }
 
