@@ -3,14 +3,17 @@ package com.github.sniffity.panthalassa.entity.creature.behaviour.goals;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.github.sniffity.panthalassa.entity.creature.PanthalassaCreature;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
-public class PanthalassaRandomSwimmingGoal extends Goal {
+public class PanthalassaRandomSwimmingGoal extends RandomStrollGoal {
 
     protected final PathfinderMob creature;
     protected double x;
@@ -27,10 +30,11 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     protected boolean mustUpdate;
 
     public PanthalassaRandomSwimmingGoal(PathfinderMob creatureIn, double speedIn, int radiusIn, int heightIn, int arrivalDistanceIn) {
-        this(creatureIn,speedIn,0,radiusIn,heightIn, arrivalDistanceIn);
+        this(creatureIn,speedIn,radiusIn,heightIn,arrivalDistanceIn, 0);
     }
 
     public PanthalassaRandomSwimmingGoal(PathfinderMob creatureIn, double speedIn, int radiusIn, int heightIn, int arrivalDistanceIn, int minimumDistanceIn) {
+        super(creatureIn,speedIn);
         this.creature = creatureIn;
         this.speed = speedIn;
         this.radius = radiusIn;
@@ -51,12 +55,12 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
             return false;
         }
 
-        if (!this.creature.isInWater()
-                && !this.creature.level().getBlockState(this.creature.blockPosition().below()).is(Blocks.WATER)) {
+        if (!this.creature.isInWater()) {
             return false;
         }
 
         BlockPos pos = this.getBlockPos();
+        System.out.println("canUse: pos=" + pos + " creatureY=" + this.creature.getY());
 
         if (pos == null) {
             return false;
@@ -98,11 +102,29 @@ public class PanthalassaRandomSwimmingGoal extends Goal {
     }
     @Override
     public void start() {
+        BlockPos target = BlockPos.containing(this.x, this.y, this.z);
+        ((PanthalassaCreature)this.creature).setSwimTarget(target);
+        System.out.println("Debug Move To Incoming....");
+        //this.creature.getNavigation().moveTo(this.x, -55, this.z, 0.7);
         this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
+
+        Path path = this.creature.getNavigation().getPath();
+        System.out.println("Node Evaluator: "+ this.creature.getNavigation().getNodeEvaluator().getClass().getName());
+
+        if (path != null) {
+            for (int i = 0; i < path.getNodeCount(); i++) {
+                Node node = path.getNode(i);
+                System.out.println("Node " + i + ": " + node.x + ", " + node.y + ", " + node.z);
+            }
+        }
+        System.out.println("Target Block: "+target);
+        System.out.println("Fluid: " + this.creature.level().getFluidState(target));
+        System.out.println("Block: " + this.creature.level().getBlockState(target));
     }
 
     @Override
     public void stop() {
+        ((PanthalassaCreature)this.creature).setSwimTarget(null);
         this.creature.getNavigation().stop();
         super.stop();
     }

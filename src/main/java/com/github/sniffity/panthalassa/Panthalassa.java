@@ -1,6 +1,8 @@
 package com.github.sniffity.panthalassa;
 
+import com.github.sniffity.panthalassa.entity.creature.CreatureKronosaurus;
 import com.github.sniffity.panthalassa.entity.registry.PanthalassaEntityTypes;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -13,6 +15,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 @Mod(Panthalassa.MODID)
 public class Panthalassa {
     public static final String MODID = "panthalassa";
+
+    public static final boolean DEBUG = true;
     private static final Logger LOGGER = LogUtils.getLogger();
     /*
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
@@ -40,6 +44,7 @@ public class Panthalassa {
     private void commonSetup(FMLCommonSetupEvent event) {
 
     }
+
 
     /*
     // Add the example block item to the building blocks tab

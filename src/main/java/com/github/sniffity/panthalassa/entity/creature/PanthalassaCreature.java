@@ -1,19 +1,33 @@
 package com.github.sniffity.panthalassa.entity.creature;
 
+import com.github.sniffity.panthalassa.entity.creature.behaviour.goals.PanthalassaRandomSwimmingGoal;
 import com.github.sniffity.panthalassa.entity.creature.behaviour.movement.PanthalassaMoveControl;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 public abstract class PanthalassaCreature extends PathfinderMob implements GeoEntity {
+
 
     public boolean isLandNavigator;
     public float rotationPitch;
@@ -27,6 +41,7 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     private float prevYawRot;
     private float deltaYawRot;
 
+    private BlockPos swimTarget;
 
     private int yawTickCounter;
 
@@ -43,8 +58,32 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.navigation = new GroundPathNavigation(this,this.level());
-        this.moveControl = new PanthalassaMoveControl(this, 85, 1F, 1F, true);
+        this.noCulling = true;
+        this.moveControl = new PanthalassaMoveControl(this, 85, 1F, 1F,true);
+        this.navigation = new WaterBoundPathNavigation(this,this.level());
+        this.lookControl = new SmoothSwimmingLookControl(this,10);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    private static final EntityDataAccessor<Optional<BlockPos>> SWIM_TARGET =
+            SynchedEntityData.defineId(
+                    PanthalassaCreature.class,
+                    EntityDataSerializers.OPTIONAL_BLOCK_POS
+            );
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SWIM_TARGET, Optional.empty());
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
     }
 
 
@@ -60,7 +99,6 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     @Override
     public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controllerAbility", 5, this::abilityAnimController));
         controllers.add(new AnimationController<>(this, "controllerLocomotion", 5, this::locomotionAnimController));
     }
     @Override
@@ -78,69 +116,10 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     }
 
 
-
-    protected static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("move.fly");
-
-    protected <E extends PanthalassaCreature> PlayState abilityAnimController(final AnimationState<E> event) {
-
-        /*
-        //BoneType: INVISIBLE Bones
-
-        //All Ability Animations to be played are stored as DataParameters Strings
-        //We begin by getting the animation that should be played.
-        //This string may have been set as part of an AnimatedGoal that requires a one-shot ability animation to play..
-        String animation = this.getAnimation();
-        //If we do have a one-shot ability animation, we will play that.
-        //"base" is the null value for getAnimation
-        if (!animation.equals("base")) {
-            //If we do have an ability animation, we get the type (Loop (1), Play once (2), Hold on last frame (3))
-            int animationType = this.getAnimationType();
-            RawAnimation abilityAnimation;
-
-            switch (animationType) {
-                case 1 -> abilityAnimation = RawAnimation.begin().then(animation, Animation.LoopType.LOOP);
-                case 2 -> abilityAnimation = RawAnimation.begin().then(animation,Animation.LoopType.PLAY_ONCE);
-                case 3 -> abilityAnimation = RawAnimation.begin().then(animation,Animation.LoopType.HOLD_ON_LAST_FRAME);
-                default -> {return PlayState.STOP;}
-            }
-
-            //We proceed to play the corresponding animation...
-            return event.setAndContinue(abilityAnimation);
-        }
-        //Else, just return base:
-        //This will not cause a transition to a stiff pose, as walking animations will be running concurrently...
-        //We are only resetting the position of the iBones/Bones here
-        return event.setAndContinue(RawAnimation.begin().then("base",Animation.LoopType.LOOP));
-
-         */
-        return PlayState.STOP;
-    }
-
     protected <E extends PanthalassaCreature> PlayState locomotionAnimController(final AnimationState<E> event) {
         //locomotion Methods
         return PlayState.STOP;
     }
-
-    /*
-
-    public void setAnimation(String animation) {
-        entityData.set(ANIMATION,animation);
-    }
-
-    public String getAnimation() {
-        return entityData.get(ANIMATION);
-    }
-
-    public void setAnimationType(int animationType) {
-        entityData.set(ANIMATION_TYPE,animationType);
-    }
-
-    public int getAnimationType(){
-        return entityData.get(ANIMATION_TYPE);
-    }
-
-     */
-
 
 
     // =========================================
@@ -160,32 +139,37 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     @Override
     public void tick() {
         super.tick();
-        tickMotion();
+        //tickMotion();
 
         /*
         handleDynamicPitchOperations();
-
-
         if (speciesUnderwaterBreathing()) {
-
         }
-
         if (speciesDynamicYaw()) {
         }
-
         if (speciesDynamicPitch()) {
         }
 
         if (speciesAmphibious()) {
-
         }
-
         if (speciesReturnsToWater()) {
-
         }
-
          */
 
+
+    }
+
+    public void travel(Vec3 travelVector) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(0.01F, travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
+            if (this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.005, 0.0));
+            }
+        } else {
+            super.travel(travelVector);
+        }
     }
 
     public void tickMotion() {
@@ -209,6 +193,37 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
         }
 
+        if (level().isClientSide){
+            handleDynamicYawOperations();
+        }
+
+
+    }
+
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return type != NeoForgeMod.WATER_TYPE.value();
+    }
+
+    private void handleDynamicYawOperations() {
+        float adjustment = 0.10F;
+
+        float rawDelta = Mth.wrapDegrees(this.yBodyRot - prevYawRot);
+        prevYawRot = this.yBodyRot;
+
+        if (adjustYaw > rawDelta) {
+            adjustYaw = Math.max(adjustYaw - adjustment, rawDelta);
+        } else if (adjustYaw < rawDelta) {
+            adjustYaw = Math.min(adjustYaw + adjustment, rawDelta);
+        }
+
+        prevSetYaw = setYaw;
+
+        setYaw = (adjustYaw) * ((float)Math.PI/180F);
+
+    }
+
+    private void figureMotion(){
         angle += speed;
         /*
         if (angle > 2 * Math.PI) {
@@ -233,58 +248,32 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
         this.setDeltaMovement(motionX * 0.1, 0, motionZ * 0.1);
 
-
         Vec3 motion = this.getDeltaMovement();
         double dx = motion.x;
         double dz = motion.z;
         float yaw = (float) Math.toDegrees(-Math.atan2(-dx, dz));
-        System.out.println("tick pos=(" + this.getX() + "," + this.getZ() + ") motion=(" + dx + "," + dz + ") yaw=" + yaw);
 
 
-        /*
-        if (motion.lengthSqr() > 1.0E-6) {
-            double currAngle = Math.atan2(motion.z, motion.x); // yaw angle in radians
-            double deltaAngle = currAngle - prevAngle;
+            /*
+            if (motion.lengthSqr() > 1.0E-6) {
+                double currAngle = Math.atan2(motion.z, motion.x); // yaw angle in radians
+                double deltaAngle = currAngle - prevAngle;
 
-            // Normalise to [-π, π]
-            deltaAngle = Mth.wrapDegrees(Math.toDegrees(deltaAngle))  * (Math.PI / 180);;
+                // Normalise to [-π, π]
+                deltaAngle = Mth.wrapDegrees(Math.toDegrees(deltaAngle))  * (Math.PI / 180);;
 
-            angularSpeedEstimate = deltaAngle; // radians per tick
-            prevAngle = currAngle;
-        }
+                angularSpeedEstimate = deltaAngle; // radians per tick
+                prevAngle = currAngle;
+            }
 
-         */
-
-
+             */
 
         //this.setYRot(yaw);
         this.setYBodyRot(-yaw-90F);
         //this.setYHeadRot(-yaw);   // Optional: keeps head aligned
 
-
-        if (level().isClientSide){
-            handleDynamicYawOperations();
-        }
-
     }
 
-    private void handleDynamicYawOperations() {
-        float adjustment = 0.10F;
-
-        float rawDelta = Mth.wrapDegrees(this.yBodyRot - prevYawRot);
-        prevYawRot = this.yBodyRot;
-
-        if (adjustYaw > rawDelta) {
-            adjustYaw = Math.max(adjustYaw - adjustment, rawDelta);
-        } else if (adjustYaw < rawDelta) {
-            adjustYaw = Math.min(adjustYaw + adjustment, rawDelta);
-        }
-
-        prevSetYaw = setYaw;
-
-        setYaw = (adjustYaw) * ((float)Math.PI/180F);
-
-    }
 
     private void handleDynamicPitchOperations() {
         prevRotationPitch = rotationPitch;
@@ -293,12 +282,16 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     @Override
     public void registerGoals() {
-        //this.goalSelector.addGoal(1, new RandomStrollGoal(this, 2.0F,1,false));
-
+        this.goalSelector.addGoal(4, new PanthalassaRandomSwimmingGoal(this, 0.7, 50, 5,5,20));
     }
 
-    @Override
-    public boolean isNoGravity() {
-        return false;
+
+    public void setSwimTarget(@Nullable BlockPos pos) {
+        entityData.set(SWIM_TARGET, Optional.ofNullable(pos));
+    }
+
+    @Nullable
+    public BlockPos getSwimTarget() {
+        return entityData.get(SWIM_TARGET).orElse(null);
     }
 }
