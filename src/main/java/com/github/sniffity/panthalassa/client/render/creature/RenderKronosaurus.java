@@ -1,5 +1,6 @@
 package com.github.sniffity.panthalassa.client.render.creature;
 
+import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.client.debug.PanthalassaDebugRenderer;
 import com.github.sniffity.panthalassa.client.model.creature.ModelKronosaurus;
 import com.github.sniffity.panthalassa.entity.creature.CreatureKronosaurus;
@@ -8,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -27,19 +29,10 @@ public class RenderKronosaurus extends GeoEntityRenderer<CreatureKronosaurus> {
     }
 
     @Override
-    public void render(
-            CreatureKronosaurus entity,
-            float entityYaw,
-            float partialTicks,
-            PoseStack poseStack,
-            MultiBufferSource buffer,
-            int packedLight
-    ) {
+    public void render(CreatureKronosaurus entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
-        PanthalassaDebugRenderer.render(
-                entity,
-                poseStack,
-                buffer
-        );
+        if (Panthalassa.DEBUG){
+            PanthalassaDebugRenderer.render(entity,poseStack,buffer);
+        }
     }
 }

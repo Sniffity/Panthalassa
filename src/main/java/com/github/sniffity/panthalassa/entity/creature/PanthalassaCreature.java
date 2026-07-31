@@ -11,15 +11,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class PanthalassaCreature extends PathfinderMob implements GeoEntity {
@@ -51,6 +56,9 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     private double prevAngle = 0.0;
     public double angularSpeedEstimate = 0.0;
 
+    public float waterSpeed = 0.01F;
+    public float waterDrag = 0.09F;
+
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -62,10 +70,12 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     }
 
     private static final EntityDataAccessor<Optional<BlockPos>> SWIM_TARGET = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    private static final EntityDataAccessor<CompoundTag> PATH_NODES = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.COMPOUND_TAG);
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SWIM_TARGET, Optional.empty());
+        builder.define(PATH_NODES, new CompoundTag());
     }
 
     @Override
@@ -146,12 +156,13 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     }
 
-    public void travel(Vec3 travelVector) {
+    @Override
+    public void travel(@NotNull Vec3 travelVector) {
 
         if (this.isEffectiveAi() && this.isInWater()) {
-            this.moveRelative(0.01F, travelVector);
+            this.moveRelative(waterSpeed, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
+            this.setDeltaMovement(this.getDeltaMovement().scale(waterDrag));
             if (this.getTarget() == null) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.005, 0.0));
             }
@@ -223,5 +234,28 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     @Nullable
     public BlockPos getSwimTarget() {
         return entityData.get(SWIM_TARGET).orElse(null);
+    }
+
+
+    public void setPathNodes(@Nullable Path path) {
+        CompoundTag tag = new CompoundTag();
+        if (path != null) {
+            long[] packed = new long[path.getNodeCount()];
+            for (int i = 0; i < path.getNodeCount(); i++) {
+                Node node = path.getNode(i);
+                packed[i] = BlockPos.asLong(node.x, node.y, node.z);
+            }
+            tag.putLongArray("nodes", packed);
+        }
+        entityData.set(PATH_NODES, tag);
+    }
+
+    public List<BlockPos> getPathNodes() {
+        long[] packed = entityData.get(PATH_NODES).getLongArray("nodes");
+        List<BlockPos> result = new ArrayList<>(packed.length);
+        for (long l : packed) {
+            result.add(BlockPos.of(l));
+        }
+        return result;
     }
 }

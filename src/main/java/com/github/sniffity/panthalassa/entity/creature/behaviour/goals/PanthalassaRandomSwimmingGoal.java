@@ -3,12 +3,14 @@ package com.github.sniffity.panthalassa.entity.creature.behaviour.goals;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.entity.creature.PanthalassaCreature;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 public class PanthalassaRandomSwimmingGoal extends RandomStrollGoal {
@@ -73,7 +75,6 @@ public class PanthalassaRandomSwimmingGoal extends RandomStrollGoal {
     @Nullable
     protected BlockPos getBlockPos() {
         Vec3 targetVec3 = BehaviorUtils.getRandomSwimmablePos(this.creature, radius, height);
-
         if (targetVec3 != null) {
             BlockPos targetBlockPos = BlockPos.containing(targetVec3);
 
@@ -91,30 +92,17 @@ public class PanthalassaRandomSwimmingGoal extends RandomStrollGoal {
 
     @Override
     public boolean canContinueToUse() {
-        System.out.println("Entity position: "+this.creature.position());
-        System.out.println("Target position: "+ new Vec3(this.x,this.y,this.z));
-        System.out.println("Distance to Sqr: "+this.creature.distanceToSqr(this.x,this.y,this.z));
-        System.out.println("Arrival Distance Sqr: "+arrivalDistanceSqr);
-
-        if (this.creature.distanceToSqr(this.x,this.y,this.z) < arrivalDistanceSqr) {
-            System.out.println("Distance Condition Triggered");
-            return false;
-        }
-        if (this.creature.getNavigation().isDone()) {
-            System.out.println("Navigation Condition Triggered");
-            return false;
-        }
-        if (this.creature.isVehicle()){
-            System.out.println("Vehicle Condition Triggered");
-            return false;
-        }
         return true;
     }
     @Override
     public void start() {
         BlockPos target = BlockPos.containing(this.x, this.y, this.z);
-        ((PanthalassaCreature)this.creature).setSwimTarget(target);
-        this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
+        if (Panthalassa.DEBUG){
+            Path path = this.creature.getNavigation().getPath();
+            ((PanthalassaCreature)this.creature).setSwimTarget(target);
+            ((PanthalassaCreature) this.creature).setPathNodes(path);
+        }
+                this.creature.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
     }
 
     @Override

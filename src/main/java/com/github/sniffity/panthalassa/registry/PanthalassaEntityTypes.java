@@ -1,4 +1,4 @@
-package com.github.sniffity.panthalassa.entity.registry;
+package com.github.sniffity.panthalassa.registry;
 
 import com.github.sniffity.panthalassa.Panthalassa;
 import com.github.sniffity.panthalassa.entity.creature.CreatureKronosaurus;
