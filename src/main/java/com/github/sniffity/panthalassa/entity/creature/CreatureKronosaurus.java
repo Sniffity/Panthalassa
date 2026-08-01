@@ -10,9 +10,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 
 public class CreatureKronosaurus extends PanthalassaCreature{
+
+    public float waterSpeed = 15F;
+    public float waterDrag = 90F;
+
     public CreatureKronosaurus(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.noCulling = true;
         this.moveControl = new PanthalassaMoveControl(this, 90, 2F, 2F,true);
         this.navigation = new WaterBoundPathNavigation(this,this.level());
         this.lookControl = new SmoothSwimmingLookControl(this,10);

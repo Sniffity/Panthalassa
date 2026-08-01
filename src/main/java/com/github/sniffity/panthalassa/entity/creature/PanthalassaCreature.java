@@ -1,6 +1,5 @@
 package com.github.sniffity.panthalassa.entity.creature;
 
-import com.github.sniffity.panthalassa.entity.creature.behaviour.goals.PanthalassaRandomSwimmingGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,7 +20,6 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,48 +27,43 @@ import java.util.Optional;
 
 public abstract class PanthalassaCreature extends PathfinderMob implements GeoEntity {
 
-
     public boolean isLandNavigator;
     public float rotationPitch;
     public float prevRotationPitch;
     public float prevYRot;
     public float deltaYRot;
     public float adjustYaw;
-    public boolean canBreatheOutsideWater;
     public float prevSetYaw;
     public float setYaw;
     private float prevYawRot;
     private float deltaYawRot;
-
-    private BlockPos swimTarget;
-
     private int yawTickCounter;
-
-
     private final Vec3 center = new Vec3(0, 5, 0);
-    private double angle = 0; // in radians
-    private float radius;
-    private float figure;
     private final double speed = 0.03; // radians per tick
-
     private double prevAngle = 0.0;
     public double angularSpeedEstimate = 0.0;
-
-    public float waterSpeed = 0.01F;
-    public float waterDrag = 0.09F;
-
+    public float waterSpeed = 10F;
+    public float waterDrag = 90F;
 
     protected PanthalassaCreature(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.noCulling = true;
+    }
+
+    // =========================================
+    // ENTITY DATA
+    // =========================================
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
     }
 
     @Override
-    public boolean isPushedByFluid() {
-        return false;
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
     }
 
-    private static final EntityDataAccessor<Optional<BlockPos>> SWIM_TARGET = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final EntityDataAccessor<CompoundTag> PATH_NODES = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.COMPOUND_TAG);
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
@@ -78,50 +71,45 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         builder.define(PATH_NODES, new CompoundTag());
     }
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-    }
+    private static final EntityDataAccessor<CompoundTag> PATH_NODES = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.COMPOUND_TAG);
 
-
-    // =========================================
-    // ANIMATION METHODS
-    // =========================================
-    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.geoCache;
-    }
-
-    @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controllerLocomotion", 5, this::locomotionAnimController));
-    }
-    @Override
-
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-
-        if (tag.contains("Radius")) {
-            this.radius = tag.getFloat("Radius");
+    public void setPathNodes(@Nullable Path path) {
+        CompoundTag tag = new CompoundTag();
+        if (path != null) {
+            long[] packed = new long[path.getNodeCount()];
+            for (int i = 0; i < path.getNodeCount(); i++) {
+                Node node = path.getNode(i);
+                packed[i] = BlockPos.asLong(node.x, node.y, node.z);
+            }
+            tag.putLongArray("nodes", packed);
         }
+        entityData.set(PATH_NODES, tag);
+    }
 
-        if (tag.contains("Figure")) {
-            this.figure = tag.getFloat("Figure");
+    public List<BlockPos> getPathNodes() {
+        long[] packed = entityData.get(PATH_NODES).getLongArray("nodes");
+        List<BlockPos> result = new ArrayList<>(packed.length);
+        for (long l : packed) {
+            result.add(BlockPos.of(l));
         }
+        return result;
     }
 
+    private static final EntityDataAccessor<Optional<BlockPos>> SWIM_TARGET = SynchedEntityData.defineId(PanthalassaCreature.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
 
-    protected <E extends PanthalassaCreature> PlayState locomotionAnimController(final AnimationState<E> event) {
-        //locomotion Methods
-        return PlayState.STOP;
+    public void setSwimTarget(@Nullable BlockPos pos) {
+        entityData.set(SWIM_TARGET, Optional.ofNullable(pos));
     }
 
+    @Nullable
+    public BlockPos getSwimTarget() {
+        return entityData.get(SWIM_TARGET).orElse(null);
+    }
 
     // =========================================
     // SPECIES METHODS
     // =========================================
+
     protected abstract boolean speciesUnderwaterBreathing();
 
     protected abstract boolean speciesDynamicYaw();
@@ -160,9 +148,9 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
     public void travel(@NotNull Vec3 travelVector) {
 
         if (this.isEffectiveAi() && this.isInWater()) {
-            this.moveRelative(waterSpeed, travelVector);
+            this.moveRelative(waterSpeed/1000, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(waterDrag));
+            this.setDeltaMovement(this.getDeltaMovement().scale(waterDrag/1000));
             if (this.getTarget() == null) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.005, 0.0));
             }
@@ -193,14 +181,38 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
         if (speciesReturnsToWater()) {
 
         }
-
-         */
+       */
 
     }
 
     @Override
     public boolean canDrownInFluidType(FluidType type) {
         return type != NeoForgeMod.WATER_TYPE.value();
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    // =========================================
+    // ANIMATION METHODS
+    // =========================================
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
+    }
+
+    @Override
+    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controllerLocomotion", 5, this::locomotionAnimationController));
+    }
+
+    protected <E extends PanthalassaCreature> PlayState locomotionAnimationController(final AnimationState<E> event) {
+        //locomotion Methods
+        return PlayState.STOP;
     }
 
     private void handleDynamicYawOperations() {
@@ -221,41 +233,9 @@ public abstract class PanthalassaCreature extends PathfinderMob implements GeoEn
 
     }
 
-
     private void handleDynamicPitchOperations() {
         prevRotationPitch = rotationPitch;
         rotationPitch = (float) ((Math.atan2((this.getDeltaMovement().y), Math.sqrt((float) ((this.getDeltaMovement().x) * (this.getDeltaMovement().x) + (this.getDeltaMovement().z) * (this.getDeltaMovement().z))))));
     }
 
-    public void setSwimTarget(@Nullable BlockPos pos) {
-        entityData.set(SWIM_TARGET, Optional.ofNullable(pos));
-    }
-
-    @Nullable
-    public BlockPos getSwimTarget() {
-        return entityData.get(SWIM_TARGET).orElse(null);
-    }
-
-
-    public void setPathNodes(@Nullable Path path) {
-        CompoundTag tag = new CompoundTag();
-        if (path != null) {
-            long[] packed = new long[path.getNodeCount()];
-            for (int i = 0; i < path.getNodeCount(); i++) {
-                Node node = path.getNode(i);
-                packed[i] = BlockPos.asLong(node.x, node.y, node.z);
-            }
-            tag.putLongArray("nodes", packed);
-        }
-        entityData.set(PATH_NODES, tag);
-    }
-
-    public List<BlockPos> getPathNodes() {
-        long[] packed = entityData.get(PATH_NODES).getLongArray("nodes");
-        List<BlockPos> result = new ArrayList<>(packed.length);
-        for (long l : packed) {
-            result.add(BlockPos.of(l));
-        }
-        return result;
-    }
 }
